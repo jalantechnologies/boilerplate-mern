@@ -14,3 +14,4 @@ your application up and running.
 - Install dependencies - `npm install`
 - Build Project - `npm build`
 - Run Lint (JavaScript and TypeScript) - `npm run lint`
+- Run Lint (Markdown) - `npm run lint:md`
