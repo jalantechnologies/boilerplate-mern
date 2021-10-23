@@ -6,9 +6,12 @@
     "npm": "6.14.13",
     "node": "14.17.3"
   },
-  "main": "index.js",
+  "main": "src/main.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "gulp",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "npm run build",
+    "start": "node dist/main.js"
   },
   "repository": {
     "type": "git",
@@ -24,5 +27,12 @@
   "bugs": {
     "url": "https://github.com/jalantechnologies/boilerplate-node-ts/issues"
   },
-  "homepage": "https://github.com/jalantechnologies/boilerplate-node-ts#readme"
+  "homepage": "https://github.com/jalantechnologies/boilerplate-node-ts#readme",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-typescript": "^6.0.0-alpha.1",
+    "typescript": "^4.4.4"
+  }
 }
