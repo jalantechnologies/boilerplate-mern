@@ -11,6 +11,7 @@
     "build": "gulp",
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "npm run build",
+    "lint": "eslint .",
     "start": "node dist/main.js"
   },
   "repository": {
@@ -31,6 +32,13 @@
   "dependencies": {
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.29.3",
+    "@typescript-eslint/parser": "^4.29.3",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-airbnb-typescript": "^14.0.1",
+    "eslint-plugin-eslint-comments": "^3.2.0",
+    "eslint-plugin-import": "^2.25.2",
     "gulp": "^4.0.2",
     "gulp-typescript": "^6.0.0-alpha.1",
     "typescript": "^4.4.4"
