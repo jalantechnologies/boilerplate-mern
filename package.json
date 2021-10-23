@@ -1,0 +1,28 @@
+{
+  "name": "boilerplate-node-ts",
+  "version": "1.0.0",
+  "description": "Boilerplate project for NodeJS based projects in TypeScript",
+  "engines": {
+    "npm": "6.14.13",
+    "node": "14.17.3"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jalantechnologies/boilerplate-node-ts.git"
+  },
+  "keywords": [
+    "boilerplate",
+    "node-js",
+    "typescript"
+  ],
+  "author": "JalanTechnologies",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jalantechnologies/boilerplate-node-ts/issues"
+  },
+  "homepage": "https://github.com/jalantechnologies/boilerplate-node-ts#readme"
+}
