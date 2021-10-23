@@ -31,7 +31,9 @@
     "url": "https://github.com/jalantechnologies/boilerplate-node-ts/issues"
   },
   "homepage": "https://github.com/jalantechnologies/boilerplate-node-ts#readme",
-  "dependencies": {},
+  "dependencies": {
+    "config": "^3.3.6"
+  },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.29.3",
     "@typescript-eslint/parser": "^4.29.3",
