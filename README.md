@@ -9,9 +9,15 @@ your application up and running.
 
 ## Getting Started
 
+**Pre Requirements:**
+
+- Node - [Download Link](https://nodejs.org/en/download/)
+
 *Scripts:*
 
 - Install dependencies - `npm install`
 - Build Project - `npm build`
+- Start Application (without HotReload) - `npm start`
+- Start Application (with HotReload enabled) - `npm run serve`
 - Run Lint (JavaScript and TypeScript) - `npm run lint`
 - Run Lint (Markdown) - `npm run lint:md`

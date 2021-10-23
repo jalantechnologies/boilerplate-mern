@@ -20,6 +20,10 @@
       ],
       "parserOptions": {
         "project": "./tsconfig.json"
+      },
+      "rules": {
+        "@typescript-eslint/no-unsafe-member-access": "off",
+        "eslint-comments/disable-enable-pair": "off"
       }
     }
   ]
