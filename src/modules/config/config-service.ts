@@ -1,60 +1,41 @@
 import config from 'config';
-import {
-  ConfigType,
-  Environment,
-  MissingKeyError,
-  ValueTypeMismatchError,
-} from './types';
+import { Environment, MissingKeyError, ValueTypeMismatchError } from './types';
+
+export enum ConfigType {
+  BOOLEAN = 'boolean',
+  NUMBER = 'number',
+  STRING = 'string',
+}
 
 export default class ConfigService {
   public static getEnvironment(): Environment {
-    return config.get('node.env');
+    const env: Environment = config.get('node.config.env');
+    if (Object.values(Environment).includes(env)) {
+      return env;
+    }
+    throw new Error(`Environment ${env} is not supported`);
   }
 
   public static getBoolValue(key: string): boolean {
-    // This method should throw MissingKeyError if key is not found in config
-    // This method should throw ValueTypeMismatchError if key is found but the
-    // there is a value type mistmatch
-    // Otherwise return the value
     const expectedValueType = ConfigType.BOOLEAN;
-    const value = config.get(key);
-
-    if (!value) {
-      throw new MissingKeyError(key);
-    }
-
-    if (typeof value !== expectedValueType) {
-      throw new ValueTypeMismatchError(typeof value, expectedValueType, key);
-    } else {
-      return value as boolean;
-    }
+    return this.getEnvValue<boolean>(expectedValueType, key);
   }
 
   public static getIntValue(key: string): number {
-    // This method should throw MissingKeyError if key is not found in config
-    // This method should throw ValueTypeMismatchError if key is found but the
-    // there is a value type mistmatch
-    // Otherwise return the value
     const expectedValueType = ConfigType.NUMBER;
-    const value = config.get(key);
-
-    if (!value) {
-      throw new MissingKeyError(key);
-    }
-
-    if (typeof value !== expectedValueType) {
-      throw new ValueTypeMismatchError(typeof value, expectedValueType, key);
-    } else {
-      return value as number;
-    }
+    return this.getEnvValue<number>(expectedValueType, key);
   }
 
   public static getStringValue(key: string): string {
+    const expectedValueType = ConfigType.STRING;
+    return this.getEnvValue<string>(expectedValueType, key);
+  }
+
+  private static getEnvValue<T>(expectedValueType: ConfigType, key: string): T {
     // This method should throw MissingKeyError if key is not found in config
     // This method should throw ValueTypeMismatchError if key is found but the
     // there is a value type mistmatch
     // Otherwise return the value
-    const expectedValueType = ConfigType.STRING;
     const value = config.get(key);
 
     if (!value) {
@@ -64,7 +45,7 @@ export default class ConfigService {
     if (typeof value !== expectedValueType) {
       throw new ValueTypeMismatchError(typeof value, expectedValueType, key);
     } else {
-      return value as string;
+      return value as T;
     }
   }
 }

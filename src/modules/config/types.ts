@@ -32,9 +32,3 @@ export class ValueTypeMismatchError extends Error {
     this.code = ConfigErrorCode.VALUE_TYPE_MISMATCH;
   }
 }
-
-export enum ConfigType {
-  BOOLEAN = 'boolean',
-  NUMBER = 'number',
-  STRING = 'string',
-}
