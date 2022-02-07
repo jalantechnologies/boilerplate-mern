@@ -1,11 +1,13 @@
 import express, { Application } from 'express';
 import { Server } from 'http';
+import CommunicationServiceManager from './modules/communication/communication-service-manager';
 
 export default class App {
   private static app: Application;
 
-  public static startRESTApiServer(): Server {
+  public static async startRESTApiServer(): Promise<Server> {
     this.app = express();
+    await CommunicationServiceManager.mountService();
     // The order of core services is important because Logger depends on Config
     // await ConfigManager.mountConfig()
     // await LoggerManager.mountLogger()
