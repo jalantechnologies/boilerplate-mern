@@ -1,11 +1,11 @@
 // eslint-disable-next-line max-classes-per-file
 export enum Environment {
-  LOCAL = 1,
-  TESTING = 2,
-  STAGING = 3,
-  QA = 4,
-  BETA = 5,
-  PRODUCTION = 6,
+  LOCAL = 'local',
+  TESTING = 'testing',
+  STAGING = 'staging',
+  QA = 'qa',
+  BETA = 'beta',
+  PRODUCTION = 'production',
 }
 
 export enum ConfigErrorCode {
@@ -27,7 +27,7 @@ export class ValueTypeMismatchError extends Error {
 
   constructor(actualValueType: string, expectedValueType: string, key: string) {
     super(
-      `Value mismatch for key: ${key}. Expected: ${expectedValueType}, Actual: ${actualValueType}`,
+      `Value mismatch for key: ${key}. Expected: ${expectedValueType}, Actual: ${actualValueType}`
     );
     this.code = ConfigErrorCode.VALUE_TYPE_MISMATCH;
   }
