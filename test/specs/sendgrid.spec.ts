@@ -22,7 +22,7 @@ describe('Email Service.', function() {
   afterEach(() => {
     sinonSandbox.restore();
   });
-  it('should not allow to send email, if to email is invalid.', async function() {
+  it('should not allow to send email, if recipient email is invalid.', async function() {
     const params = {
       to: 'invalidemail',
       from: 'from@email.com',
@@ -42,7 +42,7 @@ describe('Email Service.', function() {
     expect(errorOccured.failures.length).to.eq(1);
     expect(errorOccured.failures[0].field).to.eq('to');
   });
-  it('should not allow to send email, if from email is invalid.', async function() {
+  it('should not allow to send email, if sender email is invalid.', async function() {
     const params = {
       to: 'to@email.com',
       from: 'invalidemail',
@@ -61,7 +61,7 @@ describe('Email Service.', function() {
     expect(errorOccured.failures.length).to.eq(1);
     expect(errorOccured.failures[0].field).to.eq('from');
   });
-  it('should not allow to send email, if from name is empty.', async function() {
+  it('should not allow to send email, if sender name is empty.', async function() {
     const params = {
       to: 'to@email.com',
       from: 'from@email.com',
