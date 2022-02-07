@@ -32,8 +32,8 @@
   },
   "homepage": "https://github.com/jalantechnologies/boilerplate-node-ts#readme",
   "dependencies": {
-    "config": "^3.3.7",
-    "ts-mocha": "^9.0.2"
+    "config": "^3.3.6",
+    "express": "^4.17.2"
   },
   "devDependencies": {
     "@types/chai": "^4.3.0",
