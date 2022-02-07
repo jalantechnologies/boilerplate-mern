@@ -1,11 +1,11 @@
 import config from 'config';
-import { Environment, MissingKeyError, ValueTypeMismatchError } from './types';
-
-export enum ConfigType {
-  BOOLEAN = 'boolean',
-  NUMBER = 'number',
-  STRING = 'string',
-}
+import ConfigType from './config-type';
+import {
+  Environment,
+  EnvironmentNotSupportedError,
+  MissingKeyError,
+  ValueTypeMismatchError,
+} from './types';
 
 export default class ConfigService {
   public static getEnvironment(): Environment {
@@ -13,7 +13,7 @@ export default class ConfigService {
     if (Object.values(Environment).includes(env)) {
       return env;
     }
-    throw new Error(`Environment ${env} is not supported`);
+    throw new EnvironmentNotSupportedError(env);
   }
 
   public static getBoolValue(key: string): boolean {
@@ -32,10 +32,6 @@ export default class ConfigService {
   }
 
   private static getEnvValue<T>(expectedValueType: ConfigType, key: string): T {
-    // This method should throw MissingKeyError if key is not found in config
-    // This method should throw ValueTypeMismatchError if key is found but the
-    // there is a value type mistmatch
-    // Otherwise return the value
     const value = config.get(key);
 
     if (!value) {

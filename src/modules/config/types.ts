@@ -11,6 +11,16 @@ export enum Environment {
 export enum ConfigErrorCode {
   MISSING_KEY = 'CONFIG_ERR_O1',
   VALUE_TYPE_MISMATCH = 'CONFIG_ERR_O2',
+  ENVIRONMENT_NOT_SUPPORTED = 'CONFIG_ERR_O3',
+}
+
+export class EnvironmentNotSupportedError extends Error {
+  code: ConfigErrorCode;
+
+  constructor(env: string) {
+    super(`Environment ${env} is not supported`);
+    this.code = ConfigErrorCode.ENVIRONMENT_NOT_SUPPORTED;
+  }
 }
 
 export class MissingKeyError extends Error {
