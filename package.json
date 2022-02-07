@@ -33,17 +33,22 @@
   "homepage": "https://github.com/jalantechnologies/boilerplate-node-ts#readme",
   "dependencies": {
     "config": "^3.3.7",
-    "rollbar": "^2.24.0",
-    "ts-mocha": "^9.0.2"
+    "express": "^4.17.2",
+    "jsonwebtoken": "^8.5.1",
+    "rollbar": "^2.24.0"
   },
   "devDependencies": {
     "@types/chai": "^4.3.0",
+    "@types/chai-http": "^4.2.0",
     "@types/config": "0.0.41",
+    "@types/express": "^4.17.13",
+    "@types/jsonwebtoken": "^8.5.8",
     "@types/mocha": "^9.1.0",
     "@types/sinon": "^10.0.11",
     "@typescript-eslint/eslint-plugin": "^4.29.3",
     "@typescript-eslint/parser": "^4.29.3",
     "chai": "^4.3.6",
+    "chai-http": "^4.3.0",
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-airbnb-typescript": "^14.0.1",
@@ -57,6 +62,7 @@
     "remark-lint": "^9.1.0",
     "remark-preset-lint-recommended": "^6.1.1",
     "sinon": "^13.0.1",
+    "ts-mocha": "^9.0.2",
     "typescript": "^4.4.4"
   }
 }
