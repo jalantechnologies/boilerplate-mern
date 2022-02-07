@@ -1,15 +1,18 @@
-import { SendEmailParams } from '../types';
+import { MissingConfigVariable, SendEmailParams, ThirdPartyServiceError } from '../types';
+import { EmailParams } from './sendgrid-email-params';
 import config from 'config';
 import mail from '@sendgrid/mail';
 
 export default class SendGridService {
   public static initializeService() {
     const sendgridAPIKey:string = config.get('sendgridAPIKey'); // Todo: here use configuration service to get these details.
-    if(sendgridAPIKey) {
-      mail.setApiKey(sendgridAPIKey);
+    if(!sendgridAPIKey) {
+      throw new MissingConfigVariable('sendgridAPIKey');
     }
   }
   public static async sendEmail(params: SendEmailParams): Promise<void> {
+    const sendGridParams = new EmailParams(params);
+    await sendGridParams.validate();
     const msg: any = {
       to: params.to,
       from: {
@@ -24,9 +27,9 @@ export default class SendGridService {
     });
     try {
       await mail.send(msg);
-    } catch(error) {
-      // Todo: Use logger Service to log these values
-      console.log(error.message);
+    } catch(e) {
+      // Todo: Also log the error with logger
+      throw new ThirdPartyServiceError();
     }
   }
 }
