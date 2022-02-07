@@ -9,8 +9,7 @@
   "main": "src/main.ts",
   "scripts": {
     "build": "gulp",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "npm run build",
+    "test": "NODE_ENV=testing mocha --exit -r ts-node/register --project tsconfig.json test/**/*.spec.ts",
     "lint": "eslint .",
     "lint:md": "remark .",
     "start": "node dist/main.js",
@@ -32,11 +31,15 @@
   },
   "homepage": "https://github.com/jalantechnologies/boilerplate-node-ts#readme",
   "dependencies": {
-    "config": "^3.3.6"
+    "config": "^3.3.7",
+    "ts-mocha": "^9.0.2"
   },
   "devDependencies": {
+    "@types/config": "0.0.41",
+    "@types/mocha": "^9.1.0",
     "@typescript-eslint/eslint-plugin": "^4.29.3",
     "@typescript-eslint/parser": "^4.29.3",
+    "chai": "^4.3.6",
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-airbnb-typescript": "^14.0.1",
@@ -45,6 +48,7 @@
     "gulp": "^4.0.2",
     "gulp-nodemon": "^2.5.0",
     "gulp-typescript": "^6.0.0-alpha.1",
+    "mocha": "^9.2.0",
     "remark-cli": "^10.0.0",
     "remark-lint": "^9.1.0",
     "remark-preset-lint-recommended": "^6.1.1",
