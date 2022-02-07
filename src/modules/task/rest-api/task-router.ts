@@ -5,12 +5,13 @@ export default class TaskRouter {
   public static getRoutes(): Router {
     const router = Router();
 
-    const controller = new TaskController();
-
-    router.post('/', controller.createTask);
-    router.get('/', controller.getAllTasks);
-    router.get('/:id', controller.getTask);
-    router.delete('/:id', controller.deleteTask);
+    // TODO: Implement a middle ware to ensure the account associated
+    // with the request can access this resource. The middle ware should
+    // be created in AccessTokenService.
+    router.post('/', TaskController.createTask);
+    router.get('/', TaskController.getAllTasks);
+    router.get('/:id', TaskController.getTask);
+    router.delete('/:id', TaskController.deleteTask);
 
     return router;
   }

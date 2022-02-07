@@ -10,8 +10,7 @@ export default class TaskRESTApiServer {
     // TODO: Create a mongoose connection that is exclusively available to
     // Task service so it can persist the data
 
-    // TODO: Register the REST APIs with application
-    app.use('/tasks', TaskRouter.getRoutes());
+    app.use('/accounts/:accountId/tasks', TaskRouter.getRoutes());
 
     return Promise.resolve(app);
   }

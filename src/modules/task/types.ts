@@ -1,10 +1,13 @@
 // eslint-disable-next-line max-classes-per-file
-export type Task = {
+export class Task {
   id: string;
-  accountId: string;
+
+  account: string;
+
   active: boolean;
+
   name: string;
-};
+}
 
 export type GetAllTaskParams = {
   accountId: string;
@@ -29,7 +32,6 @@ export type DeleteTaskParams = {
 
 export enum TaskErrorCode {
   NOT_FOUND = 'TASK_ERR_01',
-  UNAUTHORIZED_ACCESS = 'TASK_ERR_02',
 }
 
 export class TaskNotFoundError extends Error {
@@ -38,14 +40,5 @@ export class TaskNotFoundError extends Error {
   constructor(taskId: string) {
     super(`${taskId} not found.`);
     this.code = TaskErrorCode.NOT_FOUND;
-  }
-}
-
-export class TaskUnAuthorizedAccessError extends Error {
-  code: TaskErrorCode;
-
-  constructor(accountId: string, taskId: string) {
-    super(`${accountId} is not authorized to access ${taskId}.`);
-    this.code = TaskErrorCode.UNAUTHORIZED_ACCESS;
   }
 }
