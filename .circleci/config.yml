@@ -1,0 +1,57 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:12.14.1
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            - v1-dependencies-
+      - run:
+          name: Install dependencies
+          command: npm install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - run:
+          name: Build project
+          command: npm run build
+      - persist_to_workspace:
+          root: /home/circleci/project
+          paths:
+            - node_modules/*
+            - dist/*
+  lint:
+    docker:
+      - image: circleci/node:12.14.1
+    steps:
+      - checkout
+      - attach_workspace:
+          at: /home/circleci/project
+      - run:
+          name: Code linting
+          command: npm run lint
+  test:
+    docker:
+      - image: circleci/node:12.14.1
+    steps:
+      - checkout
+      - attach_workspace:
+          at: /home/circleci/project
+      - run:
+          name: Automated tests
+          command: npm run test
+workflows:
+  version: 2
+  app:
+    jobs:
+      - build
+      - lint:
+          requires:
+            - build
+      - test:
+          requires:
+            - build
