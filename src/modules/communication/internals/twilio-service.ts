@@ -6,6 +6,7 @@ export default class TwilioService {
   }
 
   public static async sendSMS(params: SendSMSParams): Promise<void> {
+    console.log(params);
     // TODO: Implement this.
   }
 }
