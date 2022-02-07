@@ -27,7 +27,7 @@ export class ValueTypeMismatchError extends Error {
 
   constructor(actualValueType: string, expectedValueType: string, key: string) {
     super(
-      `Value mismatch for key: ${key}. Expected: ${expectedValueType}, Actual: ${actualValueType}`
+      `Value mismatch for key: ${key}. Expected: ${expectedValueType}, Actual: ${actualValueType}`,
     );
     this.code = ConfigErrorCode.VALUE_TYPE_MISMATCH;
   }

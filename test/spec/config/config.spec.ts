@@ -25,34 +25,34 @@ describe('ConfigService', () => {
 
     assert.throws(
       () => ConfigService.getBoolValue(missingKey),
-      `Configuration property "${missingKey}" is not defined`
+      `Configuration property "${missingKey}" is not defined`,
     );
 
     assert.throws(
       () => ConfigService.getIntValue(missingKey),
-      `Configuration property "${missingKey}" is not defined`
+      `Configuration property "${missingKey}" is not defined`,
     );
 
     assert.throws(
       () => ConfigService.getStringValue(missingKey),
-      `Configuration property "${missingKey}" is not defined`
+      `Configuration property "${missingKey}" is not defined`,
     );
   });
 
   it('should throw a ValueTypeMismatchError if type of value does not match', () => {
     assert.throws(
       () => ConfigService.getBoolValue('stringTestKey'),
-      'Value mismatch for key: stringTestKey. Expected: boolean, Actual: string'
+      'Value mismatch for key: stringTestKey. Expected: boolean, Actual: string',
     );
 
     assert.throws(
       () => ConfigService.getIntValue('stringTestKey'),
-      'Value mismatch for key: stringTestKey. Expected: number, Actual: string'
+      'Value mismatch for key: stringTestKey. Expected: number, Actual: string',
     );
 
     assert.throws(
       () => ConfigService.getStringValue('boolTestKey'),
-      'Value mismatch for key: boolTestKey. Expected: string, Actual: boolean'
+      'Value mismatch for key: boolTestKey. Expected: string, Actual: boolean',
     );
   });
 });
