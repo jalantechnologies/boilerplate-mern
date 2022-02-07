@@ -11,6 +11,7 @@
     "build": "gulp",
     "test": "NODE_ENV=testing mocha --exit -r ts-node/register --project tsconfig.json test/**/*.spec.ts",
     "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
     "lint:md": "remark .",
     "start": "node dist/main.js",
     "serve": "gulp serve"

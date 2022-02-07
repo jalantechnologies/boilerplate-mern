@@ -1,14 +1,14 @@
-import config from "config";
+import config from 'config';
 import {
   ConfigType,
   Environment,
   MissingKeyError,
   ValueTypeMismatchError,
-} from "./types";
+} from './types';
 
 export default class ConfigService {
   public static getEnvironment(): Environment {
-    return config.get("node.env");
+    return config.get('node.env');
   }
 
   public static getBoolValue(key: string): boolean {
