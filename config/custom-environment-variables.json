@@ -1,1 +1,7 @@
-{}
+{
+  "node": {
+    "config": {
+      "env": "NODE_CONFIG_ENV"
+    }
+  }
+}

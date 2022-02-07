@@ -1,1 +1,5 @@
-{}
+{
+  "boolTestKey": true,
+  "numberTestKey": 1,
+  "stringTestKey": "string"
+}
