@@ -45,7 +45,6 @@ describe('Email Service.', function() {
       await EmailService.sendEmail(params);
     } catch(e) {
       errorOccured = e;
-      console.log(errorOccured);
     }
     expect(errorOccured.msg).to.eq('Email sent failed, please provide valid params.');
     expect(errorOccured.failures.length).to.eq(1);
