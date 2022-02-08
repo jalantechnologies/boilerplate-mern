@@ -54,4 +54,4 @@ export class EmailParams {
   isEmailValid(email: string) {
     return emailRegex.test(String(email).toLowerCase());
   }
-}
+};

@@ -6,13 +6,16 @@ import { PhoneNumberUtil } from 'google-libphonenumber';
 export class SmsParams {
   phoneNumber: PhoneNumber;
   message: string;
+
   constructor(params: SendSMSParams) {
     this.phoneNumber = params.to;
     this.message = params.message;
   }
+  
   phoneNumberString() {
     return `${this.phoneNumber.countryCode}${this.phoneNumber.phoneNumber}`;
   }
+  
   async validate() {
     const phoneUtil = PhoneNumberUtil.getInstance();
     const failures: Failure[] = [];

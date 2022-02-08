@@ -5,8 +5,8 @@ import { Server } from 'http';
 import sinon from 'sinon';
 import { Application } from 'express';
 import {
-  SMSService
-} from '../../../src/modules/communication';
+  SMSService,
+} from '../../../src/modules';
 import { initApp } from '../../helpers/spec-helpers';
 
 chai.use(chaiHttp);

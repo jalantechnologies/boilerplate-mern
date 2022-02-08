@@ -1,31 +1,36 @@
 import { SendSMSParams, ThirdPartyServiceError } from '../types';
 import { SmsParams } from './twilio-params';
 import { Twilio } from 'twilio';
-import config from 'config';
+import ConfigService from '../../config/config-service';
 
 export default class TwilioService {
+
   private static twilio: Twilio;
+  private static accountSid: string;
+  private static authToken: string;
+  private static fromNumber: string;
 
   public static initializeService() {
+    this.accountSid = ConfigService.getStringValue('twilio.verify.accountSid');
+    this.authToken = ConfigService.getStringValue('twilio.verify.authToken');
+    this.fromNumber = ConfigService.getStringValue('twilio.fromNumber');
     this.twilio = new Twilio(
-      config.get('twilio.verify.accountSid'),
-      config.get('twilio.verify.authToken'),
+      this.accountSid,
+      this.authToken,
     );
   }
 
   public static async sendSMS(params: SendSMSParams): Promise<void> {
     const smsParams = new SmsParams(params);
-    const fromNumber: string = config.get('twilio.fromNumber');
     await smsParams.validate();
     try {
       await this.twilio.messages.create({
         to: smsParams.phoneNumberString(),
-        from: fromNumber,
+        from: this.fromNumber,
         body: smsParams.message
       });
     } catch(e) {
-      // Also log error with logger
-      throw new ThirdPartyServiceError('');
+      throw new ThirdPartyServiceError('Service unavailable, please try after sometime !.');
     }
   }
-}
+};

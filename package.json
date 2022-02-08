@@ -14,7 +14,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "lint:md": "remark .",
-    "start": "node dist/server.js",
+    "start": "node dist/src/server.js",
     "serve": "gulp serve"
   },
   "repository": {

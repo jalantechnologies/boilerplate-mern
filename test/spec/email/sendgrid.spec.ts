@@ -6,7 +6,7 @@ import sinon from 'sinon';
 import { Application } from 'express';
 import {
   EmailService,
-} from '../../../src/modules/communication';
+} from '../../../src/modules';
 import { initApp } from '../../helpers/spec-helpers';
 import mail from '@sendgrid/mail';
 
@@ -39,13 +39,18 @@ describe('Email Service.', function() {
       templateId: 'd-bea6fc9b30d34caeb73c11e2770e3287',
       templateData: {},
     };
-    sinonSandbox.stub(mail, <any>'send').returns(Promise.resolve('1'));
+    
+    sinonSandbox
+    .stub(mail, <any>'send')
+    .returns(Promise.resolve('1'));
+    
     let errorOccured: any;
     try {
       await EmailService.sendEmail(params);
     } catch(e) {
       errorOccured = e;
     }
+    
     expect(errorOccured.msg).to.eq('Email sent failed, please provide valid params.');
     expect(errorOccured.failures.length).to.eq(1);
     expect(errorOccured.failures[0].field).to.eq('to');
@@ -59,13 +64,18 @@ describe('Email Service.', function() {
       templateId: 'd-bea6fc9b30d34caeb73c11e2770e3287',
       templateData: {}
     };
-    sinonSandbox.stub(mail, <any>'send').returns(Promise.resolve('1'));
+    
+    sinonSandbox
+    .stub(mail, <any>'send')
+    .returns(Promise.resolve('1'));
+    
     let errorOccured: any;
     try {
       await EmailService.sendEmail(params);
     } catch(e) {
       errorOccured = e;
     }
+    
     expect(errorOccured.msg).to.eq('Email sent failed, please provide valid params.');
     expect(errorOccured.failures.length).to.eq(1);
     expect(errorOccured.failures[0].field).to.eq('from');
@@ -79,13 +89,18 @@ describe('Email Service.', function() {
       templateId: 'd-bea6fc9b30d34caeb73c11e2770e3287',
       templateData: {}
     };
-    sinonSandbox.stub(mail, <any>'send').returns(Promise.resolve('1'));
+    
+    sinonSandbox
+    .stub(mail, <any>'send')
+    .returns(Promise.resolve('1'));
+    
     let errorOccured: any;
     try {
       await EmailService.sendEmail(params);
     } catch(e) {
       errorOccured = e;
     }
+    
     expect(errorOccured.msg).to.eq('Email sent failed, please provide valid params.');
     expect(errorOccured.failures.length).to.eq(1);
     expect(errorOccured.failures[0].field).to.eq('fromName');
@@ -99,14 +114,18 @@ describe('Email Service.', function() {
       templateId: 'd-bea6fc9b30d34caeb73c11e2770e3287',
       templateData: {}
     };
-    sinonSandbox.stub(mail, <any>'send').returns(Promise.resolve('1'));
+    
+    sinonSandbox
+    .stub(mail, <any>'send')
+    .returns(Promise.resolve('1'));
+    
     let errorOccured: any;
     try {
       await EmailService.sendEmail(params);
     } catch(e) {
       errorOccured = e;
     }
+    
     expect(errorOccured).to.eq(undefined);
   });
-  
 });
