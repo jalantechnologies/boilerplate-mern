@@ -26,6 +26,6 @@ export default class App {
     // this.app.use('/', taskServiceRESTApi)
 
     // TODO: Read the port from ConfigService
-    return this.app.listen(8000);
+    return this.app.listen(8000) as Server;
   }
 }

@@ -2,56 +2,61 @@ import {
   LooseObject,
   SendEmailParams,
   ValidationError,
-  Failure
-} from "../types";
-import { emailRegex } from "./constant";
-export class EmailParams {
-  to: string;
-  from: string;
-  fromName: string;
+  Failure,
+  EmailSender,
+  EmailRecipient,
+} from '../types';
+import emailRegex from './constant';
+
+export default class EmailParams {
+  recipient: EmailRecipient;
+
+  sender: EmailSender;
+
   templateId: string;
+
   templateData: LooseObject;
-  
+
   constructor(params: SendEmailParams) {
-    this.to = params.to;
-    this.from = params.from;
-    this.fromName = params.fromName;
+    this.recipient = params.recipient;
+    this.sender = params.sender;
     this.templateId = params.templateId;
     this.templateData = params.templateData;
   }
 
-  async validate() {
+  validate(): void {
     const failures: Failure[] = [];
-    const isToValid = this.isEmailValid(this.to);
-    const isFromValid = this.isEmailValid(this.from);
-    const isfromNameValid = !!this.fromName;
-    if(!isToValid) {
+    const isToValid = this.isEmailValid(this.recipient.email);
+    const isFromValid = this.isEmailValid(this.sender.email);
+    const isfromNameValid = !!this.sender.name;
+    if (!isToValid) {
       failures.push({
-        field: 'to',
-        message: 'Please specify valid email address to be sent.'
-      })
+        field: 'recipient email',
+        message: 'Please specify valid email address to be sent.',
+      });
     }
-    if(!isFromValid) {
+    if (!isFromValid) {
       failures.push({
-        field: 'from',
-        message: 'Please specify valid email address to be sent.'
-      })
+        field: 'sender email',
+        message: 'Please specify valid email address to be sent.',
+      });
     }
-    if(!isfromNameValid) {
+    if (!isfromNameValid) {
       failures.push({
-        field: 'fromName',
-        message: 'Please specify a valid name of the sending recipient.'
-      })
+        field: 'sender name',
+        message: 'Please specify a valid name of the sending recipient.',
+      });
     }
-    if(failures.length) {
+    if (failures.length) {
       throw new ValidationError(
         'Email sent failed, please provide valid params.',
-        failures
+        failures,
       );
     }
   }
 
-  isEmailValid(email: string) {
+  // eslint-disable-next-line class-methods-use-this
+  isEmailValid(email: string): boolean {
     return emailRegex.test(String(email).toLowerCase());
   }
-};
+}

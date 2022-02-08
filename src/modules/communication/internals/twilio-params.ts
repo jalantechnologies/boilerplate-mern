@@ -1,45 +1,46 @@
-import {
-  PhoneNumber, SendSMSParams, ValidationError, Failure
-} from "../types";
 import { PhoneNumberUtil } from 'google-libphonenumber';
+import {
+  PhoneNumber, SendSMSParams, ValidationError, Failure,
+} from '../types';
 
-export class SmsParams {
+export default class SmsParams {
   phoneNumber: PhoneNumber;
+
   message: string;
 
   constructor(params: SendSMSParams) {
     this.phoneNumber = params.to;
     this.message = params.message;
   }
-  
-  phoneNumberString() {
+
+  phoneNumberString(): string {
     return `${this.phoneNumber.countryCode}${this.phoneNumber.phoneNumber}`;
   }
-  
-  async validate() {
+
+  validate(): void {
     const phoneUtil = PhoneNumberUtil.getInstance();
     const failures: Failure[] = [];
     const isMessageValid = !!this.message;
     const isPhoneNumberValid = phoneUtil.isValidNumber(
-      phoneUtil.parse(`${this.phoneNumberString()}`)
+      phoneUtil.parse(`${this.phoneNumberString()}`),
     );
-    if(!isMessageValid) {
+    if (!isMessageValid) {
       failures.push({
         field: 'message',
         message: 'please specify non empty message body',
       });
     }
-    if(!isPhoneNumberValid) {
+    if (!isPhoneNumberValid) {
       failures.push({
         field: 'to',
         message: 'Please specify valid phone number to send sms to.',
       });
     }
-    if(failures.length) {
+    if (failures.length) {
       throw new ValidationError(
         'Sms sent failed, please provide valid params.',
-        failures
+        failures,
       );
     }
   }
-};
+}

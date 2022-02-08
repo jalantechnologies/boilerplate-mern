@@ -1,4 +1,3 @@
-require('module-alias/register');
 import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
 import { Server } from 'http';
@@ -7,22 +6,23 @@ import { Application } from 'express';
 import {
   SMSService,
 } from '../../../src/modules';
-import { initApp } from '../../helpers/spec-helpers';
+import initApp from '../../helpers/spec-helpers';
+
+require('module-alias/register');
 
 chai.use(chaiHttp);
 let expressApp: Application;
 let server: Server;
 let sinonSandbox: sinon.SinonSandbox;
 
-describe('SMS Service', function() {
-
-  before(async function() {
+describe('SMS Service', () => {
+  before(async () => {
     expressApp = await initApp();
     server = await expressApp.startRESTApiServer();
     sinonSandbox = sinon.createSandbox();
   });
 
-  after(async function() {
+  after(() => {
     server.close();
   });
 
@@ -30,18 +30,18 @@ describe('SMS Service', function() {
     sinonSandbox.restore();
   });
 
-  it('should not allow to send sms, if the reciepient phone number is invalid', async function() {
+  it('should not allow to send sms, if the reciepient phone number is invalid', async () => {
     const params = {
       to: {
         countryCode: '+91',
         phoneNumber: '73001',
       },
-      message: 'Sample email.'
+      message: 'Sample email.',
     };
     let errorOccured: any;
     try {
       await SMSService.sendSMS(params);
-    } catch(e) {
+    } catch (e) {
       errorOccured = e;
     }
     expect(errorOccured.msg).to.eq('Sms sent failed, please provide valid params.');
@@ -49,18 +49,18 @@ describe('SMS Service', function() {
     expect(errorOccured.failures[0].field).to.eq('to');
   });
 
-  it('should not allow to send sms, if the message body is empty.', async function() {
+  it('should not allow to send sms, if the message body is empty.', async () => {
     const params = {
       to: {
         countryCode: '+91',
         phoneNumber: '7300159158',
       },
-      message: ''
+      message: '',
     };
     let errorOccured: any;
     try {
       await SMSService.sendSMS(params);
-    } catch(e) {
+    } catch (e) {
       errorOccured = e;
     }
     expect(errorOccured.msg).to.eq('Sms sent failed, please provide valid params.');
