@@ -4,7 +4,7 @@ import {
   EmailServiceValidationError,
   ValidationFailure
 } from "../types";
-import { emailRegex } from "../constant";
+import { emailRegex } from "./constant";
 export class EmailParams {
   to: string;
   from: string;
