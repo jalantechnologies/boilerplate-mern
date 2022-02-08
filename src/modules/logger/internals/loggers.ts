@@ -1,8 +1,9 @@
 import Logger from './types';
 import ConfigService from '../../config/config-service';
-import { Environment, EnvironmentNotSupportedError } from '../../config/types';
 import ConsoleLogger from './console-logger';
 import RollbarLogger from './rollbar-logger';
+import { Environment } from '../../config/types';
+import { UnknownEnvironmentError } from '../types';
 
 export default class Loggers {
   private static loggers: Logger[];
@@ -21,7 +22,7 @@ export default class Loggers {
         Loggers.loggers = [new RollbarLogger()];
         break;
       default:
-        throw new EnvironmentNotSupportedError(currentEnv);
+        throw new UnknownEnvironmentError(currentEnv);
     }
   }
 
