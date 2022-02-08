@@ -9,6 +9,7 @@ export default class SendGridService {
     if(!sendgridAPIKey) {
       throw new MissingConfigVariable('sendgridAPIKey');
     }
+    mail.setApiKey(sendgridAPIKey);
   }
   public static async sendEmail(params: SendEmailParams): Promise<void> {
     const sendGridParams = new EmailParams(params);
