@@ -2,7 +2,7 @@ import Rollbar from 'rollbar';
 import ConfigService from '../../config/config-service';
 import Logger from './types';
 
-export default class RollbarLogger implements Logger {
+export class RollbarLogger implements Logger {
   private rollbar: Rollbar;
 
   constructor() {
@@ -28,3 +28,7 @@ export default class RollbarLogger implements Logger {
     this.rollbar.critical(message);
   }
 }
+
+const rollbarLogger = new RollbarLogger();
+
+export default rollbarLogger;
