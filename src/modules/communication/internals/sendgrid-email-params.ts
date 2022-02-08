@@ -1,8 +1,8 @@
 import {
   LooseObject,
   SendEmailParams,
-  EmailServiceValidationError,
-  ValidationFailure
+  ValidationError,
+  Failure
 } from "../types";
 import { emailRegex } from "./constant";
 export class EmailParams {
@@ -21,7 +21,7 @@ export class EmailParams {
   }
 
   async validate() {
-    const failures: ValidationFailure[] = [];
+    const failures: Failure[] = [];
     const isToValid = this.isEmailValid(this.to);
     const isFromValid = this.isEmailValid(this.from);
     const isfromNameValid = !!this.fromName;
@@ -44,7 +44,7 @@ export class EmailParams {
       })
     }
     if(failures.length) {
-      throw new EmailServiceValidationError(
+      throw new ValidationError(
         'Email sent failed, please provide valid params.',
         failures
       );

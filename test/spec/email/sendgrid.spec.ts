@@ -1,6 +1,7 @@
 require('module-alias/register');
 import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
+import { Server } from 'http';
 import sinon from 'sinon';
 import { Application } from 'express';
 import {
@@ -12,15 +13,20 @@ import mail from '@sendgrid/mail';
 chai.use(chaiHttp);
 let expressApp: Application;
 let sinonSandbox: sinon.SinonSandbox;
+let server: Server;
 
 describe('Email Service.', function() {
 
   before(async function() {
     expressApp = await initApp();
-    await expressApp.startRESTApiServer();
+    server = await expressApp.startRESTApiServer();
     sinonSandbox = sinon.createSandbox();
   });
   
+  after(async function() {
+    server.close();
+  });
+
   afterEach(() => {
     sinonSandbox.restore();
   });

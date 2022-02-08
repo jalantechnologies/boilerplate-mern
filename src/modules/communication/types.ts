@@ -26,16 +26,16 @@ export enum ErrorCodes {
   SERVER_ERROR = 500,
 };
 
-export type ValidationFailure = {
+export type Failure = {
   field: string;
   message: string;
 };
 
-export class EmailServiceValidationError extends Error {
+export class ValidationError extends Error {
   msg: string;
   code: ErrorCodes;
-  failures: ValidationFailure[];
-  constructor(msg: string, failures:ValidationFailure[]) {
+  failures: Failure[];
+  constructor(msg: string, failures:Failure[]) {
     super(msg);
     this.msg = msg;
     this.failures = failures;
@@ -49,9 +49,10 @@ export class MissingConfigVariable extends Error {
 };
 
 export class ThirdPartyServiceError extends Error {
+  msg: string;
   code: ErrorCodes;
-  constructor() {
-    super('Service unavailable, please try after sometime !.');
+  constructor(msg: string) {
+    super(msg);
     this.code = ErrorCodes.THIRD_PARTY_SERVICE_ERROR;
   }
 };
