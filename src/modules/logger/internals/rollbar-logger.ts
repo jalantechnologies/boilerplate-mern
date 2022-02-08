@@ -1,24 +1,30 @@
+import Rollbar from 'rollbar';
+import ConfigService from '../../config/config-service';
 import Logger from './types';
 
 export default class RollbarLogger implements Logger {
+  private rollbar: Rollbar;
+
   constructor() {
-    // TODO: Initialize Rollbar with appropriate keys
-    // by reading keys from ConfigService
+    this.rollbar = new Rollbar({
+      accessToken: ConfigService.getStringValue('rollbar.accessToken'),
+      environment: ConfigService.getEnvironment(),
+    });
   }
 
   public info(message: string): void {
-    // TODO: Implement this
+    this.rollbar.info(message);
   }
 
   public debug(message: string): void {
-    // TODO: Implement this
+    this.rollbar.debug(message);
   }
 
   public warn(message: string): void {
-    // TODO: Implement this
+    this.rollbar.warning(message);
   }
 
   public criticial(message: string): void {
-    // TODO: Implement this
+    this.rollbar.critical(message);
   }
 }
