@@ -1,7 +1,12 @@
 import jsonwebtoken from 'jsonwebtoken';
 import { NextFunction, Request, Response } from 'express';
 import ConfigService from '../../config/config-service';
-import { AccessTokenExpiredError, UnAuthorizedAccessError } from '../types';
+import {
+  AccessTokenExpiredError,
+  AuthorizationHeaderNotFound,
+  InvalidAuthorizationHeader,
+  UnAuthorizedAccessError,
+} from '../types';
 
 export default class AccountAuthMiddleware {
   public static ensureAccess(
@@ -10,12 +15,23 @@ export default class AccountAuthMiddleware {
     _next: NextFunction,
   ): void {
     const authHeader = req.headers.authorization;
-    const token = authHeader.split(' ')[1];
-    const verifiedToken = jsonwebtoken.verify(
-      token,
-      ConfigService.getStringValue('JWT_SECRET'),
-      { ignoreExpiration: true },
-    ) as jsonwebtoken.JwtPayload;
+
+    if (!authHeader) {
+      throw new AuthorizationHeaderNotFound();
+    }
+
+    let verifiedToken: jsonwebtoken.JwtPayload;
+
+    try {
+      const token = authHeader.split(' ')[1];
+      verifiedToken = jsonwebtoken.verify(
+        token,
+        ConfigService.getStringValue('JWT_SECRET'),
+        { ignoreExpiration: true },
+      ) as jsonwebtoken.JwtPayload;
+    } catch (e) {
+      throw new InvalidAuthorizationHeader();
+    }
 
     if (verifiedToken.accountId !== req.params.accountId) {
       throw new UnAuthorizedAccessError();

@@ -14,6 +14,8 @@ export type CreateAccessTokenParams = {
 export enum AccessTokenErrorCode {
   UNAUTHORIZED_ACCESS = 'ACCESS_TOKEN_ERR_01',
   ACCESS_TOKEN_EXPIRED = 'ACCESS_TOKEN_ERR_02',
+  AUTHORIZATION_HEADER_NOT_FOUND = 'ACCESS_TOKEN_ERR_03',
+  INVALID_AUTHORIZATION_HEADER = 'ACCESS_TOKEN_ERR_04',
 }
 
 export class AccessTokenExpiredError extends Error {
@@ -22,6 +24,24 @@ export class AccessTokenExpiredError extends Error {
   constructor() {
     super('This token is expired. Please request a new one.');
     this.code = AccessTokenErrorCode.ACCESS_TOKEN_EXPIRED;
+  }
+}
+
+export class AuthorizationHeaderNotFound extends Error {
+  code: AccessTokenErrorCode;
+
+  constructor() {
+    super('No authorization header found.');
+    this.code = AccessTokenErrorCode.AUTHORIZATION_HEADER_NOT_FOUND;
+  }
+}
+
+export class InvalidAuthorizationHeader extends Error {
+  code: AccessTokenErrorCode;
+
+  constructor() {
+    super('Invalid authorization header.');
+    this.code = AccessTokenErrorCode.INVALID_AUTHORIZATION_HEADER;
   }
 }
 

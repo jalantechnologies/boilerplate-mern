@@ -5,6 +5,8 @@ import sinon from 'sinon';
 import AccountAuthMiddleware from '../../../src/modules/access-token/rest-api/account-auth-middleware';
 import {
   AccessTokenExpiredError,
+  AuthorizationHeaderNotFound,
+  InvalidAuthorizationHeader,
   UnAuthorizedAccessError,
 } from '../../../src/modules/access-token/types';
 import ConfigService from '../../../src/modules/config/config-service';
@@ -58,6 +60,42 @@ describe('AccountAuthMiddleware', () => {
     assert.throws(
       () => AccountAuthMiddleware.ensureAccess(req, res, next),
       new AccessTokenExpiredError().message,
+    );
+  });
+
+  it('should throw if no auth token found', async () => {
+    const accountId = 'testAccountId';
+
+    sinonSandbox.stub(ConfigService, 'getStringValue').returns('token');
+    const req = {
+      params: { accountId },
+      headers: {},
+    } as any;
+    const res = {} as any;
+    const next = sinon.fake();
+
+    assert.throws(
+      () => AccountAuthMiddleware.ensureAccess(req, res, next),
+      new AuthorizationHeaderNotFound().message,
+    );
+  });
+
+  it('should throw if no auth header is invalid', async () => {
+    const accountId = 'testAccountId';
+
+    sinonSandbox.stub(ConfigService, 'getStringValue').returns('token');
+    const req = {
+      params: { accountId },
+      headers: {
+        authorization: 'invalidAuthHeader',
+      },
+    } as any;
+    const res = {} as any;
+    const next = sinon.fake();
+
+    assert.throws(
+      () => AccountAuthMiddleware.ensureAccess(req, res, next),
+      new InvalidAuthorizationHeader().message,
     );
   });
 });
