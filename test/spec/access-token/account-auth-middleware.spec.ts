@@ -33,11 +33,9 @@ describe('AccountAuthMiddleware', () => {
           'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SWQiOiJ0ZXN0QWNjb3VudElkIiwiaWF0IjoxNjQ0NDE3NTcyLCJleHAiOjE2NzU5NzUxNzJ9.a96PwaQQAZHdPKFNhChyAkMnkGWr2Gt5jvWbFIIzNh0',
       },
     } as any;
-    const res = {} as any;
-    const next = sinon.fake();
 
     assert.throws(
-      () => AccountAuthMiddleware.ensureAccess(req, res, next),
+      () => AccountAuthMiddleware.ensureAccess(req),
       new UnAuthorizedAccessError().message,
     );
   });
@@ -54,11 +52,9 @@ describe('AccountAuthMiddleware', () => {
         authorization: `Bearer ${expiredToken}`,
       },
     } as any;
-    const res = {} as any;
-    const next = sinon.fake();
 
     assert.throws(
-      () => AccountAuthMiddleware.ensureAccess(req, res, next),
+      () => AccountAuthMiddleware.ensureAccess(req),
       new AccessTokenExpiredError().message,
     );
   });
@@ -71,11 +67,9 @@ describe('AccountAuthMiddleware', () => {
       params: { accountId },
       headers: {},
     } as any;
-    const res = {} as any;
-    const next = sinon.fake();
 
     assert.throws(
-      () => AccountAuthMiddleware.ensureAccess(req, res, next),
+      () => AccountAuthMiddleware.ensureAccess(req),
       new AuthorizationHeaderNotFound().message,
     );
   });
@@ -90,11 +84,9 @@ describe('AccountAuthMiddleware', () => {
         authorization: 'invalidAuthHeader',
       },
     } as any;
-    const res = {} as any;
-    const next = sinon.fake();
 
     assert.throws(
-      () => AccountAuthMiddleware.ensureAccess(req, res, next),
+      () => AccountAuthMiddleware.ensureAccess(req),
       new InvalidAuthorizationHeader().message,
     );
   });

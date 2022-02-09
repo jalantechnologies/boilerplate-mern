@@ -1,5 +1,5 @@
 import jsonwebtoken from 'jsonwebtoken';
-import { NextFunction, Request, Response } from 'express';
+import { Request } from 'express';
 import ConfigService from '../../config/config-service';
 import {
   AccessTokenExpiredError,
@@ -9,11 +9,7 @@ import {
 } from '../types';
 
 export default class AccountAuthMiddleware {
-  public static ensureAccess(
-    req: Request,
-    _res: Response,
-    _next: NextFunction,
-  ): void {
+  public static ensureAccess(req: Request): void {
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
