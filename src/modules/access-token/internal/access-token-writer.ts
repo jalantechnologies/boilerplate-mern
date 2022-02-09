@@ -6,10 +6,13 @@ export default class AccessTokenWriter {
   public static createAccessToken(
     params: CreateAccessTokenParams,
   ): AccessToken {
+    const jwtSigningKey = ConfigService.getStringValue('jwt.token');
     const jwtToken = jsonwebtoken.sign(
       { accountId: params.accountId },
-      ConfigService.getStringValue('jwt.token'),
-      { expiresIn: ConfigService.getStringValue('jwt.expiresIn') },
+      jwtSigningKey,
+      {
+        expiresIn: ConfigService.getStringValue('jwt.expiresIn'),
+      },
     );
     const accessToken = new AccessToken();
     accessToken.accountId = params.accountId;
@@ -17,7 +20,7 @@ export default class AccessTokenWriter {
 
     const vetifiedToken: jsonwebtoken.JwtPayload = jsonwebtoken.verify(
       jwtToken,
-      ConfigService.getStringValue('jwt.token'),
+      jwtSigningKey,
     ) as jsonwebtoken.JwtPayload;
 
     accessToken.expiresAt = new Date(vetifiedToken.exp * 1000);
