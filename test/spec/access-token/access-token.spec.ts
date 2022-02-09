@@ -41,8 +41,6 @@ describe('POST /access-tokens', () => {
       .set('content-type', 'application/json')
       .send({ accountId });
 
-    console.log(res.status);
-
     expect(res.body.accountId).to.eq(accountId);
     expect(res.body.token).to.be.a('string');
   });
