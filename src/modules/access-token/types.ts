@@ -40,7 +40,7 @@ export class InvalidAuthorizationHeader extends Error {
   code: AccessTokenErrorCode;
 
   constructor() {
-    super('Invalid authorization header.');
+    super('Invalid authorization header. Expected format is "Bearer <token>".');
     this.code = AccessTokenErrorCode.INVALID_AUTHORIZATION_HEADER;
   }
 }
