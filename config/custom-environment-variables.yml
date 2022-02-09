@@ -1,0 +1,9 @@
+node:
+  config:
+    env: "NODE_CONFIG_ENV"
+
+rollbar:
+  accessToken: "ROLLBAR_ACCESS_TOKEN"
+
+jwt:
+  token: "JWT_TOKEN"
