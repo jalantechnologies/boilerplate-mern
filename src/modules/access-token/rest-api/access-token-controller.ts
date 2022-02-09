@@ -1,13 +1,9 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import AccessTokenService from '../access-token-service';
 import { AccessToken, CreateAccessTokenParams } from '../types';
 
 export default class AccessTokenController {
-  public static createAccessToken(
-    req: Request,
-    res: Response,
-    _next: NextFunction,
-  ): void {
+  public static createAccessToken(req: Request, res: Response): void {
     const { accountId }: { accountId: string } = req.body as {
       accountId: string;
     };

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-import chai, { assert, expect } from 'chai';
+import chai, { assert } from 'chai';
 import chaiHttp from 'chai-http';
 import sinon from 'sinon';
 import AccountAuthMiddleware from '../../../src/modules/access-token/rest-api/account-auth-middleware';
