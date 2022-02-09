@@ -1,7 +1,7 @@
 import Logger from './types';
 import ConfigService from '../../config/config-service';
-import consoleLogger from './console-logger';
-import rollbarLogger from './rollbar-logger';
+import ConsoleLogger from './console-logger';
+import RollbarLogger from './rollbar-logger';
 import { Environment } from '../../config/types';
 import { UnknownEnvironmentError } from '../types';
 
@@ -13,13 +13,13 @@ export default class Loggers {
     switch (currentEnv) {
       case Environment.LOCAL:
       case Environment.TESTING:
-        Loggers.loggers = [consoleLogger];
+        Loggers.loggers = [Loggers.getConsoleLogger()];
         break;
       case Environment.STAGING:
       case Environment.QA:
       case Environment.BETA:
       case Environment.PRODUCTION:
-        Loggers.loggers = [rollbarLogger];
+        Loggers.loggers = [Loggers.getRollbarLogger()];
         break;
       default:
         throw new UnknownEnvironmentError(currentEnv);
@@ -48,5 +48,13 @@ export default class Loggers {
     Loggers.loggers.forEach((logger) => {
       logger.criticial(message);
     });
+  }
+
+  static getConsoleLogger(): ConsoleLogger {
+    return new ConsoleLogger();
+  }
+
+  static getRollbarLogger(): RollbarLogger {
+    return new RollbarLogger();
   }
 }

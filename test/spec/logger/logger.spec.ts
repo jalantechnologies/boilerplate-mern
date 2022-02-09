@@ -7,10 +7,13 @@ import ConfigService from '../../../src/modules/config/config-service';
 import RollbarLogger from '../../../src/modules/logger/internals/rollbar-logger';
 import ConsoleLogger from '../../../src/modules/logger/internals/console-logger';
 import { Environment } from '../../../src/modules/config/types';
+import Loggers from '../../../src/modules/logger/internals/loggers';
 
 let sinonSandbox: sinon.SinonSandbox;
 
 describe('Loggers', () => {
+  const consoleLogger = new ConsoleLogger();
+  const rollbarLogger = new RollbarLogger();
   beforeEach(() => {
     sinonSandbox = sinon.createSandbox();
   });
@@ -20,7 +23,8 @@ describe('Loggers', () => {
   });
 
   it('should initialize', () => {
-    const stub = sinonSandbox.stub(ConsoleLogger, 'info');
+    sinonSandbox.stub(Loggers, 'getConsoleLogger').returns(consoleLogger);
+    const stub = sinonSandbox.stub(consoleLogger, 'info');
     LoggerManager.mountLogger();
     Logger.info('test');
     expect(stub.calledOnce).to.be.true;
@@ -30,7 +34,8 @@ describe('Loggers', () => {
     sinonSandbox
       .stub(ConfigService, 'getEnvironment')
       .returns(Environment.LOCAL);
-    const stub = sinonSandbox.stub(ConsoleLogger, 'info');
+    sinonSandbox.stub(Loggers, 'getConsoleLogger').returns(consoleLogger);
+    const stub = sinonSandbox.stub(consoleLogger, 'info');
     LoggerManager.mountLogger();
     Logger.info('test');
     expect(stub.calledOnce).to.be.true;
@@ -40,7 +45,8 @@ describe('Loggers', () => {
     sinonSandbox
       .stub(ConfigService, 'getEnvironment')
       .returns(Environment.TESTING);
-    const stub = sinonSandbox.stub(ConsoleLogger, 'info');
+    sinonSandbox.stub(Loggers, 'getConsoleLogger').returns(consoleLogger);
+    const stub = sinonSandbox.stub(consoleLogger, 'info');
     LoggerManager.mountLogger();
     Logger.info('test');
     expect(stub.calledOnce).to.be.true;
@@ -50,7 +56,8 @@ describe('Loggers', () => {
     sinonSandbox
       .stub(ConfigService, 'getEnvironment')
       .returns(Environment.STAGING);
-    const stub = sinonSandbox.stub(RollbarLogger, 'info');
+    sinonSandbox.stub(Loggers, 'getRollbarLogger').returns(rollbarLogger);
+    const stub = sinonSandbox.stub(rollbarLogger, 'info');
     LoggerManager.mountLogger();
     Logger.info('test');
     expect(stub.calledOnce).to.be.true;
@@ -58,7 +65,8 @@ describe('Loggers', () => {
 
   it('should call external logger in qa env', () => {
     sinonSandbox.stub(ConfigService, 'getEnvironment').returns(Environment.QA);
-    const stub = sinonSandbox.stub(RollbarLogger, 'info');
+    sinonSandbox.stub(Loggers, 'getRollbarLogger').returns(rollbarLogger);
+    const stub = sinonSandbox.stub(rollbarLogger, 'info');
     LoggerManager.mountLogger();
     Logger.info('test');
     expect(stub.calledOnce).to.be.true;
@@ -68,7 +76,8 @@ describe('Loggers', () => {
     sinonSandbox
       .stub(ConfigService, 'getEnvironment')
       .returns(Environment.BETA);
-    const stub = sinonSandbox.stub(RollbarLogger, 'info');
+    sinonSandbox.stub(Loggers, 'getRollbarLogger').returns(rollbarLogger);
+    const stub = sinonSandbox.stub(rollbarLogger, 'info');
     LoggerManager.mountLogger();
     Logger.info('test');
     expect(stub.calledOnce).to.be.true;
@@ -78,7 +87,8 @@ describe('Loggers', () => {
     sinonSandbox
       .stub(ConfigService, 'getEnvironment')
       .returns(Environment.PRODUCTION);
-    const stub = sinonSandbox.stub(RollbarLogger, 'info');
+    sinonSandbox.stub(Loggers, 'getRollbarLogger').returns(rollbarLogger);
+    const stub = sinonSandbox.stub(rollbarLogger, 'info');
     LoggerManager.mountLogger();
     Logger.info('test');
     expect(stub.calledOnce).to.be.true;

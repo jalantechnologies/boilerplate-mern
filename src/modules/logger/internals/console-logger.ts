@@ -1,6 +1,6 @@
 import Logger from './types';
 
-export class ConsoleLogger implements Logger {
+export default class ConsoleLogger implements Logger {
   // eslint-disable-next-line class-methods-use-this
   public info(message: string): void {
     // eslint-disable-next-line no-console
@@ -25,7 +25,3 @@ export class ConsoleLogger implements Logger {
     console.log(`[CRITICAL] ${message}`);
   }
 }
-
-const consoleLogger = new ConsoleLogger();
-
-export default consoleLogger;
