@@ -4,5 +4,8 @@
   "stringTestKey": "string",
   "rollbar": {
     "accessToken": "ROLLBAR_ACCESS_TOKEN"
+  },
+  "jwt": {
+    "token": "JWT_TOKEN"
   }
 }

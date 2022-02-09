@@ -1,23 +1,23 @@
-import {
-  NextFunction, Request, Response,
-} from 'express';
-import { AccessToken } from '../types';
+import { NextFunction, Request, Response } from 'express';
+import AccessTokenService from '../access-token-service';
+import { AccessToken, CreateAccessTokenParams } from '../types';
 
 export default class AccessTokenController {
-  public static createAccessToken(
+  public static async createAccessToken(
     req: Request,
     res: Response,
-    next: NextFunction,
-  ): void {
-    // TODO: Implement this
-    // After creating task using AccessTokenService.createAccessToken, it should serialize
-    // the access token using serializeAccessTokenAsJSON function in this controller
+    _next: NextFunction,
+  ): Promise<void> {
+    const { accountId } = req.body;
+    const params: CreateAccessTokenParams = { accountId };
+    const accessToken = await AccessTokenService.createAccessToken(params);
+    res.send(AccessTokenController.serializeAccessTokenAsJSON(accessToken));
   }
 
   private static serializeAccessTokenAsJSON(accessToken: AccessToken): unknown {
     return {
       accountId: accessToken.accountId,
-      expiresAt: accessToken.expiresAt.toUTCString(),
+      expiresAt: accessToken.expiresAt?.toUTCString(),
       token: accessToken.token,
     };
   }

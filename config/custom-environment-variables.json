@@ -6,5 +6,9 @@
   },
   "rollbar": {
     "accessToken": "ROLLBAR_ACCESS_TOKEN"
+  },
+  "jwt": {
+    "token": "JWT_TOKEN",
+    "expiresIn": "JWT_EXPIRES_IN"
   }
 }

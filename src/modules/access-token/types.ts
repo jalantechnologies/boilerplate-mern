@@ -2,7 +2,7 @@
 export class AccessToken {
   accountId: string;
 
-  expiresAt: Date;
+  expiresAt?: Date;
 
   token: string;
 }
