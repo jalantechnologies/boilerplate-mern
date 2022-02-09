@@ -3,16 +3,25 @@ import ConfigService from '../../config/config-service';
 import { AccessToken, CreateAccessTokenParams } from '../types';
 
 export default class AccessTokenWriter {
-  public static async createAccessToken(
+  public static createAccessToken(
     params: CreateAccessTokenParams,
-  ): Promise<AccessToken> {
+  ): AccessToken {
     const jwtToken = jsonwebtoken.sign(
-      params.accountId,
+      { accountId: params.accountId },
       ConfigService.getStringValue('jwt.token'),
+      { expiresIn: ConfigService.getStringValue('jwt.expiresIn') },
     );
     const accessToken = new AccessToken();
     accessToken.accountId = params.accountId;
     accessToken.token = jwtToken;
+
+    const vetifiedToken: jsonwebtoken.JwtPayload = jsonwebtoken.verify(
+      jwtToken,
+      ConfigService.getStringValue('jwt.token'),
+    ) as jsonwebtoken.JwtPayload;
+
+    accessToken.expiresAt = new Date(vetifiedToken.exp * 1000);
+
     return accessToken;
   }
 }

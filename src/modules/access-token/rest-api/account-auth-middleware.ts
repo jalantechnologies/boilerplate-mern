@@ -1,7 +1,7 @@
 import jsonwebtoken from 'jsonwebtoken';
 import { NextFunction, Request, Response } from 'express';
 import ConfigService from '../../config/config-service';
-import { UnAuthorizedAccessError } from '../types';
+import { AccessTokenExpiredError, UnAuthorizedAccessError } from '../types';
 
 export default class AccountAuthMiddleware {
   public static ensureAccess(
@@ -9,21 +9,20 @@ export default class AccountAuthMiddleware {
     _res: Response,
     _next: NextFunction,
   ): void {
-    // TODO: Implement this
-    // This will be a public method used by other services to ensure that the
-    // request has access to the said resource. It should decode the JWT token
-    // from the request and ensure the accountId associated with the token matches
-    // with the accountId in the request. If they don't, then it should pass
-    // UnAuthorizedAccessError in the next function
     const authHeader = req.headers.authorization;
     const token = authHeader.split(' ')[1];
-    const { accountId } = jsonwebtoken.verify(
+    const verifiedToken = jsonwebtoken.verify(
       token,
       ConfigService.getStringValue('JWT_SECRET'),
-    ) as { accountId: string };
+      { ignoreExpiration: true },
+    ) as jsonwebtoken.JwtPayload;
 
-    if (accountId !== req.params.accountId) {
+    if (verifiedToken.accountId !== req.params.accountId) {
       throw new UnAuthorizedAccessError();
+    }
+
+    if (verifiedToken.exp * 1000 < Date.now()) {
+      throw new AccessTokenExpiredError();
     }
   }
 }

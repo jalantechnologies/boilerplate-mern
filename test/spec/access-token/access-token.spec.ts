@@ -33,7 +33,8 @@ describe('POST /access-tokens', () => {
   });
 
   it('should return access token for given account id', async () => {
-    sinonSandbox.stub(ConfigService, 'getStringValue').returns('test-secret');
+    sinonSandbox.stub(ConfigService, 'getStringValue').returns('1h');
+
     const accountId = 'testAccountId';
     const res = await chai
       .request(app)
