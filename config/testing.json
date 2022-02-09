@@ -1,8 +1,0 @@
-{
-  "boolTestKey": true,
-  "numberTestKey": 1,
-  "stringTestKey": "string",
-  "rollbar": {
-    "accessToken": "ROLLBAR_ACCESS_TOKEN"
-  }
-}
