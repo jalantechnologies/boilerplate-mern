@@ -30,8 +30,7 @@
           {
             "ignoreStatic": true
           }
-        ],
-        "@typescript-eslint/no-unused-vars": "off"
+        ]
       }
     }
   ]
