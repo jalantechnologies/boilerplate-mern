@@ -8,14 +8,14 @@
   "numberTestKey": 1,
   "stringTestKey": "string",
   "sendgrid": {
-    "apiKey": "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"
+    "apiKey": "SG.abc"
   },
   "twilio": {
     "verify": {
-      "accountSid": "AC4b2448f72373970f26109f1722b82102",
-      "authToken": "3c7f40089c0e2c1f0f45e9cca13a3fd2"
+      "accountSid": "ACasd",
+      "authToken": "3cdf"
     },
-    "fromNumber": "+18595493247"
+    "fromNumber": "+1213124"
   },
   "webAppHost":"asas"
 }
