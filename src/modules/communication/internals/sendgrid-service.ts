@@ -20,6 +20,7 @@ export default class SendGridService {
       },
       templateId: params.templateId,
       dynamicTemplateData: {
+        ...params.templateData,
         domain: ConfigService.getStringValue('webAppHost'),
       },
     };
