@@ -7,3 +7,12 @@ rollbar:
 
 jwt:
   token: "JWT_TOKEN"
+
+twilio:
+  verify:
+    accountSid: "TWILIO_ACCOUNT_SID"
+    authToken: "TWILIO_AUTH_TOKEN"
+  messaging:
+    messagingServiceSid: "TWILIO_MESSAGING_SERVICE_SID"
+
+sendgridApiKey: "SENDGRID_API_KEY"

@@ -1,2 +1,4 @@
 jwt:
   expiresIn: "1y" # default token expire time 1 year. Examples - https://github.com/vercel/ms#examples
+
+webAppHost: "WEB_APP_HOST"
