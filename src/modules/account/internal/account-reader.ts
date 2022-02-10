@@ -4,16 +4,17 @@ import {
   AccountSearchParams,
   InvalidCredentialsError,
 } from '../types';
-import AccountDB from './account-db';
+import IAccountDB from './store/account-db';
 import AccountUtil from './account-util';
 import AccountRepository from './store/account-repository';
 
 export default class AccountReader {
   public static async getAccountByUsername(username: string): Promise<Account> {
-    const dbAccount: AccountDB = await AccountRepository.findOne({
+    const AccountDB = AccountRepository.accountDb;
+    const dbAccount: IAccountDB = await AccountDB.findOne({
       username,
       active: true,
-    });
+    }).exec();
     if (!dbAccount) {
       throw new AccountNotFoundError(username);
     }
@@ -23,7 +24,8 @@ export default class AccountReader {
   public static async getAccountByUsernamePassword(
     params: AccountSearchParams,
   ): Promise<Account> {
-    const dbAccount = await AccountRepository.findOne({
+    const AccountDB = AccountRepository.accountDb;
+    const dbAccount = await AccountDB.findOne({
       username: params.username,
       active: true,
     });

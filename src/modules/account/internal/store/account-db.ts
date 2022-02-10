@@ -1,6 +1,6 @@
 import { Types } from 'mongoose';
 
-export default interface AccountDB {
+export default interface IAccountDB {
   _id: Types.ObjectId;
   active: boolean;
   username: string;

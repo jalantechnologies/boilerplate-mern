@@ -1,15 +1,18 @@
 import { Schema } from 'mongoose';
+import IAccountDB from './account-db';
 
-const accountSchema: Schema = new Schema(
+const accountDbSchema: Schema = new Schema<IAccountDB>(
   {
     active: { type: Boolean, required: true },
     hashedPassword: { type: String, required: true },
     username: {
-      type: String, index: true, required: true, unique: true,
+      type: String,
+      index: true,
+      required: true,
+      unique: true,
     },
   },
   {
-    collection: 'accounts',
     timestamps: {
       createdAt: 'createdAt',
       updatedAt: 'updatedAt',
@@ -17,4 +20,4 @@ const accountSchema: Schema = new Schema(
   },
 );
 
-export default accountSchema;
+export default accountDbSchema;
