@@ -32,16 +32,16 @@ describe('SMS Service.', () => {
       messageBody: 'simple message.'
     };
 
-    const Stub = sinonSandbox
+    const stubVal = sinonSandbox
       .stub(ConfigService, 'getStringValue')
 
-    Stub.withArgs('sendgridApiKey')
+    stubVal.withArgs('sendgridApiKey')
     .returns(sendgridAPIKey);
 
-    Stub.withArgs('twilio.verify.accountSid')
+    stubVal.withArgs('twilio.verify.accountSid')
     .returns(twilioAccountCreds);
 
-    Stub.withArgs('twilio.verify.authToken')
+    stubVal.withArgs('twilio.verify.authToken')
     .returns(twilioAccountCreds);
 
     CommunicationServiceManager.mountService();
@@ -68,16 +68,16 @@ describe('SMS Service.', () => {
       messageBody: ''
     };
 
-    const Stub = sinonSandbox
+    const stubVal = sinonSandbox
       .stub(ConfigService, 'getStringValue')
 
-    Stub.withArgs('sendgridApiKey')
+    stubVal.withArgs('sendgridApiKey')
     .returns(sendgridAPIKey);
 
-    Stub.withArgs('twilio.verify.accountSid')
+    stubVal.withArgs('twilio.verify.accountSid')
     .returns(twilioAccountCreds);
 
-    Stub.withArgs('twilio.verify.authToken')
+    stubVal.withArgs('twilio.verify.authToken')
     .returns(twilioAccountCreds);
 
     CommunicationServiceManager.mountService();
@@ -105,16 +105,16 @@ describe('SMS Service.', () => {
     };
     
 
-    const Stub = sinonSandbox
+    const stubVal = sinonSandbox
       .stub(ConfigService, 'getStringValue')
 
-    Stub.withArgs('sendgridApiKey')
+    stubVal.withArgs('sendgridApiKey')
     .returns(sendgridAPIKey);
 
-    Stub.withArgs('twilio.verify.accountSid')
+    stubVal.withArgs('twilio.verify.accountSid')
     .returns(twilioAccountCreds);
 
-    Stub.withArgs('twilio.verify.authToken')
+    stubVal.withArgs('twilio.verify.authToken')
     .returns(twilioAccountCreds);
 
     CommunicationServiceManager.mountService();

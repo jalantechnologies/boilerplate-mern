@@ -12,11 +12,18 @@ export default class SMSParams {
   }
 
   public static validate(params: SendSMSParams): void {
+    /* eslint-disable-next-line max-len */
+    /* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call */
     const phoneUtil = PhoneNumberUtil.getInstance();
     const failures: ValidationFailure[] = [];
+
+    /* eslint-disable-next-line max-len */
+    /* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call */
     const isRecipientPhoneValid = phoneUtil.isValidNumber(
+      /* eslint-disable-next-line @typescript-eslint/no-unsafe-call */
       phoneUtil.parse(this.phoneNumberToString(params.recipientPhone)),
     );
+
     const isMessageValid = !!params.messageBody;
     if (!isRecipientPhoneValid) {
       failures.push({

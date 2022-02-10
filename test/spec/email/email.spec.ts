@@ -37,16 +37,16 @@ describe('Email Service.', () => {
       templateData: {},
     };
 
-    const Stub = sinonSandbox
+    const stubVal = sinonSandbox
       .stub(ConfigService, 'getStringValue')
     
-    Stub.withArgs('sendgridApiKey')
+    stubVal.withArgs('sendgridApiKey')
     .returns(sendgridAPIKey);
 
-    Stub.withArgs('twilio.verify.accountSid')
+    stubVal.withArgs('twilio.verify.accountSid')
     .returns(twilioAccountCreds);
 
-    Stub.withArgs('twilio.verify.authToken')
+    stubVal.withArgs('twilio.verify.authToken')
     .returns(twilioAccountCreds);
 
     CommunicationServiceManager.mountService();
@@ -77,16 +77,16 @@ describe('Email Service.', () => {
       templateData: {},
     };
 
-    const Stub = sinonSandbox
+    const stubVal = sinonSandbox
       .stub(ConfigService, 'getStringValue')
     
-    Stub.withArgs('sendgridApiKey')
+    stubVal.withArgs('sendgridApiKey')
     .returns(sendgridAPIKey);
 
-    Stub.withArgs('twilio.verify.accountSid')
+    stubVal.withArgs('twilio.verify.accountSid')
     .returns(twilioAccountCreds);
 
-    Stub.withArgs('twilio.verify.authToken')
+    stubVal.withArgs('twilio.verify.authToken')
     .returns(twilioAccountCreds);
 
     CommunicationServiceManager.mountService();
@@ -117,16 +117,16 @@ describe('Email Service.', () => {
       templateData: {},
     };
 
-    const Stub = sinonSandbox
+    const stubVal = sinonSandbox
       .stub(ConfigService, 'getStringValue')
     
-    Stub.withArgs('sendgridApiKey')
+    stubVal.withArgs('sendgridApiKey')
     .returns(sendgridAPIKey);
 
-    Stub.withArgs('twilio.verify.accountSid')
+    stubVal.withArgs('twilio.verify.accountSid')
     .returns(twilioAccountCreds);
 
-    Stub.withArgs('twilio.verify.authToken')
+    stubVal.withArgs('twilio.verify.authToken')
     .returns(twilioAccountCreds);
 
     CommunicationServiceManager.mountService();
@@ -157,16 +157,16 @@ describe('Email Service.', () => {
       templateData: {},
     };
 
-    const Stub = sinonSandbox
+    const stubVal = sinonSandbox
       .stub(ConfigService, 'getStringValue')
     
-    Stub.withArgs('sendgridApiKey')
+    stubVal.withArgs('sendgridApiKey')
     .returns(sendgridAPIKey);
 
-    Stub.withArgs('twilio.verify.accountSid')
+    stubVal.withArgs('twilio.verify.accountSid')
     .returns(twilioAccountCreds);
 
-    Stub.withArgs('twilio.verify.authToken')
+    stubVal.withArgs('twilio.verify.authToken')
     .returns(twilioAccountCreds);
 
     CommunicationServiceManager.mountService();
