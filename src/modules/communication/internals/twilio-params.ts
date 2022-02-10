@@ -14,10 +14,7 @@ export default class SMSParams {
   public static validate(params: SendSMSParams): void {
     const failures: ValidationFailure[] = [];
 
-    const phoneUtil: {
-      isValidNumber: (a: string) => boolean;
-      parse: (a: string) => string
-    } = <{
+    const phoneUtil = <{
       isValidNumber: (a: string) => boolean;
       parse: (a: string) => string
     }>(<{
