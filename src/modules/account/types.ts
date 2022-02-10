@@ -1,7 +1,9 @@
 // eslint-disable-next-line max-classes-per-file
 export class Account {
   id: string;
+
   username: string;
+
   hashedPassword: string;
 }
 
