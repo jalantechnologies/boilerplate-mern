@@ -14,12 +14,19 @@ export default class SMSParams {
   public static validate(params: SendSMSParams): void {
     const failures: ValidationFailure[] = [];
 
-    /* eslint-disable-next-line @typescript-eslint/no-unsafe-call */
-    const isRecipientPhoneValid: boolean = <boolean>PhoneNumberUtil
-      .getInstance()
+    const phoneUtil: {
+      isValidNumber: (a: string) => boolean;
+      parse: (a: string) => string
+    } = <{
+      isValidNumber: (a: string) => boolean;
+      parse: (a: string) => string
+    }>(<{
+      getInstance:() => any
+    }>PhoneNumberUtil).getInstance();
+
+    const isRecipientPhoneValid: boolean = phoneUtil
       .isValidNumber(
-        /* eslint-disable-next-line @typescript-eslint/no-unsafe-call */
-        PhoneNumberUtil.getInstance().parse(this.phoneNumberToString(params.recipientPhone)),
+        phoneUtil.parse(this.phoneNumberToString(params.recipientPhone)),
       );
 
     const isMessageValid = !!params.messageBody;
