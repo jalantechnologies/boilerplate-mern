@@ -1,8 +1,8 @@
 // eslint-disable-next-line max-classes-per-file
 export class Account {
   id: string;
-
   username: string;
+  hashedPassword: string;
 }
 
 export type CreateAccountParams = {
@@ -18,6 +18,7 @@ export type AccountSearchParams = {
 export enum AccountErrorCode {
   USERNAME_ALREADY_EXISTS = 'ACCOUNT_ERR_01',
   NOT_FOUND = 'ACCOUNT_ERR_02',
+  INVALID_CREDENTIALS = 'ACCOUNT_ERR_03',
 }
 
 export class AccountWithUserNameExistsError extends Error {
@@ -34,6 +35,15 @@ export class AccountNotFoundError extends Error {
 
   constructor(username: string) {
     super(`${username} not found with provided parameters.`);
+    this.code = AccountErrorCode.NOT_FOUND;
+  }
+}
+
+export class InvalidCredentialsError extends Error {
+  code: AccountErrorCode;
+
+  constructor(username: string) {
+    super(`Invalid credentials for ${username}. Please try again.`);
     this.code = AccountErrorCode.NOT_FOUND;
   }
 }

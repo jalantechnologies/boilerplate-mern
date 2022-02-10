@@ -1,21 +1,44 @@
 import {
-  Account, AccountSearchParams, GetAllTaskParams, Task,
+  Account,
+  AccountNotFoundError,
+  AccountSearchParams,
+  InvalidCredentialsError,
 } from '../types';
+import AccountDB from './account-db';
+import AccountUtil from './account-util';
+import AccountRepository from './store/account-repository';
 
 export default class AccountReader {
   public static async getAccountByUsername(username: string): Promise<Account> {
-    // TODO: Implement this
-    // It searches for account by username with active as TRUE.
-    // If found, then it converts account db to account using
-    // AccountUtil.convertAccountDBToAccount
-    // If account is not found, it throws AccountNotFoundError
+    const dbAccount: AccountDB = await AccountRepository.findOne({
+      username,
+      active: true,
+    });
+    if (!dbAccount) {
+      throw new AccountNotFoundError(username);
+    }
+    return AccountUtil.convertAccountDBToAccount(dbAccount);
   }
 
-  public static async getAccountByUsernamePassword(params: AccountSearchParams): Promise<Account> {
-    // TODO: Implement this
-    // It searches for account by username and hashed password with active as TRUE.
-    // If found, then it converts account db to account using
-    // AccountUtil.convertAccountDBToAccount
-    // If account is not found, it throws AccountNotFoundError
+  public static async getAccountByUsernamePassword(
+    params: AccountSearchParams,
+  ): Promise<Account> {
+    const dbAccount = await AccountRepository.findOne({
+      username: params.username,
+      active: true,
+    });
+    if (!dbAccount) {
+      throw new AccountNotFoundError(params.username);
+    }
+    const account = AccountUtil.convertAccountDBToAccount(dbAccount);
+    const isPasswordValid = await AccountUtil.comparePassword(
+      params.password,
+      account.hashedPassword,
+    );
+    if (!isPasswordValid) {
+      throw new InvalidCredentialsError(params.username);
+    } else {
+      return account;
+    }
   }
 }

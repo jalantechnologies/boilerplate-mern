@@ -7,3 +7,6 @@ rollbar:
 
 jwt:
   token: "JWT_TOKEN"
+
+mongoDb:
+  uri: "MONGODB_URI"

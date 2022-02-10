@@ -13,7 +13,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "lint:md": "remark .",
-    "start": "node dist/main.js",
+    "start": "node dist/src/main.js",
     "serve": "gulp serve"
   },
   "repository": {
@@ -32,12 +32,18 @@
   },
   "homepage": "https://github.com/jalantechnologies/boilerplate-node-ts#readme",
   "dependencies": {
+    "@types/mongoose": "^5.11.97",
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.19.1",
     "config": "^3.3.7",
     "express": "^4.17.2",
     "jsonwebtoken": "^8.5.1",
+    "mongodb-memory-server": "^8.3.0",
+    "mongoose": "^6.2.1",
     "rollbar": "^2.24.0"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/chai": "^4.3.0",
     "@types/chai-http": "^4.2.0",
     "@types/config": "0.0.41",
