@@ -12,23 +12,21 @@ export default class SMSParams {
   }
 
   public static validate(params: SendSMSParams): void {
-    /* eslint-disable-next-line max-len */
-    /* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call */
-    const phoneUtil = PhoneNumberUtil.getInstance();
     const failures: ValidationFailure[] = [];
 
-    /* eslint-disable-next-line max-len */
-    /* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call */
-    const isRecipientPhoneValid = phoneUtil.isValidNumber(
-      /* eslint-disable-next-line @typescript-eslint/no-unsafe-call */
-      phoneUtil.parse(this.phoneNumberToString(params.recipientPhone)),
-    );
+    /* eslint-disable-next-line @typescript-eslint/no-unsafe-call */
+    const isRecipientPhoneValid: boolean = <boolean>PhoneNumberUtil
+      .getInstance()
+      .isValidNumber(
+        /* eslint-disable-next-line @typescript-eslint/no-unsafe-call */
+        PhoneNumberUtil.getInstance().parse(this.phoneNumberToString(params.recipientPhone)),
+      );
 
     const isMessageValid = !!params.messageBody;
     if (!isRecipientPhoneValid) {
       failures.push({
         field: 'recipientPhone',
-        message: 'Please specify valid recipient phone number.',
+        message: 'Please specify valid recipient phone number in format +12124567890.',
       });
     }
     if (!isMessageValid) {

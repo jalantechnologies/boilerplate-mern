@@ -1,15 +1,18 @@
 import express, { Application } from 'express';
 import { Server } from 'http';
+import ConfigManager from './modules/config/config-manager';
+import LoggerManager from './modules/logger/logger-manager';
+import CommunicationServiceManager from './modules/communication/communication-service-manager';
 
 export default class App {
   private static app: Application;
 
-  public static startRESTApiServer(): Server {
+  public static async startRESTApiServer(): Promise<Server> {
     this.app = express();
     // The order of core services is important because Logger depends on Config
-    // await ConfigManager.mountConfig()
-    // await LoggerManager.mountLogger()
-    // await CommunicationServiceManager.mountService()
+    await ConfigManager.mountConfig();
+    await LoggerManager.mountLogger();
+    await CommunicationServiceManager.mountService();
 
     // Mount micro services, the order is not important here
     // const accountServiceRESTApi = AccountServiceManager.createRestAPIServer()

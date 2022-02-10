@@ -29,7 +29,7 @@ export type SendSMSParams = {
   messageBody: string;
 };
 
-export enum ErrorCodes {
+export enum CommunicationErrorCodes {
   VALIDATION_ERROR = 'COMMUNICATION_ERR_01',
   THIRD_PARTY_ERROR = 'COMMUNICATION_ERR_02',
   SERVER_ERROR = 'COMMUNICATION_ERR_03',
@@ -41,22 +41,22 @@ export type ValidationFailure = {
 };
 
 export class ValidationError extends Error {
-  code: ErrorCodes;
+  code: CommunicationErrorCodes;
 
   failures: ValidationFailure[];
 
   constructor(msg: string, failures: ValidationFailure[] = []) {
     super(msg);
-    this.code = ErrorCodes.VALIDATION_ERROR;
+    this.code = CommunicationErrorCodes.VALIDATION_ERROR;
     this.failures = failures;
   }
 }
 
 export class ThirdPartyServiceError extends Error {
-  code: ErrorCodes;
+  code: CommunicationErrorCodes;
 
   constructor(msg: string) {
     super(msg);
-    this.code = ErrorCodes.THIRD_PARTY_ERROR;
+    this.code = CommunicationErrorCodes.THIRD_PARTY_ERROR;
   }
 }

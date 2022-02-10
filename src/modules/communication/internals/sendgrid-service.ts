@@ -2,6 +2,7 @@ import mail, { MailDataRequired } from '@sendgrid/mail';
 import { SendEmailParams, ThirdPartyServiceError } from '../types';
 import ConfigService from '../../config/config-service';
 import EmailParams from './sendgrid-email-params';
+import Logger from '../../logger/logger';
 
 export default class SendGridService {
   public static initializeService(): void {
@@ -28,6 +29,7 @@ export default class SendGridService {
     try {
       await mail.send(msg);
     } catch (e) {
+      Logger.criticial(e.message);
       throw new ThirdPartyServiceError('Email service unavailable.');
     }
   }

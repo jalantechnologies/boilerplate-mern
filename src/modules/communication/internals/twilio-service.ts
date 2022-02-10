@@ -1,5 +1,6 @@
 import { Twilio } from 'twilio';
 import ConfigService from '../../config/config-service';
+import Logger from '../../logger/logger';
 import { SendSMSParams, ThirdPartyServiceError } from '../types';
 import SMSParams from './twilio-params';
 
@@ -22,6 +23,7 @@ export default class TwilioService {
         body: params.messageBody,
       });
     } catch (e) {
+      Logger.criticial(e.message);
       throw new ThirdPartyServiceError('SMS service unavailable.');
     }
   }
