@@ -23,6 +23,7 @@
         "project": "./tsconfig.json"
       },
       "rules": {
+        "no-underscore-dangle": "off",
         "@typescript-eslint/no-unsafe-member-access": "off",
         "eslint-comments/disable-enable-pair": "off",
         "@typescript-eslint/unbound-method": [
