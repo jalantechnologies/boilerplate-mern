@@ -38,6 +38,12 @@ export default class Loggers {
     });
   }
 
+  public static error(message: string): void {
+    Loggers.loggers.forEach((logger) => {
+      logger.error(message);
+    });
+  }
+
   public static warn(message: string): void {
     Loggers.loggers.forEach((logger) => {
       logger.warn(message);

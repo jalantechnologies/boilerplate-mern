@@ -20,6 +20,10 @@ export default class RollbarLogger implements Logger {
     this.rollbar.debug(message);
   }
 
+  public error(message: string): void {
+    this.rollbar.error(message);
+  }
+
   public warn(message: string): void {
     this.rollbar.warning(message);
   }

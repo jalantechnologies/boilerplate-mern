@@ -1,3 +1,6 @@
+
+webAppHost: "http://localhost:8080"
+
 node:
   config:
     env: "local"
