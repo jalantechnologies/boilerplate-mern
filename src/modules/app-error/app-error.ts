@@ -8,8 +8,11 @@ export default class AppError extends Error {
   }
 
   toJson(): unknown {
-    return {
-      message: this.message,
-    };
+    let errorObj = {};
+    errorObj['message'] = this.message;
+    Object.entries(this).forEach(([key, value]) => {
+      errorObj[key] = value;
+    });
+    return errorObj;
   }
 }

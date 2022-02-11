@@ -1,3 +1,5 @@
+import AppError from '../app-error/app-error';
+
 // eslint-disable-next-line max-classes-per-file
 export interface LooseObject {
   [key: string]: any;
@@ -49,7 +51,7 @@ export type ValidationFailure = {
   message: string;
 };
 
-export class ValidationError extends Error {
+export class ValidationError extends AppError {
   code: CommunicationErrorCodes;
 
   failures: ValidationFailure[];
@@ -58,14 +60,16 @@ export class ValidationError extends Error {
     super(msg);
     this.code = CommunicationErrorCodes.VALIDATION_ERROR;
     this.failures = failures;
+    this.httpStatusCode = 403;
   }
 }
 
-export class ThirdPartyServiceError extends Error {
+export class ThirdPartyServiceError extends AppError {
   code: CommunicationErrorCodes;
 
   constructor(msg: string) {
     super(msg);
     this.code = CommunicationErrorCodes.THIRD_PARTY_ERROR;
+    this.httpStatusCode = 403;
   }
 }
