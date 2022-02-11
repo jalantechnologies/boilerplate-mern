@@ -11,7 +11,7 @@ function tick() {
   setTimeout(() => {
     showTime();
     tick();
-  }, 100000);
+  }, 1000);
 }
 
 tick();
