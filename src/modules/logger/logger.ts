@@ -9,6 +9,10 @@ export default class Logger {
     Loggers.debug(message);
   }
 
+  public static error(message: string): void {
+    Loggers.error(message);
+  }
+
   public static warn(message: string): void {
     Loggers.warn(message);
   }

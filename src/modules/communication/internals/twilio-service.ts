@@ -23,7 +23,7 @@ export default class TwilioService {
         body: params.messageBody,
       });
     } catch (e) {
-      Logger.criticial(e.message);
+      Logger.error(e.message);
       throw new ThirdPartyServiceError('SMS service unavailable.');
     }
   }

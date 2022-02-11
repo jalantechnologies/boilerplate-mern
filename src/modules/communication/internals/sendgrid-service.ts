@@ -29,7 +29,7 @@ export default class SendGridService {
     try {
       await mail.send(msg);
     } catch (e) {
-      Logger.criticial(e.message);
+      Logger.error(e.message);
       throw new ThirdPartyServiceError('Email service unavailable.');
     }
   }
