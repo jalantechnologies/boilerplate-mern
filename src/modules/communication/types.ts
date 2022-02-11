@@ -3,6 +3,15 @@ export interface LooseObject {
   [key: string]: any;
 }
 
+export interface PhoneUtilInterface {
+  isValidNumber: (a: string) => boolean;
+  parse: (a: string) => string;
+}
+
+export interface PhoneUtilInstance {
+  getInstance: () => any;
+}
+
 export type PhoneNumber = {
   countryCode: string;
   phoneNumber: string;

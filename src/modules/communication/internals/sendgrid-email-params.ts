@@ -40,7 +40,6 @@ export default class EmailParams {
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
   public static isEmailValid(email: string): boolean {
     return emailRegex.test(String(email).toLowerCase());
   }

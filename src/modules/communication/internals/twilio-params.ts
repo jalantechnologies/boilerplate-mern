@@ -1,6 +1,8 @@
 import { PhoneNumberUtil } from 'google-libphonenumber';
 import {
   PhoneNumber,
+  PhoneUtilInstance,
+  PhoneUtilInterface,
   SendSMSParams,
   ValidationError,
   ValidationFailure,
@@ -14,12 +16,7 @@ export default class SMSParams {
   public static validate(params: SendSMSParams): void {
     const failures: ValidationFailure[] = [];
 
-    const phoneUtil = <{
-      isValidNumber: (a: string) => boolean;
-      parse: (a: string) => string
-    }>(<{
-      getInstance:() => any
-    }>PhoneNumberUtil).getInstance();
+    const phoneUtil = <PhoneUtilInterface>(<PhoneUtilInstance>PhoneNumberUtil).getInstance();
 
     const isRecipientPhoneValid: boolean = phoneUtil
       .isValidNumber(
