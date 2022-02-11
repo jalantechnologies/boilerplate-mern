@@ -38,23 +38,17 @@ export enum TaskErrorCode {
 export class TaskWithNameExistsError extends Error {
   code: TaskErrorCode;
 
-  httpStatusCode: number;
-
   constructor(name: string) {
     super(`Task with name ${name} already exists.`);
     this.code = TaskErrorCode.TASK_ALREADY_EXISTS;
-    this.httpStatusCode = 409;
   }
 }
 
 export class TaskNotFoundError extends Error {
   code: TaskErrorCode;
 
-  httpStatusCode: number;
-
   constructor(taskId: string) {
     super(`Task with taskId ${taskId} not found.`);
     this.code = TaskErrorCode.NOT_FOUND;
-    this.httpStatusCode = 404;
   }
 }
