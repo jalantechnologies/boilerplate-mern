@@ -2,16 +2,16 @@ import {
   Account,
   AccountNotFoundError,
   AccountSearchParams,
+  AccountWithUserNameExistsError,
   InvalidCredentialsError,
 } from '../types';
-import IAccountDB from './store/account-db';
 import AccountUtil from './account-util';
 import AccountRepository from './store/account-repository';
 
 export default class AccountReader {
   public static async getAccountByUsername(username: string): Promise<Account> {
     const AccountDB = AccountRepository.accountDb;
-    const dbAccount: IAccountDB = await AccountDB.findOne({
+    const dbAccount = await AccountDB.findOne({
       username,
       active: true,
     }).exec();
@@ -24,15 +24,7 @@ export default class AccountReader {
   public static async getAccountByUsernamePassword(
     params: AccountSearchParams,
   ): Promise<Account> {
-    const AccountDB = AccountRepository.accountDb;
-    const dbAccount = await AccountDB.findOne({
-      username: params.username,
-      active: true,
-    });
-    if (!dbAccount) {
-      throw new AccountNotFoundError(params.username);
-    }
-    const account = AccountUtil.convertAccountDBToAccount(dbAccount);
+    const account = await AccountReader.getAccountByUsername(params.username);
     const isPasswordValid = await AccountUtil.comparePassword(
       params.password,
       account.hashedPassword,
@@ -41,6 +33,20 @@ export default class AccountReader {
       throw new InvalidCredentialsError(params.username);
     } else {
       return account;
+    }
+  }
+
+  public static async checkUsernameNotExists(
+    params: AccountSearchParams,
+  ): Promise<void> {
+    const AccountDB = AccountRepository.accountDb;
+    const dbAccount = await AccountDB.findOne({
+      username: params.username,
+      active: true,
+    }).exec();
+
+    if (dbAccount) {
+      throw new AccountWithUserNameExistsError(params.username);
     }
   }
 }
