@@ -1,4 +1,6 @@
-// eslint-disable-next-line max-classes-per-file
+/* eslint-disable max-classes-per-file */
+import AppError from '../app-error/app-error';
+
 export class Account {
   id: string;
 
@@ -23,38 +25,38 @@ export enum AccountErrorCode {
   INVALID_CREDENTIALS = 'ACCOUNT_ERR_03',
 }
 
-export class AccountWithUserNameExistsError extends Error {
+export class AccountWithUserNameExistsError extends AppError {
   code: AccountErrorCode;
 
-  statusCode: number;
+  httpStatusCode: number;
 
   constructor(username: string) {
     super(`An account with username ${username} already exists.`);
     this.code = AccountErrorCode.USERNAME_ALREADY_EXISTS;
-    this.statusCode = 409;
+    this.httpStatusCode = 409;
   }
 }
 
-export class AccountNotFoundError extends Error {
+export class AccountNotFoundError extends AppError {
   code: AccountErrorCode;
 
-  statusCode: number;
+  httpStatusCode: number;
 
   constructor(username: string) {
     super(`${username} not found with provided parameters.`);
     this.code = AccountErrorCode.NOT_FOUND;
-    this.statusCode = 404;
+    this.httpStatusCode = 404;
   }
 }
 
-export class InvalidCredentialsError extends Error {
+export class InvalidCredentialsError extends AppError {
   code: AccountErrorCode;
 
-  statusCode: number;
+  httpStatusCode: number;
 
   constructor(username: string) {
     super(`Invalid credentials for ${username}. Please try again.`);
     this.code = AccountErrorCode.NOT_FOUND;
-    this.statusCode = 401;
+    this.httpStatusCode = 401;
   }
 }
