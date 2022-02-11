@@ -26,26 +26,35 @@ export enum AccountErrorCode {
 export class AccountWithUserNameExistsError extends Error {
   code: AccountErrorCode;
 
+  statusCode: number;
+
   constructor(username: string) {
-    super(`An account with ${username} already exists.`);
+    super(`An account with username ${username} already exists.`);
     this.code = AccountErrorCode.USERNAME_ALREADY_EXISTS;
+    this.statusCode = 409;
   }
 }
 
 export class AccountNotFoundError extends Error {
   code: AccountErrorCode;
 
+  statusCode: number;
+
   constructor(username: string) {
     super(`${username} not found with provided parameters.`);
     this.code = AccountErrorCode.NOT_FOUND;
+    this.statusCode = 404;
   }
 }
 
 export class InvalidCredentialsError extends Error {
   code: AccountErrorCode;
 
+  statusCode: number;
+
   constructor(username: string) {
     super(`Invalid credentials for ${username}. Please try again.`);
     this.code = AccountErrorCode.NOT_FOUND;
+    this.statusCode = 401;
   }
 }

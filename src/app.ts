@@ -1,5 +1,6 @@
 import express, { Application } from 'express';
 import { Server } from 'http';
+import serverErrorHandler from './error-handler';
 import AccesstokenServiceManager from './modules/access-token/access-token-manager';
 import AccountServiceManager from './modules/account/account-service-manager';
 import ConfigManager from './modules/config/config-manager';
@@ -23,6 +24,9 @@ export default class App {
 
     const accessTokenServiceRESTApi = await AccesstokenServiceManager.createRestAPIServer();
     this.app.use('/', accessTokenServiceRESTApi);
+
+    // Error handling
+    this.app.use(serverErrorHandler);
 
     const port = ConfigService.getIntValue('server.port');
     return this.app.listen(port);
