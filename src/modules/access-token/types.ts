@@ -8,7 +8,8 @@ export class AccessToken {
 }
 
 export type CreateAccessTokenParams = {
-  accountId: string;
+  username: string;
+  password: string;
 };
 
 export enum AccessTokenErrorCode {
