@@ -1,6 +1,7 @@
+/* eslint-disable max-classes-per-file */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import AppError from '../app-error/app-error';
 
-// eslint-disable-next-line max-classes-per-file
 export interface LooseObject {
   [key: string]: any;
 }

@@ -8,9 +8,10 @@ export default class AppError extends Error {
   }
 
   toJson(): unknown {
-    let errorObj = {};
-    errorObj['message'] = this.message;
+    const errorObj: any = {};
+    errorObj.message = this.message;
     Object.entries(this).forEach(([key, value]) => {
+      /* eslint-disable @typescript-eslint/no-unsafe-assignment */
       errorObj[key] = value;
     });
     return errorObj;
