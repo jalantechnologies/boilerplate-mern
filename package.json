@@ -6,7 +6,7 @@
     "npm": "6.14.13",
     "node": "14.17.3"
   },
-  "main": "src/main.ts",
+  "main": "src/server.ts",
   "scripts": {
     "build": "gulp",
     "test": "NODE_ENV=production NODE_CONFIG_ENV=testing mocha --exit -r ts-node/register --project tsconfig.json test/**/*.spec.ts",
@@ -33,17 +33,17 @@
   "homepage": "https://github.com/jalantechnologies/boilerplate-node-ts#readme",
   "dependencies": {
     "@sendgrid/mail": "^7.6.1",
-    "@types/body-parser": "^1.19.2",
-    "@types/mongoose": "^5.11.97",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.1",
-    "config": "^3.3.7",
+    "config": "^3.3.6",
     "express": "^4.17.2",
     "google-libphonenumber": "^3.2.27",
     "jsonwebtoken": "^8.5.1",
+    "jws": "^4.0.0",
+    "lodash": "^4.17.21",
+    "mongoose": "^6.2.1",
     "rollbar": "^2.24.0",
-    "twilio": "^3.74.0",
-    "mongoose": "^6.2.1"
+    "twilio": "^3.74.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
