@@ -28,8 +28,6 @@ export enum AccountErrorCode {
 export class AccountWithUserNameExistsError extends AppError {
   code: AccountErrorCode;
 
-  httpStatusCode: number;
-
   constructor(username: string) {
     super(`An account with username ${username} already exists.`);
     this.code = AccountErrorCode.USERNAME_ALREADY_EXISTS;
@@ -40,8 +38,6 @@ export class AccountWithUserNameExistsError extends AppError {
 export class AccountNotFoundError extends AppError {
   code: AccountErrorCode;
 
-  httpStatusCode: number;
-
   constructor(username: string) {
     super(`${username} not found with provided parameters.`);
     this.code = AccountErrorCode.NOT_FOUND;
@@ -51,8 +47,6 @@ export class AccountNotFoundError extends AppError {
 
 export class InvalidCredentialsError extends AppError {
   code: AccountErrorCode;
-
-  httpStatusCode: number;
 
   constructor(username: string) {
     super(`Invalid credentials for ${username}. Please try again.`);

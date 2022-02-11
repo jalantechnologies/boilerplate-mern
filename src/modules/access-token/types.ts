@@ -21,10 +21,8 @@ export enum AccessTokenErrorCode {
   INVALID_AUTHORIZATION_HEADER = 'ACCESS_TOKEN_ERR_04',
 }
 
-export class AccessTokenExpiredError extends Error {
+export class AccessTokenExpiredError extends AppError {
   code: AccessTokenErrorCode;
-
-  httpStatusCode: number;
 
   constructor() {
     super('This token is expired. Please request a new one.');
@@ -33,10 +31,8 @@ export class AccessTokenExpiredError extends Error {
   }
 }
 
-export class AuthorizationHeaderNotFound extends Error {
+export class AuthorizationHeaderNotFound extends AppError {
   code: AccessTokenErrorCode;
-
-  httpStatusCode: number;
 
   constructor() {
     super('No authorization header found.');
@@ -48,8 +44,6 @@ export class AuthorizationHeaderNotFound extends Error {
 export class InvalidAuthorizationHeader extends AppError {
   code: AccessTokenErrorCode;
 
-  httpStatusCode: number;
-
   constructor() {
     super('Invalid authorization header. Expected format is "Bearer <token>".');
     this.code = AccessTokenErrorCode.INVALID_AUTHORIZATION_HEADER;
@@ -59,8 +53,6 @@ export class InvalidAuthorizationHeader extends AppError {
 
 export class UnAuthorizedAccessError extends AppError {
   code: AccessTokenErrorCode;
-
-  httpStatusCode: number;
 
   constructor() {
     super('This token is not authorized to access the given resource');
