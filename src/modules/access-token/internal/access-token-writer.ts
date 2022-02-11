@@ -1,21 +1,15 @@
 import jsonwebtoken from 'jsonwebtoken';
 import ConfigService from '../../config/config-service';
-import { AccessToken, CreateAccessTokenParams } from '../types';
+import { AccessToken } from '../types';
 
 export default class AccessTokenWriter {
-  public static createAccessToken(
-    params: CreateAccessTokenParams,
-  ): AccessToken {
+  public static createAccessToken(accountId: string): AccessToken {
     const jwtSigningKey = ConfigService.getStringValue('jwt.token');
-    const jwtToken = jsonwebtoken.sign(
-      { accountId: params.accountId },
-      jwtSigningKey,
-      {
-        expiresIn: ConfigService.getStringValue('jwt.expiresIn'),
-      },
-    );
+    const jwtToken = jsonwebtoken.sign({ accountId }, jwtSigningKey, {
+      expiresIn: ConfigService.getStringValue('jwt.expiresIn'),
+    });
     const accessToken = new AccessToken();
-    accessToken.accountId = params.accountId;
+    accessToken.accountId = accountId;
     accessToken.token = jwtToken;
 
     const vetifiedToken: jsonwebtoken.JwtPayload = jsonwebtoken.verify(
