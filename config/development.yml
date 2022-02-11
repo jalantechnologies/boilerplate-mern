@@ -1,2 +1,2 @@
 mongoDb:
-  uri: "mongodb://localhost:27017/development"
+  uri: "mongodb://localhost:27017/boilerplate-dev"
