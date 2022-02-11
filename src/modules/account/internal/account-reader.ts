@@ -10,11 +10,10 @@ import AccountRepository from './store/account-repository';
 
 export default class AccountReader {
   public static async getAccountByUsername(username: string): Promise<Account> {
-    const AccountDB = AccountRepository.accountDb;
-    const dbAccount = await AccountDB.findOne({
+    const dbAccount = await AccountRepository.accountDB.findOne({
       username,
       active: true,
-    }).exec();
+    });
     if (!dbAccount) {
       throw new AccountNotFoundError(username);
     }
@@ -39,12 +38,10 @@ export default class AccountReader {
   public static async checkUsernameNotExists(
     params: AccountSearchParams,
   ): Promise<void> {
-    const AccountDB = AccountRepository.accountDb;
-    const dbAccount = await AccountDB.findOne({
+    const dbAccount = await AccountRepository.accountDB.findOne({
       username: params.username,
       active: true,
-    }).exec();
-
+    });
     if (dbAccount) {
       throw new AccountWithUserNameExistsError(params.username);
     }

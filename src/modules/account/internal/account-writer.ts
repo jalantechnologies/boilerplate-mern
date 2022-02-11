@@ -7,10 +7,9 @@ export default class AccountWriter {
   public static async createAccount(
     params: CreateAccountParams,
   ): Promise<Account> {
-    const AccountDB = AccountRepository.accountDb;
     await AccountReader.checkUsernameNotExists(params);
     const hashedPassword = await AccountUtil.hashPassword(params.password);
-    const dbAccount = await AccountDB.create({
+    const dbAccount = await AccountRepository.accountDB.create({
       username: params.username,
       hashedPassword,
       active: true,

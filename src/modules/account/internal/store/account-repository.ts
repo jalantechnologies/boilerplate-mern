@@ -1,14 +1,21 @@
-import mongoose from 'mongoose';
+import mongoose, { CallbackError, Connection } from 'mongoose';
 import ConfigService from '../../../config/config-service';
-import IAccountDB from './account-db';
-import accountSchema from './account-schema';
+import { AccountDB, accountDbSchema } from './account-db';
 
 export default class AccountRepository {
-  public static accountDb: mongoose.Model<IAccountDB>;
+  public static accountDB: mongoose.Model<AccountDB>;
 
-  static initDb(): void {
-    const mongoURI = ConfigService.getStringValue('mongoDb.uri');
-    const connection = mongoose.createConnection(mongoURI);
-    AccountRepository.accountDb = connection.model('Account', accountSchema);
+  static async createDBConnection(): Promise<Connection> {
+    return new Promise((resolve, reject) => {
+      const mongoURI = ConfigService.getStringValue('mongoDb.uri');
+      mongoose.createConnection(mongoURI, {}, (error: CallbackError, result: Connection): void => {
+        if (error) {
+          reject(error);
+        } else {
+          AccountRepository.accountDB = result.model('Account', accountDbSchema);
+          resolve(result);
+        }
+      });
+    });
   }
 }

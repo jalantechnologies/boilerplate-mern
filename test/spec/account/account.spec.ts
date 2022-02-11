@@ -3,9 +3,7 @@ import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
 import express from 'express';
 import sinon from 'sinon';
-import bodyParser from 'body-parser';
 import AccountServiceManager from '../../../src/modules/account/account-service-manager';
-import AccountRepository from '../../../src/modules/account/internal/store/account-repository';
 import { AccountWithUserNameExistsError } from '../../../src/modules/account/types';
 
 chai.use(chaiHttp);
@@ -18,10 +16,7 @@ let app: any;
 describe.skip('Account Service', () => {
   before(async () => {
     const server = await AccountServiceManager.createRestAPIServer();
-    AccountRepository.initDb();
     app = express();
-    app.use(bodyParser.urlencoded({ extended: true }));
-    app.use(bodyParser.json());
     app.use('/', server);
   });
 

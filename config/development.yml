@@ -1,2 +1,6 @@
+node:
+  config:
+    env: "local"
+
 mongoDb:
   uri: "mongodb://localhost:27017/boilerplate-dev"

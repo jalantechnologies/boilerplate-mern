@@ -1,9 +1,9 @@
 import * as bcrypt from 'bcrypt';
 import { Account } from '../types';
-import IAccountDB from './store/account-db';
+import { AccountDB } from './store/account-db';
 
 export default class AccountUtil {
-  public static convertAccountDBToAccount(accountDb: IAccountDB): Account {
+  public static convertAccountDBToAccount(accountDb: AccountDB): Account {
     const account = new Account();
     account.id = accountDb._id.toString();
     account.username = accountDb.username;
