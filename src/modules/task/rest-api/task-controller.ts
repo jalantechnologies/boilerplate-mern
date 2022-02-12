@@ -19,8 +19,7 @@ export default class TaskController {
     try {
       const params: CreateTaskParams = {
         accountId: req.params.accountId,
-        /* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */
-        name: req.body.name,
+        name: req.body.name as string,
       };
       const task: Task = await TaskService.createTask(params);
       res.status(201).send(TaskController.serializeTaskAsJSON(task));
@@ -40,7 +39,7 @@ export default class TaskController {
         taskId: req.params.id,
       };
       await TaskService.deleteTask(params);
-      res.status(200).send();
+      res.status(204).send();
     } catch (e) {
       next(e);
     }
@@ -87,7 +86,6 @@ export default class TaskController {
     return {
       id: task.id,
       account: task.account,
-      active: task.active,
       name: task.name,
     };
   }

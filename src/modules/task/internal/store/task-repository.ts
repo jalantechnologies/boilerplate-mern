@@ -1,9 +1,9 @@
 import mongoose, { CallbackError, Connection } from 'mongoose';
 import ConfigService from '../../../config/config-service';
-import { TaskDB, taskDBSchema } from './task-db';
+import { TaskDb, taskDBSchema } from './task-db';
 
 export default class TaskRepository {
-  public static task: mongoose.Model<TaskDB>;
+  public static task: mongoose.Model<TaskDb>;
 
   static async createDBConnection(): Promise<Connection> {
     return new Promise((resolve, reject) => {

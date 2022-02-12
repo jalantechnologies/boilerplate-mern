@@ -4,8 +4,6 @@ export class Task {
 
   account: string;
 
-  active: boolean;
-
   name: string;
 }
 
@@ -30,9 +28,15 @@ export type DeleteTaskParams = {
   taskId: string;
 };
 
+export type PaginationParams = {
+  page: number;
+  size: number;
+};
+
 export enum TaskErrorCode {
   NOT_FOUND = 'TASK_ERR_01',
   TASK_ALREADY_EXISTS = 'TASK_ERR_02',
+  UNAUTHORIZED_TASK_ACCESS = 'TASK_ERR_03',
 }
 
 export class TaskWithNameExistsError extends Error {
@@ -41,6 +45,15 @@ export class TaskWithNameExistsError extends Error {
   constructor(name: string) {
     super(`Task with name ${name} already exists.`);
     this.code = TaskErrorCode.TASK_ALREADY_EXISTS;
+  }
+}
+
+export class UnAuthorizedTaskAccessError extends Error {
+  code: TaskErrorCode;
+
+  constructor(taskId: string) {
+    super(`Cannot access task with taskId ${taskId}`);
+    this.code = TaskErrorCode.UNAUTHORIZED_TASK_ACCESS;
   }
 }
 

@@ -20,4 +20,8 @@ export default class TaskService {
   public static async getTasks(params: GetAllTaskParams): Promise<Task[]> {
     return TaskReader.getTasks(params);
   }
+
+  public static async getTaskById(taskId: string): Promise<Task> {
+    return TaskReader.getTaskById(taskId);
+  }
 }

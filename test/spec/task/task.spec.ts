@@ -15,7 +15,11 @@ let sinonSandbox: sinon.SinonSandbox;
 let appOne: any;
 let appTwo: any;
 let accessToken: string;
-let accountId: string = '61e9586ca21e0400160284d1'
+const accountCreds: any = {
+  username: 'Sample Username',
+  password: 'Sample Password',
+};
+let accountId: string;
 
 describe.skip('Task Service.', () => {
   before(async () => {
@@ -38,23 +42,24 @@ describe.skip('Task Service.', () => {
     sinonSandbox.stub(ConfigService, 'getStringValue').returns('1h');
     const res = await chai
       .request(appOne)
-      .post('/access-tokens')
+      .post('/api/access-tokens')
       .set('content-type', 'application/json')
-      .send({ accountId });
+      .send(accountCreds);
     accessToken = res.body.token;
+    accountId = res.body.accountId;
   });
 
   afterEach(() => {
     sinonSandbox.restore();
   });
 
-  it('GET "/accounts/:accountId/tasks" should return a list of all tasks for a particular accountId.', async () => {
+  it('GET "/api/accounts/:accountId/tasks" should return a list of all tasks for a particular accountId.', async () => {
 
     // creating some tasks
     for(let i = 0; i < 2;i++) {
       await chai
         .request(appTwo)
-        .post(`/accounts/${accountId}/tasks`)
+        .post(`/api/accounts/${accountId}/tasks`)
         .set('content-type', 'application/json')
         .set('Authorization', `Bearer ${accessToken}`)
         .send({
@@ -65,7 +70,7 @@ describe.skip('Task Service.', () => {
     // getting a list of tasks
     const res = await chai
       .request(appTwo)
-      .get(`/accounts/${accountId}/tasks`)
+      .get(`/api/accounts/${accountId}/tasks`)
       .set('content-type', 'application/json')
       .set('Authorization', `Bearer ${accessToken}`)
       .send();
@@ -80,14 +85,14 @@ describe.skip('Task Service.', () => {
     expect(res.body.length).to.be.greaterThan(0);
   });
 
-  it('POST "/accounts/:accountId/tasks" should create a new task.', async () => {
+  it('POST "/api/accounts/:accountId/tasks" should create a new task.', async () => {
     const params = {
       name: 'simple task.'
     };
 
     const res = await chai
       .request(appTwo)
-      .post(`/accounts/${accountId}/tasks`)
+      .post(`/api/accounts/${accountId}/tasks`)
       .set('content-type', 'application/json')
       .set('Authorization', `Bearer ${accessToken}`)
       .send(params);
@@ -95,10 +100,8 @@ describe.skip('Task Service.', () => {
     expect(res).to.have.status(201);
     expect(res.body).to.have.property('id');
     expect(res.body).to.have.property('account');
-    expect(res.body).to.have.property('active');
     expect(res.body).to.have.property('name');
     expect(res.body.account).to.eq(accountId);
-    expect(res.body.active).to.eq(true);
     expect(res.body.name).to.eq('simple task.');
 
     // checking if the task is created in DB
@@ -110,7 +113,7 @@ describe.skip('Task Service.', () => {
     expect(createdTask.id).to.eq(res.body.id);
   });
 
-  it('GET "/accounts/:accountId/tasks/:taskId" should return a particular task.', async () => {
+  it('GET "/api/accounts/:accountId/tasks/:taskId" should return a particular task.', async () => {
 
     let res: any;
     const taskTitle = 'simple task.'
@@ -122,7 +125,7 @@ describe.skip('Task Service.', () => {
 
     res = await chai
       .request(appTwo)
-      .post(`/accounts/${accountId}/tasks`)
+      .post(`/api/accounts/${accountId}/tasks`)
       .set('content-type', 'application/json')
       .set('Authorization', `Bearer ${accessToken}`)
       .send(params);
@@ -133,7 +136,7 @@ describe.skip('Task Service.', () => {
     // getting the task
     res = await chai
       .request(appTwo)
-      .post(`/accounts/${accountId}/tasks/${taskId}`)
+      .get(`/api/accounts/${accountId}/tasks/${taskId}`)
       .set('content-type', 'application/json')
       .set('Authorization', `Bearer ${accessToken}`)
       .send();
@@ -152,7 +155,7 @@ describe.skip('Task Service.', () => {
     expect(particularTask).to.have.property('id');
   });
 
-  it('DELETE "/accounts/:accountId/tasks/:taskId" should change "active" flag of task to be false.', async () => {
+  it('DELETE "/api/accounts/:accountId/tasks/:taskId" should change "active" flag of task to be false.', async () => {
 
     let res: any;
     const taskTitle = 'simple task.'
@@ -164,41 +167,32 @@ describe.skip('Task Service.', () => {
 
     res = await chai
       .request(appTwo)
-      .post(`/accounts/${accountId}/tasks`)
+      .post(`/api/accounts/${accountId}/tasks`)
       .set('content-type', 'application/json')
       .set('Authorization', `Bearer ${accessToken}`)
       .send(params);
     expect(res).to.have.status(200);
     expect(res.body).to.have.property('id');
-    expect(res.body.active).to.eq(true);
 
     const taskId = res.body.id;
 
     // deleting the task with the given task Id
     res = await chai
       .request(appTwo)
-      .delete(`/accounts/${accountId}/tasks/${taskId}`)
+      .delete(`/api/accounts/${accountId}/tasks/${taskId}`)
       .set('content-type', 'application/json')
       .set('Authorization', `Bearer ${accessToken}`)
       .send();
-    expect(res).to.have.status(200);
+    expect(res).to.have.status(204);
 
-    // getting the task and checking the value of active flag
+    // trying to get task after soft deletion.
     res = await chai
       .request(appTwo)
-      .get(`/accounts/${accountId}/tasks/${taskId}`)
+      .get(`/api/accounts/${accountId}/tasks/${taskId}`)
       .set('content-type', 'application/json')
-      .set('Authorization', `Bearer ${accessToken}`)
+      .set('Authorization', `Beare ${accessToken}`)
       .send();
-    expect(res).to.have.status(200);
-    expect(res.body.active).to.eq(false);
-
-    // checking the task in DB.
-    const task = await TaskService.getTask({
-      accountId,
-      taskId
-    });
-    expect(task).to.have.property('id');
-    expect(task.active).to.eq(false);
+    expect(res).not.to.have.status(200);
+    expect(res.body).not.to.have.property('id');
   });
 });
