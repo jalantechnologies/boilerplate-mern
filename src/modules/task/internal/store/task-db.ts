@@ -15,7 +15,6 @@ export const taskDbSchema: Schema = new Schema<TaskDB>(
       type: String,
       index: true,
       required: true,
-      unique: true,
     },
   },
   {
