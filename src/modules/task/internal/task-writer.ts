@@ -11,13 +11,13 @@ import TaskUtil from './task-util';
 
 export default class TaskWriter {
   public static async createTask(params: CreateTaskParams): Promise<Task> {
-    const existingTask = await TaskRepository.task.findOne({
+    const existingTask = await TaskRepository.taskDB.findOne({
       name: params.name,
     });
     if (existingTask) {
       throw new TaskWithNameExistsError(params.name);
     }
-    const createdTask = await TaskRepository.task.create({
+    const createdTask = await TaskRepository.taskDB.create({
       account: params.accountId,
       name: params.name,
       active: true,
@@ -31,7 +31,7 @@ export default class TaskWriter {
       taskId: params.taskId,
     };
     const task = await TaskReader.getTask(taskParams);
-    await TaskRepository.task.findOneAndUpdate(
+    await TaskRepository.taskDB.findOneAndUpdate(
       {
         _id: task.id,
       },

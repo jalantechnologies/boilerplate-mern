@@ -10,7 +10,7 @@ import TaskUtil from './task-util';
 
 export default class TaskReader {
   public static async getTask(params: GetTaskParams): Promise<Task> {
-    const task = await TaskRepository.task.findOne({
+    const task = await TaskRepository.taskDB.findOne({
       _id: params.taskId,
       account: params.accountId,
       active: true,
@@ -27,7 +27,7 @@ export default class TaskReader {
       size: (params.size) ? (params.size) : 5,
     };
     const startIndex = (paginationParams.page - 1) * (paginationParams.size);
-    const tasks = await TaskRepository.task
+    const tasks = await TaskRepository.taskDB
       .find({ account: params.accountId, active: true })
       .limit(paginationParams.size)
       .skip(startIndex);
@@ -36,7 +36,7 @@ export default class TaskReader {
   }
 
   public static async getTaskById(taskId: string): Promise<Task> {
-    const task = await TaskRepository.task.findOne({
+    const task = await TaskRepository.taskDB.findOne({
       _id: taskId,
       active: true,
     });

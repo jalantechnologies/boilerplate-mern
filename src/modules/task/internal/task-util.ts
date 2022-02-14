@@ -1,8 +1,8 @@
 import { Task } from '../types';
-import { TaskDb } from './store/task-db';
+import { TaskDB } from './store/task-db';
 
 export default class TaskUtil {
-  public static convertTaskDBToTask(taskDb: TaskDb): Task {
+  public static convertTaskDBToTask(taskDb: TaskDB): Task {
     const task = new Task();
     task.id = taskDb._id.toString();
     task.account = taskDb.account.toString();
