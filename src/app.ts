@@ -1,8 +1,7 @@
 import express, { Application } from 'express';
 import { Server } from 'http';
 import serverErrorHandler from './error-handler';
-import AccesstokenServiceManager from './modules/access-token/access-token-manager';
-import AccountServiceManager from './modules/account/account-service-manager';
+import MicroServices from './load-services';
 import CommunicationServiceManager from './modules/communication/communication-service-manager';
 import ConfigManager from './modules/config/config-manager';
 import ConfigService from './modules/config/config-service';
@@ -19,12 +18,10 @@ export default class App {
     await LoggerManager.mountLogger();
     await CommunicationServiceManager.mountService();
 
-    // Micro Services
-    const accountServiceRESTApi = await AccountServiceManager.createRestAPIServer();
-    this.app.use('/', accountServiceRESTApi);
-
-    const accessTokenServiceRESTApi = await AccesstokenServiceManager.createRestAPIServer();
-    this.app.use('/', accessTokenServiceRESTApi);
+    // loading all microservices
+    // all microservices would listen on /api endpoint now.
+    const microServicesApi = await MicroServices.loadMicroServices();
+    this.app.use('/api', microServicesApi);
 
     // Error handling
     this.app.use(serverErrorHandler);
