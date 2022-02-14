@@ -31,7 +31,6 @@ export default class App {
     await LoggerManager.mountLogger();
     await CommunicationServiceManager.mountService();
 
-    // loading all microservices
     const microServicesApi = await this.createRESTApiServer();
     this.app.use('/api', microServicesApi);
 
