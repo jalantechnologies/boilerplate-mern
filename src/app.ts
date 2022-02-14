@@ -31,8 +31,8 @@ export default class App {
     await LoggerManager.mountLogger();
     await CommunicationServiceManager.mountService();
 
-    const microServicesApi = await this.createRESTApiServer();
-    this.app.use('/api', microServicesApi);
+    const restAPIServices = await this.createRESTApiServer();
+    this.app.use('/api', restAPIServices);
 
     // Error handling
     this.app.use(serverErrorHandler);
