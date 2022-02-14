@@ -11,6 +11,18 @@ import LoggerManager from './modules/logger/logger-manager';
 export default class App {
   private static app: Application;
 
+  private static async createRESTApiServer(): Promise<Application> {
+    const app: Application = express();
+
+    const accountServiceRESTApi = await AccountServiceManager.createRestAPIServer();
+    app.use('/', accountServiceRESTApi);
+
+    const accessTokenServiceRESTApi = await AccesstokenServiceManager.createRestAPIServer();
+    app.use('/', accessTokenServiceRESTApi);
+
+    return app;
+  }
+
   public static async startRESTApiServer(): Promise<Server> {
     this.app = express();
 
@@ -19,12 +31,8 @@ export default class App {
     await LoggerManager.mountLogger();
     await CommunicationServiceManager.mountService();
 
-    // Micro Services
-    const accountServiceRESTApi = await AccountServiceManager.createRestAPIServer();
-    this.app.use('/', accountServiceRESTApi);
-
-    const accessTokenServiceRESTApi = await AccesstokenServiceManager.createRestAPIServer();
-    this.app.use('/', accessTokenServiceRESTApi);
+    const restAPIServices = await this.createRESTApiServer();
+    this.app.use('/api', restAPIServices);
 
     // Error handling
     this.app.use(serverErrorHandler);
