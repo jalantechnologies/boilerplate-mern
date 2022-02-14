@@ -12,7 +12,7 @@ export default class App {
   private static app: Application;
 
   private static async createRESTApiServer(): Promise<Application> {
-    const app = express();
+    const app: Application = express();
 
     const accountServiceRESTApi = await AccountServiceManager.createRestAPIServer();
     app.use('/', accountServiceRESTApi);
