@@ -31,8 +31,7 @@ export default class TaskReader {
       .find({ account: params.accountId, active: true })
       .limit(paginationParams.size)
       .skip(startIndex);
-    const dbTasks = tasks.map((task) => TaskUtil.convertTaskDBToTask(task));
-    return dbTasks;
+    return tasks.map((task) => TaskUtil.convertTaskDBToTask(task));
   }
 
   public static async getTaskById(taskId: string): Promise<Task> {
