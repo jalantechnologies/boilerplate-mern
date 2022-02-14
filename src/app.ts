@@ -21,9 +21,6 @@ export default class App {
     const accessTokenServiceRESTApi = await AccesstokenServiceManager.createRestAPIServer();
     app.use('/', accessTokenServiceRESTApi);
 
-    const taskServiceRESTApi = await TaskServiceManager.createRestAPIServer();
-    app.use('/', taskServiceRESTApi);
-
     return app;
   }
 
@@ -37,9 +34,6 @@ export default class App {
 
     const restAPIServices = await this.createRESTApiServer();
     this.app.use('/api', restAPIServices);
-
-    const taskServiceRESTApi = await TaskServiceManager.createRestAPIServer();
-    this.app.use('/', taskServiceRESTApi);
 
     // Error handling
     this.app.use(serverErrorHandler);
