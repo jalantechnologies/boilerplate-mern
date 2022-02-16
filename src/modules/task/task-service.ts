@@ -1,7 +1,12 @@
 import TaskReader from './internal/task-reader';
 import TaskWriter from './internal/task-writer';
 import {
-  CreateTaskParams, DeleteTaskParams, GetAllTaskParams, GetTaskParams, Task,
+  CreateTaskParams,
+  DeleteTaskParams,
+  GetAllTaskParams,
+  GetTaskParams,
+  GetTaskByNameParams,
+  Task,
 } from './types';
 
 export default class TaskService {
@@ -15,6 +20,10 @@ export default class TaskService {
 
   public static async getTask(params: GetTaskParams): Promise<Task> {
     return TaskReader.getTask(params);
+  }
+
+  public static async getTaskByName(params: GetTaskByNameParams): Promise<Task> {
+    return TaskReader.getTaskByName(params);
   }
 
   public static async getTasks(params: GetAllTaskParams): Promise<Task[]> {
