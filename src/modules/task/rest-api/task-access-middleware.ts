@@ -8,8 +8,11 @@ export default class TaskAccessMiddleware {
     _res: Response,
     next: NextFunction,
   ): Promise<void> {
-    const task: Task = await TaskService.getTaskById(_req.params.id);
-    if (task.account !== _req.params.accountId) {
+    const task: Task = await TaskService.getTaskById({
+      accountId: _req.params.accountId,
+      taskId: _req.params.id
+    });
+    if(!task) {
       throw new UnAuthorizedTaskAccessError(_req.params.id);
     }
     next();

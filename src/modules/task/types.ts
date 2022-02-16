@@ -9,6 +9,11 @@ export class Task {
   name: string;
 }
 
+export type GetTaskByIdParams = {
+  accountId: string;
+  taskId: string;
+};
+
 export type GetAllTaskParams = {
   accountId: string;
   page?: number;

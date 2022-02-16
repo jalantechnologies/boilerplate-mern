@@ -6,6 +6,7 @@ import {
   GetAllTaskParams,
   GetTaskParams,
   GetTaskByNameParams,
+  GetTaskByIdParams,
   Task,
 } from './types';
 
@@ -30,7 +31,7 @@ export default class TaskService {
     return TaskReader.getTasks(params);
   }
 
-  public static async getTaskById(taskId: string): Promise<Task> {
-    return TaskReader.getTaskById(taskId);
+  public static async getTaskById(params: GetTaskByIdParams): Promise<Task> {
+    return TaskReader.getTaskById(params);
   }
 }
