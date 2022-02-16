@@ -42,12 +42,6 @@ export default class TaskWriter {
           active: false,
         },
       },
-      {
-        new: true,
-        upsert: true,
-        runValidators: true,
-        context: 'query',
-      },
     );
   }
 }
