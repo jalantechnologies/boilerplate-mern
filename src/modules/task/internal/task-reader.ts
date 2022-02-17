@@ -6,13 +6,12 @@ import {
   PaginationParams,
   GetTaskByNameParams,
   TaskWithNameNotFoundError,
-  GetTaskByIdParams,
 } from '../types';
 import TaskRepository from './store/task-repository';
 import TaskUtil from './task-util';
 
 export default class TaskReader {
-  public static async getTask(params: GetTaskParams): Promise<Task> {
+  public static async getTaskForAccount(params: GetTaskParams): Promise<Task> {
     const task = await TaskRepository.taskDB.findOne({
       _id: params.taskId,
       account: params.accountId,
@@ -24,7 +23,7 @@ export default class TaskReader {
     return TaskUtil.convertTaskDBToTask(task);
   }
 
-  public static async getTaskByName(params: GetTaskByNameParams): Promise<Task> {
+  public static async getTaskByNameForAccount(params: GetTaskByNameParams): Promise<Task> {
     const task = await TaskRepository.taskDB.findOne({
       account: params.accountId,
       name: params.name,
@@ -36,7 +35,7 @@ export default class TaskReader {
     return TaskUtil.convertTaskDBToTask(task);
   }
 
-  public static async getTasks(params: GetAllTaskParams): Promise<Task []> {
+  public static async getTasksForAccount(params: GetAllTaskParams): Promise<Task []> {
     const totalTasksCount = await TaskRepository.taskDB
       .countDocuments({
         account: params.accountId,
@@ -52,14 +51,5 @@ export default class TaskReader {
       .limit(paginationParams.size)
       .skip(startIndex);
     return tasks.map((task) => TaskUtil.convertTaskDBToTask(task));
-  }
-
-  public static async getTaskById(params: GetTaskByIdParams): Promise<Task> {
-    const task = await TaskRepository.taskDB.findOne({
-      _id: params.taskId,
-      account: params.accountId,
-      active: true,
-    });
-    return TaskUtil.convertTaskDBToTask(task);
   }
 }

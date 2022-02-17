@@ -59,7 +59,7 @@ describe.skip('Task Service.', () => {
 
   it('GET "/api/accounts/:accountId/tasks" should return a list of all tasks for a particular accountId.', async () => {
 
-    const previousTasks = await TaskService.getTasks({
+    const previousTasks = await TaskService.getTasksForAccount({
       accountId,
     });
     expect(previousTasks.length).to.eq(0);
@@ -86,7 +86,7 @@ describe.skip('Task Service.', () => {
     expect(res.body).to.be.an('array');
     expect(res.body.length).to.eq(2);
 
-    const afterCreationtasks = await TaskService.getTasks({
+    const afterCreationtasks = await TaskService.getTasksForAccount({
       accountId,
     });
     expect(afterCreationtasks.length).to.eq(2);
@@ -98,7 +98,7 @@ describe.skip('Task Service.', () => {
       name: 'simple task.'
     };
 
-    await expect(TaskService.getTaskByName({
+    await expect(TaskService.getTaskByNameForAccount({
       accountId,
       name: params.name
     })).to.be.rejectedWith(`Task with name ${params.name} not found.`);
@@ -117,7 +117,7 @@ describe.skip('Task Service.', () => {
     expect(res.body.account).to.eq(accountId);
     expect(res.body.name).to.eq('simple task.');
 
-    const createdTask = await TaskService.getTask({
+    const createdTask = await TaskService.getTaskForAccount({
       accountId,
       taskId: res.body.id
     });
@@ -135,7 +135,7 @@ describe.skip('Task Service.', () => {
     };
 
     try {
-      task = await TaskService.getTaskByName({
+      task = await TaskService.getTaskByNameForAccount({
         accountId,
         name: params.name,
       });
@@ -165,7 +165,7 @@ describe.skip('Task Service.', () => {
     expect(res.body.name).to.eq(taskName);
     expect(res.body.id).to.eq(taskId);
 
-    const particularTask = await TaskService.getTask({
+    const particularTask = await TaskService.getTaskForAccount({
       accountId,
       taskId: res.body.id
     });
@@ -182,7 +182,7 @@ describe.skip('Task Service.', () => {
     };
 
     try {
-      task = await TaskService.getTaskByName({
+      task = await TaskService.getTaskByNameForAccount({
         accountId,
         name: params.name,
       });
@@ -239,7 +239,7 @@ describe.skip('Task Service.', () => {
     };
 
     try {
-      task = await TaskService.getTaskByName({
+      task = await TaskService.getTaskByNameForAccount({
         accountId,
         name: params.name,
       });

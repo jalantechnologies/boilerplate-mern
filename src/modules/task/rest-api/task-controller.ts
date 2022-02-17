@@ -58,7 +58,7 @@ export default class TaskController {
         page,
         size,
       };
-      const tasks = await TaskService.getTasks(params);
+      const tasks = await TaskService.getTasksForAccount(params);
       res.status(200).send(tasks.map((task) => TaskController.serializeTaskAsJSON(task)));
     } catch (e) {
       next(e);
@@ -75,7 +75,7 @@ export default class TaskController {
         accountId: req.params.accountId,
         taskId: req.params.id,
       };
-      const task = await TaskService.getTask(params);
+      const task = await TaskService.getTaskForAccount(params);
       res.status(200).send(TaskController.serializeTaskAsJSON(task));
     } catch (e) {
       next(e);

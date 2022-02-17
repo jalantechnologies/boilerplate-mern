@@ -32,7 +32,7 @@ export default class TaskWriter {
       accountId: params.accountId,
       taskId: params.taskId,
     };
-    const task = await TaskReader.getTask(taskParams);
+    const task = await TaskReader.getTaskForAccount(taskParams);
     await TaskRepository.taskDB.findOneAndUpdate(
       {
         _id: task.id,

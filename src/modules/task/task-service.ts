@@ -6,7 +6,6 @@ import {
   GetAllTaskParams,
   GetTaskParams,
   GetTaskByNameParams,
-  GetTaskByIdParams,
   Task,
 } from './types';
 
@@ -19,19 +18,15 @@ export default class TaskService {
     return TaskWriter.deleteTask(params);
   }
 
-  public static async getTask(params: GetTaskParams): Promise<Task> {
-    return TaskReader.getTask(params);
+  public static async getTaskForAccount(params: GetTaskParams): Promise<Task> {
+    return TaskReader.getTaskForAccount(params);
   }
 
-  public static async getTaskByName(params: GetTaskByNameParams): Promise<Task> {
-    return TaskReader.getTaskByName(params);
+  public static async getTaskByNameForAccount(params: GetTaskByNameParams): Promise<Task> {
+    return TaskReader.getTaskByNameForAccount(params);
   }
 
-  public static async getTasks(params: GetAllTaskParams): Promise<Task[]> {
-    return TaskReader.getTasks(params);
-  }
-
-  public static async getTaskById(params: GetTaskByIdParams): Promise<Task> {
-    return TaskReader.getTaskById(params);
+  public static async getTasksForAccount(params: GetAllTaskParams): Promise<Task[]> {
+    return TaskReader.getTasksForAccount(params);
   }
 }
