@@ -56,16 +56,6 @@ export class TaskWithNameExistsError extends AppError {
   }
 }
 
-export class UnAuthorizedTaskAccessError extends AppError {
-  code: TaskErrorCode;
-
-  constructor(taskId: string) {
-    super(`Cannot access task with taskId ${taskId}`);
-    this.code = TaskErrorCode.UNAUTHORIZED_TASK_ACCESS;
-    this.httpStatusCode = 401;
-  }
-}
-
 export class TaskNotFoundError extends AppError {
   code: TaskErrorCode;
 

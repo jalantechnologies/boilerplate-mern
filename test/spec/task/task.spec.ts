@@ -64,16 +64,17 @@ describe.skip('Task Service.', () => {
     });
     expect(previousTasks.length).to.eq(0);
 
-    for(let i = 0; i < 2;i++) {
-      await chai
-        .request(app)
-        .post(`/api/accounts/${accountId}/tasks`)
-        .set('content-type', 'application/json')
-        .set('Authorization', `Bearer ${accessToken}`)
-        .send({
-          name: `${i}`
-        });
+    for(let i = 0;i < 2;i++) {
+      await TaskService.createTask({
+        accountId,
+        name: `${i}`
+      });
     }
+
+    const beforeTestCreatedTasks = await TaskService.getTasksForAccount({
+      accountId,
+    });
+    expect(beforeTestCreatedTasks.length).to.eq(2);
 
     const res = await chai
       .request(app)
@@ -86,10 +87,10 @@ describe.skip('Task Service.', () => {
     expect(res.body).to.be.an('array');
     expect(res.body.length).to.eq(2);
 
-    const afterCreationtasks = await TaskService.getTasksForAccount({
+    const afterTestCreatedtasks = await TaskService.getTasksForAccount({
       accountId,
     });
-    expect(afterCreationtasks.length).to.eq(2);
+    expect(afterTestCreatedtasks.length).to.eq(2);
   });
 
   it('POST "/api/accounts/:accountId/tasks" should create a new task.', async () => {
@@ -115,7 +116,7 @@ describe.skip('Task Service.', () => {
     expect(res.body).to.have.property('account');
     expect(res.body).to.have.property('name');
     expect(res.body.account).to.eq(accountId);
-    expect(res.body.name).to.eq('simple task.');
+    expect(res.body.name).to.eq(params.name);
 
     const createdTask = await TaskService.getTaskForAccount({
       accountId,
@@ -140,14 +141,10 @@ describe.skip('Task Service.', () => {
         name: params.name,
       });
     } catch (e) {
-      const res = await chai
-        .request(app)
-        .post(`/api/accounts/${accountId}/tasks`)
-        .set('content-type', 'application/json')
-        .set('Authorization', `Bearer ${accessToken}`)
-        .send(params);
-      expect(res).to.have.status(201);
-      task = res.body;
+      task = await TaskService.createTask({
+        accountId,
+        name: params.name,
+      });
     }
 
     const taskId = task.id;
@@ -171,6 +168,8 @@ describe.skip('Task Service.', () => {
     });
     expect(particularTask).not.to.be.undefined;
     expect(particularTask).to.have.property('id');
+    expect(particularTask.id).to.eq(taskId);
+    expect(particularTask.name).to.eq(taskName);
   });
 
   it('GET "/api/accounts/:accountId/tasks/:taskId" should return 404 Not Found Error if task is deleted.', async () => {
@@ -187,14 +186,10 @@ describe.skip('Task Service.', () => {
         name: params.name,
       });
     } catch (e) {
-      const res = await chai
-        .request(app)
-        .post(`/api/accounts/${accountId}/tasks`)
-        .set('content-type', 'application/json')
-        .set('Authorization', `Bearer ${accessToken}`)
-        .send(params);
-      expect(res).to.have.status(201);
-      task = res.body;
+      task = await TaskService.createTask({
+        accountId,
+        name: params.name,
+      });
     }
     const taskId = task.id;
 
@@ -203,7 +198,7 @@ describe.skip('Task Service.', () => {
       .request(app)
       .get(`/api/accounts/${accountId}/tasks/${taskId}`)
       .set('content-type', 'application/json')
-      .set('Authorization', `Beare ${accessToken}`)
+      .set('Authorization', `Bearer ${accessToken}`)
       .send();
     expect(res).not.to.have.status(200);
     expect(res.body).to.have.property('id');
@@ -244,17 +239,23 @@ describe.skip('Task Service.', () => {
         name: params.name,
       });
     } catch (e) {
-      const res = await chai
-        .request(app)
-        .post(`/api/accounts/${accountId}/tasks`)
-        .set('content-type', 'application/json')
-        .set('Authorization', `Bearer ${accessToken}`)
-        .send(params);
-      expect(res).to.have.status(201);
-      task = res.body;
+      task = await TaskService.createTask({
+        accountId,
+        name: params.name,
+      })
     }
 
     const taskId = task.id;
+    const isTaskCreated = await TaskService.getTaskForAccount({
+      accountId,
+      taskId,
+    });
+    
+    expect(isTaskCreated).not.to.be.undefined;
+    expect(isTaskCreated).to.have.property('id');
+    expect(isTaskCreated).to.have.property('name');
+    expect(isTaskCreated.id).to.eq(taskId);
+    expect(isTaskCreated.name).to.eq(params.name);
 
     // deleting the task with the given task Id
     res = await chai
