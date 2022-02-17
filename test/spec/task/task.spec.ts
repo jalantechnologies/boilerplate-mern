@@ -150,6 +150,15 @@ describe.skip('Task Service.', () => {
     const taskId = task.id;
     const taskName = task.name;
 
+    const isTaskCreated = await TaskService.getTaskForAccount({
+      accountId,
+      taskId,
+    });
+    expect(isTaskCreated).not.to.be.undefined;
+    expect(isTaskCreated).to.have.property('id');
+    expect(isTaskCreated.id).to.eq(taskId);
+    expect(isTaskCreated.name).to.eq(taskName);
+
     res = await chai
       .request(app)
       .get(`/api/accounts/${accountId}/tasks/${taskId}`)
@@ -192,6 +201,15 @@ describe.skip('Task Service.', () => {
       });
     }
     const taskId = task.id;
+    
+    const isTaskCreated = await TaskService.getTaskForAccount({
+      accountId,
+      taskId,
+    });
+    expect(isTaskCreated).not.to.be.undefined;
+    expect(isTaskCreated).to.have.property('id');
+    expect(isTaskCreated.id).to.eq(taskId);
+    expect(isTaskCreated.name).to.eq(params.name);
 
     // trying to get task before deletion.
     res = await chai
