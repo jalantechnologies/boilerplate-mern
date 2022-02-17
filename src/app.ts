@@ -4,7 +4,6 @@ import serverErrorHandler from './error-handler';
 import AccesstokenServiceManager from './modules/access-token/access-token-manager';
 import AccountServiceManager from './modules/account/account-service-manager';
 import CommunicationServiceManager from './modules/communication/communication-service-manager';
-import TaskServiceManager from './modules/task/task-service-manager';
 import ConfigManager from './modules/config/config-manager';
 import ConfigService from './modules/config/config-service';
 import LoggerManager from './modules/logger/logger-manager';
@@ -34,9 +33,6 @@ export default class App {
 
     const restAPIServices = await this.createRESTApiServer();
     this.app.use('/api', restAPIServices);
-
-    const taskServiceRESTApi = await TaskServiceManager.createRestAPIServer();
-    this.app.use('/', taskServiceRESTApi);
 
     // Error handling
     this.app.use(serverErrorHandler);
