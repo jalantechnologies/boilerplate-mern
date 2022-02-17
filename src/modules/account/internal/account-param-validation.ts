@@ -28,6 +28,7 @@ export default class AccountParamValidation {
       });
     }
   }
+
   public static isPasswordValid(
     password: string,
     failures: ValidationFailure[],
