@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/node:12.14.1
+      - image: cimg/node:12.14.1
     steps:
       - checkout
       - restore_cache:
@@ -11,7 +11,7 @@ jobs:
             - v1-dependencies-
       - run:
           name: Install dependencies
-          command: npm install
+          command: npm install && npm install --prefix=$HOME/.local --global gulp
       - save_cache:
           paths:
             - node_modules
@@ -26,7 +26,7 @@ jobs:
             - dist/*
   lint:
     docker:
-      - image: circleci/node:12.14.1
+      - image: cimg/node:12.14.1
     steps:
       - checkout
       - attach_workspace:
@@ -36,22 +36,23 @@ jobs:
           command: npm run lint
   test:
     docker:
-      - image: circleci/node:12.14.1
+      - image: cimg/node:12.14.1
     steps:
       - checkout
+      - setup_remote_docker
       - attach_workspace:
           at: /home/circleci/project
       - run:
           name: Automated tests
-          command: npm run test
+          command: npm run docker-test
 workflows:
   version: 2
   app:
     jobs:
       - build
-      - lint:
-          requires:
-            - build
+      # - lint:
+      #     requires:
+      #       - build
       - test:
           requires:
             - build

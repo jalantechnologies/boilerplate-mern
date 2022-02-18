@@ -3,8 +3,12 @@ import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
 import express from 'express';
 import sinon from 'sinon';
+import serverErrorHandler from '../../../src/error-handler';
 import AccountServiceManager from '../../../src/modules/account/account-service-manager';
+import AccountWriter from '../../../src/modules/account/internal/account-writer';
+import AccountRepository from '../../../src/modules/account/internal/store/account-repository';
 import { AccountWithUserNameExistsError } from '../../../src/modules/account/types';
+import Loggers from '../../../src/modules/logger/internals/loggers';
 
 chai.use(chaiHttp);
 
@@ -12,16 +16,18 @@ let sinonSandbox: sinon.SinonSandbox;
 
 let app: any;
 
-// TODO: Enable after docker integration
-describe.skip('Account Service', () => {
+describe('Account Service', () => {
   before(async () => {
     const server = await AccountServiceManager.createRestAPIServer();
     app = express();
     app.use('/', server);
+    app.use(serverErrorHandler);
+    Loggers.initializeLoggers();
   });
 
-  beforeEach(() => {
+  beforeEach(async () => {
     sinonSandbox = sinon.createSandbox();
+    await AccountRepository.accountDB.deleteMany();
   });
 
   afterEach(() => {
@@ -29,25 +35,26 @@ describe.skip('Account Service', () => {
   });
 
   it('POST /account should create a new account', async () => {
-    const params = { username: 'useranme', password: 'password' };
+    const params = { username: 'username', password: 'password' };
     const res = await chai
       .request(app)
       .post('/accounts')
       .set('content-type', 'application/json')
       .send(params);
 
-    expect(res.body.useranme).to.eq(params.username);
+    expect(res.body.username).to.eq(params.username);
   });
 
   it('POST /account should throw if account with username already exists', async () => {
-    const params = { username: 'useranme', password: 'password' };
+    const params = { username: 'name', password: 'password' };
+    await AccountWriter.createAccount(params);
     const res = await chai
       .request(app)
       .post('/accounts')
       .set('content-type', 'application/json')
       .send(params);
 
-    expect(res.body.error).to.eq(
+    expect(res.body.message).to.eq(
       new AccountWithUserNameExistsError(params.username).message,
     );
   });

@@ -14,7 +14,7 @@ let sinonSandbox: sinon.SinonSandbox;
 let app: any;
 
 // TODO: Enable after docker integration
-describe.skip('POST /access-tokens', () => {
+describe('POST /access-tokens', () => {
   before(async () => {
     const accessTokenRESTApiServer =
       await AccesstokenServiceManager.createRestAPIServer();
@@ -23,8 +23,9 @@ describe.skip('POST /access-tokens', () => {
     app.use('/', accessTokenRESTApiServer);
   });
 
-  beforeEach(() => {
+  beforeEach(async () => {
     sinonSandbox = sinon.createSandbox();
+    await AccountRepository.accountDB.deleteMany();
   });
 
   afterEach(() => {
@@ -35,7 +36,7 @@ describe.skip('POST /access-tokens', () => {
     sinonSandbox.stub(ConfigService, 'getStringValue').returns('1h');
 
     const params = { username: 'username', password: 'password' };
-    AccountWriter.createAccount(params);
+    await AccountWriter.createAccount(params);
 
     const res = await chai
       .request(app)
