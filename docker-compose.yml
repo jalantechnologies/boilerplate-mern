@@ -1,0 +1,11 @@
+version: "2"
+services:
+  node:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    entrypoint: [ "npm", "run", "test" ]
+    depends_on:
+    - mongo
+  mongo:
+    image: mongo:5.0

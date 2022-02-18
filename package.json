@@ -10,9 +10,10 @@
   "scripts": {
     "build": "gulp",
     "test": "NODE_ENV=production NODE_CONFIG_ENV=testing mocha --exit -r ts-node/register --project tsconfig.json test/**/*.spec.ts",
+    "docker-test": "docker-compose up --build --abort-on-container-exit",
     "lint": "eslint .",
-    "lint:fix": "eslint --fix .",
     "lint:md": "remark .",
+    "lint:fix": "eslint --fix .",
     "start": "node dist/src/server.js",
     "serve": "gulp serve"
   },
