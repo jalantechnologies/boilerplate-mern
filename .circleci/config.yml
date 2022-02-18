@@ -50,9 +50,9 @@ workflows:
   app:
     jobs:
       - build
-      # - lint:
-      #     requires:
-      #       - build
+      - lint:
+          requires:
+            - build
       - test:
           requires:
             - build
