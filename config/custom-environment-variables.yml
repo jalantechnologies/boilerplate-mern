@@ -20,3 +20,5 @@ sendgridApiKey: "SENDGRID_API_KEY"
 mongoDb:
   uri: "MONGODB_URI"
 
+server:
+  port: "PORT"
