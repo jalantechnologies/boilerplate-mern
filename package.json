@@ -41,9 +41,10 @@
     "express": "^4.17.2",
     "google-libphonenumber": "^3.2.27",
     "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.2.1",
     "rollbar": "^2.24.0",
     "twilio": "^3.74.0",
-    "mongoose": "^6.2.1"
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
