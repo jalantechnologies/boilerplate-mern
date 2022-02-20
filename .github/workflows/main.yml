@@ -1,4 +1,4 @@
-name: deploy:heroku:create-app
+name: deploy:heroku:deploy-app
 
 on:
   push:
@@ -6,13 +6,13 @@ on:
       - 'release/**'
 
 jobs:
-  create_app:
+  deploy_app:
     runs-on: ubuntu-latest
     steps:
       - name: git-checkout
         uses: actions/checkout@v2
 
-      - name: heroku-create-app
+      - name: heroku-deploy-app
         uses: akhileshns/heroku-deploy@v3.12.12
         env:
           HD_NODE_CONFIG_ENV: "qa"
@@ -20,6 +20,7 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_email: ${{secrets.HEROKU_EMAIL}}
           heroku_app_name: "node-ts-boilerplate-qa"
+          dontautocreate: true
 
       - name: heroku-add-to-pipeline
         run: heroku pipelines:add backend-pipeline --app=node-ts-boilerplate-qa --stage=staging || true
