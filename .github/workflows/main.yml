@@ -21,6 +21,3 @@ jobs:
           heroku_email: ${{secrets.HEROKU_EMAIL}}
           heroku_app_name: "node-ts-boilerplate-qa"
           dontautocreate: true
-
-      - name: heroku-add-to-pipeline
-        run: heroku pipelines:add backend-pipeline --app=node-ts-boilerplate-qa --stage=staging || true

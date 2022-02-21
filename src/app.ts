@@ -41,7 +41,7 @@ export default class App {
     // Error handling
     this.app.use(serverErrorHandler);
 
-    const port = process.env.PORT || ConfigService.getIntValue('server.port');
+    const port = ConfigService.getStringValue('server.port');
     return this.app.listen(port);
   }
 }
