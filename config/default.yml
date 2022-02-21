@@ -3,4 +3,4 @@ jwt:
 
 server:
   port:
-    8080
+    '8080'
