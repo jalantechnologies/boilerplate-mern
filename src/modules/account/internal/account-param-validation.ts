@@ -1,9 +1,9 @@
+import zxcvbn from 'zxcvbn';
 import {
   CreateAccountParams,
   ValidationError,
   ValidationFailure,
 } from '../types';
-import zxcvbn from 'zxcvbn';
 import emailRegex from '../constants';
 
 export default class AccountParamValidation {
