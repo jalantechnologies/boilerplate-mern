@@ -16,7 +16,7 @@ twilio:
 sendgridApiKey: "SENDGRID_API_KEY"
 
 mongoDb:
-  uri: "mongodb://mongo:27017/boilerplate-test"
+  uri: "mongodb://localhost:27017/boilerplate-test"
 
 server:
   port: 8080

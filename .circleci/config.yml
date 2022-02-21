@@ -37,6 +37,7 @@ jobs:
   test:
     docker:
       - image: cimg/node:12.14.1
+      - image: mongo:5.0
     steps:
       - checkout
       - setup_remote_docker
@@ -44,7 +45,7 @@ jobs:
           at: /home/circleci/project
       - run:
           name: Automated tests
-          command: npm run docker-test
+          command: npm run test
 workflows:
   version: 2
   app:
