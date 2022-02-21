@@ -23,6 +23,7 @@ export enum AccountErrorCode {
   USERNAME_ALREADY_EXISTS = 'ACCOUNT_ERR_01',
   NOT_FOUND = 'ACCOUNT_ERR_02',
   INVALID_CREDENTIALS = 'ACCOUNT_ERR_03',
+  VALIDATION_ERROR = 'ACCOUNT_ERR_04',
 }
 
 export class AccountWithUserNameExistsError extends AppError {
@@ -52,5 +53,23 @@ export class InvalidCredentialsError extends AppError {
     super(`Invalid credentials for ${username}. Please try again.`);
     this.code = AccountErrorCode.NOT_FOUND;
     this.httpStatusCode = 401;
+  }
+}
+
+export type ValidationFailure = {
+  field: string;
+  message: string;
+};
+
+export class ValidationError extends AppError {
+  code: AccountErrorCode;
+
+  failures: ValidationFailure[];
+
+  constructor(msg: string, failures: ValidationFailure[] = []) {
+    super(msg);
+    this.code = AccountErrorCode.VALIDATION_ERROR;
+    this.failures = failures;
+    this.httpStatusCode = 400;
   }
 }

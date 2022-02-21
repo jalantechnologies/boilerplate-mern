@@ -51,4 +51,26 @@ describe.skip('Account Service', () => {
       new AccountWithUserNameExistsError(params.username).message,
     );
   });
+  
+  it('POST /account should throw validation error if username is invalid', async () => {
+    const params = { username: 'user', password: 'password' };
+    const res = await chai
+      .request(app)
+      .post('/accounts')
+      .set('content-type', 'application/json')
+      .send(params);
+
+    expect(res.body.httpStatusCode).to.eq(400);
+  });
+
+  it('POST /account should throw validation error if password is weak', async () => {
+    const params = { username: 'user@test.dev', password: 'pas' };
+    const res = await chai
+      .request(app)
+      .post('/accounts')
+      .set('content-type', 'application/json')
+      .send(params);
+
+    expect(res.body.httpStatusCode).to.eq(400);
+  });
 });
