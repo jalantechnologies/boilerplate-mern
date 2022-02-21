@@ -29,18 +29,18 @@ describe.skip('Account Service', () => {
   });
 
   it('POST /account should create a new account', async () => {
-    const params = { username: 'useranme', password: 'password' };
+    const params = { username: 'user@test.dev', password: 'password' };
     const res = await chai
       .request(app)
       .post('/accounts')
       .set('content-type', 'application/json')
       .send(params);
 
-    expect(res.body.useranme).to.eq(params.username);
+    expect(res.body.username).to.eq(params.username);
   });
 
   it('POST /account should throw if account with username already exists', async () => {
-    const params = { username: 'useranme', password: 'password' };
+    const params = { username: 'user@test.dev', password: 'password' };
     const res = await chai
       .request(app)
       .post('/accounts')
@@ -50,5 +50,27 @@ describe.skip('Account Service', () => {
     expect(res.body.error).to.eq(
       new AccountWithUserNameExistsError(params.username).message,
     );
+  });
+
+  it('POST /account should throw validation error if username is invalid', async () => {
+    const params = { username: 'user', password: 'password' };
+    const res = await chai
+      .request(app)
+      .post('/accounts')
+      .set('content-type', 'application/json')
+      .send(params);
+
+    expect(res.body.httpStatusCode).to.eq(400);
+  });
+
+  it('POST /account should throw validation error if password is weak', async () => {
+    const params = { username: 'user@test.dev', password: 'pas' };
+    const res = await chai
+      .request(app)
+      .post('/accounts')
+      .set('content-type', 'application/json')
+      .send(params);
+
+    expect(res.body.httpStatusCode).to.eq(400);
   });
 });

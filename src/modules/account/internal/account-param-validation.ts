@@ -3,6 +3,8 @@ import {
   ValidationError,
   ValidationFailure,
 } from '../types';
+import zxcvbn from 'zxcvbn';
+import emailRegex from '../constants';
 
 export default class AccountParamValidation {
   public static validate(params: CreateAccountParams): void {
@@ -17,14 +19,12 @@ export default class AccountParamValidation {
     }
   }
 
-  public static isUsernameValid(
-    username: string,
-    failures: ValidationFailure[],
-  ) {
-    if (username.length < 8) {
+  public static isUsernameValid(email: string, failures: ValidationFailure[]) {
+    const emailValid = emailRegex.test(String(email).toLowerCase());
+    if (!emailValid) {
       failures.push({
-        field: 'password',
-        message: 'Username must be at least 8 characters.',
+        field: 'username',
+        message: 'Please specify valid email.',
       });
     }
   }
@@ -33,22 +33,13 @@ export default class AccountParamValidation {
     password: string,
     failures: ValidationFailure[],
   ) {
-    if (password.length < 8) {
-      failures.push({
-        field: 'password',
-        message: 'Your password must be at least 8 characters.',
-      });
-    }
-    if (password.search(/[a-z]/i) < 0) {
-      failures.push({
-        field: 'password',
-        message: 'Your password must contain at least one letter.',
-      });
-    }
-    if (password.search(/[0-9]/) < 0) {
-      failures.push({
-        field: 'password',
-        message: 'Your password must contain at least one digit.',
+    const passwordStrength = zxcvbn(password);
+    if (passwordStrength.score < 3) {
+      passwordStrength.feedback.suggestions.forEach((msg) => {
+        failures.push({
+          field: 'password',
+          message: msg,
+        });
       });
     }
   }

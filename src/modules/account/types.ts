@@ -60,6 +60,7 @@ export type ValidationFailure = {
   field: string;
   message: string;
 };
+
 export class ValidationError extends AppError {
   code: AccountErrorCode;
 
@@ -69,6 +70,6 @@ export class ValidationError extends AppError {
     super(msg);
     this.code = AccountErrorCode.VALIDATION_ERROR;
     this.failures = failures;
-    this.httpStatusCode = 403;
+    this.httpStatusCode = 400;
   }
 }
