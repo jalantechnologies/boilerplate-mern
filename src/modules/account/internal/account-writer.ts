@@ -10,8 +10,8 @@ export default class AccountWriter {
     params: CreateAccountParams,
   ): Promise<Account> {
     try {
-      await AccountReader.checkUsernameNotExists(params);
       AccountParamValidation.validate(params);
+      await AccountReader.checkUsernameNotExists(params);
       const hashedPassword = await AccountUtil.hashPassword(params.password);
       const dbAccount = await AccountRepository.accountDB.create({
         username: params.username,
