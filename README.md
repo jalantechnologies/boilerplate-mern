@@ -6,6 +6,7 @@ Boilerplate project for NodeJS based projects in TypeScript. This README documen
 
 - [Getting Started](#getting-started)
 - [Configuration](#configuration)
+- [CI](#ci)
 
 ## Getting Started
 
@@ -13,7 +14,7 @@ Boilerplate project for NodeJS based projects in TypeScript. This README documen
 
 - Node - [Download Link](https://nodejs.org/en/download/)
 
-*Scripts:*
+_Scripts:_
 
 - Install dependencies - `npm install`
 - Build Project - `npm build`
@@ -22,7 +23,7 @@ Boilerplate project for NodeJS based projects in TypeScript. This README documen
 - Run Lint (JavaScript and TypeScript) - `npm run lint`
 - Run Lint (Markdown) - `npm run lint:md`
 
-*Docker Support:*
+_Docker Support:_
 
 - Project has inbuilt docker support for running in a containerized environment
 
@@ -58,3 +59,7 @@ In the `config` directory:
 Each entry here in this documentation follows the following structure:
 
 `object.notation` `data-type` `ENVIRONMENT_OVERRIDE` (if available) - Description (Default - `value`)
+
+## CI
+
+This project uses [CircleCI](https://circleci.com/) for CI. A [docker executor](https://circleci.com/docs/2.0/executor-types/#using-multiple-docker-images) is set up using multiple docker images (node and mongo). The application is built using the node container and connects to mongo container for db connections. Other external API calls are mocked.
