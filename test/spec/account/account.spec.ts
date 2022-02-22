@@ -1,30 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
-import express from 'express';
 import sinon from 'sinon';
-import serverErrorHandler from '../../../src/error-handler';
-import AccountServiceManager from '../../../src/modules/account/account-service-manager';
 import AccountWriter from '../../../src/modules/account/internal/account-writer';
 import AccountRepository from '../../../src/modules/account/internal/store/account-repository';
 import { AccountWithUserNameExistsError } from '../../../src/modules/account/types';
-import Loggers from '../../../src/modules/logger/internals/loggers';
+import { app } from '../helpers/helper.spec';
 
 chai.use(chaiHttp);
 
 let sinonSandbox: sinon.SinonSandbox;
 
-let app: any;
-
 describe('Account Service', () => {
-  before(async () => {
-    const server = await AccountServiceManager.createRestAPIServer();
-    app = express();
-    app.use('/', server);
-    app.use(serverErrorHandler);
-    Loggers.initializeLoggers();
-  });
-
   beforeEach(async () => {
     sinonSandbox = sinon.createSandbox();
   });
@@ -37,7 +24,7 @@ describe('Account Service', () => {
     const params = { username: 'username', password: 'password' };
     const res = await chai
       .request(app)
-      .post('/accounts')
+      .post('/api/accounts')
       .set('content-type', 'application/json')
       .send(params);
 
@@ -50,7 +37,7 @@ describe('Account Service', () => {
     await AccountWriter.createAccount(params);
     const res = await chai
       .request(app)
-      .post('/accounts')
+      .post('/api/accounts')
       .set('content-type', 'application/json')
       .send(params);
 

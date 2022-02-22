@@ -1,27 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
-import express from 'express';
 import sinon from 'sinon';
-import AccesstokenServiceManager from '../../../src/modules/access-token/access-token-manager';
 import AccountWriter from '../../../src/modules/account/internal/account-writer';
 import AccountRepository from '../../../src/modules/account/internal/store/account-repository';
 import ConfigService from '../../../src/modules/config/config-service';
+import { app } from '../helpers/helper.spec';
 
 chai.use(chaiHttp);
 
 let sinonSandbox: sinon.SinonSandbox;
-let app: any;
 
 describe('POST /access-tokens', () => {
-  before(async () => {
-    const accessTokenRESTApiServer =
-      await AccesstokenServiceManager.createRestAPIServer();
-    await AccountRepository.createDBConnection();
-    app = express();
-    app.use('/', accessTokenRESTApiServer);
-  });
-
   beforeEach(async () => {
     sinonSandbox = sinon.createSandbox();
   });
@@ -38,7 +28,7 @@ describe('POST /access-tokens', () => {
 
     const res = await chai
       .request(app)
-      .post('/access-tokens')
+      .post('/api/access-tokens')
       .set('content-type', 'application/json')
       .send(params);
 
