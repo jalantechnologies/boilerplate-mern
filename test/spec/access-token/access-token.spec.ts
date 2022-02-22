@@ -13,7 +13,6 @@ chai.use(chaiHttp);
 let sinonSandbox: sinon.SinonSandbox;
 let app: any;
 
-// TODO: Enable after docker integration
 describe('POST /access-tokens', () => {
   before(async () => {
     const accessTokenRESTApiServer =
@@ -25,7 +24,6 @@ describe('POST /access-tokens', () => {
 
   beforeEach(async () => {
     sinonSandbox = sinon.createSandbox();
-    await AccountRepository.accountDB.deleteMany();
   });
 
   afterEach(() => {
@@ -45,5 +43,6 @@ describe('POST /access-tokens', () => {
       .send(params);
 
     expect(res.body.token).to.be.a('string');
+    await AccountRepository.accountDB.deleteOne({ username: params.username });
   });
 });

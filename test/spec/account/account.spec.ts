@@ -27,7 +27,6 @@ describe('Account Service', () => {
 
   beforeEach(async () => {
     sinonSandbox = sinon.createSandbox();
-    await AccountRepository.accountDB.deleteMany();
   });
 
   afterEach(() => {
@@ -43,6 +42,7 @@ describe('Account Service', () => {
       .send(params);
 
     expect(res.body.username).to.eq(params.username);
+    await AccountRepository.accountDB.deleteOne({ username: params.username });
   });
 
   it('POST /account should throw if account with username already exists', async () => {
@@ -57,5 +57,6 @@ describe('Account Service', () => {
     expect(res.body.message).to.eq(
       new AccountWithUserNameExistsError(params.username).message,
     );
+    await AccountRepository.accountDB.deleteOne({ username: params.username });
   });
 });
