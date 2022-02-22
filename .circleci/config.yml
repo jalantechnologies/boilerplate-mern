@@ -40,7 +40,6 @@ jobs:
       - image: mongo:5.0
     steps:
       - checkout
-      - setup_remote_docker
       - attach_workspace:
           at: /home/circleci/project
       - run:
