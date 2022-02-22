@@ -34,6 +34,15 @@ export default class AccountParamValidation {
     failures: ValidationFailure[],
   ): void {
     const passwordStrength = zxcvbn(password);
+    /*
+    PasswordStrength
+    0 too guessable
+    1 very guessable
+    2 somewhat guessable
+    3 safely unguessable
+    4 very unguessable:
+    PasswordStrength 3 is of medium difficulty and code should throw for less than 3.
+    */
     if (passwordStrength.score < 3) {
       passwordStrength.feedback.suggestions.forEach((msg) => {
         failures.push({
