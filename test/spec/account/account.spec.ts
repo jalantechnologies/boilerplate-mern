@@ -51,9 +51,9 @@ describe.skip('Account Service', () => {
       new AccountWithUserNameExistsError(params.username).message,
     );
   });
-  
+
   it('POST /account should throw validation error if username is invalid', async () => {
-    const params = { username: 'user', password: 'password' };
+    const params = { username: 'user', password: 'password@23kd' };
     const res = await chai
       .request(app)
       .post('/accounts')
@@ -61,6 +61,9 @@ describe.skip('Account Service', () => {
       .send(params);
 
     expect(res.body.httpStatusCode).to.eq(400);
+    expect(res.body)
+      .to.have.nested.property("failures[0].message")
+      .to.equal("Please specify valid email.");
   });
 
   it('POST /account should throw validation error if password is weak', async () => {
@@ -72,5 +75,8 @@ describe.skip('Account Service', () => {
       .send(params);
 
     expect(res.body.httpStatusCode).to.eq(400);
+    expect(res.body)
+      .to.have.nested.property("failures[0].message")
+      .to.equal("Add another word or two.Uncommon words are better.");
   });
 });

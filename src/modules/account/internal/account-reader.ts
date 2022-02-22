@@ -4,6 +4,7 @@ import {
   AccountSearchParams,
   AccountWithUserNameExistsError,
   InvalidCredentialsError,
+  ValidationFailure,
 } from '../types';
 import AccountUtil from './account-util';
 import AccountRepository from './store/account-repository';
@@ -43,7 +44,12 @@ export default class AccountReader {
       active: true,
     });
     if (dbAccount) {
-      throw new AccountWithUserNameExistsError(params.username);
+      const failures: ValidationFailure[] = [];
+      failures.push({
+        field: 'username',
+        message: 'Username already exists.',
+      });
+      throw new AccountWithUserNameExistsError(params.username, failures);
     }
   }
 }

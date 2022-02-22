@@ -29,9 +29,12 @@ export enum AccountErrorCode {
 export class AccountWithUserNameExistsError extends AppError {
   code: AccountErrorCode;
 
-  constructor(username: string) {
+  failures: ValidationFailure[];
+
+  constructor(username: string, failures: ValidationFailure[] = []) {
     super(`An account with username ${username} already exists.`);
     this.code = AccountErrorCode.USERNAME_ALREADY_EXISTS;
+    this.failures = failures;
     this.httpStatusCode = 409;
   }
 }
