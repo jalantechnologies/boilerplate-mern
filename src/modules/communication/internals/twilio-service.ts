@@ -24,10 +24,10 @@ export default class TwilioService {
       });
     } catch (e) {
       if (
-        e.code === 21705 || // If messaging service sid is invalid
-        e.code === 20429 || // Too many requests
-        e.code === 20003 || // If Twilio account balance runs out.
-        e.code === 30002 // If twilio account suspended
+        e.code === 21705 // If messaging service sid is invalid
+        || e.code === 20429 // Too many requests
+        || e.code === 20003 // If Twilio account balance runs out.
+        || e.code === 30002 // If twilio account suspended
       ) {
         Logger.error(e.message);
       }
