@@ -1,5 +1,5 @@
 import jsonwebtoken from 'jsonwebtoken';
-import { NextFunction, Request } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import ConfigService from '../../config/config-service';
 import {
   AccessTokenExpiredError,
