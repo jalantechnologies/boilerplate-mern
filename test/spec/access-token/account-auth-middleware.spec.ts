@@ -35,7 +35,7 @@ describe('AccountAuthMiddleware', () => {
     } as any;
 
     assert.throws(
-      () => AccountAuthMiddleware.ensureAccess(req),
+      () => AccountAuthMiddleware.ensureAccess(req, undefined, undefined),
       new UnAuthorizedAccessError().message,
     );
   });
@@ -54,7 +54,7 @@ describe('AccountAuthMiddleware', () => {
     } as any;
 
     assert.throws(
-      () => AccountAuthMiddleware.ensureAccess(req),
+      () => AccountAuthMiddleware.ensureAccess(req, undefined, undefined),
       new AccessTokenExpiredError().message,
     );
   });
@@ -69,7 +69,7 @@ describe('AccountAuthMiddleware', () => {
     } as any;
 
     assert.throws(
-      () => AccountAuthMiddleware.ensureAccess(req),
+      () => AccountAuthMiddleware.ensureAccess(req, undefined, undefined),
       new AuthorizationHeaderNotFound().message,
     );
   });
@@ -86,7 +86,7 @@ describe('AccountAuthMiddleware', () => {
     } as any;
 
     assert.throws(
-      () => AccountAuthMiddleware.ensureAccess(req),
+      () => AccountAuthMiddleware.ensureAccess(req, undefined, undefined),
       new InvalidAuthorizationHeader().message,
     );
   });

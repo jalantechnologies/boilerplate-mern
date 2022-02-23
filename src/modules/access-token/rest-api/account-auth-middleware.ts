@@ -1,5 +1,5 @@
 import jsonwebtoken from 'jsonwebtoken';
-import { Request } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import ConfigService from '../../config/config-service';
 import {
   AccessTokenExpiredError,
@@ -9,7 +9,11 @@ import {
 } from '../types';
 
 export default class AccountAuthMiddleware {
-  public static ensureAccess(req: Request): void {
+  public static ensureAccess(
+    req: Request,
+    _res: Response,
+    next: NextFunction,
+  ): void {
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
@@ -22,7 +26,7 @@ export default class AccountAuthMiddleware {
       const token = authHeader.split(' ')[1];
       verifiedToken = jsonwebtoken.verify(
         token,
-        ConfigService.getStringValue('JWT_SECRET'),
+        ConfigService.getStringValue('jwt.token'),
         { ignoreExpiration: true },
       ) as jsonwebtoken.JwtPayload;
     } catch (e) {
@@ -36,5 +40,6 @@ export default class AccountAuthMiddleware {
     if (verifiedToken.exp * 1000 < Date.now()) {
       throw new AccessTokenExpiredError();
     }
+    next();
   }
 }
