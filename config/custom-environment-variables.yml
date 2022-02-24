@@ -22,3 +22,5 @@ mongoDb:
 
 server:
   port: "PORT"
+
+webAppHost: "WEB_APP_HOST"
