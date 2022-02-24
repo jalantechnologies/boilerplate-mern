@@ -29,7 +29,12 @@ export default class SendGridService {
     try {
       await mail.send(msg);
     } catch (e) {
-      Logger.error(e.message);
+      if (
+        e.code === 429 // Too many requests
+        || e.code === 401 // Authentication error (If SG API key is not valid.)
+      ) {
+        Logger.error(e.message);
+      }
       throw new ThirdPartyServiceError('Email service unavailable.');
     }
   }
