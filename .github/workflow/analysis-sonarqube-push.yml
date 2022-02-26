@@ -1,0 +1,26 @@
+name: analysis:sonarqube:push
+
+on:
+  # Trigger analysis when pushing to default branch
+  push:
+    branches:
+      - develop
+
+jobs:
+  analysis:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        # Disabling shallow clone is recommended for improving relevancy of reporting
+        fetch-depth: 0
+
+    - name: sonarqube-scan-branch
+      uses: sonarsource/sonarqube-scan-action@master
+      with:
+        args: >
+          -Dsonar.branch.name=develop
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
