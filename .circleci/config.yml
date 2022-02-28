@@ -53,8 +53,9 @@ jobs:
       - run:
           name: sonarqube_scan
           command: >-
-                  sonar-scanner-ee
+                  sonar-scanner
                   -Dsonar.login=$SONAR_TOKEN
+                  -Dsonar.host.url=$SONAR_HOST_URL
                   -Dsonar.branch.name=feature/integrate_sonarqube
                   -Dsonar.qualitygate.wait=true
                   -Dsonar.qualitygate.timeout=300
