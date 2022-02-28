@@ -45,6 +45,21 @@ jobs:
       - run:
           name: Automated tests
           command: npm run test
+  analyze:
+    docker:
+      - image: sonarsource/sonar-scanner-cli:latest
+    steps:
+      - checkout
+      - run:
+          name: sonarqube_scan
+          command: >-
+                  sonar-scanner-ee
+                  -Dsonar.login=$SONAR_TOKEN
+                  -Dsonar.branch.name=feature/integrate_sonarqube
+                  -Dsonar.qualitygate.wait=true
+                  -Dsonar.qualitygate.timeout=300
+
+    
 workflows:
   version: 2
   app:
@@ -54,5 +69,8 @@ workflows:
           requires:
             - build
       - test:
+          requires:
+            - build
+      - analyze:
           requires:
             - build
