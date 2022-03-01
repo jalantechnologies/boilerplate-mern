@@ -46,7 +46,7 @@ jobs:
       - run:
           name: Automated tests
           command: npm run test
-  'analyze/pull_request':
+  analyze:
     docker:
       - image: sonarsource/sonar-scanner-cli:latest
     steps:
@@ -68,6 +68,7 @@ jobs:
       - run:
           name: SonarQube - PullRequest Scan
           command: echo "$CIRCLE_PR_NUMBER"
+
 #          command: >-
 #            sonar-scanner
 #            -Dsonar.login=$SONAR_TOKEN
@@ -93,7 +94,7 @@ workflows:
       - test:
           requires:
             - build
-      - 'analyze/pull_request':
+      - analyze:
           requires:
             - build
           filters:
