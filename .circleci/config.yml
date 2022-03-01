@@ -63,25 +63,19 @@ jobs:
                 CIRCLE_PR_NUMBER="$(basename "$CI_PULL_REQUEST")"
             fi
 
-            echo "$CIRCLE_PR_NUMBER"
             echo 'export CIRCLE_PR_NUMBER=$CIRCLE_PR_NUMBER' >> $BASH_ENV
       - run:
           name: SonarQube - PullRequest Scan
-          command: echo "$CIRCLE_PR_NUMBER"
-
-#          command: >-
-#            sonar-scanner
-#            -Dsonar.login=$SONAR_TOKEN
-#            -Dsonar.host.url=$SONAR_HOST_URL
-#
-#            -Dsonar.pullrequest.key=${{ github.event.number }}
-#            -Dsonar.pullrequest.branch=$CIRCLE_BRANCH
-#            -Dsonar.pullrequest.base=develop
-#            -Dsonar.projectVersion=$CIRCLE_SHA1
-#
-#            -Dsonar.branch.name=feature/integrate_sonarqube
-#            -Dsonar.qualitygate.wait=true
-#            -Dsonar.qualitygate.timeout=300
+          command: >-
+            sonar-scanner
+            -Dsonar.login=$SONAR_TOKEN
+            -Dsonar.host.url=$SONAR_HOST_URL
+            -Dsonar.pullrequest.key=$CIRCLE_PR_NUMBER
+            -Dsonar.pullrequest.branch=$CIRCLE_BRANCH
+            -Dsonar.projectVersion=$CIRCLE_SHA1
+            -Dsonar.pullrequest.base=develop
+            -Dsonar.qualitygate.wait=true
+            -Dsonar.qualitygate.timeout=300
 
 workflows:
   version: 2
