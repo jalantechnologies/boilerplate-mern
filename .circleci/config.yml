@@ -76,6 +76,7 @@ jobs:
             -Dsonar.pullrequest.base=develop
             -Dsonar.qualitygate.wait=true
             -Dsonar.qualitygate.timeout=300
+            -Dsonar.projectVersion=$CIRCLE_SHA1
 
 workflows:
   version: 2
