@@ -70,11 +70,10 @@ jobs:
             sonar-scanner
             -X
             -Dsonar.login=$SONAR_TOKEN
-            -Dsonar.host.url=$SONAR_HOST_URL
-            -Dsonar.pullrequest.key=$CIRCLE_PR_NUMBER
-            -Dsonar.pullrequest.branch=$CIRCLE_BRANCH
+            -Dsonar.host.url=https://sonarqube.platform.jalantechnologies.com
+            -Dsonar.pullrequest.key=20
+            -Dsonar.pullrequest.branch=feature/integrate_sonarqube
             -Dsonar.pullrequest.base=develop
-            -Dsonar.projectVersion=$CIRCLE_SHA1
             -Dsonar.qualitygate.wait=true
             -Dsonar.qualitygate.timeout=300
 
