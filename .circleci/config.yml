@@ -68,12 +68,13 @@ jobs:
           name: SonarQube - PullRequest Scan
           command: >-
             sonar-scanner
+            -X
             -Dsonar.login=$SONAR_TOKEN
             -Dsonar.host.url=$SONAR_HOST_URL
             -Dsonar.pullrequest.key=$CIRCLE_PR_NUMBER
             -Dsonar.pullrequest.branch=$CIRCLE_BRANCH
-            -Dsonar.projectVersion=$CIRCLE_SHA1
             -Dsonar.pullrequest.base=develop
+            -Dsonar.projectVersion=$CIRCLE_SHA1
             -Dsonar.qualitygate.wait=true
             -Dsonar.qualitygate.timeout=300
 
