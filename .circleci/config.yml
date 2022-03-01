@@ -1,4 +1,5 @@
-version: 2
+version: 2.1
+
 jobs:
   build:
     docker:
@@ -45,22 +46,42 @@ jobs:
       - run:
           name: Automated tests
           command: npm run test
-  analyze:
+  'analyze/pull_request':
     docker:
       - image: sonarsource/sonar-scanner-cli:latest
     steps:
       - checkout
       - run:
-          name: sonarqube_scan
+          name: Get GitHub PullRequest Number
           command: >-
-                  sonar-scanner
-                  -Dsonar.login=$SONAR_TOKEN
-                  -Dsonar.host.url=$SONAR_HOST_URL
-                  -Dsonar.branch.name=feature/integrate_sonarqube
-                  -Dsonar.qualitygate.wait=true
-                  -Dsonar.qualitygate.timeout=300
+            if [[ -z "$CIRCLE_PR_NUMBER" ]]; then
+                if [[ -z "$CI_PULL_REQUEST" ]]; then
+                    URL="https://api.github.com/repos/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/pulls?head=$CIRCLE_PROJECT_USERNAME:$CIRCLE_BRANCH"
+                    RESULT="`curl -X GET -u $GITHUB_ACCESS_TOKEN:x-oauth-basic $URL | jq ".[0].url"`"
+                    [[ "$RESULT" == 'null' ]] && CI_PULL_REQUEST='' || CI_PULL_REQUEST="${RESULT//\"}"
+                fi
+                CIRCLE_PR_NUMBER="$(basename "$CI_PULL_REQUEST")"
+            fi
 
-    
+            echo "$CIRCLE_PR_NUMBER"
+            echo 'export CIRCLE_PR_NUMBER=$CIRCLE_PR_NUMBER' >> $BASH_ENV
+      - run:
+          name: SonarQube - PullRequest Scan
+          command: echo "$CIRCLE_PR_NUMBER"
+#          command: >-
+#            sonar-scanner
+#            -Dsonar.login=$SONAR_TOKEN
+#            -Dsonar.host.url=$SONAR_HOST_URL
+#
+#            -Dsonar.pullrequest.key=${{ github.event.number }}
+#            -Dsonar.pullrequest.branch=$CIRCLE_BRANCH
+#            -Dsonar.pullrequest.base=develop
+#            -Dsonar.projectVersion=$CIRCLE_SHA1
+#
+#            -Dsonar.branch.name=feature/integrate_sonarqube
+#            -Dsonar.qualitygate.wait=true
+#            -Dsonar.qualitygate.timeout=300
+
 workflows:
   version: 2
   app:
@@ -72,6 +93,12 @@ workflows:
       - test:
           requires:
             - build
-      - analyze:
+      - 'analyze/pull_request':
           requires:
             - build
+          filters:
+            branches:
+              ignore:
+                - develop
+                - master
+                - main
