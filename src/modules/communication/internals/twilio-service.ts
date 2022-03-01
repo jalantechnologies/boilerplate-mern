@@ -23,7 +23,14 @@ export default class TwilioService {
         body: params.messageBody,
       });
     } catch (e) {
-      Logger.error(e.message);
+      if (
+        e.code === 21705 // If messaging service sid is invalid
+        || e.code === 20429 // Too many requests
+        || e.code === 20003 // If Twilio account balance runs out.
+        || e.code === 30002 // If twilio account suspended
+      ) {
+        Logger.error(e.message);
+      }
       throw new ThirdPartyServiceError('SMS service unavailable.');
     }
   }
