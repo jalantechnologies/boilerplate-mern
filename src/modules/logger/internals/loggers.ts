@@ -16,8 +16,6 @@ export default class Loggers {
         Loggers.loggers = [Loggers.getConsoleLogger()];
         break;
       case Environment.STAGING:
-      case Environment.QA:
-      case Environment.BETA:
       case Environment.PRODUCTION:
         Loggers.loggers = [Loggers.getRollbarLogger()];
         break;

@@ -63,26 +63,6 @@ describe('Loggers', () => {
     expect(stub.calledOnce).to.be.true;
   });
 
-  it('should call external logger in qa env', () => {
-    sinonSandbox.stub(ConfigService, 'getEnvironment').returns(Environment.QA);
-    sinonSandbox.stub(Loggers, 'getRollbarLogger').returns(rollbarLogger);
-    const stub = sinonSandbox.stub(rollbarLogger, 'info');
-    LoggerManager.mountLogger();
-    Logger.info('test');
-    expect(stub.calledOnce).to.be.true;
-  });
-
-  it('should call external logger in beta env', () => {
-    sinonSandbox
-      .stub(ConfigService, 'getEnvironment')
-      .returns(Environment.BETA);
-    sinonSandbox.stub(Loggers, 'getRollbarLogger').returns(rollbarLogger);
-    const stub = sinonSandbox.stub(rollbarLogger, 'info');
-    LoggerManager.mountLogger();
-    Logger.info('test');
-    expect(stub.calledOnce).to.be.true;
-  });
-
   it('should call external logger in production env', () => {
     sinonSandbox
       .stub(ConfigService, 'getEnvironment')
