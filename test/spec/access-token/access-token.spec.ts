@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
+import faker from '@faker-js/faker'
 import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
 import sinon from 'sinon';
@@ -23,7 +24,7 @@ describe('POST /access-tokens', () => {
   it('should return access token for given username password', async () => {
     sinonSandbox.stub(ConfigService, 'getStringValue').returns('1h');
 
-    const params = { username: 'username', password: 'password' };
+    const params = { username: faker.internet.userName(), password: 'password' };
     await AccountWriter.createAccount(params);
 
     const res = await chai

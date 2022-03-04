@@ -1,5 +1,5 @@
 /* eslint-disable max-classes-per-file */
-import AppError from '../app-error/app-error';
+import AppError from '../error/app-error';
 
 export class Account {
   id: string;

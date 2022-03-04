@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
+import faker from '@faker-js/faker'
 import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
 import sinon from 'sinon';
@@ -21,7 +22,7 @@ describe('Account Service', () => {
   });
 
   it('POST /account should create a new account', async () => {
-    const params = { username: 'username', password: 'password' };
+    const params = { username: faker.internet.userName(), password: 'password' };
     const res = await chai
       .request(app)
       .post('/api/accounts')
@@ -33,7 +34,7 @@ describe('Account Service', () => {
   });
 
   it('POST /account should throw if account with username already exists', async () => {
-    const params = { username: 'name', password: 'password' };
+    const params = { username: faker.internet.userName(), password: 'password' };
     await AccountWriter.createAccount(params);
     const res = await chai
       .request(app)

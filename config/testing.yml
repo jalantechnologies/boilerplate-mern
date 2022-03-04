@@ -19,4 +19,4 @@ mongoDb:
   uri: "mongodb://localhost:27017/boilerplate-test"
 
 server:
-  port: 8080
+  port: '8080'
