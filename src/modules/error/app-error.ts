@@ -1,3 +1,5 @@
+import { LooseObject } from './types';
+
 export default class AppError extends Error {
   code: string;
 
@@ -7,13 +9,12 @@ export default class AppError extends Error {
     return `${this.code}: ${this.message}`;
   }
 
-  toJson(): unknown {
-    const errorObj: any = {};
-    errorObj.message = this.message;
+  toJson(): LooseObject {
+    const json: LooseObject = {};
+    json.message = this.message;
     Object.entries(this).forEach(([key, value]) => {
-      /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-      errorObj[key] = value;
+      json[key] = value;
     });
-    return errorObj;
+    return json;
   }
 }

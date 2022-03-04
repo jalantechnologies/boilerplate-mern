@@ -1,6 +1,9 @@
 import express, { Application } from 'express';
 import { Server } from 'http';
-import serverErrorHandler from './error-handler';
+
+import path from 'path';
+import expressEjsLayouts from 'express-ejs-layouts';
+
 import AccesstokenServiceManager from './modules/access-token/access-token-manager';
 import AccountServiceManager from './modules/account/account-service-manager';
 import CommunicationServiceManager from './modules/communication/communication-service-manager';
@@ -11,6 +14,23 @@ import LoggerManager from './modules/logger/logger-manager';
 
 export default class App {
   private static app: Application;
+
+  public static async startServer(): Promise<Server> {
+    this.app = express();
+
+    await ConfigManager.mountConfig();
+    await LoggerManager.mountLogger();
+    await CommunicationServiceManager.mountService();
+
+    const restAPIServices = await this.createRESTApiServer();
+    this.app.use('/api', restAPIServices);
+
+    const app = await this.createExperienceService();
+    this.app.use('/', app);
+
+    const port = ConfigService.getStringValue('server.port');
+    return this.app.listen(port);
+  }
 
   private static async createRESTApiServer(): Promise<Application> {
     const app: Application = express();
@@ -27,21 +47,18 @@ export default class App {
     return app;
   }
 
-  public static async startRESTApiServer(): Promise<Server> {
-    this.app = express();
+  private static async createExperienceService(): Promise<Application> {
+    const app: Application = express();
 
-    // Core Services
-    await ConfigManager.mountConfig();
-    await LoggerManager.mountLogger();
-    await CommunicationServiceManager.mountService();
+    app.set('view engine', 'ejs');
+    app.set('views', path.join(__dirname, 'views'));
+    app.use(expressEjsLayouts);
+    app.set('layout', 'layouts/layout.ejs');
 
-    const restAPIServices = await this.createRESTApiServer();
-    this.app.use('/api', restAPIServices);
+    app.use(express.static(path.join(__dirname)));
 
-    // Error handling
-    this.app.use(serverErrorHandler);
+    app.get('/', (_req, res) => res.render('pages/index.ejs'));
 
-    const port = ConfigService.getStringValue('server.port');
-    return this.app.listen(port);
+    return Promise.resolve(app);
   }
 }
