@@ -3,8 +3,6 @@ export enum Environment {
   LOCAL = 'local',
   TESTING = 'testing',
   STAGING = 'staging',
-  QA = 'qa',
-  BETA = 'beta',
   PRODUCTION = 'production',
 }
 
