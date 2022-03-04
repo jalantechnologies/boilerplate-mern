@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
+import faker from '@faker-js/faker'
 import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
 import sinon from 'sinon';
@@ -9,7 +10,6 @@ import AccountWriter from '../../../src/modules/account/internal/account-writer'
 import AccessTokenWriter from '../../../src/modules/access-token/internal/access-token-writer';
 import AccountRepository from '../../../src/modules/account/internal/store/account-repository';
 import TaskRepository from '../../../src/modules/task/internal/store/task-repository';
-// import ConfigService from '../../../src/modules/config/config-service';
 
 chai.use(chaiHttp);
 chai.use(chaiAsPromised);
@@ -26,7 +26,7 @@ describe('Task Service.', () => {
   });
 
   it('GET "/api/accounts/:accountId/tasks" should return a list of all tasks for a particular accountId.', async () => {
-    const accountParams = { username: 'name', password: 'password' };
+    const accountParams = { username: faker.internet.userName(), password: 'password' };
     const account = await AccountWriter.createAccount(accountParams);
     const { token: accessToken } = await AccessTokenWriter.createAccessToken(
       accountParams,
@@ -78,7 +78,7 @@ describe('Task Service.', () => {
       name: 'simple task.',
     };
 
-    const accountParams = { username: 'name', password: 'password' };
+    const accountParams = { username: faker.internet.userName(), password: 'password' };
     const account = await AccountWriter.createAccount(accountParams);
     const { token } = await AccessTokenWriter.createAccessToken(accountParams);
 
@@ -116,7 +116,7 @@ describe('Task Service.', () => {
   });
 
   it('GET "/api/accounts/:accountId/tasks/:taskId" should return a particular task.', async () => {
-    const accountParams = { username: 'name', password: 'password' };
+    const accountParams = { username: faker.internet.userName(), password: 'password' };
     const account = await AccountWriter.createAccount(accountParams);
     const { token: accessToken } = await AccessTokenWriter.createAccessToken(
       accountParams,
@@ -179,7 +179,7 @@ describe('Task Service.', () => {
   });
 
   it('GET "/api/accounts/:accountId/tasks/:taskId" should return 404 Not Found Error if task is deleted.', async () => {
-    const accountParams = { username: 'name', password: 'password' };
+    const accountParams = { username: faker.internet.userName(), password: 'password' };
     const account = await AccountWriter.createAccount(accountParams);
     const { token: accessToken } = await AccessTokenWriter.createAccessToken(
       accountParams,
@@ -248,7 +248,7 @@ describe('Task Service.', () => {
   });
 
   it('DELETE "/api/accounts/:accountId/tasks/:taskId" should change "active" flag of task to be false.', async () => {
-    const accountParams = { username: 'name', password: 'password' };
+    const accountParams = { username: faker.internet.userName(), password: 'password' };
     const account = await AccountWriter.createAccount(accountParams);
     const { token: accessToken } = await AccessTokenWriter.createAccessToken(
       accountParams,
