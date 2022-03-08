@@ -74,7 +74,6 @@ jobs:
             -Dsonar.pullrequest.key=${CIRCLE_PULL_REQUEST##*/}
             -Dsonar.pullrequest.branch=$CIRCLE_BRANCH
             -Dsonar.pullrequest.base=develop
-            -Dsonar.qualitygate.wait=true
             -Dsonar.qualitygate.timeout=300
             -Dsonar.projectVersion=$CIRCLE_SHA1
 
