@@ -1,3 +1,4 @@
-let a == 1; // Noncompliant; was assignment intended?
-var msg = "Hello, "
-  "World!"; // Noncompliant; have we forgotten '+' operator on previous line?
+let mySet = new Set();  
+
+mySet.add(1);
+mySet.add(1);
