@@ -73,10 +73,15 @@ jobs:
             -Dsonar.host.url=$SONAR_HOST_URL
             -Dsonar.pullrequest.key=${CIRCLE_PULL_REQUEST##*/}
             -Dsonar.pullrequest.branch=$CIRCLE_BRANCH
-            -Dsonar.pullrequest.base=develop
+            -Dsonar.pullrequest.base=main
             -Dsonar.qualitygate.wait=false
             -Dsonar.qualitygate.timeout=300
             -Dsonar.projectVersion=$CIRCLE_SHA1
+  analyze_branch:
+    docker:
+      - image: sonarsource/sonar-scanner-cli:latest
+    steps:
+      - checkout
       - run:
           name: SonarQube - Push Scan
           command: >-
@@ -105,4 +110,11 @@ workflows:
               ignore:
                 - develop
                 - master
+                - main
+      - analyze_branch:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
                 - main
