@@ -77,7 +77,7 @@ jobs:
             -Dsonar.qualitygate.wait=false
             -Dsonar.qualitygate.timeout=300
             -Dsonar.projectVersion=$CIRCLE_SHA1
-      -run:
+      - run:
           name: SonarQube - Push Scan
           command: >-
             sonar-scanner
