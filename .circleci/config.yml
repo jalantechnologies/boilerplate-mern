@@ -73,10 +73,18 @@ jobs:
             -Dsonar.host.url=$SONAR_HOST_URL
             -Dsonar.pullrequest.key=${CIRCLE_PULL_REQUEST##*/}
             -Dsonar.pullrequest.branch=$CIRCLE_BRANCH
-            -Dsonar.pullrequest.base=main
+            -Dsonar.pullrequest.base=develop
             -Dsonar.qualitygate.wait=false
             -Dsonar.qualitygate.timeout=300
             -Dsonar.projectVersion=$CIRCLE_SHA1
+      -run:
+          name: SonarQube - Push Scan
+          command: >-
+            sonar-scanner
+            -X
+            -Dsonar.login=$SONAR_TOKEN
+            -Dsonar.host.url=$SONAR_HOST_URL
+            -Dsonar.branch.name=main
 
 workflows:
   version: 2
