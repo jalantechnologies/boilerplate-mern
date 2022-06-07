@@ -1,0 +1,16 @@
+name: clean_on_pr_closed
+
+on:
+  pull_request:
+    types: [ closed ]
+
+jobs:
+  clean:
+    uses: jalantechnologies/platform-github/.github/workflows/clean.yml@v2
+    with:
+      app_name: boilerplate-mern
+      app_env: preview
+      branch: ${{ github.event.pull_request.head.ref }}
+    secrets:
+      do_access_token: ${{ secrets.DO_ACCESS_TOKEN }}
+      do_cluster_id: ${{ secrets.DO_CLUSTER_ID }}
