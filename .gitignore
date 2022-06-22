@@ -55,7 +55,7 @@ tmp/*
 config/local*
 
 # distribution
-dist/*
+dist
 
 # dev
 dev/*
