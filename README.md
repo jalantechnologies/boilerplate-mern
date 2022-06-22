@@ -6,15 +6,23 @@ Boilerplate project for NodeJS, React based projects in TypeScript. This README 
 
 - [Getting Started](#getting-started)
 - [Configuration](#configuration)
-- [CI](#ci)
 
 ## Getting Started
 
+**Quickstart:**
+
+- This project supports running the application with all the required dependencies using `docker compose`
+- Install [docker](https://docs.docker.com/engine/install/)
+- Run `docker compose -f docker-compose.dev.yml up`
+- Open `http://localhost:8080/`
+- Make required changes for development. The app should hot reload and server restart is not required.
+
 **Pre Requirements:**
 
-- Node - [Download Link](https://nodejs.org/en/download/)
+- Node - [Download](https://nodejs.org/en/download/)
+- MongoDb - [Download](https://www.mongodb.com/docs/manual/installation/)
 
-_Scripts:_
+**Scripts:**
 
 - Install dependencies - `npm install`
 - Build Project - `npm build`
@@ -23,43 +31,32 @@ _Scripts:_
 - Run Lint (JavaScript and TypeScript) - `npm run lint`
 - Run Lint (Markdown) - `npm run lint:md`
 
-_Docker Support:_
-
-- Project has inbuilt docker support for running in a containerized environment
-
-- For building development / test build - `docker build . --tag "boilerplate-node-ts"`
-- For building production build (removes development dependencies) - `docker build . --tag "boilerplate-node-ts" --build-arg NODE_ENV=production`
-
 ## Configuration
 
 The module uses [config](https://www.npmjs.com/package/config) for loading configuration entries.
 
 In the `config` directory:
 
-- Consult/update `custom-environment-variables.json` for loading values via environment. This overrides any value set in files defined below.
-- Create `local.json` for local config.
-- Consult/update `development.json` for values at development. (The default env)
-- Consult/update `testing.json` for values at testing. `NODE_CONFIG_ENV` must be set to `testing` for this.
-- Consult/update `staging.json` for values at staging. `NODE_CONFIG_ENV` must be set to `staging` for this.
-- Consult/update `production.json` for values at production. `NODE_CONFIG_ENV` must be set to `production` for this.
-- Consult/update `default.json` for **constant values only**. Define entries here which will remain same across deployments.
+- Consult/update `custom-environment-variables.yml` for loading values via environment. This overrides any value set in files defined below.
+- Create `local.yml` for local config.
+- Consult/update `development.yml` for values at development. (The default env)
+- Consult/update `testing.yml` for values at testing. `NODE_CONFIG_ENV` must be set to `testing` for this.
+- Consult/update `staging.yml` for values at staging. `NODE_CONFIG_ENV` must be set to `staging` for this.
+- Consult/update `production.yml` for values at production. `NODE_CONFIG_ENV` must be set to `production` for this.
+- Consult/update `default.yml` for **constant values only**. Define entries here which will remain same across deployments.
 
-**INFO:** `default.json` config file lists the all available entries which the system uses. For creating a new config entry:
+**INFO:** `default.yml` config file lists the all available entries which the system uses. For creating a new config entry:
 
-- If the config value tends to change across deployments, provide `undefined` for the same in `default.json` and value should be provided in respective deployment file.
-- If the config value is supposed to be same across deployments, provide the same in `default.json`.
+- If the config value tends to change across deployments, provide `undefined` for the same in `default.yml` and value should be provided in respective deployment file.
+- If the config value is supposed to be same across deployments, provide the same in `default.yml`.
 
 **INFO:** `local*` files allows you to manually provide config during development and are set to be ignored by VCS. Any environment can be overridden locally via:
 
-- `local.json` - Overrides everything.
-- `local-{env}.json` - Overrides only specific `env` environment.
+- `local.yml` - Overrides everything.
+- `local-{env}.yml` - Overrides only specific `env` environment.
 
 **INFO:** Read more about in what order the config entries are loaded [here](https://github.com/lorenwest/node-config/wiki/Configuration-Files#file-load-order).
 
 Each entry here in this documentation follows the following structure:
 
 `object.notation` `data-type` `ENVIRONMENT_OVERRIDE` (if available) - Description (Default - `value`)
-
-## CI
-
-This project uses [CircleCI](https://circleci.com/) for CI. A [docker executor](https://circleci.com/docs/2.0/executor-types/#using-multiple-docker-images) is set up using multiple docker images (node and mongo). The application is built using the node container and connects to mongo container for db connections. Other external API calls are mocked.
