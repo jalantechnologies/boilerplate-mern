@@ -1,9 +1,9 @@
 terraform {
-  cloud {
-    workspaces {
-      name = "boilerplate-mern"
-    }
-  }
+  #  cloud {
+  #    workspaces {
+  #      name = "boilerplate-mern-production"
+  #    }
+  #  }
 }
 
 module "digital_ocean" {
