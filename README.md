@@ -127,3 +127,5 @@ docker_registry_host = "<docker registry url>"
     - `DOPPLER_PRODUCTION_TOKEN` - Doppler token for `production` environment. See `Setting up Doppler`.
     - `DO_ACCESS_TOKEN` - Digital Ocean access token. See `Account on Digital Ocean`.
     - `DO_CLUSTER_ID` - Value of `do_cluster_id`
+    - `SONAR_TOKEN` - See `Setting up SonarQube`
+    - `SONAR_HOST_URL` - See `Setting up SonarQube`
