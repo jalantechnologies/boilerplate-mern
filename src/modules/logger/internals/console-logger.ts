@@ -26,7 +26,7 @@ export default class ConsoleLogger implements Logger {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  public criticial(message: string): void {
+  public critical(message: string): void {
     // eslint-disable-next-line no-console
     console.log(`[CRITICAL] ${message}`);
   }
