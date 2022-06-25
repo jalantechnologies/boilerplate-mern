@@ -76,6 +76,7 @@ This project deploys on Kubernetes using GitHub actions as CI. The CI workflow c
 - Replace / add the values for following in workflow files (can be found in `.github/workflows`):
     - `app_name` - Application name, only allowed `A-Za-z0-9\-`, example: `demo-app`
     - `app_hostname` - Application hostname, example: `demo.example.com`
+    - `app_env` - Application environment, example: `production` / `preview`
     - `docker_registry` - Hostname which will be mapped to internal docker registry. Provide here value with chosen docker registry URL in following format - `docker_registry/app_name`.
       For example - `registry.example.com/demo-app`
 
@@ -87,9 +88,12 @@ This project deploys on Kubernetes using GitHub actions as CI. The CI workflow c
 - Setting up Doppler
     - For configuration management and securely providing access to the secrets to application, this setup uses [Doppler](https://www.doppler.com/) which is allows us to inject configuration parameters as environment variables to application runtime.
     - As mentioned, this is an optional requirement and is meant only for application which require runtime configuration.
+    - Application environment will be obtained from value provided for `app_env`. An environment and service token is required per `app_env`.
     - Learn about creating a doppler project and environments [here](https://docs.doppler.com/docs/create-project)
     - Learn about creating a service token in order to access secret associated with an environment [here](https://docs.doppler.com/docs/service-tokens#dashboard-create-service-token)
     - Take a note of the **project**, **environment**, and **service token**. We will be needing this for rest of the setup.
+    - This project has support for automatically reloading dependent applications once any configuration updates happens.
+      Simply update the desired value in an environment and hit save. Application would reload automatically and will use the updated configurations.
 
 - Setting up SonarQube
     - This workflow also supports running static analyzer on open PRs and base branch using SonarQube
