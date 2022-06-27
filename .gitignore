@@ -55,10 +55,17 @@ tmp/*
 config/local*
 
 # distribution
-dist/*
+dist
 
 # dev
 dev/*
 
 # artifacts generated during testing
 test_artifacts/
+
+# terraform
+terraform/.terraform
+terraform/terraform.tfstate
+terraform/.terraform.tfstate.lock.info
+terraform/terraform.tfstate.backup
+terraform/*.tfvars

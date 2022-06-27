@@ -1,9 +1,4 @@
-
 webAppHost: "http://localhost:8080"
 
-node:
-  config:
-    env: "local"
-
 mongoDb:
-  uri: "mongodb://localhost:27017/boilerplate-dev"
+  uri: "mongodb://localhost:27017//boilerplate-mern-dev"

@@ -1,11 +1,17 @@
 boolTestKey: true
 numberTestKey: 1
 stringTestKey: "string"
+
 rollbar:
   accessToken: "ROLLBAR_ACCESS_TOKEN"
+  env: "ROLLBAR_ENV"
+
 jwt:
   token: "JWT_TOKEN"
-  
+
+communication:
+  services: [ 'twilio', 'sendgrid' ]
+
 twilio:
   verify:
     accountSid: "AC.TWILIO_ACCOUNT_SID"
@@ -16,7 +22,7 @@ twilio:
 sendgridApiKey: "SG.SENDGRID_API_KEY"
 
 mongoDb:
-  uri: "mongodb://localhost:27017/boilerplate-test"
+  uri: "mongodb://localhost:27017/boilerplate-mern-test"
 
 server:
   port: '8080'

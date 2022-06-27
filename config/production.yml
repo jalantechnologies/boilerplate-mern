@@ -1,1 +1,5 @@
+logger:
+  transports: [ 'rollbar' ]
 
+rollbar:
+  env: 'production'

@@ -17,7 +17,7 @@ export default class Logger {
     Loggers.warn(message);
   }
 
-  public static criticial(message: string): void {
-    Loggers.criticial(message);
+  public static critical(message: string): void {
+    Loggers.critical(message);
   }
 }

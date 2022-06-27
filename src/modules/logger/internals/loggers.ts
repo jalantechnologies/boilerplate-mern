@@ -1,27 +1,30 @@
-import Logger from './types';
+import Logger, { LoggerTransport } from './types';
 import ConfigService from '../../config/config-service';
 import ConsoleLogger from './console-logger';
 import RollbarLogger from './rollbar-logger';
-import { Environment } from '../../config/types';
-import { UnknownEnvironmentError } from '../types';
+import { UnknownTransportError } from '../types';
 
 export default class Loggers {
   private static loggers: Logger[];
 
   public static initializeLoggers(): void {
-    const currentEnv = ConfigService.getEnvironment();
-    switch (currentEnv) {
-      case Environment.LOCAL:
-      case Environment.TESTING:
-        Loggers.loggers = [Loggers.getConsoleLogger()];
-        break;
-      case Environment.STAGING:
-      case Environment.PRODUCTION:
-        Loggers.loggers = [Loggers.getRollbarLogger()];
-        break;
-      default:
-        throw new UnknownEnvironmentError(currentEnv);
-    }
+    const transports: LoggerTransport[] = ConfigService.getListValue<LoggerTransport>('logger.transports');
+    const loggerTransports: Logger[] = [];
+
+    transports.forEach((loggerTransport: LoggerTransport) => {
+      switch (loggerTransport) {
+        case LoggerTransport.Console:
+          loggerTransports.push(Loggers.getConsoleLogger());
+          break;
+        case LoggerTransport.Rollbar:
+          loggerTransports.push(Loggers.getRollbarLogger());
+          break;
+        default:
+          throw new UnknownTransportError(loggerTransport);
+      }
+    });
+
+    Loggers.loggers = loggerTransports;
   }
 
   public static info(message: string): void {
@@ -48,9 +51,9 @@ export default class Loggers {
     });
   }
 
-  public static criticial(message: string): void {
+  public static critical(message: string): void {
     Loggers.loggers.forEach((logger) => {
-      logger.criticial(message);
+      logger.critical(message);
     });
   }
 

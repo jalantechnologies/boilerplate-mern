@@ -1,0 +1,24 @@
+name: production_on_push
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  production:
+    uses: jalantechnologies/platform-github/.github/workflows/kube.yml@v2.1
+    with:
+      app_name: boilerplate-mern
+      app_env: production
+      app_hostname: boilerplate-mern.platform.jalantechnologies.com
+      branch: ${{ github.event.ref }}
+    secrets:
+      docker_registry: docker-registry.platform.jalantechnologies.com/boilerplate-mern
+      docker_username: ${{ secrets.DOCKER_USERNAME }}
+      docker_password: ${{ secrets.DOCKER_PASSWORD }}
+      doppler_token: ${{ secrets.DOPPLER_PRODUCTION_TOKEN }}
+      do_access_token: ${{ secrets.DO_ACCESS_TOKEN }}
+      do_cluster_id: ${{ secrets.DO_CLUSTER_ID }}
+      sonar_token: ${{ secrets.SONAR_TOKEN }}
+      sonar_host_url: ${{ secrets.SONAR_HOST_URL }}

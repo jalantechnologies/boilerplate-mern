@@ -4,7 +4,7 @@ import { Server } from 'http';
 import path from 'path';
 import expressEjsLayouts from 'express-ejs-layouts';
 
-import AccesstokenServiceManager from './modules/access-token/access-token-manager';
+import AccessTokenServiceManager from './modules/access-token/access-token-manager';
 import AccountServiceManager from './modules/account/account-service-manager';
 import CommunicationServiceManager from './modules/communication/communication-service-manager';
 import TaskServiceManager from './modules/task/task-service-manager';
@@ -38,7 +38,7 @@ export default class App {
     const accountServiceRESTApi = await AccountServiceManager.createRestAPIServer();
     app.use('/', accountServiceRESTApi);
 
-    const accessTokenServiceRESTApi = await AccesstokenServiceManager.createRestAPIServer();
+    const accessTokenServiceRESTApi = await AccessTokenServiceManager.createRestAPIServer();
     app.use('/', accessTokenServiceRESTApi);
 
     const taskServiceRESTApi = await TaskServiceManager.createRestAPIServer();

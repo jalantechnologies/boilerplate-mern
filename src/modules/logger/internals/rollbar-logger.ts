@@ -8,7 +8,7 @@ export default class RollbarLogger implements Logger {
   constructor() {
     this.rollbar = new Rollbar({
       accessToken: ConfigService.getStringValue('rollbar.accessToken'),
-      environment: ConfigService.getEnvironment(),
+      environment: ConfigService.getStringValue('rollbar.env'),
     });
   }
 
@@ -28,7 +28,7 @@ export default class RollbarLogger implements Logger {
     this.rollbar.warning(message);
   }
 
-  public criticial(message: string): void {
+  public critical(message: string): void {
     this.rollbar.critical(message);
   }
 }

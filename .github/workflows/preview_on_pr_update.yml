@@ -1,0 +1,27 @@
+name: preview_on_pr_update
+
+on:
+  pull_request:
+    types: [ opened, synchronize, reopened ]
+
+jobs:
+  preview:
+    # only run when updating an 'Open' PR
+    if: github.event.pull_request.state == 'open'
+    uses: jalantechnologies/platform-github/.github/workflows/kube.yml@v2.1
+    with:
+      app_name: boilerplate-mern
+      app_env: preview
+      app_hostname: '{1}.preview.platform.jalantechnologies.com'
+      branch: ${{ github.event.pull_request.head.ref }}
+      branch_base: ${{ github.event.pull_request.base.ref }}
+      pull_request_number: ${{ github.event.number }}
+    secrets:
+      docker_registry: docker-registry.platform.jalantechnologies.com/boilerplate-mern
+      docker_username: ${{ secrets.DOCKER_USERNAME }}
+      docker_password: ${{ secrets.DOCKER_PASSWORD }}
+      doppler_token: ${{ secrets.DOPPLER_PREVIEW_TOKEN }}
+      do_access_token: ${{ secrets.DO_ACCESS_TOKEN }}
+      do_cluster_id: ${{ secrets.DO_CLUSTER_ID }}
+      sonar_token: ${{ secrets.SONAR_TOKEN }}
+      sonar_host_url: ${{ secrets.SONAR_HOST_URL }}

@@ -1,14 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { assert } from 'chai';
-import { Environment } from '../../../src/modules/config/types';
 import ConfigService from '../../../src/modules/config/config-service';
 
 describe('ConfigService', () => {
-  it('should return correct environment', () => {
-    const env = ConfigService.getEnvironment();
-    assert.equal(env, Environment.TESTING);
-  });
-
   it('should return correct env variable value', () => {
     const boolValue = ConfigService.getBoolValue('boolTestKey');
     assert.equal(boolValue, true);
