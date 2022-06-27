@@ -64,7 +64,20 @@ Each entry here in this documentation follows the following structure:
 
 ## Deployment
 
-This project deploys on Kubernetes using GitHub actions as CI. The CI workflow can be found [here](https://github.com/jalantechnologies/platform-github)
+This project deploys on Kubernetes via GitHub actions using workflows defined in [Platform - GitHub](https://github.com/jalantechnologies/platform-github) project.
+
+**Version:**
+
+This project uses [v2.1](https://github.com/jalantechnologies/platform-github/tree/v2.1)
+
+**Features:**
+
+- Deployment on Digital Ocean kubernetes cluster
+- Inbuilt docker registry integration
+- Production rollout on `main` branch update
+- Preview environment on Pull Requests
+- Configuration management via Doppler
+- Automatic deployment reload on configuration update
 
 **Setup:**
 
