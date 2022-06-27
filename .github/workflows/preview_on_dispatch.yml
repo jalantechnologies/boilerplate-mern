@@ -8,7 +8,7 @@ jobs:
     with:
       app_name: boilerplate-mern
       app_env: preview
-      app_hostname: '{1}-boilerplate-mern.preview.platform.jalantechnologies.com'
+      app_hostname: '{1}-boilerplate-mern-preview.platform.jalantechnologies.com'
       branch: ${{ github.event.ref }}
       steps: 'preview'
     secrets:

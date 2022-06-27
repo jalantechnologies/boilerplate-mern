@@ -12,7 +12,7 @@ jobs:
     with:
       app_name: boilerplate-mern
       app_env: preview
-      app_hostname: '{1}-boilerplate-mern.preview.platform.jalantechnologies.com'
+      app_hostname: '{1}-boilerplate-mern-preview.platform.jalantechnologies.com'
       branch: ${{ github.event.pull_request.head.ref }}
       branch_base: ${{ github.event.pull_request.base.ref }}
       pull_request_number: ${{ github.event.number }}
