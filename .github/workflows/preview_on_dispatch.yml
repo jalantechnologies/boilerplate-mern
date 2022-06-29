@@ -4,7 +4,7 @@ on: workflow_dispatch
 
 jobs:
   preview:
-    uses: jalantechnologies/platform-github/.github/workflows/kube.yml@v2.1
+    uses: jalantechnologies/platform-github/.github/workflows/kube.yml@v2.1_self_hosted
     with:
       app_name: boilerplate-mern
       app_env: preview
