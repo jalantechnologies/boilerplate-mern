@@ -35,10 +35,12 @@ export default class App {
   private static async createRESTApiServer(): Promise<Application> {
     const app: Application = express();
 
-    const accountServiceRESTApi = await AccountServiceManager.createRestAPIServer();
+    const accountServiceRESTApi =
+      await AccountServiceManager.createRestAPIServer();
     app.use('/', accountServiceRESTApi);
 
-    const accessTokenServiceRESTApi = await AccessTokenServiceManager.createRestAPIServer();
+    const accessTokenServiceRESTApi =
+      await AccessTokenServiceManager.createRestAPIServer();
     app.use('/', accessTokenServiceRESTApi);
 
     const taskServiceRESTApi = await TaskServiceManager.createRestAPIServer();

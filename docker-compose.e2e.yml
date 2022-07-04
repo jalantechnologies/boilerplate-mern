@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  app:
+    image: cypress/base:16.13.0
+    command: >
+      sh -c "sleep 30 && npx cypress run"
+
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      NODE_APP_INSTANCE: 'docker'
+      NODE_CONFIG_ENV: 'e2e'
+      NODE_ENV: 'production'
+    command: 'npm run serve'
+    depends_on:
+      - db
+    ports:
+      - '8080:8080'
+    volumes:
+      - './:/app:delegated'
+      - '/app/node_modules/'
+    working_dir: /app
+
+  db:
+    image: mongo:5.0
+    ports:
+      - '27017:27017'

@@ -22,7 +22,7 @@ twilio:
 sendgridApiKey: 'SG.SENDGRID_API_KEY'
 
 mongoDb:
-  uri: 'mongodb://localhost:27017/boilerplate-mern-test'
+  uri: 'mongodb://localhost:27017/boilerplate-mern-e2e'
 
 server:
   port: '8080'
