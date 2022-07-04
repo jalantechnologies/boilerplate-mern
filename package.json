@@ -9,6 +9,7 @@
   "scripts": {
     "build": "gulp",
     "test": "NODE_ENV=production NODE_CONFIG_ENV=testing mocha --exit -r ts-node/register --project tsconfig.json test/**/*.spec.ts",
+    "test:e2e": "NODE_ENV=production NODE_CONFIG_ENV=e2e mocha --exit -r ts-node/register --project tsconfig.json test/**/*.spec.ts",
     "lint": "eslint .",
     "lint:md": "remark .",
     "lint:fix": "eslint --fix .",
