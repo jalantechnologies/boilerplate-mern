@@ -4,8 +4,6 @@ import scenarios from './cypress/scenarios';
 
 export default defineConfig({
   e2e: {
-    screenshotOnRunFailure: false,
-    video: false,
     async setupNodeEvents(on, config) {
       on('task', {
         async 'scenario:cleanup'(scenario) {
@@ -27,4 +25,14 @@ export default defineConfig({
       });
     },
   },
+  retries: {
+    // Configure retry attempts for `cypress run`
+    // Default is 0
+    runMode: 2,
+    // Configure retry attempts for `cypress open`
+    // Default is 0
+    openMode: 0,
+  },
+  screenshotOnRunFailure: false,
+  video: false,
 });

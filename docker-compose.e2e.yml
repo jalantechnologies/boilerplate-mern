@@ -1,23 +1,13 @@
+version: '3'
+
 services:
   app:
-    image: cypress/browsers:chrome69
-    environment:
-      _MITSHM: 0 # disable memory sharing for black screen issue on chrome
-      _X11_NO_MITSHM: 1 # disable memory sharing for black screen issue on chrome
-      NODE_APP_INSTANCE: 'docker'
-      NODE_CONFIG_ENV: 'e2e'
-      NODE_ENV: 'production'
-      QT_X11_NO_MITSHM: 1 # disable memory sharing for black screen issue on chrome
-
-  server:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    build: .
     environment:
       NODE_APP_INSTANCE: 'docker'
       NODE_CONFIG_ENV: 'e2e'
       NODE_ENV: 'production'
-    command: 'npm run serve'
+    command: 'npx concurrently -s first -k --kill-others-on-fail "npm run start" "sleep 2 && npx cypress run"'
     depends_on:
       - db
     ports:

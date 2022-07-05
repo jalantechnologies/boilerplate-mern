@@ -8,7 +8,8 @@
   },
   "scripts": {
     "build": "gulp",
-    "e2e": "NODE_ENV=production NODE_CONFIG_ENV=e2e cypress run",
+    "e2e:run": "NODE_ENV=production NODE_CONFIG_ENV=e2e cypress run",
+    "e2e:open": "NODE_ENV=production NODE_CONFIG_ENV=e2e cypress open",
     "test": "NODE_ENV=production NODE_CONFIG_ENV=testing mocha --exit -r ts-node/register --project tsconfig.json test/**/*.spec.ts",
     "lint": "eslint .",
     "lint:md": "remark .",
