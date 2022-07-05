@@ -8,6 +8,7 @@
   },
   "scripts": {
     "build": "gulp",
+    "e2e": "NODE_ENV=production NODE_CONFIG_ENV=e2e cypress run",
     "test": "NODE_ENV=production NODE_CONFIG_ENV=testing mocha --exit -r ts-node/register --project tsconfig.json test/**/*.spec.ts",
     "lint": "eslint .",
     "lint:md": "remark .",
@@ -40,7 +41,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.17.5",
-    "@faker-js/faker": "^6.0.0-alpha.7",
+    "@faker-js/faker": "^6.3.1",
     "@types/bcrypt": "^5.0.0",
     "@types/chai": "^4.3.0",
     "@types/chai-as-promised": "^7.1.4",

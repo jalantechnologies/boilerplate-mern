@@ -1,10 +1,13 @@
-version: '3'
-
 services:
   app:
-    image: cypress/base:16.13.0
-    command: >
-      sh -c "sleep 30 && npx cypress run"
+    image: cypress/browsers:chrome69
+    environment:
+      _MITSHM: 0 # disable memory sharing for black screen issue on chrome
+      _X11_NO_MITSHM: 1 # disable memory sharing for black screen issue on chrome
+      NODE_APP_INSTANCE: 'docker'
+      NODE_CONFIG_ENV: 'e2e'
+      NODE_ENV: 'production'
+      QT_X11_NO_MITSHM: 1 # disable memory sharing for black screen issue on chrome
 
   server:
     build:
