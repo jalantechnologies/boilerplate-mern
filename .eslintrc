@@ -4,15 +4,11 @@
     "es6": true,
     "node": true
   },
-  "extends": [
-    "airbnb-base"
-  ],
-  "ignorePatterns": ["test/**/*"],
+  "extends": ["airbnb-base"],
+  "ignorePatterns": ["test/**/*", "cypress/**/*", "cypress.config.ts"],
   "overrides": [
     {
-      "files": [
-        "**/*.ts"
-      ],
+      "files": ["**/*.ts"],
       "extends": [
         "airbnb-typescript/base",
         "plugin:@typescript-eslint/recommended",
