@@ -11,12 +11,14 @@ export default class AccountsE2EDataManager {
     }
   }
 
-  public static async clear() {
+  public static async clear(): Promise<void> {
     await this.checkRepository();
     await AccountRepository.accountDB.remove();
   }
 
-  public static async seedMany(numberOfEntries: number = 10) {
+  public static async seedMany(
+    numberOfEntries = 10,
+  ): Promise<CreateAccountParams[]> {
     await this.checkRepository();
 
     const data: CreateAccountParams[] = new Array(numberOfEntries)
@@ -31,7 +33,9 @@ export default class AccountsE2EDataManager {
     return data;
   }
 
-  public static async seedOne(newAccountData?: CreateAccountParams) {
+  public static async seedOne(
+    newAccountData?: CreateAccountParams,
+  ): Promise<CreateAccountParams> {
     await this.checkRepository();
 
     const data: CreateAccountParams = newAccountData || {

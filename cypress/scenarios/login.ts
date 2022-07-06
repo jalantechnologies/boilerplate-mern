@@ -1,11 +1,14 @@
 import DataManagers from '../data-managers';
+import { Scenario } from './types';
 
-export default {
+const loginScenario: Scenario = {
   async cleanup() {
     await DataManagers.accounts.clear();
   },
-  async setup() {
+  async setup<CreateAccountParams>() {
     const credentials = await DataManagers.accounts.seedOne();
-    return credentials;
+    return credentials as unknown as CreateAccountParams;
   },
 };
+
+export default loginScenario;

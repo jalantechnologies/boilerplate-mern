@@ -4,19 +4,18 @@ import scenarios from './cypress/scenarios';
 
 export default defineConfig({
   e2e: {
-    async setupNodeEvents(on, config) {
+    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
+    setupNodeEvents(on, config) {
       on('task', {
-        async 'scenario:cleanup'(scenario) {
-          if (scenarios[scenario] == undefined)
-            throw new Error('Undefined Scenario');
+        'scenario:cleanup': async (scenario: string) => {
+          if (scenarios[scenario] === undefined) throw new Error('Undefined Scenario');
 
           await scenarios[scenario].cleanup();
 
           return null;
         },
-        async 'scenario:setup'(scenario) {
-          if (scenarios[scenario] == undefined)
-            throw new Error('Undefined Scenario');
+        'scenario:setup': async (scenario: string) => {
+          if (scenarios[scenario] === undefined) throw new Error('Undefined Scenario');
 
           const res = await scenarios[scenario].setup();
 

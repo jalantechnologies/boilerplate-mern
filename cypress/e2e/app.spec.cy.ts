@@ -1,10 +1,11 @@
-const resource = 'accounts';
 let credentials;
 
 describe('application serving', () => {
   before(() => {
     // SETUP THE LOGIN SCENARIO
-    cy.task('scenario:setup', 'login').then((creds) => (credentials = creds));
+    cy.task('scenario:setup', 'login').then((creds) => {
+      credentials = creds;
+    });
     cy.visit('localhost:8080');
   });
 

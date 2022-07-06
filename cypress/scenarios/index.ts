@@ -1,5 +1,8 @@
 import login from './login';
+import { Scenarios } from './types';
 
-export default {
+const scenarios: Scenarios = {
   login,
 };
+
+export default scenarios;

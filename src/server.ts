@@ -11,8 +11,8 @@ import App from './app';
         (server.address() as AddressInfo).port,
       );
     },
-    // eslint-disable-next-line no-console
     (e) => {
+      // eslint-disable-next-line no-console
       console.error(e);
     },
   );

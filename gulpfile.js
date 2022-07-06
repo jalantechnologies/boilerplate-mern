@@ -15,38 +15,34 @@ const minifyejs = require('gulp-minify-ejs');
 
 const minifyResources = process.env.NODE_ENV !== 'development';
 
-const src = () =>
-  gulp
-    .src(['src/**/*.ts', '!src/public/js/*.ts'])
-    .pipe(plumber())
-    .pipe(ts.createProject('tsconfig.json')())
-    .js.pipe(gulp.dest('dist'));
+const src = () => gulp
+  .src(['src/**/*.ts', '!src/public/js/*.ts'])
+  .pipe(plumber())
+  .pipe(ts.createProject('tsconfig.json')())
+  .js.pipe(gulp.dest('dist'));
 
-const css = () =>
-  gulp
-    .src(['src/**/*.scss'])
-    .pipe(plumber())
-    .pipe(sass())
-    .pipe(gulpif(minifyResources, cleanCSS()))
-    .pipe(gulp.dest('dist'));
+const css = () => gulp
+  .src(['src/**/*.scss'])
+  .pipe(plumber())
+  .pipe(sass())
+  .pipe(gulpif(minifyResources, cleanCSS()))
+  .pipe(gulp.dest('dist'));
 
-const js = () =>
-  browserify({ entries: ['src/public/js/site.tsx'] })
-    .plugin(tsify)
-    .transform(babelify, {
-      presets: ['es2015'],
-    })
-    .transform(reactify)
-    .bundle()
-    .pipe(source('site.js'))
-    .pipe(gulp.dest('dist/public/js'));
+const js = () => browserify({ entries: ['src/public/js/site.tsx'] })
+  .plugin(tsify)
+  .transform(babelify, {
+    presets: ['es2015'],
+  })
+  .transform(reactify)
+  .bundle()
+  .pipe(source('site.js'))
+  .pipe(gulp.dest('dist/public/js'));
 
-const views = () =>
-  gulp
-    .src(['src/**/*.ejs'])
-    .pipe(plumber())
-    .pipe(gulpif(minifyResources, minifyejs()))
-    .pipe(gulp.dest('dist'));
+const views = () => gulp
+  .src(['src/**/*.ejs'])
+  .pipe(plumber())
+  .pipe(gulpif(minifyResources, minifyejs()))
+  .pipe(gulp.dest('dist'));
 
 const build = gulp.parallel(src, js, css, views);
 
