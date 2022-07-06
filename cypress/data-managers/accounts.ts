@@ -43,8 +43,12 @@ export default class AccountsE2EDataManager {
       password: faker.internet.password(),
     };
 
-    await AccountService.createAccount(data);
+    try {
+      await AccountService.createAccount(data);
 
-    return data;
+      return data;
+    } catch (err) {
+      throw new Error(err);
+    }
   }
 }

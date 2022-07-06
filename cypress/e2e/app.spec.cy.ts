@@ -18,17 +18,19 @@ describe('application serving', () => {
   });
 
   it('should allow login', () => {
-    cy.get('#username').type(credentials.username);
-    cy.get('#password').type(credentials.password);
+    cy.get('#username').clear().type(credentials.username);
+    cy.get('#password').clear().type(credentials.password);
     cy.get('button').click();
+
+    cy.wait(500);
 
     cy.get('#success').should('be.visible').should('have.text', 'SUCCESS!');
   });
 
   it('should not allow login for removed credentials', () => {
     cy.task('scenario:cleanup', 'login');
-    cy.get('#username').type(credentials.username);
-    cy.get('#password').type(credentials.password);
+    cy.get('#username').clear().type(credentials.username);
+    cy.get('#password').clear().type(credentials.password);
     cy.get('button').click();
 
     cy.get('#error').should('be.visible').should('have.text', 'ERROR!');
