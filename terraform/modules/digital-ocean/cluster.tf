@@ -13,14 +13,14 @@ variable "do_cluster_version" {
   # list is available at https://slugs.do-api.dev/ on "Kubernetes Versions"
   # default is - 1.22.8
   description = "The slug identifier for the version of Kubernetes used for the cluster"
-  default     = "1.22.8-do.1"
+  default     = "1.22.11-do.0"
 }
 
 variable "do_cluster_node_size" {
   # list is available at https://slugs.do-api.dev/ on "Droplet Sizes"
-  # default is - basic, 2Gb RAM, 1 vCPU, 50 Gb Disk
+  # default is - basic, 2Gb RAM, 2 vCPU, 50 Gb Disk
   description = "The slug identifier for the type of Droplet to be used as workers in the node pool"
-  default     = "s-1vcpu-2gb"
+  default     = "s-2vcpu-2gb"
 }
 
 variable "do_cluster_node_scale_max_size" {
@@ -40,6 +40,7 @@ resource "digitalocean_kubernetes_cluster" "do_cluster" {
     auto_scale = true
     min_nodes  = 1
     max_nodes  = var.do_cluster_node_scale_max_size
+    tags       = ["k8:node:web"]
   }
 }
 

@@ -13,3 +13,9 @@ variable "do_token" {
 variable "docker_registry_host" {
   description = "URL via which registry can be accessed"
 }
+
+variable "kube_enable_load_balancer" {
+  description = "Whether or not to use DO Load Balancer"
+  type        = bool
+  default     = true
+}

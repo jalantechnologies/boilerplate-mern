@@ -7,7 +7,7 @@ variable "cluster_issuer_name" {
 }
 
 resource "helm_release" "cert_manager" {
-  depends_on       = [helm_release.ingress_nginx]
+  depends_on       = [data.kubernetes_service.ingress_nginx_service_loaded]
   name             = "cert-manager"
   repository       = "https://charts.jetstack.io"
   chart            = "cert-manager"

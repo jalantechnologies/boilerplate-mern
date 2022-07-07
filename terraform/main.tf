@@ -22,4 +22,5 @@ module "kubernetes" {
   kubernetes_cluster_ca_certificate = module.digital_ocean.do_cluster_ca_certificate
   kubernetes_host                   = module.digital_ocean.do_cluster_host
   kubernetes_token                  = module.digital_ocean.do_cluster_token
+  enable_load_balancer              = var.kube_enable_load_balancer
 }

@@ -18,6 +18,12 @@ variable "kubernetes_cluster_ca_certificate" {
   description = "PEM-encoded root certificates bundle for TLS authentication"
 }
 
+variable "enable_load_balancer" {
+  description = "Whether or not to use DO Load Balancer"
+  type        = bool
+  default     = true
+}
+
 provider "kubernetes" {
   host                   = var.kubernetes_host
   token                  = var.kubernetes_token
