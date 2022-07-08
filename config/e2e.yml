@@ -11,6 +11,7 @@ jwt:
 
 communication:
   services: ['twilio', 'sendgrid']
+  mock: true
 
 twilio:
   verify:

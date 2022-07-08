@@ -5,10 +5,14 @@ import EmailParams from './sendgrid-email-params';
 import Logger from '../../logger/logger';
 
 export default class SendGridService {
-  public static initializeService(): void {
-    mail.setApiKey(
-      ConfigService.getStringValue('sendgridApiKey'),
-    );
+  private static mock: boolean;
+
+  public static initializeService(mockMode: boolean): void {
+    this.mock = mockMode;
+
+    if (this.mock) return;
+
+    mail.setApiKey(ConfigService.getStringValue('sendgridApiKey'));
   }
 
   public static async sendEmail(params: SendEmailParams): Promise<void> {
@@ -27,12 +31,14 @@ export default class SendGridService {
     };
 
     try {
+      if (this.mock) return Promise.resolve(null);
+
       await mail.send(msg);
     } catch (e) {
       if (
-        e.code === 429 // Too many requests
-        || e.code === 401 // Authentication error (If SG API key is not valid.)
-        || e.code === 403 // From address does not match verified sender identity.
+        e.code === 429 || // Too many requests
+        e.code === 401 || // Authentication error (If SG API key is not valid.)
+        e.code === 403 // From address does not match verified sender identity.
       ) {
         Logger.error(e.message);
       }
