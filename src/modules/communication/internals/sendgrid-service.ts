@@ -3,15 +3,10 @@ import { SendEmailParams, ThirdPartyServiceError } from '../types';
 import ConfigService from '../../config/config-service';
 import EmailParams from './sendgrid-email-params';
 import Logger from '../../logger/logger';
+import SendGridServiceMock from './sendgrid-service.mock';
 
-export default class SendGridService {
-  private static mock: boolean;
-
-  public static initializeService(mockMode: boolean): void {
-    this.mock = mockMode;
-
-    if (this.mock) return;
-
+class SendGridService {
+  public static initializeService(): void {
     mail.setApiKey(ConfigService.getStringValue('sendgridApiKey'));
   }
 
@@ -31,8 +26,6 @@ export default class SendGridService {
     };
 
     try {
-      if (this.mock) return;
-
       await mail.send(msg);
     } catch (e) {
       if (
@@ -46,3 +39,7 @@ export default class SendGridService {
     }
   }
 }
+
+export default ConfigService.getBoolValue('communication.mock')
+  ? SendGridServiceMock
+  : SendGridService;

@@ -3,17 +3,12 @@ import ConfigService from '../../config/config-service';
 import Logger from '../../logger/logger';
 import { SendSMSParams, ThirdPartyServiceError } from '../types';
 import SMSParams from './twilio-params';
+import TwilioServiceMock from './twilio-service.mock';
 
-export default class TwilioService {
-  private static mock: boolean;
-
+class TwilioService {
   private static twilio: Twilio;
 
-  public static initializeService(mockMode: boolean): void {
-    this.mock = mockMode;
-
-    if (this.mock) return;
-
+  public static initializeService(): void {
     this.twilio = new Twilio(
       ConfigService.getStringValue('twilio.verify.accountSid'),
       ConfigService.getStringValue('twilio.verify.authToken'),
@@ -22,8 +17,6 @@ export default class TwilioService {
 
   public static async sendSMS(params: SendSMSParams): Promise<void> {
     SMSParams.validate(params);
-
-    if (this.mock) return;
 
     try {
       await this.twilio.messages.create({
@@ -46,3 +39,7 @@ export default class TwilioService {
     }
   }
 }
+
+export default ConfigService.getBoolValue('communication.mock')
+  ? TwilioServiceMock
+  : TwilioService;

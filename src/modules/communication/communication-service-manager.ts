@@ -8,15 +8,14 @@ export default class CommunicationServiceManager {
     const commServices: CommunicationService[] = ConfigService.getListValue<CommunicationService>(
       'communication.services',
     );
-    const mock: boolean = ConfigService.getBoolValue('communication.mock');
 
     commServices.forEach((commService) => {
       switch (commService) {
         case CommunicationService.SendGrid:
-          SendGridService.initializeService(mock);
+          SendGridService.initializeService();
           break;
         case CommunicationService.Twilio:
-          TwilioService.initializeService(mock);
+          TwilioService.initializeService();
           break;
         default:
           throw new UnknownServiceError(commService);
