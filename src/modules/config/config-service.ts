@@ -24,16 +24,16 @@ export default class ConfigService {
   }
 
   private static getEnvValue<T>(expectedValueType: ConfigType, key: string): T {
-    try {
-      const value = config.get(key);
+    const value = config.get(key);
 
-      if (typeof value !== expectedValueType) {
-        throw new ValueTypeMismatchError(typeof value, expectedValueType, key);
-      }
-
-      return value as T;
-    } catch (err) {
+    if (value === undefined) {
       throw new MissingKeyError(key);
+    }
+
+    if (typeof value !== expectedValueType) {
+      throw new ValueTypeMismatchError(typeof value, expectedValueType, key);
+    } else {
+      return value as T;
     }
   }
 }
