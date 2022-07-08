@@ -27,8 +27,9 @@ export default class ConfigService {
     try {
       const value = config.get(key);
 
-      if (typeof value !== expectedValueType)
+      if (typeof value !== expectedValueType) {
         throw new ValueTypeMismatchError(typeof value, expectedValueType, key);
+      }
 
       return value as T;
     } catch (err) {

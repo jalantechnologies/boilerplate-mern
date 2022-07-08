@@ -6,6 +6,7 @@ import SMSParams from './twilio-params';
 
 export default class TwilioService {
   private static mock: boolean;
+
   private static twilio: Twilio;
 
   public static initializeService(mockMode: boolean): void {
@@ -22,7 +23,7 @@ export default class TwilioService {
   public static async sendSMS(params: SendSMSParams): Promise<void> {
     SMSParams.validate(params);
 
-    if (this.mock) return Promise.resolve(null);
+    if (this.mock) return;
 
     try {
       await this.twilio.messages.create({
@@ -34,10 +35,10 @@ export default class TwilioService {
       });
     } catch (e) {
       if (
-        e.code === 21705 || // If messaging service sid is invalid
-        e.code === 20429 || // Too many requests
-        e.code === 20003 || // If Twilio account balance runs out.
-        e.code === 30002 // If twilio account suspended
+        e.code === 21705 // If messaging service sid is invalid
+        || e.code === 20429 // Too many requests
+        || e.code === 20003 // If Twilio account balance runs out.
+        || e.code === 30002 // If twilio account suspended
       ) {
         Logger.error(e.message);
       }

@@ -31,14 +31,14 @@ export default class SendGridService {
     };
 
     try {
-      if (this.mock) return Promise.resolve(null);
+      if (this.mock) return;
 
       await mail.send(msg);
     } catch (e) {
       if (
-        e.code === 429 || // Too many requests
-        e.code === 401 || // Authentication error (If SG API key is not valid.)
-        e.code === 403 // From address does not match verified sender identity.
+        e.code === 429 // Too many requests
+        || e.code === 401 // Authentication error (If SG API key is not valid.)
+        || e.code === 403 // From address does not match verified sender identity.
       ) {
         Logger.error(e.message);
       }
