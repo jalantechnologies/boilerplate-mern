@@ -5,7 +5,6 @@ jwt:
 
 communication:
   services: ['twilio', 'sendgrid']
-  mock: false
 
 twilio:
   verify:

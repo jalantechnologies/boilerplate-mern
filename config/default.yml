@@ -6,7 +6,6 @@ logger:
 
 communication:
   services: []
-  mock: false
 
 server:
   port: '8080'

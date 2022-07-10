@@ -4,7 +4,6 @@ import scenarios from './cypress/scenarios';
 
 export default defineConfig({
   e2e: {
-    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
     setupNodeEvents(on) {
       on('task', {
         'scenario:cleanup': async (scenario: string) => {

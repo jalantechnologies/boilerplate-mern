@@ -6,8 +6,8 @@ services:
     environment:
       NODE_APP_INSTANCE: 'docker'
       NODE_CONFIG_ENV: 'e2e'
-      NODE_ENV: 'production'
-    command: 'npm run e2e'
+      NODE_ENV: 'e2e'
+    command: 'npm run e2e:docker'
     depends_on:
       - db
     ports:
