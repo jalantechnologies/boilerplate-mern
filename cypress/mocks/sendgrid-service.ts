@@ -1,9 +1,8 @@
-import { SendEmailParams } from '../modules/communication/types';
-import EmailParams from '../modules/communication/internals/sendgrid-email-params';
+import { SendEmailParams } from '../../src/modules/communication/types';
+import EmailParams from '../../src/modules/communication/internals/sendgrid-email-params';
 
 export default class SendGridService {
   public static initializeService(): void {
-    // eslint-disable-next-line no-console
     console.log('SENDGRID MOCK INITIALIZED');
   }
 

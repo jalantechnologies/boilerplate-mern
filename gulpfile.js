@@ -15,28 +15,36 @@ const tsify = require('tsify');
 const source = require('vinyl-source-stream');
 
 const minifyResources = process.env.NODE_ENV !== 'development';
-const mockServices = process.env.NODE_ENV === 'e2e';
+const e2eMode = process.env.NODE_ENV === 'e2e';
 
-// const mock = require('../../../Escala/gulp-mock-module');
-const srcTargets = ['src/**/*.ts', '!src/public/js/*.ts', '!src/mocks/*.ts'];
-
-if (mockServices) srcTargets.pop();
+const mocks = () =>
+  gulp
+    .src(['cypress/mocks/*.ts'])
+    .pipe(plumber())
+    .pipe(ts.createProject('tsconfig.e2e.json')())
+    .js.pipe(gulp.dest('dist/cypress/mocks'));
 
 const src = () =>
   gulp
-    .src(srcTargets)
+    .src(['src/**/*.ts', '!src/public/js/*.ts'])
     .pipe(plumber())
     .pipe(
       gulpif(
-        mockServices,
+        e2eMode,
         mock(
           ['twilio-service', 'sendgrid-service'],
-          path.resolve(__dirname, 'src/mocks'),
+          path.resolve(__dirname, 'cypress/mocks'),
         ),
       ),
     )
-    .pipe(ts.createProject('tsconfig.json')())
-    .js.pipe(gulp.dest('dist'));
+    .pipe(
+      gulpif(
+        !e2eMode,
+        ts.createProject('tsconfig.json')(),
+        ts.createProject('tsconfig.e2e.json')(),
+      ),
+    )
+    .js.pipe(gulpif(!e2eMode, gulp.dest('dist'), gulp.dest('dist/src')));
 
 const css = () =>
   gulp
@@ -44,7 +52,7 @@ const css = () =>
     .pipe(plumber())
     .pipe(sass())
     .pipe(gulpif(minifyResources, cleanCSS()))
-    .pipe(gulp.dest('dist'));
+    .pipe(gulpif(!e2eMode, gulp.dest('dist'), gulp.dest('dist/src')));
 
 const js = () =>
   browserify({ entries: ['src/public/js/site.tsx'] })
@@ -55,25 +63,37 @@ const js = () =>
     .transform(reactify)
     .bundle()
     .pipe(source('site.js'))
-    .pipe(gulp.dest('dist/public/js'));
+    .pipe(
+      gulpif(
+        !e2eMode,
+        gulp.dest('dist/public/js'),
+        gulp.dest('dist/src/public/js'),
+      ),
+    );
 
 const views = () =>
   gulp
     .src(['src/**/*.ejs'])
     .pipe(plumber())
     .pipe(gulpif(minifyResources, minifyejs()))
-    .pipe(gulp.dest('dist'));
-
-const build = gulp.parallel(src, js, css, views);
-
-const watchTargets = ['src/**/*.*', 'config/*.*'];
-
-if (mockServices) watchTargets.push('cypress/mocks/*.ts');
+    .pipe(gulpif(!e2eMode, gulp.dest('dist'), gulp.dest('dist/src')));
 
 const watch = (done) => {
   nodemon({
-    watch: watchTargets,
+    watch: ['src/**/*.*', 'config/*.*'],
     exec: 'npm start',
+    tasks: ['build'],
+    // for graceful process exit
+    // @see - https://github.com/remy/nodemon#gracefully-reloading-down-your-script
+    signal: 'SIGHUP',
+    done,
+  });
+};
+
+const watchE2E = (done) => {
+  nodemon({
+    watch: ['src/**/*.*', 'config/*.*', 'cypress/mocks/*.ts'],
+    exec: 'npm run start:e2e',
     tasks: ['build'],
     // for graceful process exit
     // @see - https://github.com/remy/nodemon#gracefully-reloading-down-your-script
@@ -83,13 +103,20 @@ const watch = (done) => {
 };
 // directly running watch won't run build on initial run, only on changes
 // because of this watch and serve have been seperated out
+
+const build = gulp.parallel(src, js, css, views);
+const buildE2E = gulp.series(mocks, build);
+
 const serve = gulp.series(build, watch);
+const serveE2E = gulp.series(buildE2E, watchE2E);
 
 /*
  * Tasks can be run using the gulp task
  */
 exports.build = build;
+exports.buildE2E = buildE2E;
 exports.serve = serve;
+exports.serveE2E = serveE2E;
 
 /*
  * Define default task that can be called by just running `gulp` from cli

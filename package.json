@@ -8,7 +8,7 @@
   },
   "scripts": {
     "build": "gulp",
-    "build:e2e": "NODE_ENV=e2e gulp serve",
+    "build:e2e": "NODE_ENV=e2e gulp buildE2E",
     "e2e": "cypress run",
     "e2e:ci": "concurrently -s first -k --kill-others-on-fail \"npm run serve:e2e\" \"sleep 25 && npm run e2e\"",
     "test": "NODE_ENV=production NODE_CONFIG_ENV=testing mocha --exit -r ts-node/register --project tsconfig.json test/**/*.spec.ts",
@@ -16,8 +16,9 @@
     "lint:md": "remark .",
     "lint:fix": "eslint --fix .",
     "start": "node dist/server.js",
+    "start:e2e": "node dist/src/server.js",
     "serve": "gulp serve",
-    "serve:e2e": "NODE_ENV=e2e gulp serve"
+    "serve:e2e": "NODE_ENV=e2e gulp serveE2E"
   },
   "author": "jalantechnologies",
   "license": "MIT",
@@ -74,7 +75,7 @@
     "gulp-clean-css": "^4.3.0",
     "gulp-if": "^3.0.0",
     "gulp-minify-ejs": "^1.0.3",
-    "gulp-mock-module": "^1.0.1",
+    "gulp-mock-module": "^1.0.2",
     "gulp-nodemon": "^2.5.0",
     "gulp-plumber": "^1.2.1",
     "gulp-replace": "^1.1.3",

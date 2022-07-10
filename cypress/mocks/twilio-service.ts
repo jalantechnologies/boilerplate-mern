@@ -1,9 +1,8 @@
-import { SendSMSParams } from '../modules/communication/types';
-import SMSParams from '../modules/communication/internals/twilio-params';
+import { SendSMSParams } from '../../src/modules/communication/types';
+import SMSParams from '../../src/modules/communication/internals/twilio-params';
 
 export default class TwilioService {
   public static initializeService(): void {
-    // eslint-disable-next-line no-console
     console.log('TWILIO MOCK INITIALIZED');
   }
 
