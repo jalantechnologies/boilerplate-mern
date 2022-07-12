@@ -17,61 +17,66 @@ const source = require('vinyl-source-stream');
 const minifyResources = process.env.NODE_ENV !== 'development';
 const e2eMode = process.env.NODE_ENV === 'e2e';
 
-const mocks = () => gulp
-  .src(['cypress/mocks/*.ts'])
-  .pipe(plumber())
-  .pipe(ts.createProject('tsconfig.e2e.json')())
-  .js.pipe(gulp.dest('dist/cypress/mocks'));
+const mocks = () =>
+  gulp
+    .src(['test/mocks/*.ts'])
+    .pipe(plumber())
+    .pipe(ts.createProject('tsconfig.e2e.json')())
+    .js.pipe(gulp.dest('dist/test/mocks'));
 
-const src = () => gulp
-  .src(['src/**/*.ts', '!src/public/js/*.ts'])
-  .pipe(plumber())
-  .pipe(
-    gulpif(
-      e2eMode,
-      mock(
-        ['twilio-service', 'sendgrid-service'],
-        path.resolve(__dirname, 'cypress/mocks'),
+const src = () =>
+  gulp
+    .src(['src/**/*.ts', '!src/public/js/*.ts'])
+    .pipe(plumber())
+    .pipe(
+      gulpif(
+        e2eMode,
+        mock(
+          ['twilio-service', 'sendgrid-service'],
+          path.resolve(__dirname, 'test/mocks'),
+        ),
       ),
-    ),
-  )
-  .pipe(
-    gulpif(
-      !e2eMode,
-      ts.createProject('tsconfig.json')(),
-      ts.createProject('tsconfig.e2e.json')(),
-    ),
-  )
-  .js.pipe(gulpif(!e2eMode, gulp.dest('dist'), gulp.dest('dist/src')));
+    )
+    .pipe(
+      gulpif(
+        !e2eMode,
+        ts.createProject('tsconfig.json')(),
+        ts.createProject('tsconfig.e2e.json')(),
+      ),
+    )
+    .js.pipe(gulpif(!e2eMode, gulp.dest('dist'), gulp.dest('dist/src')));
 
-const css = () => gulp
-  .src(['src/**/*.scss'])
-  .pipe(plumber())
-  .pipe(sass())
-  .pipe(gulpif(minifyResources, cleanCSS()))
-  .pipe(gulpif(!e2eMode, gulp.dest('dist'), gulp.dest('dist/src')));
+const css = () =>
+  gulp
+    .src(['src/**/*.scss'])
+    .pipe(plumber())
+    .pipe(sass())
+    .pipe(gulpif(minifyResources, cleanCSS()))
+    .pipe(gulpif(!e2eMode, gulp.dest('dist'), gulp.dest('dist/src')));
 
-const js = () => browserify({ entries: ['src/public/js/site.tsx'] })
-  .plugin(tsify)
-  .transform(babelify, {
-    presets: ['es2015'],
-  })
-  .transform(reactify)
-  .bundle()
-  .pipe(source('site.js'))
-  .pipe(
-    gulpif(
-      !e2eMode,
-      gulp.dest('dist/public/js'),
-      gulp.dest('dist/src/public/js'),
-    ),
-  );
+const js = () =>
+  browserify({ entries: ['src/public/js/site.tsx'] })
+    .plugin(tsify)
+    .transform(babelify, {
+      presets: ['es2015'],
+    })
+    .transform(reactify)
+    .bundle()
+    .pipe(source('site.js'))
+    .pipe(
+      gulpif(
+        !e2eMode,
+        gulp.dest('dist/public/js'),
+        gulp.dest('dist/src/public/js'),
+      ),
+    );
 
-const views = () => gulp
-  .src(['src/**/*.ejs'])
-  .pipe(plumber())
-  .pipe(gulpif(minifyResources, minifyejs()))
-  .pipe(gulpif(!e2eMode, gulp.dest('dist'), gulp.dest('dist/src')));
+const views = () =>
+  gulp
+    .src(['src/**/*.ejs'])
+    .pipe(plumber())
+    .pipe(gulpif(minifyResources, minifyejs()))
+    .pipe(gulpif(!e2eMode, gulp.dest('dist'), gulp.dest('dist/src')));
 
 const watch = (done) => {
   nodemon({
