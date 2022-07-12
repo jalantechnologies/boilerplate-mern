@@ -2,7 +2,7 @@ version: '3'
 
 services:
   app:
-    build: .
+    image: boilerplate-mern
     environment:
       NODE_APP_INSTANCE: 'docker'
       NODE_CONFIG_ENV: 'e2e'
