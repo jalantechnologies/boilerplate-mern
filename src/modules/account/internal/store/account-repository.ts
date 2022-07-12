@@ -18,7 +18,7 @@ export default class AccountRepository {
             AccountRepository.accountDB = result.model(
               'Account',
               accountDbSchema,
-            );
+            ) as unknown as mongoose.Model<AccountDB>;
             resolve(result);
           }
         },
