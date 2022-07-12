@@ -10,12 +10,6 @@ services:
     command: 'npm run e2e:ci'
     depends_on:
       - db
-    ports:
-      - '8080:8080'
-    volumes:
-      - './:/app:delegated'
-      - '/app/node_modules/'
-    working_dir: /app
 
   db:
     image: mongo:5.0
