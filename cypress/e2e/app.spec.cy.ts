@@ -1,12 +1,12 @@
-let credentials;
-
 describe('application serving', () => {
-  before(() => {
+  let credentials;
+
+  beforeEach(() => {
     // SETUP THE LOGIN SCENARIO
     cy.task('scenario:setup', 'login').then((creds) => {
       credentials = creds;
     });
-    cy.visit('localhost:8080');
+    cy.visit('/');
   });
 
   it('loads the homepage', () => {
@@ -18,8 +18,8 @@ describe('application serving', () => {
   });
 
   it('should allow login', () => {
-    cy.get('#username').clear().type(credentials.username);
-    cy.get('#password').clear().type(credentials.password);
+    cy.get('#username').clear().type('notTheActualValue');
+    cy.get('#password').clear().type('notTheActualValue');
     cy.get('button').click();
 
     cy.wait(500);
@@ -36,7 +36,7 @@ describe('application serving', () => {
     cy.get('#error').should('be.visible').should('have.text', 'ERROR!');
   });
 
-  after(() => {
+  afterEach(() => {
     // CLEAN UP THE LOGIN SCENARIO
     credentials = null;
     cy.task('scenario:cleanup', 'login');

@@ -4,6 +4,7 @@ import scenarios from './cypress/scenarios';
 
 export default defineConfig({
   e2e: {
+    baseUrl: 'http://localhost:8080',
     setupNodeEvents(on) {
       on('task', {
         'scenario:cleanup': async (scenario: string) => {
