@@ -18,8 +18,8 @@ describe('application serving', () => {
   });
 
   it('should allow login', () => {
-    cy.get('#username').clear().type('notTheActualValue');
-    cy.get('#password').clear().type('notTheActualValue');
+    cy.get('#username').clear().type(credentials.username);
+    cy.get('#password').clear().type(credentials.password);
     cy.get('button').click();
 
     cy.wait(500);
