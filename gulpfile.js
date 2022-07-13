@@ -85,17 +85,6 @@ const watch = (done) => {
   });
 };
 
-const watchE2E = (done) => {
-  nodemon({
-    watch: ['src/**/*.*', 'config/*.*', 'cypress/**/*.*'],
-    exec: 'npm run start:e2e',
-    tasks: ['build'],
-    // for graceful process exit
-    // @see - https://github.com/remy/nodemon#gracefully-reloading-down-your-script
-    signal: 'SIGHUP',
-    done,
-  });
-};
 // directly running watch won't run build on initial run, only on changes
 // because of this watch and serve have been seperated out
 
@@ -103,7 +92,6 @@ const build = gulp.parallel(src, js, css, views);
 const buildE2E = gulp.series(mocks, build);
 
 const serve = gulp.series(build, watch);
-const serveE2E = gulp.series(buildE2E, watchE2E);
 
 /*
  * Tasks can be run using the gulp task
@@ -111,7 +99,6 @@ const serveE2E = gulp.series(buildE2E, watchE2E);
 exports.build = build;
 exports.buildE2E = buildE2E;
 exports.serve = serve;
-exports.serveE2E = serveE2E;
 
 /*
  * Define default task that can be called by just running `gulp` from cli

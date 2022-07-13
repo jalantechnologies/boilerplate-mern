@@ -1,4 +1,4 @@
-import DataManagers from '../data-managers';
+import DataManagers from '../../test/data-managers';
 import { Scenario } from './types';
 
 const loginScenario: Scenario = {
