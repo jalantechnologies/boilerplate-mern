@@ -19,8 +19,8 @@
     "strictNullChecks": false,
     "experimentalDecorators": true,
     "resolveJsonModule": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "rootDir": "./"
   },
-  "include": ["src/**/*", "test/**/*"],
-  "exclude": ["cypress/**/*"]
+  "include": ["src/**/*", "test/**/*", "cypress/**/*"]
 }

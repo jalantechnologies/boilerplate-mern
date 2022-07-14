@@ -1,4 +1,7 @@
-webAppHost: "http://localhost:8080"
+webAppHost: 'http://localhost:8080'
+
+jwt:
+  token: 'JWT_TOKEN'
 
 mongoDb:
-  uri: "mongodb://localhost:27017//boilerplate-mern-dev"
+  uri: 'mongodb://localhost:27017/boilerplate-mern-dev'

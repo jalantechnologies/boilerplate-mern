@@ -1,0 +1,5 @@
+jwt:
+  token: 'JWT_TOKEN'
+
+mongoDb:
+  uri: 'mongodb://localhost:27017/boilerplate-mern-e2e'
