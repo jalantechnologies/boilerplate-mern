@@ -7,6 +7,7 @@ Boilerplate project for NodeJS, React based projects in TypeScript. This README 
 - [Getting Started](#getting-started)
 - [Configuration](#configuration)
 - [Deployment](#deployment)
+- [Cypress](#e2e-testing)
 
 ## Getting Started
 
@@ -146,3 +147,57 @@ docker_registry_host = "<docker registry url>"
     - `DO_CLUSTER_ID` - Value of `do_cluster_id`
     - `SONAR_TOKEN` - See `Setting up SonarQube`
     - `SONAR_HOST_URL` - See `Setting up SonarQube`
+
+## E2E-Testing
+
+### Prerequisites
+* npm
+* Start application - [Getting Started](#getting-started)
+
+### Installation
+
+* Install NPM packages.
+```shell
+npm install
+```
+(if you're running into ```npm ERR! code ELIFECYCLE npm ERR! err no1``` error, follow these steps to fix it: 
+ - sudo npm cache clean -f (force) clear you npm cache
+ - sudo npm install -g n install n 
+ - sudo n stable upgrade to the current stable version)
+
+### Usage
+Specs can be run from the command line or from the Cypress Test Runner's GUI.
+
+### Executing specs from the command line
+
+```shell
+  # run the entire suite
+  npm run e2e
+  
+  # run headless chrome
+  npm run e2e -- --headless --browser chrome
+
+  # run an individual spec file
+  npm run e2e -- --spec "cypress/e2e/app.spec.cy.ts"
+
+  # run all specs within the folder matching the glob (Note: Using double quotes is strongly recommended.
+  npm run e2e -- --spec "cypress/e2e/**/*"
+```
+
+### Executing specs from the GUI
+
+1. Open the Cypress Test Runner and click on any types of testing **E2E Testing** & **component Testing**
+```shell
+npm run cy:open
+```
+<img width="1193" alt="Screenshot 2022-07-14 at 12 51 15 PM" src="https://user-images.githubusercontent.com/40771084/178925347-6c81c0e3-a06c-49c8-890b-3c03f003f1d8.png">
+
+2. The Cypress Test Runner will open a new window with brower option, select respective browser.
+
+<img width="1190" alt="Screenshot 2022-07-14 at 12 51 44 PM" src="https://user-images.githubusercontent.com/40771084/178925383-1833b6ce-534f-4d7f-b6c5-582eaa409686.png">
+
+3. The Cypress Test Runner will open a new window with specs, clicking on any spec will execute the test in browser
+ 
+<img width="1712" alt="Screenshot 2022-07-14 at 12 51 58 PM" src="https://user-images.githubusercontent.com/40771084/178925733-bb55ece5-e271-4997-93e0-24e4e4dd2525.png">
+
+<img width="1441" alt="Screenshot 2022-07-14 at 12 54 17 PM" src="https://user-images.githubusercontent.com/40771084/178925765-ec555319-955a-4382-be52-3d981f77fa09.png">

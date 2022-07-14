@@ -9,6 +9,7 @@
   "scripts": {
     "build": "gulp",
     "build:e2e": "NODE_ENV=e2e gulp buildE2E",
+    "cy:open": "cypress open",
     "e2e": "cypress run",
     "e2e:ci": "npm run build:e2e && concurrently -s first -k --kill-others-on-fail \"npm run start:e2e\" \"sleep 2 && npm run e2e\"",
     "test": "NODE_ENV=production NODE_CONFIG_ENV=testing mocha --exit -r ts-node/register --project tsconfig.json test/**/*.spec.ts",
