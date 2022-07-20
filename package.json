@@ -33,6 +33,7 @@
     "ejs": "^3.1.6",
     "express": "^4.17.2",
     "express-ejs-layouts": "^2.5.1",
+    "express-winston": "^4.2.0",
     "google-libphonenumber": "^3.2.27",
     "js-yaml": "^4.1.0",
     "jsonwebtoken": "^8.5.1",
@@ -43,7 +44,8 @@
     "rollbar": "^2.24.0",
     "twilio": "^3.74.0",
     "winston": "^3.8.1",
-    "winston-loki": "^6.0.5"
+    "winston-loki": "^6.0.5",
+    "winston-transport": "^4.5.0"
   },
   "devDependencies": {
     "@babel/core": "^7.17.5",
