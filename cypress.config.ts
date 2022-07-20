@@ -8,16 +8,14 @@ export default defineConfig({
     setupNodeEvents(on) {
       on('task', {
         'scenario:cleanup': async (scenario: string) => {
-          if (scenarios[scenario] === undefined)
-            throw new Error('Undefined Scenario');
+          if (scenarios[scenario] === undefined) throw new Error('Undefined Scenario');
 
           await scenarios[scenario].cleanup();
 
           return null;
         },
         'scenario:setup': async (scenario: string) => {
-          if (scenarios[scenario] === undefined)
-            throw new Error('Undefined Scenario');
+          if (scenarios[scenario] === undefined) throw new Error('Undefined Scenario');
 
           const res = await scenarios[scenario].setup();
 
