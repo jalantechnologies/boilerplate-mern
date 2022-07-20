@@ -1,5 +1,5 @@
 logger:
-  transports: [ 'rollbar' ]
+  transports: [ 'grafana_loki' ]
 
 rollbar:
   env: 'staging'
