@@ -8,4 +8,4 @@ mongoDb:
 
 grafana:
   labels:
-    env: development
+    env: 'development'

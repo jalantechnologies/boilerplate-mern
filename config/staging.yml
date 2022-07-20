@@ -6,4 +6,4 @@ rollbar:
 
 grafana:
   labels:
-    env: staging
+    env: 'staging'

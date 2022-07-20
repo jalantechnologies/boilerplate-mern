@@ -12,4 +12,4 @@ server:
 
 grafana:
   labels:
-    app: boilerplate-mern
+    app: 'boilerplate-mern'
