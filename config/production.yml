@@ -3,3 +3,7 @@ logger:
 
 rollbar:
   env: 'production'
+
+grafana:
+  labels:
+    env: production

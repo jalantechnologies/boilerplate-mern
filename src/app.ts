@@ -1,6 +1,5 @@
 import express, { Application } from 'express';
 import { Server } from 'http';
-
 import path from 'path';
 import expressEjsLayouts from 'express-ejs-layouts';
 
@@ -11,6 +10,7 @@ import TaskServiceManager from './modules/task/task-service-manager';
 import ConfigManager from './modules/config/config-manager';
 import ConfigService from './modules/config/config-service';
 import LoggerManager from './modules/logger/logger-manager';
+import Logger from './modules/logger/logger';
 
 export default class App {
   private static app: Application;
@@ -29,7 +29,10 @@ export default class App {
     this.app.use('/', app);
 
     const port = ConfigService.getStringValue('server.port');
-    return this.app.listen(port);
+    const server = this.app.listen(port);
+
+    Logger.info(`http server started listening on port - ${port}`);
+    return server;
   }
 
   private static async createRESTApiServer(): Promise<Application> {
