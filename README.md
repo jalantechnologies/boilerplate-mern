@@ -123,6 +123,7 @@ This project uses [v2.1](https://github.com/jalantechnologies/platform-github/tr
 cluster_issuer_email = "developer@jalantechnologies.com"
 do_token             = "<digital ocean token>"
 do_cluster_name      = "<cluster name>"
+do_alert_email       = "developer@jalantechnologies.com"
 docker_registry_host = "<docker registry url>"
 ```
 
