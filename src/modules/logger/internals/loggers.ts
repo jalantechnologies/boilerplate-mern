@@ -3,6 +3,7 @@ import ConfigService from '../../config/config-service';
 import ConsoleLogger from './console-logger';
 import RollbarLogger from './rollbar-logger';
 import { UnknownTransportError } from '../types';
+import GrafanaLokiLogger from './grafana-loki-logger';
 
 export default class Loggers {
   private static loggers: Logger[];
@@ -18,6 +19,9 @@ export default class Loggers {
           break;
         case LoggerTransport.Rollbar:
           loggerTransports.push(Loggers.getRollbarLogger());
+          break;
+        case LoggerTransport.GrafanaLoki:
+          loggerTransports.push(Loggers.getGrafanaLokiLogger());
           break;
         default:
           throw new UnknownTransportError(loggerTransport);
@@ -63,5 +67,9 @@ export default class Loggers {
 
   static getRollbarLogger(): RollbarLogger {
     return new RollbarLogger();
+  }
+
+  static getGrafanaLokiLogger(): GrafanaLokiLogger {
+    return new GrafanaLokiLogger();
   }
 }

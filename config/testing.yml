@@ -7,7 +7,7 @@ rollbar:
   env: 'ROLLBAR_ENV'
 
 jwt:
-  token: 'JWT_TOKEN'
+  token: 'test_auth_token'
 
 communication:
   services: ['twilio', 'sendgrid']

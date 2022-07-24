@@ -1,7 +1,11 @@
 webAppHost: 'http://localhost:8080'
 
 jwt:
-  token: 'JWT_TOKEN'
+  token: 'dev_auth_token'
 
 mongoDb:
   uri: 'mongodb://localhost:27017/boilerplate-mern-dev'
+
+grafana:
+  labels:
+    env: 'development'

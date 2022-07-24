@@ -1,0 +1,6 @@
+logger:
+  transports: [ 'grafana_loki' ]
+
+grafana:
+  labels:
+    env: 'preview'
