@@ -20,7 +20,7 @@ export default class Loggers {
         case LoggerTransport.Rollbar:
           loggerTransports.push(Loggers.getRollbarLogger());
           break;
-        case LoggerTransport.GrafanaLoki:
+        case LoggerTransport.Grafana:
           loggerTransports.push(Loggers.getGrafanaLokiLogger());
           break;
         default:

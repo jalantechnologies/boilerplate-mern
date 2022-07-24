@@ -6,6 +6,7 @@ Boilerplate project for NodeJS, React based projects in TypeScript. This README 
 
 - [Getting Started](#getting-started)
 - [Configuration](#configuration)
+- [Integrations](#integrations)
 - [Deployment](#deployment)
 - [E2E Testing](#e2e-testing)
 
@@ -62,6 +63,16 @@ In the `config` directory:
 Each entry here in this documentation follows the following structure:
 
 `object.notation` `data-type` `ENVIRONMENT_OVERRIDE` (if available) - Description (Default - `value`)
+
+## Integrations
+
+This project support following integrations
+**TODO: Need to add documentation for all integrations**
+
+| Name    | Type   | Documentation                                                                                    | Configuration                                                                                                                                                                                                                                                                                                                                                                                        |
+|---------|--------|--------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Grafana | Logger | https://grafana.com/blog/2022/07/07/how-to-configure-grafana-loki-with-a-node.js-e-commerce-app/ | - logger.transports = ['grafana']<br>- grafana.host - Hostname for Loki logger on Grafana<br>- grafana.username - Username for authenticating with Loki logger on Grafana- grafana.password - Password for authenticating with Loki logger on Grafana<br>- grafana.labels.app - Label 'app' to be associated with the logs<br>- grafana.labels.env - Label 'env' to be associated with the logs<br>  |
+|         |        |                                                                                                  |                                                                                                                                                                                                                                                                                                                                                                                                      |
 
 ## Deployment
 

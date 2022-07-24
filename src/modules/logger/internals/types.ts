@@ -13,5 +13,5 @@ export default interface Logger {
 export enum LoggerTransport {
   Console = 'console',
   Rollbar = 'rollbar',
-  GrafanaLoki = 'grafana_loki',
+  Grafana = 'grafana',
 }
