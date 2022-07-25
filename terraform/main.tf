@@ -7,10 +7,11 @@ terraform {
 }
 
 module "digital_ocean" {
-  source          = "./modules/digital-ocean"
-  do_cluster_name = var.do_cluster_name
-  do_token        = var.do_token
-  do_alert_email  = var.do_alert_email
+  source               = "./modules/digital-ocean"
+  do_cluster_name      = var.do_cluster_name
+  do_token             = var.do_token
+  do_alert_email       = var.do_alert_email
+  enable_load_balancer = var.enable_load_balancer
 }
 
 module "kubernetes" {
@@ -23,5 +24,7 @@ module "kubernetes" {
   kubernetes_cluster_ca_certificate = module.digital_ocean.do_cluster_ca_certificate
   kubernetes_host                   = module.digital_ocean.do_cluster_host
   kubernetes_token                  = module.digital_ocean.do_cluster_token
-  enable_load_balancer              = var.kube_enable_load_balancer
+  enable_load_balancer              = var.enable_load_balancer
+  external_dns_provider             = var.external_dns_provider
+  external_dns_options              = var.external_dns_options
 }

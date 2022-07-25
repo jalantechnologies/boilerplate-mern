@@ -1,7 +1,8 @@
 resource "digitalocean_firewall" "web" {
   depends_on = [digitalocean_kubernetes_cluster.do_cluster]
-  name       = "web"
-  tags       = ["k8:node:web"]
+  name       = "${digitalocean_kubernetes_cluster.do_cluster.name}-web-access"
+  tags       = digitalocean_kubernetes_cluster.do_cluster.node_pool[0].tags
+  count      = var.enable_load_balancer ? 0 : 1
 
   inbound_rule {
     protocol         = "tcp"

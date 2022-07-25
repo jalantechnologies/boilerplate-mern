@@ -30,6 +30,6 @@ resource "helm_release" "ingress_nginx_unloaded" {
   chart      = "ingress-nginx"
 
   values = [
-    file("${path.module}/ingress-nginx-chart-values.yaml"),
+    file("${path.module}/specs/ingress-nginx-chart-values.yaml"),
   ]
 }
