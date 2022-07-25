@@ -5,7 +5,9 @@ import { CommunicationService, UnknownServiceError } from './types';
 
 export default class CommunicationServiceManager {
   public static async mountService(): Promise<void> {
-    const commServices: CommunicationService[] = ConfigService.getListValue<CommunicationService>('communication.services');
+    const commServices: CommunicationService[] = ConfigService.getListValue<CommunicationService>(
+      'communication.services',
+    );
 
     commServices.forEach((commService) => {
       switch (commService) {

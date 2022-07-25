@@ -8,14 +8,21 @@ export default class TaskRepository {
   static async createDBConnection(): Promise<Connection> {
     return new Promise((resolve, reject) => {
       const mongoURI = ConfigService.getStringValue('mongoDb.uri');
-      mongoose.createConnection(mongoURI, {}, (error: CallbackError, result: Connection): void => {
-        if (error) {
-          reject(error);
-        } else {
-          TaskRepository.taskDB = result.model('Task', taskDbSchema);
-          resolve(result);
-        }
-      });
+      mongoose.createConnection(
+        mongoURI,
+        {},
+        (error: CallbackError, result: Connection): void => {
+          if (error) {
+            reject(error);
+          } else {
+            TaskRepository.taskDB = result.model(
+              'Task',
+              taskDbSchema,
+            ) as unknown as mongoose.Model<TaskDB>;
+            resolve(result);
+          }
+        },
+      );
     });
   }
 }

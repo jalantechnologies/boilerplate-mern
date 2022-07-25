@@ -14,6 +14,7 @@ export default class AccountReader {
       username,
       active: true,
     });
+
     if (!dbAccount) {
       throw new AccountNotFoundError(username);
     }
