@@ -13,7 +13,7 @@ variable "do_cluster_version" {
   # list is available at https://slugs.do-api.dev/ on "Kubernetes Versions"
   # default is - 1.22.11
   description = "The slug identifier for the version of Kubernetes used for the cluster"
-  default     = "1.22.11-do.0"
+  default     = "1.21.14-do.1"
 }
 
 variable "do_cluster_node_size" {
