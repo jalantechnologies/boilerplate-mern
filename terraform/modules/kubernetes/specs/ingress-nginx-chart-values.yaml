@@ -6,5 +6,6 @@ controller:
   hostNetwork: true
   service:
     type: ClusterIP
+  enableExternalDNS: true
 rbac:
   create: true
