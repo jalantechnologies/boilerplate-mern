@@ -32,6 +32,4 @@ export default defineConfig({
     // Default is 0
     openMode: 0,
   },
-  screenshotOnRunFailure: false,
-  video: false,
 });

@@ -69,3 +69,7 @@ terraform/terraform.tfstate
 terraform/.terraform.tfstate.lock.info
 terraform/terraform.tfstate.backup
 terraform/*.tfvars
+
+#cypress
+cypress/videos
+cypress/screenshots
