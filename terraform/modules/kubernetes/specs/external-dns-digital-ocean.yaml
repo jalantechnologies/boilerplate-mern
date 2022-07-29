@@ -1,0 +1,12 @@
+# For managing DNS via DigitalOcean
+# See - https://github.com/kubernetes-sigs/external-dns/blob/master/docs/tutorials/digitalocean.md#manifest-for-clusters-with-rbac-enabled
+#
+# Accepts:
+# do_token - (required) API token to be used for managing DNS on DigitalOcean
+---
+provider: digitalocean
+env:
+  - name: DO_TOKEN
+    value: "${do_token}"
+rbac:
+  create: true
