@@ -2,13 +2,13 @@ name: preview_on_pr_update
 
 on:
   pull_request:
-    types: [ opened, synchronize, reopened ]
+    types: [opened, synchronize, reopened]
 
 jobs:
   preview:
     # only run when updating an 'Open' PR
     if: github.event.pull_request.state == 'open'
-    uses: jalantechnologies/platform-github/.github/workflows/kube.yml@v2.1
+    uses: jalantechnologies/platform-github/.github/workflows/kube.yml@v2.2
     with:
       app_name: boilerplate-mern
       app_env: preview

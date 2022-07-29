@@ -34,7 +34,7 @@ resource "helm_release" "docker_registry" {
   chart      = "docker-registry"
 
   values = [
-    templatefile("${path.module}/docker-registry-chart-values.yaml", {
+    templatefile("${path.module}/specs/docker-registry-chart-values.yaml", {
       cluster_issuer_name    = var.cluster_issuer_name
       docker_registry        = var.docker_registry_host
       docker_username        = var.docker_registry_auth_user

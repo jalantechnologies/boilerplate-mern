@@ -1,9 +1,6 @@
 import config from 'config';
 import ConfigType from './config-type';
-import {
-  MissingKeyError,
-  ValueTypeMismatchError,
-} from './types';
+import { MissingKeyError, ValueTypeMismatchError } from './types';
 
 export default class ConfigService {
   public static getBoolValue(key: string): boolean {
@@ -29,7 +26,7 @@ export default class ConfigService {
   private static getEnvValue<T>(expectedValueType: ConfigType, key: string): T {
     const value = config.get(key);
 
-    if (!value) {
+    if (value === undefined) {
       throw new MissingKeyError(key);
     }
 

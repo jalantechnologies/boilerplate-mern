@@ -1,8 +1,8 @@
 import express, { Application } from 'express';
 import { Server } from 'http';
-
 import path from 'path';
 import expressEjsLayouts from 'express-ejs-layouts';
+import expressWinston from 'express-winston';
 
 import AccessTokenServiceManager from './modules/access-token/access-token-manager';
 import AccountServiceManager from './modules/account/account-service-manager';
@@ -11,12 +11,14 @@ import TaskServiceManager from './modules/task/task-service-manager';
 import ConfigManager from './modules/config/config-manager';
 import ConfigService from './modules/config/config-service';
 import LoggerManager from './modules/logger/logger-manager';
+import Logger from './modules/logger/logger';
 
 export default class App {
   private static app: Application;
 
   public static async startServer(): Promise<Server> {
     this.app = express();
+    this.app.use(App.getRequestLogger());
 
     await ConfigManager.mountConfig();
     await LoggerManager.mountLogger();
@@ -28,8 +30,14 @@ export default class App {
     const app = await this.createExperienceService();
     this.app.use('/', app);
 
+    // error logger, to be always registered at last
+    this.app.use(App.getErrorLogger());
+
     const port = ConfigService.getStringValue('server.port');
-    return this.app.listen(port);
+    const server = this.app.listen(port);
+
+    Logger.info(`http server started listening on port - ${port}`);
+    return server;
   }
 
   private static async createRESTApiServer(): Promise<Application> {
@@ -60,5 +68,31 @@ export default class App {
     app.get('/', (_req, res) => res.render('pages/index.ejs'));
 
     return Promise.resolve(app);
+  }
+
+  private static getRequestLogger(): express.Handler {
+    return expressWinston.logger({
+      transports: [
+        LoggerManager.getWinstonTransport(),
+      ],
+      // no pre-build meta
+      meta: false,
+      msg: 'www - request - {{req.ip}} - {{res.statusCode}} - {{req.method}} - {{res.responseTime}}ms - {{req.url}} - {{req.headers[\'user-agent\']}}',
+      // use the default express/morgan request formatting
+      // enabling this will override any msg if true
+      expressFormat: false,
+      // force colorize when using custom msg
+      colorize: true,
+      // set log level according to response status
+      statusLevels: true,
+    });
+  }
+
+  private static getErrorLogger(): express.ErrorRequestHandler {
+    return expressWinston.errorLogger({
+      transports: [
+        LoggerManager.getWinstonTransport(),
+      ],
+    });
   }
 }

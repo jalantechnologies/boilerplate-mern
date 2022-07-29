@@ -2,11 +2,11 @@ name: clean_on_pr_closed
 
 on:
   pull_request:
-    types: [ closed ]
+    types: [closed]
 
 jobs:
   clean:
-    uses: jalantechnologies/platform-github/.github/workflows/clean.yml@v2.1
+    uses: jalantechnologies/platform-github/.github/workflows/clean.yml@v2.2
     with:
       app_name: boilerplate-mern
       app_env: preview

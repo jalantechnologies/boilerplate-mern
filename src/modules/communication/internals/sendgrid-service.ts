@@ -6,9 +6,7 @@ import Logger from '../../logger/logger';
 
 export default class SendGridService {
   public static initializeService(): void {
-    mail.setApiKey(
-      ConfigService.getStringValue('sendgridApiKey'),
-    );
+    mail.setApiKey(ConfigService.getStringValue('sendgridApiKey'));
   }
 
   public static async sendEmail(params: SendEmailParams): Promise<void> {

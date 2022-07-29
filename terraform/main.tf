@@ -10,6 +10,7 @@ module "digital_ocean" {
   source          = "./modules/digital-ocean"
   do_cluster_name = var.do_cluster_name
   do_token        = var.do_token
+  do_alert_email  = var.do_alert_email
 }
 
 module "kubernetes" {

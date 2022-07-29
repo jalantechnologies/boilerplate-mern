@@ -1,4 +1,4 @@
-# Boilerplate - NodeTS
+# Boilerplate - MERN
 
 Boilerplate project for NodeJS, React based projects in TypeScript. This README documents whatever steps are necessary to get your application up and running.
 
@@ -6,7 +6,9 @@ Boilerplate project for NodeJS, React based projects in TypeScript. This README 
 
 - [Getting Started](#getting-started)
 - [Configuration](#configuration)
+- [Integrations](#integrations)
 - [Deployment](#deployment)
+- [E2E Testing](#e2e-testing)
 
 ## Getting Started
 
@@ -61,6 +63,16 @@ In the `config` directory:
 Each entry here in this documentation follows the following structure:
 
 `object.notation` `data-type` `ENVIRONMENT_OVERRIDE` (if available) - Description (Default - `value`)
+
+## Integrations
+
+This project support following integrations
+**TODO: Need to add documentation for all integrations**
+
+| Name    | Type   | Documentation                                                                                    | Configuration                                                                                                                                                                                                                                                                                                                                                                                        |
+|---------|--------|--------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Grafana | Logger | https://grafana.com/blog/2022/07/07/how-to-configure-grafana-loki-with-a-node.js-e-commerce-app/ | - logger.transports = ['grafana']<br>- grafana.host - Hostname for Loki logger on Grafana<br>- grafana.username - Username for authenticating with Loki logger on Grafana- grafana.password - Password for authenticating with Loki logger on Grafana<br>- grafana.labels.app - Label 'app' to be associated with the logs<br>- grafana.labels.env - Label 'env' to be associated with the logs<br>  |
+|         |        |                                                                                                  |                                                                                                                                                                                                                                                                                                                                                                                                      |
 
 ## Deployment
 
@@ -122,8 +134,8 @@ This project uses [v2.1](https://github.com/jalantechnologies/platform-github/tr
 cluster_issuer_email = "developer@jalantechnologies.com"
 do_token             = "<digital ocean token>"
 do_cluster_name      = "<cluster name>"
+do_alert_email       = "developer@jalantechnologies.com"
 docker_registry_host = "<docker registry url>"
-
 ```
 
 - Run:
@@ -146,3 +158,55 @@ docker_registry_host = "<docker registry url>"
     - `DO_CLUSTER_ID` - Value of `do_cluster_id`
     - `SONAR_TOKEN` - See `Setting up SonarQube`
     - `SONAR_HOST_URL` - See `Setting up SonarQube`
+
+## E2E Testing
+
+**Pre Requirements:**
+
+Get the application up and running via following steps in [Getting Started](#getting-started)
+
+**Troubleshooting:**
+
+If you're running into ```npm ERR! code ELIFECYCLE npm ERR! err no1``` error, follow these steps to fix it:
+
+- `sudo npm cache clean -f (force) clear you npm cache`
+- `sudo npm install -g n install n`
+- `sudo n stable upgrade to the current stable version)`
+
+For more detailed info, check out this official [guide](https://docs.cypress.io/guides/references/troubleshooting) on troubleshooting.
+
+**Running specs from the command line:**
+
+```shell
+# run the entire suite
+npm run e2e
+  
+# run headless chrome
+npm run e2e -- --headless --browser chrome
+
+# run an individual spec file
+npm run e2e -- --spec "cypress/e2e/app.spec.cy.ts"
+
+# run all specs within the folder matching the glob (Note: Using double quotes is strongly recommended.
+npm run e2e -- --spec "cypress/e2e/**/*"
+```
+
+**Running specs from the GUI:**
+
+1. Open the Cypress Test Runner and click on any types of testing _E2E Testing_ & _Component Testing_.
+
+```shell
+npm run cy:open
+```
+
+<img width="1193" alt="Screenshot 2022-07-14 at 12 51 15 PM" src="https://user-images.githubusercontent.com/40771084/178925347-6c81c0e3-a06c-49c8-890b-3c03f003f1d8.png">
+
+2. The Cypress Test Runner will open a new window with browser option, select respective browser.
+
+<img width="1190" alt="Screenshot 2022-07-14 at 12 51 44 PM" src="https://user-images.githubusercontent.com/40771084/178925383-1833b6ce-534f-4d7f-b6c5-582eaa409686.png">
+
+3. The Cypress Test Runner will open a new window with specs, clicking on any spec will execute the test in browser.
+
+<img width="1712" alt="Screenshot 2022-07-14 at 12 51 58 PM" src="https://user-images.githubusercontent.com/40771084/178925733-bb55ece5-e271-4997-93e0-24e4e4dd2525.png">
+
+<img width="1441" alt="Screenshot 2022-07-14 at 12 54 17 PM" src="https://user-images.githubusercontent.com/40771084/178925765-ec555319-955a-4382-be52-3d981f77fa09.png">

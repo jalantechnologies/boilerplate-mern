@@ -14,12 +14,15 @@ export default class TwilioService {
     );
   }
 
-  public static async sendSMS(params: SendSMSParams):Promise<void> {
+  public static async sendSMS(params: SendSMSParams): Promise<void> {
     SMSParams.validate(params);
+
     try {
       await this.twilio.messages.create({
         to: SMSParams.phoneNumberToString(params.recipientPhone),
-        messagingServiceSid: ConfigService.getStringValue('twilio.messaging.messagingServiceSid'),
+        messagingServiceSid: ConfigService.getStringValue(
+          'twilio.messaging.messagingServiceSid',
+        ),
         body: params.messageBody,
       });
     } catch (e) {

@@ -1,5 +1,5 @@
 jwt:
-  expiresIn: "1y" # default token expire time 1 year. Examples - https://github.com/vercel/ms#examples
+  expiresIn: '1y' # default token expire time 1 year. Examples - https://github.com/vercel/ms#examples
 
 logger:
   transports: [ 'console' ]
@@ -8,5 +8,8 @@ communication:
   services: [ ]
 
 server:
-  port:
-    '8080'
+  port: '8080'
+
+grafana:
+  labels:
+    app: 'boilerplate-mern'
