@@ -13,7 +13,7 @@ variable "do_cluster_version" {
   # list is available at https://slugs.do-api.dev/ on "Kubernetes Versions"
   # default is - 1.22.11
   description = "The slug identifier for the version of Kubernetes used for the cluster"
-  default     = "1.22.11-do.0"
+  default     = "1.21.14-do.1"
 }
 
 variable "do_cluster_node_size" {
@@ -28,6 +28,9 @@ variable "do_cluster_node_scale_max_size" {
   default     = 3
 }
 
+variable "do_alert_email" {
+  description = "Email address to be used for sending resource utilization alerts"
+}
 
 resource "digitalocean_kubernetes_cluster" "do_cluster" {
   name    = var.do_cluster_name
@@ -40,7 +43,40 @@ resource "digitalocean_kubernetes_cluster" "do_cluster" {
     auto_scale = true
     min_nodes  = 1
     max_nodes  = var.do_cluster_node_scale_max_size
+    tags       = [
+      "${var.do_cluster_name}-worker"
+    ]
   }
+}
+
+resource "digitalocean_monitor_alert" "cpu_alert" {
+  alerts {
+    email = [
+      var.do_alert_email
+    ]
+  }
+  window      = "10m"
+  type        = "v1/insights/droplet/cpu"
+  compare     = "GreaterThan"
+  value       = 90
+  enabled     = true
+  tags        = digitalocean_kubernetes_cluster.do_cluster.node_pool[0].tags
+  description = "CPU is running high on K8 workers"
+}
+
+resource "digitalocean_monitor_alert" "memory_alert" {
+  alerts {
+    email = [
+      var.do_alert_email
+    ]
+  }
+  window      = "10m"
+  type        = "v1/insights/droplet/memory_utilization_percent"
+  compare     = "GreaterThan"
+  value       = 90
+  enabled     = true
+  tags        = digitalocean_kubernetes_cluster.do_cluster.node_pool[0].tags
+  description = "Memory Utilization is running high on K8 workers"
 }
 
 output "do_cluster_id" {

@@ -1,5 +1,9 @@
 logger:
-  transports: [ 'rollbar' ]
+  transports: [ 'grafana' ]
 
 rollbar:
   env: 'production'
+
+grafana:
+  labels:
+    env: 'production'
