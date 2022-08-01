@@ -41,6 +41,7 @@
     "path": "^0.12.7",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-helmet": "^6.1.0",
     "rollbar": "^2.24.0",
     "twilio": "^3.74.0",
     "winston": "^3.8.1",
