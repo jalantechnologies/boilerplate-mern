@@ -10,13 +10,13 @@ export const App: React.FC = () => {
     <>
       <Header />
       <Helmet>
-        <script src="./Inspect.js" type="text/javascript">
+        <script type="text/javascript">
           {InspectLet()}
         </script>
       </Helmet>
       <main>
         <div class="container flex-shrink-0">
-          <h1 class="mt-5">Hom</h1>
+          <h1 class="mt-5">Home</h1>
           {/* DUMMY LOGIN FORM FOR CYPRESS - REMOVE AT WILL */}
           <LoginForm />
         </div>
