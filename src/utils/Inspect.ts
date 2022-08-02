@@ -2,12 +2,14 @@ export {};
 
 declare global {
   interface Window {
-    __insp: any
+    __insp: any,
+    __inspld: Number
   }
 }
 
 const InspectLet = () => {
     window.__insp = window.__insp || [];
+    let __insp: Array<Array<string | number>> = []
     __insp.push(['wid', 433167548]);
     var ldinsp = function() {
         if (typeof window.__inspld != "undefined") return;

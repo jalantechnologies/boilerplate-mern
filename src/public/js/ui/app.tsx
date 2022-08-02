@@ -16,8 +16,7 @@ export const App: React.FC = () => {
       </Helmet>
       <main>
         <div class="container flex-shrink-0">
-          <h1 class="mt-5">Home</h1>
-
+          <h1 class="mt-5">Hom</h1>
           {/* DUMMY LOGIN FORM FOR CYPRESS - REMOVE AT WILL */}
           <LoginForm />
         </div>
