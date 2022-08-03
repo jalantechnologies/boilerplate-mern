@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import { Footer } from './components/footer';
 import { Header } from './components/header';
 import { LoginForm } from './components/login-form';
-import InspectLet from '../vendor/Inspectlet';
+import InspectLet from '../vendor/inspectlet';
 
 export const App: React.FC = () => {
   return (
