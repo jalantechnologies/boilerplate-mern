@@ -9,7 +9,7 @@ declare global {
 }
 
 const getKey = async () => {
-  const data = await fetch('http://localhost:8080/api/wid/');
+  const data = await fetch('/api/wid/');
   const res = data.json();
   return res;
 };

@@ -8,6 +8,12 @@ declare global {
   }
 }
 
+const getKey = async () => {
+  const data = await fetch('/api/wid/');
+  const res = data.json();
+  return res;
+};
+
 const InspectLet = () : void => {
   if (wid) {
     window.__insp = window.__insp || [];
