@@ -12,6 +12,7 @@ import ConfigManager from './modules/config/config-manager';
 import ConfigService from './modules/config/config-service';
 import LoggerManager from './modules/logger/logger-manager';
 import Logger from './modules/logger/logger';
+import InspectletServiceManager from './modules/inspectlet/inspectlet-service-manager';
 
 export default class App {
   private static app: Application;
@@ -51,6 +52,9 @@ export default class App {
 
     const taskServiceRESTApi = await TaskServiceManager.createRestAPIServer();
     app.use('/', taskServiceRESTApi);
+
+    const inspectletRESTApi = await InspectletServiceManager.createRestAPIServer();
+    app.use('/', inspectletRESTApi);
 
     return app;
   }
