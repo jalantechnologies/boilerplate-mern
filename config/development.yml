@@ -9,6 +9,3 @@ mongoDb:
 grafana:
   labels:
     env: 'development'
-
-inspectlet:
-  wid: '812310448'
