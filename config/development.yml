@@ -11,4 +11,4 @@ grafana:
     env: 'development'
 
 inspectlet:
-  wid: 812310448
+  wid: '812310448'

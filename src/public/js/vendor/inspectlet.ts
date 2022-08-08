@@ -1,23 +1,17 @@
 export {};
-const wid = 812310448;
 
 declare global {
   interface Window {
     __insp: Array<Array<string | number>>,
-    __inspld: number
+    __inspld: number,
+    inspectlet_wid: string,
   }
 }
 
-const getKey = async () => {
-  const data = await fetch('/api/wid/');
-  const res = data.json();
-  return res;
-};
-
 const InspectLet = () : void => {
-  if (wid) {
+  if (window.inspectlet_wid) {
     window.__insp = window.__insp || [];
-    window.__insp.push(['wid', wid]);
+    window.__insp.push(['wid', window.inspectlet_wid]);
     const ldinsp = () : void => {
       if (typeof window.__inspld !== 'undefined') return;
       window.__inspld = 1;
@@ -25,7 +19,7 @@ const InspectLet = () : void => {
       insp.type = 'text/javascript';
       insp.async = true;
       insp.id = 'inspsync';
-      insp.src = `${document.location.protocol === 'https:' ? 'https' : 'http'}://cdn.inspectlet.com/inspectlet.js?wid=${wid}&r=${Math.floor(new Date().getTime() / 3600000)}`;
+      insp.src = `${document.location.protocol === 'https:' ? 'https' : 'http'}://cdn.inspectlet.com/inspectlet.js?wid=${String(window.inspectlet_wid)}&r=${Math.floor(new Date().getTime() / 3600000)}`;
       const x = document.getElementsByTagName('script')[0];
       if (x === undefined) {
         document.getElementsByTagName('head')[0].appendChild(insp);

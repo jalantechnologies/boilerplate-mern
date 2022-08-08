@@ -5,7 +5,7 @@ import { LoginForm } from './components/login-form';
 import InspectLet from '../vendor/inspectlet';
 
 export const App: React.FC = () => {
-  useEffect(()=>{
+  useEffect(() => {
     InspectLet();
   }, [])
   return (

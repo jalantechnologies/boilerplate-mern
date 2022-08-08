@@ -33,3 +33,6 @@ grafana:
   labels:
     app: "GRAFANA_APP"
     env: "GRAFANA_ENV"
+
+inspectlet:
+  wid: "INSPECTLET_KEY"
