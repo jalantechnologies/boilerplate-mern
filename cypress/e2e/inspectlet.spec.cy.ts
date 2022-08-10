@@ -1,8 +1,11 @@
 describe(
   'To test inspectlet integration',
   () => {
-    it('injection of code according to wid', ()=>{
+    beforeEach(() => {
       cy.visit('/');
+    });
+
+    it('injection of code according to wid', ()=>{
       cy.window().then(win => {
         let inspectlet_key = win.inspectlet_key;
         cy.visit('/?inspectlet_diagnostics=true');

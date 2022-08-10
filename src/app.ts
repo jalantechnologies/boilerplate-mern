@@ -64,9 +64,8 @@ export default class App {
     app.set('layout', 'layouts/layout.ejs');
 
     app.use(express.static(path.join(__dirname)));
-
+    const inspectletKey = ConfigService.getStringValue('inspectlet.wid');
     app.get('/', (_req, res) => {
-      const inspectletKey = ConfigService.getStringValue('inspectlet.wid');
       res.render('pages/index.ejs', { inspectlet_key: inspectletKey || '' });
     });
 
