@@ -1,11 +1,3 @@
-export {};
-
-declare global {
-  interface Window {
-    inspectlet_key: string,
-  }
-}
-
 describe(
   'To test inspectlet integration',
   () => {
