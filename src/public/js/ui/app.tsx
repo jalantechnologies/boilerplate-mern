@@ -6,7 +6,9 @@ import InspectLet from '../vendor/inspectlet';
 
 export const App: React.FC = () => {
   useEffect(() => {
-    InspectLet();
+    if(window.inspectlet_key){
+      InspectLet();
+    }
   }, [])
   return (
     <>

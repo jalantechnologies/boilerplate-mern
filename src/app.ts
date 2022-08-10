@@ -66,7 +66,8 @@ export default class App {
     app.use(express.static(path.join(__dirname)));
 
     app.get('/', (_req, res) => {
-      res.render('pages/index.ejs', { key: ConfigService.getStringValue('inspectlet.wid') ? ConfigService.getStringValue('inspectlet.wid') : '' });
+      const inspectletKey = ConfigService.getStringValue('inspectlet.wid');
+      res.render('pages/index.ejs', { inspectlet_key: inspectletKey || '' });
     });
 
     return Promise.resolve(app);
