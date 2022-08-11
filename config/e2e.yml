@@ -5,4 +5,4 @@ mongoDb:
   uri: 'mongodb://localhost:27017/boilerplate-mern-e2e'
 
 inspectlet:
-  wid: "812310448"
+  wid: '812310448'

@@ -13,3 +13,6 @@ server:
 grafana:
   labels:
     app: 'boilerplate-mern'
+
+inspectlet:
+  wid: '812310448'
