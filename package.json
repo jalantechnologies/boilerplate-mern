@@ -81,7 +81,7 @@
     "gulp-clean-css": "^4.3.0",
     "gulp-if": "^3.0.0",
     "gulp-minify-ejs": "^1.0.3",
-    "gulp-mock-module": "^1.0.7",
+    "gulp-mock-module": "^1.0.10",
     "gulp-nodemon": "^2.5.0",
     "gulp-plumber": "^1.2.1",
     "gulp-replace": "^1.1.3",
