@@ -7,14 +7,14 @@ describe(
       cy.visit('/');
     });
 
-    it('Should enable integration if key was provided', ()=>{
-      window.inspectlet_key = '123456789';
+    it('should enable integration if key was provided', () => {
+      window.inspectletKey = '812310448';
       cy.visit('/?inspectlet_diagnostics=true');
       cy.get('.inspectlet_diagnostics').should('be.visible');
     })
     
-    it('Should not enable integration if key was not provided', ()=>{
-      window.inspectlet_key = '';
+    it('should not enable integration if key was not provided', () => {
+      window.inspectletKey = '';
       cy.visit('/?inspectlet_diagnostics=true');
       cy.get('.inspectlet_diagnostics').should('not.exist');
     })
