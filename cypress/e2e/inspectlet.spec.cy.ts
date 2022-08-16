@@ -8,7 +8,7 @@ describe(
     });
 
     it('Should enable integration if key was provided', ()=>{
-      window.inspectlet_key = '812310448';
+      window.inspectlet_key = '123456789';
       cy.visit('/?inspectlet_diagnostics=true');
       cy.get('.inspectlet_diagnostics').should('be.visible');
     })
