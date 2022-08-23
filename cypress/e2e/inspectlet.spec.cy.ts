@@ -1,5 +1,3 @@
-/// <reference types="cypress" />
-
 describe(
   'Inspectlet',
   () => {
@@ -8,14 +6,20 @@ describe(
     });
 
     it('should enable integration if key was provided', () => {
-      window.inspectletKey = '812310448';
-      cy.visit('/?inspectlet_diagnostics=true');
+      cy.visit('/?inspectlet_diagnostics=true', {
+          onLoad (win) {
+            win.inspectletKey = '812310448'
+          }
+        })
       cy.get('.inspectlet_diagnostics').should('be.visible');
     })
-    
-    it('should not enable integration if key was not provided', () => {
-      window.inspectletKey = '';
-      cy.visit('/?inspectlet_diagnostics=true');
+
+    it('should enable integration if key was provided', () => {
+      cy.visit('/?inspectlet_diagnostics=true', {
+          onLoad (win) {
+            win.inspectletKey = ''
+          }
+        })
       cy.get('.inspectlet_diagnostics').should('not.exist');
     })
   }
