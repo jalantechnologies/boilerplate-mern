@@ -57,15 +57,17 @@ export default class App {
 
   private static async createExperienceService(): Promise<Application> {
     const app: Application = express();
+    const inspectletKey = ConfigService.hasValue('inspectlet.wid') ? ConfigService.getStringValue('inspectlet.wid') : '';
 
     app.set('view engine', 'ejs');
     app.set('views', path.join(__dirname, 'views'));
     app.use(expressEjsLayouts);
     app.set('layout', 'layouts/layout.ejs');
-
     app.use(express.static(path.join(__dirname)));
 
-    app.get('/', (_req, res) => res.render('pages/index.ejs'));
+    app.get('/', (_req, res) => {
+      res.render('pages/index.ejs', { inspectletKey });
+    });
 
     return Promise.resolve(app);
   }
