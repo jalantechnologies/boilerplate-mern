@@ -69,3 +69,6 @@ terraform/terraform.tfstate
 terraform/.terraform.tfstate.lock.info
 terraform/terraform.tfstate.backup
 terraform/*.tfvars
+
+# asdf npm version manager
+.tool-versions

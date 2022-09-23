@@ -13,12 +13,31 @@ import ConfigService from './modules/config/config-service';
 import LoggerManager from './modules/logger/logger-manager';
 import Logger from './modules/logger/logger';
 
+let webpack;
+let webpackDevMiddleware;
+let webpackHotMiddleware;
+let webpackConfig;
+let compiler;
+
+if (process.env.NODE_ENV == 'development') {
+  webpack = require('webpack');
+  webpackDevMiddleware = require('webpack-dev-middleware');
+  webpackHotMiddleware = require('webpack-hot-middleware');
+  webpackConfig = require('../config/webpack/webpack.web.config');
+  compiler = webpack(webpackConfig);
+}
+
 export default class App {
   private static app: Application;
 
   public static async startServer(): Promise<Server> {
     this.app = express();
     this.app.use(App.getRequestLogger());
+
+    if (process.env.NODE_ENV == 'development') {
+      this.app.use(webpackDevMiddleware(compiler, {}));
+      this.app.use(webpackHotMiddleware(compiler));
+    }
 
     await ConfigManager.mountConfig();
     await LoggerManager.mountLogger();
