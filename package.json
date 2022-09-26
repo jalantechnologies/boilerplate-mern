@@ -12,7 +12,7 @@
     "build-fe": "webpack --config config/webpack/webpack.web.config.js",
     "build-be:watch": "webpack --watch --config config/webpack/webpack.node.config.js",
     "build-fe:watch": "webpack --watch --config config/webpack/webpack.web.config.js",
-    "build:e2e": "NODE_ENV=e2e gulp buildE2E",
+    "build:e2e": "npm run build",
     "cy:open": "cypress open",
     "e2e": "cypress run",
     "e2e:ci": "npm run build:e2e && concurrently -s first -k --kill-others-on-fail \"npm run start:e2e\" \"sleep 2 && npm run e2e\"",
@@ -22,7 +22,7 @@
     "lint:fix": "eslint --fix .",
     "start": "node dist/node.bundle.js",
     "start:e2e": "node dist/src/server.js",
-    "serve": "concurrently \"npm run build-be:watch \" \" npm run build-fe:watch \""
+    "serve": "npm run build-be:watch"
   },
   "author": "jalantechnologies",
   "license": "MIT",
