@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable global-require */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
 import express, { Application } from 'express';
 import { Server } from 'http';
 import path from 'path';
@@ -19,7 +23,7 @@ let webpackHotMiddleware;
 let webpackConfig;
 let compiler;
 
-if (process.env.NODE_ENV == 'development') {
+if (process.env.NODE_ENV === 'development') {
   webpack = require('webpack');
   webpackDevMiddleware = require('webpack-dev-middleware');
   webpackHotMiddleware = require('webpack-hot-middleware');
@@ -34,7 +38,7 @@ export default class App {
     this.app = express();
     this.app.use(App.getRequestLogger());
 
-    if (process.env.NODE_ENV == 'development') {
+    if (process.env.NODE_ENV === 'development') {
       this.app.use(webpackDevMiddleware(compiler, {}));
       this.app.use(webpackHotMiddleware(compiler));
     }
