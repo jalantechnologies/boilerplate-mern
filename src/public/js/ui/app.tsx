@@ -14,8 +14,8 @@ export const App: React.FC = () => {
     <>
       <Header />
       <main>
-        <div class='container flex-shrink-0'>
-          <h1 class='mt-5'>Home</h1>
+        <div className='container flex-shrink-0'>
+          <h1 className='mt-5'>Home</h1>
           {/* DUMMY LOGIN FORM FOR CYPRESS - REMOVE AT WILL */}
           <LoginForm />
         </div>
