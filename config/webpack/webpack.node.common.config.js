@@ -1,13 +1,11 @@
 /* eslint-disable import/no-extraneous-dependencies */
 // eslint-disable-next-line no-unused-vars
-const webpack = require('webpack');
+// const webpack = require('webpack');
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const NodemonPlugin = require('nodemon-webpack-plugin');
 
 const config = {
-  mode: 'development',
   target: 'node',
   entry: {
     main: './src/server.ts',
@@ -25,10 +23,6 @@ const config = {
       },
     ],
   },
-  devtool: 'inline-source-map',
-  optimization: {
-    minimize: false,
-  },
   resolve: {
     extensions: [
       '.ts',
@@ -42,7 +36,6 @@ const config = {
     node: true, // in order to ignore built-in modules like path, fs, etc.
   },
   plugins: [
-    new NodemonPlugin(),
     new CopyWebpackPlugin({
       patterns: [
         {

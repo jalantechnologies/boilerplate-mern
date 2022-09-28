@@ -1,20 +1,14 @@
-/* eslint-disable import/no-extraneous-dependencies */
-// eslint-disable-next-line no-unused-vars
-const webpack = require('webpack');
 const path = require('path');
 
 const config = {
-  mode: 'development',
   target: 'web',
   entry: [
-    'webpack-hot-middleware/client?path=/__webpack_hmr&reload=true',
     './src/public/js/site.tsx',
   ],
   output: {
     path: path.resolve(__dirname, '../../dist'),
     filename: 'web.bundle.js',
   },
-  devtool: 'eval-source-map',
   module: {
     rules: [
       {
@@ -43,10 +37,6 @@ const config = {
       },
     ],
   },
-  plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
-  ],
   resolve: {
     extensions: [
       '.tsx',

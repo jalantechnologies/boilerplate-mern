@@ -27,7 +27,7 @@ if (process.env.NODE_ENV === 'development') {
   webpack = require('webpack');
   webpackDevMiddleware = require('webpack-dev-middleware');
   webpackHotMiddleware = require('webpack-hot-middleware');
-  webpackConfig = require('../config/webpack/webpack.web.config');
+  webpackConfig = require('../config/webpack/webpack.web.dev.config');
   compiler = webpack(webpackConfig);
 }
 
