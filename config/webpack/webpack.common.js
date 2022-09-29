@@ -1,4 +1,8 @@
+/* eslint-disable import/no-extraneous-dependencies */
 const path = require('path');
+const webpack = require('webpack');
+
+const CONFIG = require('config');
 
 const config = {
   target: 'web',
@@ -37,6 +41,9 @@ const config = {
       },
     ],
   },
+  plugins: [
+    new webpack.DefinePlugin({ CONFIG: JSON.stringify(CONFIG) }),
+  ],
   resolve: {
     extensions: [
       '.tsx',

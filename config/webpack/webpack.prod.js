@@ -2,7 +2,7 @@
 // eslint-disable-next-line no-unused-vars
 const path = require('path');
 const { merge } = require('webpack-merge');
-const commonWebConfig = require('./webpack.web.common.config');
+const commonWebConfig = require('./webpack.common');
 
 const config = {
   mode: 'production',
