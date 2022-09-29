@@ -3,6 +3,7 @@ import { Footer } from './components/footer';
 import { Header } from './components/header';
 import { LoginForm } from './components/login-form';
 import InspectLet from '../vendor/inspectlet';
+import Hello from './base-web';
 
 export const App: React.FC = () => {
   useEffect(() => {
@@ -14,13 +15,13 @@ export const App: React.FC = () => {
     <>
       <Header />
       <main>
-        <div class='container flex-shrink-0'>
-          <h1 class='mt-5'>Home</h1>
-          {/* DUMMY LOGIN FORM FOR CYPRESS - REMOVE AT WILL */}
+        <div className='container flex-shrink-0'>
+          <h1 className='mt-5'>Home</h1>
           <LoginForm />
         </div>
       </main>
       <Footer />
+      <Hello />
     </>
   );
 };

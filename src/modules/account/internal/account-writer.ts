@@ -1,4 +1,3 @@
-/* eslint-disable no-useless-catch */
 import { Account, CreateAccountParams } from '../types';
 import AccountReader from './account-reader';
 import AccountUtil from './account-util';

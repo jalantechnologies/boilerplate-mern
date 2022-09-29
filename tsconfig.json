@@ -21,6 +21,11 @@
     "resolveJsonModule": true,
     "esModuleInterop": true
   },
-  "include": ["src/**/*", "test/**/*"],
-  "exclude": ["cypress/**/*"]
+  "include": [
+    "src/**/*",
+    "test/**/*"
+  ],
+  "exclude": [
+    "cypress/**/*"
+  ]
 }
