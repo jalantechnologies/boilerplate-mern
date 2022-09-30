@@ -2,7 +2,12 @@ version: '3'
 
 services:
   app:
-    image: boilerplate-mern
+    image: 'boilerplate-mern'
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NODE_ENV: 'development'
     environment:
       NODE_APP_INSTANCE: 'docker'
     command: 'npm test'
