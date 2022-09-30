@@ -8,6 +8,12 @@
   "extends": ["airbnb-base"],
   "ignorePatterns": ["test/**/*", "cypress/**/*"],
   "plugins": ["cypress"],
+  "rules": {
+    "import/no-extraneous-dependencies": [
+      "error",
+      { "devDependencies": true }
+    ]
+  },
   "overrides": [
     {
       "files": ["**/*.ts"],
@@ -38,11 +44,6 @@
         "cypress/no-unnecessary-waiting": "error",
 
         "eslint-comments/disable-enable-pair": "off",
-
-        "import/no-extraneous-dependencies": [
-          "error",
-          { "devDependencies": true }
-        ],
 
         "no-underscore-dangle": "off"
       }

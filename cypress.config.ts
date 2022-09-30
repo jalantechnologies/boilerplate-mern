@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { defineConfig } from 'cypress';
 
 import scenarios from './cypress/scenarios';
