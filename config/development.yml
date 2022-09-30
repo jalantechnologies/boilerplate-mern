@@ -9,3 +9,6 @@ mongoDb:
 grafana:
   labels:
     env: 'development'
+
+app:
+  env: 'development'

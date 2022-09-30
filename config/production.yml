@@ -7,3 +7,6 @@ rollbar:
 grafana:
   labels:
     env: 'production'
+
+app:
+  env: 'production'

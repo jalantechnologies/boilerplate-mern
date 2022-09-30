@@ -9,7 +9,7 @@
   "scripts": {
     "build": "copyup ./src/views/**/* ./dist && concurrently \"npm run build-be\" \"npm run build-fe\"",
     "build-be": "tsc -p tsconfig.json",
-    "build-fe": "webpack --config config/webpack/webpack.prod.js",
+    "build-fe": "NODE_ENV=production webpack --config config/webpack/webpack.prod.js",
     "build:e2e": "npm run build",
     "cy:open": "cypress open",
     "e2e": "cypress run",

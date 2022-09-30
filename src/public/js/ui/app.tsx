@@ -6,7 +6,6 @@ import InspectLet from '../vendor/inspectlet';
 
 export const App: React.FC = () => {
   useEffect(() => {
-    console.log(CONFIG.server.port);
     if (window.inspectletKey) {
       InspectLet();
     }
@@ -17,6 +16,7 @@ export const App: React.FC = () => {
       <main>
         <div className='container flex-shrink-0'>
           <h1 className='mt-5'>Home</h1>
+          <div>Current env - {CONFIG.app.env}</div>
           {/* DUMMY LOGIN FORM FOR CYPRESS - REMOVE AT WILL */}
           <LoginForm />
         </div>
