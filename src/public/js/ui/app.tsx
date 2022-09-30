@@ -6,6 +6,7 @@ import InspectLet from '../vendor/inspectlet';
 
 export const App: React.FC = () => {
   useEffect(() => {
+    console.log(CONFIG.server.port);
     if (window.inspectletKey) {
       InspectLet();
     }

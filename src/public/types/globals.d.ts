@@ -6,4 +6,5 @@ declare global {
     __inspld: number,
     inspectletKey: string,
   }
+  const CONFIG: { [key: string]: { [key: string]: string } };
 }
