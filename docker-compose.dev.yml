@@ -26,3 +26,5 @@ services:
     image: mongo:5.0
     ports:
       - '27017:27017'
+    volumes:
+      - './data/mongodb:/data/db'
