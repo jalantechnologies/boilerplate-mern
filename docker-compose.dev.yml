@@ -24,7 +24,11 @@ services:
 
   db:
     image: mongo:5.0
+    command:
+      - '--logpath'
+      - '/var/log/mongod.log'
     ports:
       - '27017:27017'
     volumes:
       - './data/mongodb:/data/db'
+      - './logs:/var/log'
