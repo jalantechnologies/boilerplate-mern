@@ -10,5 +10,5 @@ grafana:
   labels:
     env: 'development'
 
-app:
+public:
   env: 'development'

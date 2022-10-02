@@ -1,13 +1,7 @@
-/* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable global-require */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-
 import express, { Application } from 'express';
 import { Server } from 'http';
-import path from 'path';
-import expressEjsLayouts from 'express-ejs-layouts';
 import expressWinston from 'express-winston';
+import * as path from 'path';
 
 import AccessTokenServiceManager from './modules/access-token/access-token-manager';
 import AccountServiceManager from './modules/account/account-service-manager';
@@ -18,31 +12,12 @@ import ConfigService from './modules/config/config-service';
 import LoggerManager from './modules/logger/logger-manager';
 import Logger from './modules/logger/logger';
 
-let webpack;
-let webpackDevMiddleware;
-let webpackHotMiddleware;
-let webpackConfig;
-let compiler;
-
-if (process.env.NODE_ENV === 'development') {
-  webpack = require('webpack');
-  webpackDevMiddleware = require('webpack-dev-middleware');
-  webpackHotMiddleware = require('webpack-hot-middleware');
-  webpackConfig = require('../config/webpack/webpack.dev');
-  compiler = webpack(webpackConfig);
-}
-
 export default class App {
   private static app: Application;
 
   public static async startServer(): Promise<Server> {
     this.app = express();
     this.app.use(App.getRequestLogger());
-
-    if (process.env.NODE_ENV === 'development') {
-      this.app.use(webpackDevMiddleware(compiler, {}));
-      this.app.use(webpackHotMiddleware(compiler));
-    }
 
     await ConfigManager.mountConfig();
     await LoggerManager.mountLogger();
@@ -81,16 +56,11 @@ export default class App {
 
   private static async createExperienceService(): Promise<Application> {
     const app: Application = express();
-    const inspectletKey = ConfigService.hasValue('inspectlet.wid') ? ConfigService.getStringValue('inspectlet.wid') : '';
 
-    app.set('view engine', 'ejs');
-    app.set('views', path.join(__dirname, 'views'));
-    app.use(expressEjsLayouts);
-    app.set('layout', 'layouts/layout.ejs');
-    app.use(express.static(path.join(__dirname)));
+    app.use(express.static('dist/public'));
 
-    app.get('/', (_req, res) => {
-      res.render('pages/index.ejs', { inspectletKey });
+    app.get('/*', (_req, res) => {
+      res.sendFile(path.join(process.cwd(), 'dist/public/index.html'));
     });
 
     return Promise.resolve(app);

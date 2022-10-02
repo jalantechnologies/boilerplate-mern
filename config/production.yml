@@ -8,5 +8,5 @@ grafana:
   labels:
     env: 'production'
 
-app:
+public:
   env: 'production'

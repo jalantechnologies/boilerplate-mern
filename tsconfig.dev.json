@@ -1,5 +1,0 @@
-{
-  "extends": "./config/ts/tsconfig.base.json",
-  "include": ["src/**/*", "config/webpack"],
-  "exclude": ["src/public/**"]
-}

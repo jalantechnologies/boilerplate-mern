@@ -184,16 +184,16 @@ For more detailed info, check out this official [guide](https://docs.cypress.io/
 
 ```shell
 # run the entire suite
-npm run e2e
+cypress run
   
 # run headless chrome
-npm run e2e -- --headless --browser chrome
+cypress run --headless --browser chrome
 
 # run an individual spec file
-npm run e2e -- --spec "cypress/e2e/app.spec.cy.ts"
+cypress run --spec "cypress/e2e/app.spec.cy.ts"
 
 # run all specs within the folder matching the glob (Note: Using double quotes is strongly recommended.
-npm run e2e -- --spec "cypress/e2e/**/*"
+cypress run --spec "cypress/e2e/**/*"
 ```
 
 **Running specs from the GUI:**
@@ -201,7 +201,7 @@ npm run e2e -- --spec "cypress/e2e/**/*"
 1. Open the Cypress Test Runner and click on any types of testing _E2E Testing_ & _Component Testing_.
 
 ```shell
-npm run cy:open
+cypress run
 ```
 
 <img width="1193" alt="Screenshot 2022-07-14 at 12 51 15 PM" src="https://user-images.githubusercontent.com/40771084/178925347-6c81c0e3-a06c-49c8-890b-3c03f003f1d8.png">

@@ -1,16 +1,24 @@
+const config = require('config');
 const path = require('path');
 const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const CONFIG = require('config');
-
-const config = {
+module.exports = {
   target: 'web',
-  entry: [
-    './src/public/js/site.tsx',
+  entry: {
+    index: './src/public/js/site.tsx',
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './src/public/index.html',
+    }),
+    new webpack.DefinePlugin({
+      CONFIG: JSON.stringify(config.util.toObject(config.get('public'))),
+    }),
   ],
   output: {
-    path: path.resolve(__dirname, '../../dist'),
-    filename: 'web.bundle.js',
+    path: path.resolve(process.cwd(), 'dist/public'),
+    filename: '[name].bundle.js',
   },
   module: {
     rules: [
@@ -40,9 +48,6 @@ const config = {
       },
     ],
   },
-  plugins: [
-    new webpack.DefinePlugin({ CONFIG: JSON.stringify(CONFIG) }),
-  ],
   resolve: {
     extensions: [
       '.tsx',
@@ -51,5 +56,3 @@ const config = {
     ],
   },
 };
-
-module.exports = config;
