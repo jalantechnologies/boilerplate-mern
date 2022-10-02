@@ -1,27 +1,24 @@
 import React, { useEffect } from 'react';
-import { Footer } from './components/footer';
-import { Header } from './components/header';
-import { LoginForm } from './components/login-form';
+
+import { Header, Footer, LoginForm } from './components';
 import InspectLet from '../vendor/inspectlet';
 
-export const App: React.FC = () => {
+export default function App() {
   useEffect(() => {
-    if (window.inspectletKey) {
+    if (CONFIG.inspectletKey) {
       InspectLet();
     }
   }, []);
+
   return (
-    <>
+    <div>
       <Header />
-      <main>
-        <div className='container flex-shrink-0'>
-          <h1 className='mt-5'>Home</h1>
-          <div>Current env - {CONFIG.app.env}</div>
-          {/* DUMMY LOGIN FORM FOR CYPRESS - REMOVE AT WILL */}
-          <LoginForm />
-        </div>
-      </main>
+      <div className='container flex-shrink-0'>
+        <h1 className='mt-5'>Home</h1>
+        <div>Current env - {CONFIG.env}</div>
+        <LoginForm />
+      </div>
       <Footer />
-    </>
+    </div>
   );
-};
+}

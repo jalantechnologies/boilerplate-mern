@@ -1,13 +1,7 @@
-/**
- * THIS IS JUST AN EXAMPLE COMPONENT TO SHOW-CASE THE CYPRESS INTEGRATIONS
- * AND CAN BE REMOVED AT ANY POINT.
- *
- * -RREM
- */
 import axios from 'axios';
 import React, { useState } from 'react';
 
-export const LoginForm: React.FC = () => {
+export default function LoginForm() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [success, setSuccess] = useState(false);
@@ -30,23 +24,23 @@ export const LoginForm: React.FC = () => {
 
   return (
     <form>
-      {success ? <h2 id="success">SUCCESS!</h2> : null}
-      {error ? <h2 id="error">ERROR!</h2> : null}
+      {success ? <h2 id='success'>SUCCESS!</h2> : null}
+      {error ? <h2 id='error'>ERROR!</h2> : null}
       <input
         onChange={(e) => setUsername(e.target.value)}
-        id="username"
+        id='username'
         value={username}
-        type="text"
+        type='text'
       />
       <input
         onChange={(e) => setPassword(e.target.value)}
-        id="password"
+        id='password'
         value={password}
-        type="password"
+        type='password'
       />
-      <button type="button" onClick={login}>
+      <button type='button' onClick={login}>
         LOGIN
       </button>
     </form>
   );
-};
+}
