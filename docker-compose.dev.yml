@@ -7,7 +7,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        NODE_ENV: 'development'
     environment:
+      NODE_ENV: 'development'
       NODE_APP_INSTANCE: 'docker'
     command: 'npm run serve'
     depends_on:
