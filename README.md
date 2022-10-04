@@ -17,7 +17,7 @@ Boilerplate project for NodeJS, React based projects in TypeScript. This README 
 - This project supports running the application with all the required dependencies using `docker compose`
 - Install [docker](https://docs.docker.com/engine/install/)
 - Run `docker compose -f docker-compose.dev.yml up` (Add `--build` to force rebuild when new dependencies have been added)
-- Open `http://localhost:8080/`
+- After seeing `[INFO] http server started listening on port - 8080`, open `http://localhost:8080/`
 - Make required changes for development. The app should hot reload and server restart is not required.
 
 **Bonus:**
