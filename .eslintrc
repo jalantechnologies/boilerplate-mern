@@ -5,29 +5,54 @@
     "es6": true,
     "node": true
   },
-  "extends": ["airbnb-base"],
-  "ignorePatterns": ["test/**/*", "cypress/**/*"],
-  "plugins": ["cypress"],
-  "rules": {
-    "import/no-extraneous-dependencies": [
-      "error",
-      { "devDependencies": true }
-    ]
-  },
+  "plugins": [
+    "cypress"
+  ],
   "overrides": [
     {
-      "files": ["**/*.ts"],
+      "files": [
+        ".js"
+      ],
       "extends": [
+        "airbnb-base",
+        "plugin:eslint-comments/recommended"
+      ],
+      "rules": {
+        "import/no-extraneous-dependencies": [
+          "error",
+          {
+            "devDependencies": true
+          }
+        ],
+        "eslint-comments/disable-enable-pair": "off",
+        "no-underscore-dangle": "off"
+      }
+    },
+    {
+      "files": [
+        "*.ts",
+        "*.tsx"
+      ],
+      "extends": [
+        "airbnb-base",
+        "plugin:eslint-comments/recommended",
         "airbnb-typescript/base",
         "plugin:@typescript-eslint/recommended",
         "plugin:@typescript-eslint/recommended-requiring-type-checking",
-        "plugin:cypress/recommended",
-        "plugin:eslint-comments/recommended"
+        "plugin:cypress/recommended"
       ],
       "parserOptions": {
-        "project": "./tsconfig.eslint.json"
+        "project": "./tsconfig.json"
       },
       "rules": {
+        "import/no-extraneous-dependencies": [
+          "error",
+          {
+            "devDependencies": true
+          }
+        ],
+        "eslint-comments/disable-enable-pair": "off",
+        "no-underscore-dangle": "off",
         "@typescript-eslint/no-unsafe-member-access": "off",
         "@typescript-eslint/unbound-method": [
           "error",
@@ -35,17 +60,24 @@
             "ignoreStatic": true
           }
         ],
-
         "cypress/assertion-before-screenshot": "warn",
         "cypress/no-assigning-return-values": "error",
         "cypress/no-async-tests": "error",
         "cypress/no-force": "warn",
         "cypress/no-pause": "error",
-        "cypress/no-unnecessary-waiting": "error",
-
-        "eslint-comments/disable-enable-pair": "off",
-
-        "no-underscore-dangle": "off"
+        "cypress/no-unnecessary-waiting": "error"
+      }
+    },
+    {
+      "files": "src/public/**",
+      "parserOptions": {
+        "project": "./src/public/tsconfig.json"
+      }
+    },
+    {
+      "files": "cypress/**",
+      "parserOptions": {
+        "project": "./cypress/tsconfig.json"
       }
     }
   ]
