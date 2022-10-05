@@ -2,14 +2,14 @@
 import chai, { assert } from 'chai';
 import chaiHttp from 'chai-http';
 import sinon from 'sinon';
-import AccountAuthMiddleware from '../../../src/modules/access-token/rest-api/account-auth-middleware';
+import AccountAuthMiddleware from '../../../src/apps/backend/modules/access-token/rest-api/account-auth-middleware';
 import {
   AccessTokenExpiredError,
   AuthorizationHeaderNotFound,
   InvalidAuthorizationHeader,
   UnAuthorizedAccessError,
-} from '../../../src/modules/access-token/types';
-import ConfigService from '../../../src/modules/config/config-service';
+} from '../../../src/apps/backend/modules/access-token/types';
+import ConfigService from '../../../src/apps/backend/modules/config/config-service';
 
 chai.use(chaiHttp);
 

@@ -3,13 +3,13 @@ import faker from '@faker-js/faker'
 import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
 import sinon from 'sinon';
-import TaskService from '../../../src/modules/task/task-service';
+import TaskService from '../../../src/apps/backend/modules/task/task-service';
 import chaiAsPromised from 'chai-as-promised';
 import { app } from '../helpers/helper.spec';
-import AccountWriter from '../../../src/modules/account/internal/account-writer';
-import AccessTokenWriter from '../../../src/modules/access-token/internal/access-token-writer';
-import AccountRepository from '../../../src/modules/account/internal/store/account-repository';
-import TaskRepository from '../../../src/modules/task/internal/store/task-repository';
+import AccountWriter from '../../../src/apps/backend/modules/account/internal/account-writer';
+import AccessTokenWriter from '../../../src/apps/backend/modules/access-token/internal/access-token-writer';
+import AccountRepository from '../../../src/apps/backend/modules/account/internal/store/account-repository';
+import TaskRepository from '../../../src/apps/backend/modules/task/internal/store/task-repository';
 
 chai.use(chaiHttp);
 chai.use(chaiAsPromised);

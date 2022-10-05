@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import sinon from 'sinon';
-import CommunicationServiceManager from '../../../src/modules/communication/communication-service-manager';
-import SMSService from '../../../src/modules/communication/sms-service';
+import CommunicationServiceManager from '../../../src/apps/backend/modules/communication/communication-service-manager';
+import SMSService from '../../../src/apps/backend/modules/communication/sms-service';
 import chai, { expect } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import ConfigService from '../../../src/modules/config/config-service';
-import TwilioService from '../../../src/modules/communication/internals/twilio-service';
+import ConfigService from '../../../src/apps/backend/modules/config/config-service';
+import TwilioService from '../../../src/apps/backend/modules/communication/internals/twilio-service';
 
 chai.use(chaiAsPromised);
 
@@ -95,7 +95,7 @@ describe('SMS Service.', () => {
   });
 
   it('should send sms, if recipientPhone and sms message body are correct.', async function() {
-    
+
     const params = {
       recipientPhone: {
         countryCode: '+91',
@@ -103,7 +103,7 @@ describe('SMS Service.', () => {
       },
       messageBody: 'simple message'
     };
-    
+
 
     const stubVal = sinonSandbox
       .stub(ConfigService, 'getStringValue')

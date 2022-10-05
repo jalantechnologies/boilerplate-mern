@@ -8,17 +8,17 @@
   },
   "scripts": {
     "build": "cross-env NODE_ENV=production concurrently npm:build:*",
-    "build:server": "tsc -p tsconfig.json",
-    "build:client": "webpack --config config/webpack/webpack.prod.js",
-    "test": "cross-env NODE_ENV=production NODE_CONFIG_ENV=testing mocha --exit -r ts-node/register --project tsconfig.json test/**/*.spec.ts",
+    "build:backend": "tsc -p src/apps/backend/tsconfig.json --outDir dist",
+    "build:frontend": "webpack --output-path dist/public --config src/apps/frontend/webpack.prod.js",
+    "test": "cross-env NODE_ENV=production NODE_CONFIG_ENV=testing mocha --exit -r ts-node/register --project src/apps/backend/tsconfig.json test/**/*.spec.ts",
     "test:e2e": "cross-env NODE_ENV=production NODE_CONFIG_ENV=e2e npm run build && concurrently -s first -k --kill-others-on-fail \"npm start\" \"sleep 2 && cypress run\"",
     "lint": "eslint .",
     "lint:md": "remark .",
     "lint:fix": "eslint --fix .",
-    "start": "node dist/server.js",
+    "start": "node dist/bin/server.js",
     "serve": "cross-env NODE_ENV=development concurrently npm:serve:*",
-    "serve:server": "tsc-watch -p tsconfig.json --onsuccess \"node dist/server.js\" --noClear",
-    "serve:client": "webpack serve --config config/webpack/webpack.dev.js --hot"
+    "serve:backend": "tsc-watch -p src/apps/backend/tsconfig.json --outDir dist --onsuccess \"node dist/bin/server.js\" --noClear",
+    "serve:frontend": "webpack serve --output-path dist/public --config src/apps/frontend/webpack.dev.js --hot"
   },
   "author": "jalantechnologies",
   "license": "MIT",

@@ -18,13 +18,6 @@
     "strictNullChecks": false,
     "experimentalDecorators": true,
     "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "outDir": "dist"
-  },
-  "include": [
-    "src/**/*.ts"
-  ],
-  "exclude": [
-    "src/public/**"
-  ]
+    "esModuleInterop": true
+  }
 }

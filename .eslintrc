@@ -69,9 +69,15 @@
       }
     },
     {
-      "files": "src/public/**",
+      "files": "src/apps/backend/**",
       "parserOptions": {
-        "project": "./src/public/tsconfig.json"
+        "project": "./src/apps/backend/tsconfig.json"
+      }
+    },
+    {
+      "files": "src/apps/frontend/**",
+      "parserOptions": {
+        "project": "./src/apps/frontend/tsconfig.json"
       }
     },
     {

@@ -1,12 +1,12 @@
 import sinon from 'sinon';
 import { expect } from 'chai';
-import LoggerManager from '../../../src/modules/logger/logger-manager';
-import Logger from '../../../src/modules/logger/logger';
-import ConfigService from '../../../src/modules/config/config-service';
-import RollbarLogger from '../../../src/modules/logger/internals/rollbar-logger';
-import ConsoleLogger from '../../../src/modules/logger/internals/console-logger';
-import Loggers from '../../../src/modules/logger/internals/loggers';
-import { LoggerTransport } from '../../../src/modules/logger/internals/types';
+import LoggerManager from '../../../src/apps/backend/modules/logger/logger-manager';
+import Logger from '../../../src/apps/backend/modules/logger/logger';
+import ConfigService from '../../../src/apps/backend/modules/config/config-service';
+import RollbarLogger from '../../../src/apps/backend/modules/logger/internals/rollbar-logger';
+import ConsoleLogger from '../../../src/apps/backend/modules/logger/internals/console-logger';
+import Loggers from '../../../src/apps/backend/modules/logger/internals/loggers';
+import { LoggerTransport } from '../../../src/apps/backend/modules/logger/internals/types';
 
 let sinonSandbox: sinon.SinonSandbox;
 

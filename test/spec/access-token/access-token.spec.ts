@@ -3,9 +3,9 @@ import faker from '@faker-js/faker'
 import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
 import sinon from 'sinon';
-import AccountWriter from '../../../src/modules/account/internal/account-writer';
-import AccountRepository from '../../../src/modules/account/internal/store/account-repository';
-import ConfigService from '../../../src/modules/config/config-service';
+import AccountWriter from '../../../src/apps/backend/modules/account/internal/account-writer';
+import AccountRepository from '../../../src/apps/backend/modules/account/internal/store/account-repository';
+import ConfigService from '../../../src/apps/backend/modules/config/config-service';
 import { app } from '../helpers/helper.spec';
 
 chai.use(chaiHttp);

@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import { expect } from 'chai';
 import sinon from 'sinon';
-import CommunicationServiceManager from '../../../src/modules/communication/communication-service-manager';
-import EmailService from '../../../src/modules/communication/email-service';
+import CommunicationServiceManager from '../../../src/apps/backend/modules/communication/communication-service-manager';
+import EmailService from '../../../src/apps/backend/modules/communication/email-service';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import mail from '@sendgrid/mail';
-import ConfigService from '../../../src/modules/config/config-service';
+import ConfigService from '../../../src/apps/backend/modules/config/config-service';
 
 chai.use(chaiAsPromised);
 
@@ -24,7 +24,7 @@ describe('Email Service.', () => {
   });
 
   it('should not send email, if sender email is invalid.', async () => {
-    
+
     const params = {
       sender: {
         email: 'invalidemail',
@@ -39,7 +39,7 @@ describe('Email Service.', () => {
 
     const stubVal = sinonSandbox
       .stub(ConfigService, 'getStringValue')
-    
+
     stubVal.withArgs('sendgridApiKey')
     .returns(sendgridAPIKey);
 
@@ -79,7 +79,7 @@ describe('Email Service.', () => {
 
     const stubVal = sinonSandbox
       .stub(ConfigService, 'getStringValue')
-    
+
     stubVal.withArgs('sendgridApiKey')
     .returns(sendgridAPIKey);
 
@@ -119,7 +119,7 @@ describe('Email Service.', () => {
 
     const stubVal = sinonSandbox
       .stub(ConfigService, 'getStringValue')
-    
+
     stubVal.withArgs('sendgridApiKey')
     .returns(sendgridAPIKey);
 
@@ -159,7 +159,7 @@ describe('Email Service.', () => {
 
     const stubVal = sinonSandbox
       .stub(ConfigService, 'getStringValue')
-    
+
     stubVal.withArgs('sendgridApiKey')
     .returns(sendgridAPIKey);
 
@@ -171,7 +171,7 @@ describe('Email Service.', () => {
 
     CommunicationServiceManager.mountService();
     const stub = sinonSandbox.stub(mail, <any>'send').returns(Promise.resolve('1'));
-    
+
     return expect(EmailService.sendEmail(params)).to.be.fulfilled
     .then(() => {
       expect(stub.calledOnce).to.be.true;

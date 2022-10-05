@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 
 import { Header, Footer, LoginForm } from './components';
-import InspectLet from '../vendor/inspectlet';
+import InspectLet from './vendor/inspectlet';
+
+import './app.global.scss';
 
 export default function App() {
   useEffect(() => {

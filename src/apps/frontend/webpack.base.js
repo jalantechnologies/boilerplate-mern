@@ -6,18 +6,17 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
   target: 'web',
   entry: {
-    index: './src/public/js/site.tsx',
+    index: path.resolve(__dirname, 'index.tsx'),
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './src/public/index.html',
+      template: path.resolve(__dirname, 'index.html'),
     }),
     new webpack.DefinePlugin({
       CONFIG: JSON.stringify(config.util.toObject(config.get('public'))),
     }),
   ],
   output: {
-    path: path.resolve(process.cwd(), 'dist/public'),
     filename: '[name].bundle.js',
   },
   module: {

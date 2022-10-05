@@ -1,5 +1,5 @@
-import { SendSMSParams } from '../../src/modules/communication/types';
-import SMSParams from '../../src/modules/communication/internals/twilio-params';
+import { SendSMSParams } from '../../src/apps/backend/modules/communication/types';
+import SMSParams from '../../src/apps/backend/modules/communication/internals/twilio-params';
 
 export default class TwilioService {
   public static initializeService(): void {}
