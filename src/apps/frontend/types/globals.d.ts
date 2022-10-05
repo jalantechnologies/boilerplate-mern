@@ -1,13 +1,14 @@
 export {};
 
 declare global {
-  interface Window {
-    __insp: Array<Array<string | number>>,
-    __inspld: number,
-  }
-
-  const CONFIG: {
+  const Config: {
     env: string,
     inspectletKey: string,
   };
+
+  interface Window {
+    __insp: Array<Array<string | number>>,
+    __inspld: number,
+    Config,
+  }
 }

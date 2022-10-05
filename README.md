@@ -190,7 +190,7 @@ cypress run
 cypress run --headless --browser chrome
 
 # run an individual spec file
-cypress run --spec "cypress/e2e/app.spec.cy.ts"
+cypress run --spec "cypress/e2e/login.spec.cy.ts"
 
 # run all specs within the folder matching the glob (Note: Using double quotes is strongly recommended.
 cypress run --spec "cypress/e2e/**/*"

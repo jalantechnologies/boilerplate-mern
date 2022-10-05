@@ -1,8 +1,7 @@
-describe('application serving', () => {
+describe('Login', () => {
   let credentials;
 
   beforeEach(() => {
-    // SETUP THE LOGIN SCENARIO
     cy.task('scenario:setup', 'login').then((creds) => {
       credentials = creds;
     });
@@ -22,8 +21,6 @@ describe('application serving', () => {
     cy.get('#password').clear().type(credentials.password);
     cy.get('button').click();
 
-    cy.wait(500);
-
     cy.get('#success').should('be.visible').should('have.text', 'SUCCESS!');
   });
 
@@ -37,7 +34,6 @@ describe('application serving', () => {
   });
 
   afterEach(() => {
-    // CLEAN UP THE LOGIN SCENARIO
     credentials = null;
     cy.task('scenario:cleanup', 'login');
   });

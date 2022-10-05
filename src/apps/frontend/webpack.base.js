@@ -13,7 +13,7 @@ module.exports = {
       template: path.resolve(__dirname, 'index.html'),
     }),
     new webpack.DefinePlugin({
-      CONFIG: JSON.stringify(config.util.toObject(config.get('public'))),
+      Config: JSON.stringify(config.util.toObject(config.get('public'))),
     }),
   ],
   output: {

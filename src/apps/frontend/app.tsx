@@ -7,7 +7,7 @@ import './app.global.scss';
 
 export default function App() {
   useEffect(() => {
-    if (CONFIG.inspectletKey) {
+    if (window.Config.inspectletKey) {
       InspectLet();
     }
   }, []);
@@ -17,7 +17,7 @@ export default function App() {
       <Header />
       <div className='container flex-shrink-0'>
         <h1 className='mt-5'>Home</h1>
-        <div>Current env - {CONFIG.env}</div>
+        <div>Current env - {window.Config.env}</div>
         <LoginForm />
       </div>
       <Footer />

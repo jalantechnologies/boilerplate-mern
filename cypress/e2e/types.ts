@@ -2,6 +2,9 @@ export {};
 
 declare global {
   interface Window {
-    inspectletKey: string,
+    Config: {
+      env: string,
+      inspectletKey: string,
+    };
   }
 }
