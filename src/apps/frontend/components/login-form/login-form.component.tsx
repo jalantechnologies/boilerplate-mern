@@ -1,26 +1,28 @@
-import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
+
+import { useDeps } from '../../contexts';
 
 export default function LoginForm() {
+  const { accessService } = useDeps();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
 
-  const login = async () => {
+  const login = useCallback(async () => {
     setSuccess(false);
     setError(false);
 
-    const data = { username, password };
-    const loginUrl = `http://localhost:8080/api/access-tokens`;
-
     try {
-      await axios.post(loginUrl, data);
+      await accessService.login(username, password);
       setSuccess(true);
     } catch (err) {
       setError(true);
     }
-  };
+  }, [
+    username,
+    password,
+  ]);
 
   return (
     <form>

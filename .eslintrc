@@ -60,6 +60,13 @@
             "ignoreStatic": true
           }
         ],
+        "@typescript-eslint/lines-between-class-members": [
+          "error",
+          "always",
+          {
+            "exceptAfterSingleLine": true
+          }
+        ],
         "cypress/assertion-before-screenshot": "warn",
         "cypress/no-assigning-return-values": "error",
         "cypress/no-async-tests": "error",
