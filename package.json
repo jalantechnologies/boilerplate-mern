@@ -7,7 +7,7 @@
     "node": "14.17.3"
   },
   "scripts": {
-    "build": "cross-env NODE_ENV=production concurrently npm:build:* --kill-others",
+    "build": "cross-env NODE_ENV=production concurrently npm:build:* --kill-others-on-fail",
     "build:assets": "cpx \"src/assets/**/*.*\" dist/assets",
     "build:backend": "tsc -p src/apps/backend/tsconfig.json --outDir dist",
     "build:frontend": "webpack --output-path dist/public --config src/apps/frontend/webpack.prod.js",
@@ -17,7 +17,7 @@
     "lint:md": "remark .",
     "lint:fix": "eslint --fix .",
     "start": "node dist/bin/server.js",
-    "serve": "cross-env NODE_ENV=development concurrently npm:serve:* --kill-others",
+    "serve": "cross-env NODE_ENV=development concurrently npm:serve:* --kill-others-on-fail",
     "serve:assets": "cpx \"src/assets/**/*.*\" dist/assets --watch",
     "serve:backend": "tsc-watch -p src/apps/backend/tsconfig.json --outDir dist --onsuccess \"node dist/bin/server.js\" --noClear",
     "serve:frontend": "webpack serve --output-path dist/public --config src/apps/frontend/webpack.dev.js --hot --progress"
