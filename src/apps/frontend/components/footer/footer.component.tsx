@@ -1,11 +1,15 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 export default function Footer() {
   return (
-    <footer className='footer mt-auto py-3 bg-light'>
-      <div className='container'>
-        <span className='text-muted'>&#169; Jalan Technology Consulting, 2022</span>
+    <div className='container'>
+      <div>
+        <Link to='/about'>About Us</Link>
       </div>
-    </footer>
+      <div className='text-muted'>
+        &#169; Jalan Technology Consulting, 2022
+      </div>
+    </div>
   );
 }

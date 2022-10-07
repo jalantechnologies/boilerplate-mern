@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
+import { Route, Routes, BrowserRouter as Router } from 'react-router-dom';
 
-import { Header, Footer, LoginForm } from './components';
+import { Header, Footer } from './components';
 import { DepsProvider } from './contexts';
+import { About, Login } from './pages';
 import { AccessService } from './services';
 import InspectLet from './vendor/inspectlet';
 
@@ -18,15 +20,16 @@ export default function App() {
     <DepsProvider deps={{
       accessService: new AccessService(),
     }}>
-      <div>
-        <Header />
-        <div className='container flex-shrink-0'>
-          <h1 className='mt-5'>Home</h1>
-          <div>Current env - {window.Config.env}</div>
-          <LoginForm />
+      <Router>
+        <div className='container'>
+          <Header />
+          <Routes>
+            <Route path='/about' element={<About />} />
+            <Route path='/' element={<Login />} />
+          </Routes>
+          <Footer />
         </div>
-        <Footer />
-      </div>
+      </Router>
     </DepsProvider>
   );
 }
