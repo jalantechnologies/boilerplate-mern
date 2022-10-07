@@ -57,6 +57,8 @@ export default class App {
   private static async createExperienceService(): Promise<Application> {
     const app: Application = express();
 
+    app.use('/assets', express.static('dist/assets'));
+
     app.use(express.static('dist/public'));
 
     app.get('/*', (_req, res) => {

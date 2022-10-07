@@ -37,10 +37,6 @@ module.exports = {
         use: ['style-loader', 'css-loader'],
       },
       {
-        test: /\.(jpe?g|gif|png|svg|woff|ttf|wav|mp3)$/,
-        loader: 'file-loader',
-      },
-      {
         test: /\.ts(x)?$/,
         loader: 'ts-loader',
         exclude: /node_modules/,
