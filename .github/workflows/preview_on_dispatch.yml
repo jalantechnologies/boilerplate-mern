@@ -14,6 +14,8 @@ jobs:
       app_hostname: '{1}.preview.platform.jalantechnologies.com'
       branch: ${{ github.event.ref }}
       steps: 'preview'
+      build_args: |
+        NODE_CONFIG_ENV=preview
     secrets:
       docker_registry: docker-registry.platform.jalantechnologies.com/boilerplate-mern
       docker_username: ${{ secrets.DOCKER_USERNAME }}

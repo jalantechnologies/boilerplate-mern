@@ -1,8 +1,8 @@
 import { faker } from '@faker-js/faker';
 
-import AccountService from '../../src/modules/account/account-service';
-import AccountRepository from '../../src/modules/account/internal/store/account-repository';
-import { CreateAccountParams } from '../../src/modules/account/types';
+import AccountService from '../../src/apps/backend/modules/account/account-service';
+import AccountRepository from '../../src/apps/backend/modules/account/internal/store/account-repository';
+import { CreateAccountParams } from '../../src/apps/backend/modules/account/types';
 
 export default class AccountsE2EDataManager {
   private static async checkRepository() {

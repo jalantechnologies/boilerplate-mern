@@ -1,21 +1,18 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-import chai, { assert } from 'chai';
-import chaiHttp from 'chai-http';
+import { assert } from 'chai';
 import sinon from 'sinon';
-import AccountAuthMiddleware from '../../../src/modules/access-token/rest-api/account-auth-middleware';
+
+import AccountAuthMiddleware from '../../../src/apps/backend/modules/access-token/rest-api/account-auth-middleware';
 import {
   AccessTokenExpiredError,
   AuthorizationHeaderNotFound,
   InvalidAuthorizationHeader,
   UnAuthorizedAccessError,
-} from '../../../src/modules/access-token/types';
-import ConfigService from '../../../src/modules/config/config-service';
-
-chai.use(chaiHttp);
-
-let sinonSandbox: sinon.SinonSandbox;
+} from '../../../src/apps/backend/modules/access-token/types';
+import ConfigService from '../../../src/apps/backend/modules/config/config-service';
 
 describe('AccountAuthMiddleware', () => {
+  let sinonSandbox: sinon.SinonSandbox;
+
   beforeEach(() => {
     sinonSandbox = sinon.createSandbox();
   });

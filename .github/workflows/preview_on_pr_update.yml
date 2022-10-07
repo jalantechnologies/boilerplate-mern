@@ -19,6 +19,8 @@ jobs:
       branch: ${{ github.event.pull_request.head.ref }}
       branch_base: ${{ github.event.pull_request.base.ref }}
       pull_request_number: ${{ github.event.number }}
+      build_args: |
+        NODE_CONFIG_ENV=preview
     secrets:
       docker_registry: docker-registry.platform.jalantechnologies.com/boilerplate-mern
       docker_username: ${{ secrets.DOCKER_USERNAME }}

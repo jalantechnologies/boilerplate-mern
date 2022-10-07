@@ -15,10 +15,11 @@ RUN npm install
 COPY . .
 
 RUN npm install
-RUN npm run build
 
 # build arguments
-# possible values for NODE_ENV can be ["production"]
 ARG NODE_ENV
+ARG NODE_CONFIG_ENV
+
+RUN npm run build
 
 CMD [ "npm", "start" ]

@@ -1,4 +1,4 @@
-import App from '../../../src/app';
+import App from '../../../src/apps/backend/app';
 
 export let app;
 
