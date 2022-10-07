@@ -1,9 +1,0 @@
-logger:
-  transports: [ 'grafana' ]
-
-rollbar:
-  env: 'staging'
-
-grafana:
-  labels:
-    env: 'staging'

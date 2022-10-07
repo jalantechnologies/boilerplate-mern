@@ -10,7 +10,7 @@ jwt:
   token: 'test_auth_token'
 
 communication:
-  services: ['twilio', 'sendgrid']
+  services: [ 'twilio', 'sendgrid' ]
 
 twilio:
   verify:
@@ -26,3 +26,6 @@ mongoDb:
 
 server:
   port: '8080'
+
+public:
+  env: 'testing'
