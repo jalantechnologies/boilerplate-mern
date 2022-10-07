@@ -8,10 +8,6 @@ describe('Login', () => {
     cy.visit('/');
   });
 
-  it('loads the homepage', () => {
-    cy.get('h1').should('be.visible').should('have.text', 'Home');
-  });
-
   it('loads the login component', () => {
     cy.get('form').should('be.visible');
   });
