@@ -8,14 +8,14 @@ type Deps = {
 
 const DepsContext = createContext<Deps | undefined>(undefined);
 
-export function useDeps() {
+export function useDeps(): Deps {
   return useContext(DepsContext);
 }
 
 export function DepsProvider(props: {
   children: ReactNode,
   deps: Deps,
-}) {
+}): React.ReactElement {
   const {
     children,
     deps,

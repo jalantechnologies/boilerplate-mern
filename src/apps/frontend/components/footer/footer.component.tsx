@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export default function Footer() {
+export default function Footer(): React.ReactElement {
   return (
     <div className='container'>
       <div>

@@ -16,6 +16,7 @@ export default class GrafanaLokiLogger extends WinstonLogger {
       json: true,
       format: format.json(),
       replaceTimestamp: true,
+      // eslint-disable-next-line no-console
       onConnectionError: (err) => console.error(err),
     });
 

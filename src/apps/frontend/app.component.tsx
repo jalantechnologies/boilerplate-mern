@@ -9,7 +9,7 @@ import InspectLet from './vendor/inspectlet';
 
 import './app.global.scss';
 
-export default function App() {
+export default function App(): React.ReactElement {
   useEffect(() => {
     if (window.Config.inspectletKey) {
       InspectLet();
