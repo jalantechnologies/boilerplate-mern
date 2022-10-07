@@ -2,6 +2,7 @@ import express, { Application } from 'express';
 import { Server } from 'http';
 import expressWinston from 'express-winston';
 import * as path from 'path';
+import cors from 'cors';
 
 import AccessTokenServiceManager from './modules/access-token/access-token-manager';
 import AccountServiceManager from './modules/account/account-service-manager';
@@ -11,6 +12,8 @@ import ConfigManager from './modules/config/config-manager';
 import ConfigService from './modules/config/config-service';
 import LoggerManager from './modules/logger/logger-manager';
 import Logger from './modules/logger/logger';
+
+const isDevEnv = process.env.NODE_ENV === 'development';
 
 export default class App {
   private static app: Application;
@@ -41,6 +44,15 @@ export default class App {
 
   private static async createRESTApiServer(): Promise<Application> {
     const app: Application = express();
+
+    // if running server in development mode, allow cross-origin calls
+    // from webpack dev server
+    if (isDevEnv) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+      app.use(cors({
+        origin: 'http://localhost:3000',
+      }));
+    }
 
     const accountServiceRESTApi = await AccountServiceManager.createRestAPIServer();
     app.use('/', accountServiceRESTApi);

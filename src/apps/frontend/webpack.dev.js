@@ -7,12 +7,16 @@ const config = {
   output: {
     pathinfo: true,
   },
+  optimization: {
+    runtimeChunk: 'single',
+  },
   devtool: 'inline-source-map',
   devServer: {
     hot: true,
+    open: true,
     port: 3000,
-    devMiddleware: {
-      writeToDisk: true,
+    proxy: {
+      '/api': 'http://localhost:8080',
     },
   },
 };

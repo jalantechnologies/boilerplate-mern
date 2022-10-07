@@ -18,6 +18,7 @@ module.exports = {
   ],
   output: {
     filename: '[name].bundle.js',
+    clean: true,
   },
   module: {
     rules: [

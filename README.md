@@ -17,11 +17,13 @@ Boilerplate project for NodeJS, React based projects in TypeScript. This README 
 - This project supports running the application with all the required dependencies using `docker compose`
 - Install [docker](https://docs.docker.com/engine/install/)
 - Run `docker compose -f docker-compose.dev.yml up` (Add `--build` to force rebuild when new dependencies have been added)
-- After seeing `[INFO] http server started listening on port - 8080`, open `http://localhost:8080/`
-- Make required changes for development. The app should hot reload and server restart is not required.
+- Application should open up automatically. In case it doesn't, go to - `http://localhost:3000`
+- Make required changes for development. Both backend and frontend should hot reload and server restart is not required.
 
 **Bonus:**
 
+- On running `serve`, frontend server is at - `http://localhost:3000`
+- On running `serve`, backend server is at - `http://localhost:8080`
 - To connect to MongoDb server using a client, can use - `mongodb://localhost:27017`
 
 **Pre Requirements:**
