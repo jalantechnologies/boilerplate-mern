@@ -4,7 +4,10 @@ on: workflow_dispatch
 
 jobs:
   preview:
-    uses: jalantechnologies/platform-github/.github/workflows/kube.yml@v2.2
+    uses: jalantechnologies/platform-github/.github/workflows/kube.yml@v2.3
+    concurrency:
+      group: ci-preview-${{ github.event.ref }}
+      cancel-in-progress: true
     with:
       app_name: boilerplate-mern
       app_env: preview

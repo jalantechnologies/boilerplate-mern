@@ -39,6 +39,7 @@ Boilerplate project for NodeJS, React based projects in TypeScript. This README 
 - Start Application (with HotReload enabled) - `npm run serve`
 - Run Lint (JavaScript and TypeScript) - `npm run lint`
 - Run Lint (Markdown) - `npm run lint:md`
+- Run E2E tests - `npm run e2e`
 
 ## Configuration
 
@@ -87,7 +88,7 @@ This project deploys on Kubernetes via GitHub actions using workflows defined in
 
 **Version:**
 
-This project uses [v2.1](https://github.com/jalantechnologies/platform-github/tree/v2.1)
+This project uses [v2.3](https://github.com/jalantechnologies/platform-github/tree/v2.3)
 
 **Features:**
 
@@ -97,6 +98,7 @@ This project uses [v2.1](https://github.com/jalantechnologies/platform-github/tr
 - Preview environment on Pull Requests
 - Configuration management via Doppler
 - Automatic deployment reload on configuration update
+- E2E test support
 
 **Setup:**
 
