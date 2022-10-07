@@ -28,8 +28,8 @@ Boilerplate project for NodeJS, React based projects in TypeScript. This README 
 
 **Pre Requirements:**
 
-- Node - [Download](https://nodejs.org/en/download/)
-- MongoDb - [Download](https://www.mongodb.com/docs/manual/installation/)
+- Node (v14.17) - [Download](https://nodejs.org/en/download/)
+- MongoDb (v5) - [Download](https://www.mongodb.com/docs/manual/installation/)
 
 **Scripts:**
 
