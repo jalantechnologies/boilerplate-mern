@@ -1,4 +1,5 @@
 import jsonwebtoken from 'jsonwebtoken';
+
 import AccountService from '../../account/account-service';
 import ConfigService from '../../config/config-service';
 import { AccessToken, CreateAccessTokenParams } from '../types';

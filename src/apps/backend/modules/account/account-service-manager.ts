@@ -1,4 +1,5 @@
 import { Application } from 'express';
+
 import AccountRESTApiServer from './rest-api/account-rest-api-server';
 
 export default class AccountServiceManager {

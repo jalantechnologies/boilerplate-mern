@@ -1,17 +1,18 @@
-import express, { Application } from 'express';
 import { Server } from 'http';
-import expressWinston from 'express-winston';
 import * as path from 'path';
+
 import cors from 'cors';
+import express, { Application } from 'express';
+import expressWinston from 'express-winston';
 
 import AccessTokenServiceManager from './modules/access-token/access-token-manager';
 import AccountServiceManager from './modules/account/account-service-manager';
 import CommunicationServiceManager from './modules/communication/communication-service-manager';
-import TaskServiceManager from './modules/task/task-service-manager';
 import ConfigManager from './modules/config/config-manager';
 import ConfigService from './modules/config/config-service';
-import LoggerManager from './modules/logger/logger-manager';
 import Logger from './modules/logger/logger';
+import LoggerManager from './modules/logger/logger-manager';
+import TaskServiceManager from './modules/task/task-service-manager';
 
 const isDevEnv = process.env.NODE_ENV === 'development';
 

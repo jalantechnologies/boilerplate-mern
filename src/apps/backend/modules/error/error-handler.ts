@@ -1,6 +1,7 @@
 import { Response, Request, NextFunction } from 'express';
 
 import Logger from '../logger/logger';
+
 import AppError from './app-error';
 
 export default class ErrorHandler {

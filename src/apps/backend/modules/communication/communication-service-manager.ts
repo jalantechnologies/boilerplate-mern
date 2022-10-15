@@ -1,6 +1,7 @@
+import ConfigService from '../config/config-service';
+
 import SendGridService from './internals/sendgrid-service';
 import TwilioService from './internals/twilio-service';
-import ConfigService from '../config/config-service';
 import { CommunicationService, UnknownServiceError } from './types';
 
 export default class CommunicationServiceManager {

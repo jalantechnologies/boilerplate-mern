@@ -5,6 +5,7 @@ import {
   AccountWithUserNameExistsError,
   InvalidCredentialsError,
 } from '../types';
+
 import AccountUtil from './account-util';
 import AccountRepository from './store/account-repository';
 

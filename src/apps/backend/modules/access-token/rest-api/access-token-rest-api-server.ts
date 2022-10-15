@@ -1,6 +1,8 @@
 import bodyParser from 'body-parser';
 import express, { Application } from 'express';
+
 import ErrorHandler from '../../error/error-handler';
+
 import AccessTokenRouter from './access-token-router';
 
 export default class AccessTokenRESTApiServer {

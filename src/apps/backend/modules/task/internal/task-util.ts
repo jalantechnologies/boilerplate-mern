@@ -1,4 +1,5 @@
 import { Task } from '../types';
+
 import { TaskDB } from './store/task-db';
 
 export default class TaskUtil {

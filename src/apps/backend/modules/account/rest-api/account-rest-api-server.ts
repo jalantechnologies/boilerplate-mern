@@ -1,8 +1,10 @@
-import express, { Application } from 'express';
 import bodyParser from 'body-parser';
-import AccountRouter from './account-router';
-import AccountRepository from '../internal/store/account-repository';
+import express, { Application } from 'express';
+
 import ErrorHandler from '../../error/error-handler';
+import AccountRepository from '../internal/store/account-repository';
+
+import AccountRouter from './account-router';
 
 export default class AccountRESTApiServer {
   public static async create(): Promise<Application> {

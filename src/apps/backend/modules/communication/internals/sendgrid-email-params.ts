@@ -3,6 +3,7 @@ import {
   ValidationError,
   ValidationFailure,
 } from '../types';
+
 import emailRegex from './constant';
 
 export default class EmailParams {

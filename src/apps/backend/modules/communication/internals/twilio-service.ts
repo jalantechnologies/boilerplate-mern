@@ -1,7 +1,9 @@
 import { Twilio } from 'twilio';
+
 import ConfigService from '../../config/config-service';
 import Logger from '../../logger/logger';
 import { SendSMSParams, ThirdPartyServiceError } from '../types';
+
 import SMSParams from './twilio-params';
 
 export default class TwilioService {

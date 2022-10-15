@@ -1,8 +1,10 @@
-import express, { Application } from 'express';
 import bodyParser from 'body-parser';
-import TaskRouter from './task-router';
-import TaskRepository from '../internal/store/task-repository';
+import express, { Application } from 'express';
+
 import ErrorHandler from '../../error/error-handler';
+import TaskRepository from '../internal/store/task-repository';
+
+import TaskRouter from './task-router';
 
 export default class TaskRESTApiServer {
   public static async create(): Promise<Application> {

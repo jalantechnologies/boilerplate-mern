@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+
 import AccessTokenService from '../access-token-service';
 import { AccessToken, CreateAccessTokenParams } from '../types';
 

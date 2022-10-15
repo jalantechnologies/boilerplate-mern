@@ -1,4 +1,5 @@
 import WinstonTransport from 'winston-transport';
+
 import Logger from '../logger';
 
 type TransportLogLevel = 'info' | 'warn' | 'error';

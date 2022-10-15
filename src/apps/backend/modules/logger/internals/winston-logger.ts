@@ -1,4 +1,5 @@
 import * as winston from 'winston';
+
 import Logger from './types';
 
 export default class WinstonLogger implements Logger {
