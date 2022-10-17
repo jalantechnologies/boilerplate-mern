@@ -1,8 +1,10 @@
 import mail, { MailDataRequired } from '@sendgrid/mail';
-import { SendEmailParams, ThirdPartyServiceError } from '../types';
+
 import ConfigService from '../../config/config-service';
-import EmailParams from './sendgrid-email-params';
 import Logger from '../../logger/logger';
+import { SendEmailParams, ThirdPartyServiceError } from '../types';
+
+import EmailParams from './sendgrid-email-params';
 
 export default class SendGridService {
   public static initializeService(): void {

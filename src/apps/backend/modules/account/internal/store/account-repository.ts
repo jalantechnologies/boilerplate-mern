@@ -1,5 +1,7 @@
 import mongoose, { CallbackError, Connection } from 'mongoose';
+
 import ConfigService from '../../../config/config-service';
+
 import { AccountDB, accountDbSchema } from './account-db';
 
 export default class AccountRepository {

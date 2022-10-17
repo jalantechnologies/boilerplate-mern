@@ -1,9 +1,10 @@
-import Logger, { LoggerTransport } from './types';
 import ConfigService from '../../config/config-service';
-import ConsoleLogger from './console-logger';
-import RollbarLogger from './rollbar-logger';
 import { UnknownTransportError } from '../types';
+
+import ConsoleLogger from './console-logger';
 import GrafanaLokiLogger from './grafana-loki-logger';
+import RollbarLogger from './rollbar-logger';
+import Logger, { LoggerTransport } from './types';
 
 export default class Loggers {
   private static loggers: Logger[];

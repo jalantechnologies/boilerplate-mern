@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+
 import AccountService from '../account-service';
 import { Account, CreateAccountParams } from '../types';
 

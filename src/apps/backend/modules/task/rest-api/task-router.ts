@@ -1,6 +1,8 @@
 import { Router } from 'express';
-import TaskController from './task-controller';
+
 import AccountAuthMiddleware from '../../access-token/rest-api/account-auth-middleware';
+
+import TaskController from './task-controller';
 
 export default class TaskRouter {
   public static getRoutes(): Router {

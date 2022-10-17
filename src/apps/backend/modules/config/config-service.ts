@@ -1,4 +1,5 @@
 import config from 'config';
+
 import ConfigType from './config-type';
 import { MissingKeyError, ValueTypeMismatchError } from './types';
 

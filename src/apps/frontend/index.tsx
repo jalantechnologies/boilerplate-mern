@@ -1,6 +1,6 @@
+import set from 'lodash/set';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import set from 'lodash/set';
 
 import App from './app.component';
 

@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { Router } from 'express';
+
 import AccountController from './account-controller';
 
 export default class AccountRouter {

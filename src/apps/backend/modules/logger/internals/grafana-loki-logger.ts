@@ -1,8 +1,9 @@
 import { format } from 'winston';
 import LokiTransport from 'winston-loki';
 
-import WinstonLogger from './winston-logger';
 import ConfigService from '../../config/config-service';
+
+import WinstonLogger from './winston-logger';
 
 export default class GrafanaLokiLogger extends WinstonLogger {
   constructor() {

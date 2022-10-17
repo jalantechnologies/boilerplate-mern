@@ -1,5 +1,7 @@
 import Rollbar from 'rollbar';
+
 import ConfigService from '../../config/config-service';
+
 import Logger from './types';
 
 export default class RollbarLogger implements Logger {

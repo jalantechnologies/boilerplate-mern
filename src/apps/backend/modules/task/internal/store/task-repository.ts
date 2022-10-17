@@ -1,5 +1,7 @@
 import mongoose, { CallbackError, Connection } from 'mongoose';
+
 import ConfigService from '../../../config/config-service';
+
 import { TaskDB, taskDbSchema } from './task-db';
 
 export default class TaskRepository {

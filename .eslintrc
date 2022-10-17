@@ -15,13 +15,24 @@
       ],
       "extends": [
         "airbnb-base",
-        "plugin:eslint-comments/recommended"
+        "plugin:eslint-comments/recommended",
+        "plugin:import/recommended"
       ],
       "rules": {
         "import/no-extraneous-dependencies": [
           "error",
           {
             "devDependencies": true
+          }
+        ],
+        "import/order": [
+          "error",
+          {
+            "newlines-between": "always",
+            "alphabetize": {
+              "order": "asc",
+              "caseInsensitive": true
+            }
           }
         ],
         "eslint-comments/disable-enable-pair": "off",
@@ -36,6 +47,7 @@
       "extends": [
         "airbnb-base",
         "plugin:eslint-comments/recommended",
+        "plugin:import/recommended",
         "airbnb-typescript/base",
         "plugin:@typescript-eslint/recommended",
         "plugin:@typescript-eslint/recommended-requiring-type-checking",
@@ -49,6 +61,16 @@
           "error",
           {
             "devDependencies": true
+          }
+        ],
+        "import/order": [
+          "error",
+          {
+            "newlines-between": "always",
+            "alphabetize": {
+              "order": "asc",
+              "caseInsensitive": true
+            }
           }
         ],
         "eslint-comments/disable-enable-pair": "off",
