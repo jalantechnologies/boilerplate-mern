@@ -94,7 +94,8 @@
         "cypress/no-async-tests": "error",
         "cypress/no-force": "warn",
         "cypress/no-pause": "error",
-        "cypress/no-unnecessary-waiting": "error"
+        "cypress/no-unnecessary-waiting": "error",
+        "import/extensions": "off"
       }
     },
     {
