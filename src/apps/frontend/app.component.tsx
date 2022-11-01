@@ -3,7 +3,7 @@ import { Route, Routes, BrowserRouter as Router } from 'react-router-dom';
 
 import { Header, Footer } from './components';
 import { DepsProvider } from './contexts';
-import { About, Login } from './pages';
+import { About, Login, NotFound } from './pages';
 import { AccessService } from './services';
 import InspectLet from './vendor/inspectlet';
 
@@ -26,6 +26,7 @@ export default function App(): React.ReactElement {
           <Routes>
             <Route path='/about' element={<About />} />
             <Route path='/' element={<Login />} />
+            <Route path='*' element={<NotFound />} />
           </Routes>
           <Footer />
         </div>
