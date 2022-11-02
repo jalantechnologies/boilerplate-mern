@@ -88,7 +88,7 @@ This project deploys on Kubernetes via GitHub actions using workflows defined in
 
 **Version:**
 
-This project uses [v2.3](https://github.com/jalantechnologies/platform-github/tree/v2.3)
+This project uses [v2.4](https://github.com/jalantechnologies/platform-github/tree/v2.3)
 
 **Features:**
 

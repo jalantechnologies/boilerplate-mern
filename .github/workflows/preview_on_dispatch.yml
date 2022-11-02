@@ -4,7 +4,7 @@ on: workflow_dispatch
 
 jobs:
   preview:
-    uses: jalantechnologies/platform-github/.github/workflows/kube.yml@v2.3
+    uses: jalantechnologies/platform-github/.github/workflows/kube.yml@v2.4
     concurrency:
       group: ci-preview-${{ github.event.ref }}
       cancel-in-progress: true
@@ -13,7 +13,7 @@ jobs:
       app_env: preview
       app_hostname: '{1}.preview.platform.jalantechnologies.com'
       branch: ${{ github.event.ref }}
-      steps: 'preview'
+      steps: 'deploy'
       build_args: |
         NODE_CONFIG_ENV=preview
     secrets:
