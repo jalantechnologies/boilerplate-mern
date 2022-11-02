@@ -31,6 +31,8 @@ spec:
               value: 'production'
             - name: NODE_CONFIG_ENV
               value: $KUBE_ENV
+            - name: WEB_APP_HOST
+              value: $KUBE_INGRESS_HOSTNAME
           envFrom:
             - secretRef:
                 name: $DOPPLER_MANAGED_SECRET_NAME
