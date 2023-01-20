@@ -3,7 +3,7 @@ import { Route, Routes, BrowserRouter as Router } from 'react-router-dom';
 
 import { Header, Footer } from './components';
 import { DepsProvider } from './contexts';
-import { About, Login, NotFound } from './pages';
+import { About, Login, Signup, NotFound } from './pages';
 import { AccessService } from './services';
 import InspectLet from './vendor/inspectlet';
 
@@ -17,16 +17,19 @@ export default function App(): React.ReactElement {
   }, []);
 
   return (
-    <DepsProvider deps={{
-      accessService: new AccessService(),
-    }}>
+    <DepsProvider
+      deps={{
+        accessService: new AccessService(),
+      }}
+    >
       <Router>
-        <div className='container'>
+        <div className="container">
           <Header />
           <Routes>
-            <Route path='/about' element={<About />} />
-            <Route path='/' element={<Login />} />
-            <Route path='*' element={<NotFound />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
           <Footer />
         </div>

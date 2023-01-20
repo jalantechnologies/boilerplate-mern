@@ -7,4 +7,11 @@ export default class AccessService extends APIService {
       password,
     });
   }
+
+  signup(username: string, password: string): Promise<void> {
+    return this.apiClient.post('/accounts', {
+      username,
+      password,
+    });
+  }
 }
