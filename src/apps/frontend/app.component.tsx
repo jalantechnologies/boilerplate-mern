@@ -2,9 +2,8 @@ import React, { useEffect } from 'react';
 import { Route, Routes, BrowserRouter as Router } from 'react-router-dom';
 
 import { Header, Footer } from './components';
-import { DepsProvider } from './contexts';
+import { AuthContextProvider } from './contexts/auth-context.provider';
 import { About, Login, Signup, NotFound } from './pages';
-import { AccessService } from './services';
 import InspectLet from './vendor/inspectlet';
 
 import './app.global.scss';
@@ -17,11 +16,7 @@ export default function App(): React.ReactElement {
   }, []);
 
   return (
-    <DepsProvider
-      deps={{
-        accessService: new AccessService(),
-      }}
-    >
+    <AuthContextProvider>
       <Router>
         <div className="container">
           <Header />
@@ -34,6 +29,6 @@ export default function App(): React.ReactElement {
           <Footer />
         </div>
       </Router>
-    </DepsProvider>
+    </AuthContextProvider>
   );
 }

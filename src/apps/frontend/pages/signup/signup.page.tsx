@@ -1,7 +1,7 @@
-import { BaseProvider, LightTheme, Theme } from 'baseui';
+import { BaseProvider, LightTheme } from 'baseui';
 import { Block } from 'baseui/block';
 import { Button } from 'baseui/button';
-import { Input } from 'baseui/input';
+
 import { ParagraphMedium } from 'baseui/typography';
 
 import { useFormik } from 'formik';
@@ -11,29 +11,42 @@ import { Link } from 'react-router-dom';
 
 import { Client as Styletron } from 'styletron-engine-atomic';
 import { Provider as StyletronProvider } from 'styletron-react';
-
-import { useDeps } from '../../contexts';
+import FormInput from '../../components/form-input/form-input.component';
+import { useAuth } from '../../contexts/auth-context.provider';
+import { Error } from '../../components/error/error.component';
 
 const engine = new Styletron();
-
-interface BaseUIStyleProps extends Theme {
-  $theme: Theme;
-  isFocused: boolean;
-}
 
 const initialValues = {
   email: '',
   password: '',
 };
 
+interface SignUpFomrErrorType {
+  email?: string;
+  password?: string;
+}
+
 const Signup = () => {
-  const { accessService } = useDeps();
+  const { signUp } = useAuth();
   const formik = useFormik({
     initialValues,
     onSubmit: async (values) => {
-      await accessService.signup(values.email, values.password);
-    }
+      await signUp(values.email, values.password);
+    },
+    validate: (values) => {
+      let errors: SignUpFomrErrorType = {};
+      if (!values.email) {
+        errors.email = 'email required';
+      }
+      if (!values.password) {
+        errors.password = 'password is required';
+      }
+      return errors;
+    },
+    validateOnMount: true,
   });
+  console.log(formik.values.email);
   return (
     <StyletronProvider value={engine}>
       <BaseProvider theme={LightTheme}>
@@ -54,55 +67,40 @@ const Signup = () => {
           <ParagraphMedium marginTop="scale0">
             Already have an account? <Link to="/">Sign In</Link>
           </ParagraphMedium>
-          <Block>
-            <form onSubmit={formik.handleSubmit}>
-              <Block marginTop={'scale700'}>
-                <Input
-                  autoComplete="off"
-                  name="email"
-                  type="email"
-                  id="email"
-                  placeholder="Enter you Email ID"
-                  startEnhancer="@"
-                  onChange={formik.handleChange}
-                  value={formik.values.email}
-                  required
-                  overrides={{
-                    Root: {
-                      style: ({ $theme, isFocused }: BaseUIStyleProps) => ({
-                        border: isFocused
-                          ? `${$theme.sizing.scale0} solid ${$theme.colors.primaryA}`
-                          : `${$theme.sizing.scale0} solid ${$theme.colors.primaryB}`,
-                      }),
-                    },
-                  }}
-                />
-              </Block>
-              <Block marginTop={'scale700'}>
-                <Input
-                  autoComplete="off"
-                  name="password"
-                  type="password"
-                  id="password"
-                  placeholder="password"
-                  onChange={formik.handleChange}
-                  value={formik.values.password}
-                  required
-                  overrides={{
-                    Root: {
-                      style: ({ $theme, isFocused }: BaseUIStyleProps) => ({
-                        border: isFocused
-                          ? `${$theme.sizing.scale0} solid ${$theme.colors.primaryA}`
-                          : `${$theme.sizing.scale0} solid ${$theme.colors.primaryB}`,
-                      }),
-                    },
-                  }}
-                />
-              </Block>
-              <Block marginTop={'scale500'} marginLeft={'scale2400'}>
-                <Button type="submit">Signup</Button>
-              </Block>
-            </form>
+          <form onSubmit={formik.handleSubmit}>
+            <FormInput
+              autoComplete="off"
+              name="email"
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              placeholder="Enter your Email ID"
+              required
+              startEnhancer="@"
+              testId="email"
+              type="email"
+              value={formik.values.email}
+            />
+            {formik.touched.email && formik.errors.email ? (
+              <Error>{formik.errors.email}</Error>
+            ) : null}
+            <FormInput
+              autoComplete="off"
+              name="password"
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              placeholder="Password"
+              required
+              startEnhancer=" "
+              testId="password"
+              type="password"
+              value={formik.values.password}
+            />
+            {formik.touched.password && formik.errors.password ? (
+              <Error>{formik.errors.password}</Error>
+            ) : null}
+          </form>
+          <Block marginTop={'scale500'} marginLeft={'scale650'}>
+            <Button type="submit">Signup</Button>
           </Block>
         </Block>
       </BaseProvider>
