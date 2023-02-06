@@ -13,11 +13,11 @@ jobs:
       group: ci-preview-${{ github.event.pull_request.head.ref }}
       cancel-in-progress: true
     with:
+      analyze_base: main
       app_name: boilerplate-mern
       app_env: preview
       app_hostname: '{1}.preview.platform.jalantechnologies.com'
       branch: ${{ github.event.pull_request.head.ref }}
-      branch_base: ${{ github.event.pull_request.base.ref }}
       pull_request_number: ${{ github.event.number }}
       build_args: |
         NODE_CONFIG_ENV=preview
