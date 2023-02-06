@@ -36,3 +36,13 @@ spec:
           envFrom:
             - secretRef:
                 name: $DOPPLER_MANAGED_SECRET_NAME
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 15
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 30
