@@ -13,5 +13,8 @@ jobs:
       app_env: preview
       branch: ${{ github.event.ref }}
     secrets:
+      docker_registry: docker-registry.platform.jalantechnologies.com/boilerplate-mern
+      docker_username: ${{ secrets.DOCKER_USERNAME }}
+      docker_password: ${{ secrets.DOCKER_PASSWORD }}
       do_access_token: ${{ secrets.DO_ACCESS_TOKEN }}
       do_cluster_id: ${{ secrets.DO_CLUSTER_ID }}
