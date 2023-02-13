@@ -1,0 +1,36 @@
+services:
+  - type: web
+    name: boilerplate-mern
+    env: docker
+    plan: starter
+    branch: main
+    healthCheckPath: /
+    domains:
+      - boilerplate-mern.platform.jalantechnologies.com
+    envVars:
+      - fromGroup: boilerplate-mern-production
+
+envVarGroups:
+  - name: boilerplate-mern-production
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_CONFIG_ENV
+        value: production
+      - key: WEB_APP_HOST
+        fromService:
+          name: boilerplate-mern
+          type: web
+          property: host
+      - key: GRAFANA_HOST
+        sync: false
+      - key: GRAFANA_PASSWORD
+        sync: false
+      - key: GRAFANA_USERNAME
+        sync: false
+      - key: INSPECTLET_KEY
+        sync: false
+      - key: MONGODB_URI
+        sync: false
+      - key: ROLLBAR_ACCESS_TOKEN
+        sync: false
