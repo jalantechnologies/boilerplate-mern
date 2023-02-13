@@ -42,7 +42,7 @@ export default function Login(): React.ReactElement {
         type='password'
       />
       <button type='button' onClick={login}>
-        LOGIN
+        SIGNIN
       </button>
     </form>
   );
