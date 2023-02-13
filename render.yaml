@@ -8,6 +8,11 @@ services:
     domains:
       - boilerplate-mern.platform.jalantechnologies.com
     envVars:
+      - key: WEB_APP_HOST
+        fromService:
+          name: boilerplate-mern
+          type: web
+          property: host
       - fromGroup: boilerplate-mern-production
 
 envVarGroups:
@@ -17,11 +22,6 @@ envVarGroups:
         value: production
       - key: NODE_CONFIG_ENV
         value: production
-      - key: WEB_APP_HOST
-        fromService:
-          name: boilerplate-mern
-          type: web
-          property: host
       - key: GRAFANA_HOST
         sync: false
       - key: GRAFANA_PASSWORD
