@@ -21,6 +21,7 @@ jobs:
       pull_request_number: ${{ github.event.number }}
       build_args: |
         NODE_CONFIG_ENV=preview
+      steps: 'analyze,lint,test,e2e'
     secrets:
       docker_registry: docker-registry.platform.jalantechnologies.com/boilerplate-mern
       docker_username: ${{ secrets.DOCKER_USERNAME }}
