@@ -1,3 +1,6 @@
+previewsEnabled: true
+previewsExpireAfterDays: 1
+
 services:
   - type: web
     name: boilerplate-mern
