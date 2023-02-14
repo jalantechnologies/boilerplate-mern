@@ -34,3 +34,5 @@ envVarGroups:
         sync: false
       - key: ROLLBAR_ACCESS_TOKEN
         sync: false
+      - key: WEB_APP_HOST
+        value: https://boilerplate-mern.platform.jalantechnologies.com
