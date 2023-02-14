@@ -4,7 +4,7 @@ on: workflow_dispatch
 
 jobs:
   clean:
-    uses: jalantechnologies/platform-github/.github/workflows/clean.yml@v2.7
+    uses: jalantechnologies/github-ci/.github/workflows/clean.yml@v1.0
     concurrency:
       group: ci-preview-${{ github.event.ref }}
       cancel-in-progress: true
@@ -12,6 +12,7 @@ jobs:
       app_name: boilerplate-mern
       app_env: preview
       branch: ${{ github.event.ref }}
+      deploy_service: digitalocean-kube
     secrets:
       docker_registry: docker-registry.platform.jalantechnologies.com/boilerplate-mern
       docker_username: ${{ secrets.DOCKER_USERNAME }}

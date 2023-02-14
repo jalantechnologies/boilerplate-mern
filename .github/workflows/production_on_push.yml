@@ -7,7 +7,7 @@ on:
 
 jobs:
   production:
-    uses: jalantechnologies/platform-github/.github/workflows/kube.yml@v2.7
+    uses: jalantechnologies/github-ci/.github/workflows/ci.yml@v1.0
     concurrency:
       group: ci-production-${{ github.event.ref }}
       cancel-in-progress: true
@@ -16,7 +16,7 @@ jobs:
       app_env: production
       app_hostname: boilerplate-mern.platform.jalantechnologies.com
       branch: ${{ github.event.ref }}
-      steps: 'analyze,lint,test,e2e'
+      deploy_service: digitalocean-kube
     secrets:
       docker_registry: docker-registry.platform.jalantechnologies.com/boilerplate-mern
       docker_username: ${{ secrets.DOCKER_USERNAME }}

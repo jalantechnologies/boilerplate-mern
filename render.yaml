@@ -1,6 +1,3 @@
-previewsEnabled: true
-previewsExpireAfterDays: 1
-
 services:
   - type: web
     name: boilerplate-mern
@@ -11,11 +8,6 @@ services:
     domains:
       - boilerplate-mern.platform.jalantechnologies.com
     envVars:
-      - key: WEB_APP_HOST
-        fromService:
-          name: boilerplate-mern
-          type: web
-          property: host
       - fromGroup: boilerplate-mern-production
 
 envVarGroups:
@@ -37,3 +29,5 @@ envVarGroups:
         sync: false
       - key: ROLLBAR_ACCESS_TOKEN
         sync: false
+      - key: WEB_APP_HOST
+        value: https://boilerplate-mern.platform.jalantechnologies.com

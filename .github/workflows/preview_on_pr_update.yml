@@ -8,7 +8,7 @@ jobs:
   preview:
     # only run when updating an 'Open' PR
     if: github.event.pull_request.state == 'open'
-    uses: jalantechnologies/platform-github/.github/workflows/kube.yml@v2.7
+    uses: jalantechnologies/github-ci/.github/workflows/ci.yml@v1.0
     concurrency:
       group: ci-preview-${{ github.event.pull_request.head.ref }}
       cancel-in-progress: true
@@ -21,7 +21,7 @@ jobs:
       pull_request_number: ${{ github.event.number }}
       build_args: |
         NODE_CONFIG_ENV=preview
-      steps: 'analyze,lint,test,e2e'
+      deploy_service: digitalocean-kube
     secrets:
       docker_registry: docker-registry.platform.jalantechnologies.com/boilerplate-mern
       docker_username: ${{ secrets.DOCKER_USERNAME }}
