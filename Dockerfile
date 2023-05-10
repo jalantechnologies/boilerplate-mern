@@ -8,13 +8,15 @@ RUN apt-get install -y libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-
 
 # use changes to package.json to force Docker not to use the cache
 # when we change our application's nodejs dependencies:
-COPY package.json package.json
-COPY package-lock.json package-lock.json
+COPY package.json /tmp/package.json
+RUN cd /tmp && npm install
+RUN mkdir -p /opt/app && cp -a /tmp/node_modules /opt/app/
+
+WORKDIR /opt/app
+
 RUN npm install
 
-COPY . .
-
-RUN npm install
+COPY . /opt/app
 
 # build arguments
 ARG NODE_ENV
