@@ -7,17 +7,17 @@
     "node": "14.17.3"
   },
   "scripts": {
-    "build": "cross-env NODE_ENV=production concurrently npm:build:* --kill-others-on-fail",
+    "build": "cross-env NODE_ENV=production concurrently --kill-others-on-fail npm:build:*",
     "build:assets": "cpx \"src/assets/**/*.*\" dist/assets",
     "build:backend": "tsc -p src/apps/backend/tsconfig.json --outDir dist",
     "build:frontend": "webpack --output-path dist/public --config src/apps/frontend/webpack.prod.js",
     "test": "cross-env NODE_ENV=production NODE_CONFIG_ENV=testing mocha --exit -r ts-node/register --project src/apps/backend/tsconfig.json test/**/*.spec.ts",
-    "test:e2e": "cross-env NODE_ENV=production NODE_CONFIG_ENV=e2e concurrently -s first -k --kill-others-on-fail \"npm start\" \"sleep 2 && cypress run\"",
+    "test:e2e": "cross-env NODE_ENV=production NODE_CONFIG_ENV=e2e concurrently --success first --kill-others --kill-others-on-fail \"wait-on tcp:8080 && cypress run\" \"npm start\"",
     "lint": "eslint .",
     "lint:md": "remark .",
     "lint:fix": "eslint --fix .",
     "start": "node dist/bin/server.js",
-    "serve": "cross-env NODE_ENV=development concurrently npm:serve:* --kill-others-on-fail",
+    "serve": "cross-env NODE_ENV=development concurrently --kill-others-on-fail npm:serve:*",
     "serve:assets": "cpx \"src/assets/**/*.*\" dist/assets --watch",
     "serve:backend": "tsc-watch -p src/apps/backend/tsconfig.json --outDir dist --onsuccess \"node dist/bin/server.js\" --noClear",
     "serve:frontend": "webpack serve --output-path dist/public --config src/apps/frontend/webpack.dev.js --hot --progress"
@@ -98,6 +98,7 @@
     "ts-mocha": "^9.0.2",
     "tsc-watch": "^5.0.3",
     "typescript": "^4.4.4",
+    "wait-on": "^7.0.1",
     "webpack": "^5.74.0",
     "webpack-cli": "^4.10.0",
     "webpack-dev-server": "^4.11.1",
