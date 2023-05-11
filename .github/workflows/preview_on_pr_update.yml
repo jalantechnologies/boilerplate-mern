@@ -21,8 +21,8 @@ jobs:
       pull_request_number: ${{ github.event.number }}
       build_args: |
         NODE_CONFIG_ENV=preview
+      docker_registry: docker-registry.platform.jalantechnologies.com
     secrets:
-      docker_registry: docker-registry.platform.jalantechnologies.com/boilerplate-mern
       docker_username: ${{ secrets.DOCKER_USERNAME }}
       docker_password: ${{ secrets.DOCKER_PASSWORD }}
       doppler_token: ${{ secrets.DOPPLER_PREVIEW_TOKEN }}
