@@ -21,9 +21,9 @@ jobs:
       pull_request_number: ${{ github.event.number }}
       build_args: |
         NODE_CONFIG_ENV=preview
-      docker_registry: docker-registry.platform.jalantechnologies.com
+      docker_registry: ${{ vars.DOCKER_REGISTRY }}
+      docker_username: ${{ vars.DOCKER_USERNAME }}
     secrets:
-      docker_username: ${{ secrets.DOCKER_USERNAME }}
       docker_password: ${{ secrets.DOCKER_PASSWORD }}
       doppler_token: ${{ secrets.DOPPLER_PREVIEW_TOKEN }}
       do_access_token: ${{ secrets.DO_ACCESS_TOKEN }}
