@@ -4,7 +4,7 @@ on: workflow_dispatch
 
 jobs:
   preview:
-    uses: jalantechnologies/platform-github/.github/workflows/kube.yml@v2.8
+    uses: jalantechnologies/github-ci/.github/workflows/ci.yml@v1
     concurrency:
       group: ci-preview-${{ github.event.ref }}
       cancel-in-progress: true
@@ -16,9 +16,9 @@ jobs:
       steps: 'deploy'
       build_args: |
         NODE_CONFIG_ENV=preview
+      docker_registry: ${{ vars.DOCKER_REGISTRY }}
+      docker_username: ${{ vars.DOCKER_USERNAME }}
     secrets:
-      docker_registry: docker-registry.platform.jalantechnologies.com/boilerplate-mern
-      docker_username: ${{ secrets.DOCKER_USERNAME }}
       docker_password: ${{ secrets.DOCKER_PASSWORD }}
       doppler_token: ${{ secrets.DOPPLER_PREVIEW_TOKEN }}
       do_access_token: ${{ secrets.DO_ACCESS_TOKEN }}
