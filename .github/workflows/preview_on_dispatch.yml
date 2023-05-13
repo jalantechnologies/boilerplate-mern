@@ -13,7 +13,6 @@ jobs:
       app_env: preview
       app_hostname: '{1}.preview.platform.jalantechnologies.com'
       branch: ${{ github.event.ref }}
-      steps: 'deploy'
       build_args: |
         NODE_CONFIG_ENV=preview
       docker_registry: ${{ vars.DOCKER_REGISTRY }}
