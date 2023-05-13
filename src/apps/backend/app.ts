@@ -12,7 +12,7 @@ import ConfigManager from './modules/config/config-manager';
 import ConfigService from './modules/config/config-service';
 import Logger from './modules/logger/logger';
 import LoggerManager from './modules/logger/logger-manager';
-import TaskServiceManager from './modules/task/task-service-manager';
+import TaskServiceManager from "./modules/task/task-service-manager";
 
 const isDevEnv = process.env.NODE_ENV === 'development';
 
