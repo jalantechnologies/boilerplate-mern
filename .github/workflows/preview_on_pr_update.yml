@@ -18,11 +18,12 @@ jobs:
       app_env: preview
       app_hostname: '{1}.preview.platform.jalantechnologies.com'
       branch: ${{ github.event.pull_request.head.ref }}
-      pull_request_number: ${{ github.event.number }}
       build_args: |
         NODE_CONFIG_ENV=preview
+      checks: "['npm:lint', 'compose:test', 'compose:e2e']"
       docker_registry: ${{ vars.DOCKER_REGISTRY }}
       docker_username: ${{ vars.DOCKER_USERNAME }}
+      pull_request_number: ${{ github.event.number }}
       sonar_host_url: ${{ vars.SONAR_HOST_URL }}
     secrets:
       docker_password: ${{ secrets.DOCKER_PASSWORD }}

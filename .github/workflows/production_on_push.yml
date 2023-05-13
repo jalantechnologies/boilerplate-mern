@@ -16,6 +16,7 @@ jobs:
       app_env: production
       app_hostname: boilerplate-mern.platform.jalantechnologies.com
       branch: ${{ github.event.ref }}
+      checks: "['npm:lint', 'npm:test', 'npm:e2e']"
       docker_registry: ${{ vars.DOCKER_REGISTRY }}
       docker_username: ${{ vars.DOCKER_USERNAME }}
       sonar_host_url: ${{ vars.SONAR_HOST_URL }}
@@ -25,4 +26,3 @@ jobs:
       do_access_token: ${{ secrets.DO_ACCESS_TOKEN }}
       do_cluster_id: ${{ secrets.DO_CLUSTER_ID }}
       sonar_token: ${{ secrets.SONAR_TOKEN }}
-
