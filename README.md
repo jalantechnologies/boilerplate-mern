@@ -84,11 +84,11 @@ This project support following integrations
 
 ## Deployment
 
-This project deploys on Kubernetes via GitHub actions using workflows defined in [Platform - GitHub](https://github.com/jalantechnologies/platform-github) project.
+This project deploys on Kubernetes via GitHub actions using workflows defined in [GitHub CI](https://github.com/jalantechnologies/github-ci).
 
 **Version:**
 
-This project uses [v2.4](https://github.com/jalantechnologies/platform-github/tree/v2.3)
+This project uses [v1](https://github.com/jalantechnologies/github-ci/tree/v1)
 
 **Features:**
 

@@ -8,7 +8,7 @@ jobs:
   preview:
     # only run when updating an 'Open' PR
     if: github.event.pull_request.state == 'open'
-    uses: jalantechnologies/platform-github/.github/workflows/kube.yml@v2.7
+    uses: jalantechnologies/github-ci/.github/workflows/ci.yml@v1
     concurrency:
       group: ci-preview-${{ github.event.pull_request.head.ref }}
       cancel-in-progress: true
@@ -18,15 +18,16 @@ jobs:
       app_env: preview
       app_hostname: '{1}.preview.platform.jalantechnologies.com'
       branch: ${{ github.event.pull_request.head.ref }}
-      pull_request_number: ${{ github.event.number }}
       build_args: |
         NODE_CONFIG_ENV=preview
+      checks: "['npm:lint', 'compose:test', 'compose:e2e']"
+      docker_registry: ${{ vars.DOCKER_REGISTRY }}
+      docker_username: ${{ vars.DOCKER_USERNAME }}
+      pull_request_number: ${{ github.event.number }}
+      sonar_host_url: ${{ vars.SONAR_HOST_URL }}
     secrets:
-      docker_registry: docker-registry.platform.jalantechnologies.com/boilerplate-mern
-      docker_username: ${{ secrets.DOCKER_USERNAME }}
       docker_password: ${{ secrets.DOCKER_PASSWORD }}
       doppler_token: ${{ secrets.DOPPLER_PREVIEW_TOKEN }}
       do_access_token: ${{ secrets.DO_ACCESS_TOKEN }}
       do_cluster_id: ${{ secrets.DO_CLUSTER_ID }}
       sonar_token: ${{ secrets.SONAR_TOKEN }}
-      sonar_host_url: ${{ secrets.SONAR_HOST_URL }}
