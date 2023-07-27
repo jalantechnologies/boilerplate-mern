@@ -30,5 +30,4 @@ jobs:
       doppler_token: ${{ secrets.DOPPLER_PREVIEW_TOKEN }}
       do_access_token: ${{ secrets.DO_ACCESS_TOKEN }}
       do_cluster_id: ${{ secrets.DO_CLUSTER_ID }}
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       sonar_token: ${{ secrets.SONAR_TOKEN }}
