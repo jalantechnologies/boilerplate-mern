@@ -3,6 +3,10 @@ name: preview_on_pr_update
 on:
   pull_request:
     types: [ opened, synchronize, reopened ]
+  workflow_call:
+    secrets: 
+      GITHUB_TOKEN:
+        required: true
 
 jobs:
   preview:
@@ -30,4 +34,5 @@ jobs:
       doppler_token: ${{ secrets.DOPPLER_PREVIEW_TOKEN }}
       do_access_token: ${{ secrets.DO_ACCESS_TOKEN }}
       do_cluster_id: ${{ secrets.DO_CLUSTER_ID }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       sonar_token: ${{ secrets.SONAR_TOKEN }}
