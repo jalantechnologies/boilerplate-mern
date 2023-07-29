@@ -13,8 +13,6 @@ services:
     command: sh -c 'mkdir -p /opt/app/.nyc_output && npm run coverage:export'
     depends_on:
       - db
-    volumes:
-      - .:/opt/app
 
   db:
     image: mongo:5.0
