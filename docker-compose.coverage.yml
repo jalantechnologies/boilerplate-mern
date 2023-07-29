@@ -10,9 +10,11 @@ services:
         NODE_ENV: 'development'
     environment:
       NODE_APP_INSTANCE: 'docker'
-    command: 'npm run coverage:export'
+    command: sh -c 'mkdir -p /opt/app/.nyc_output && npm run coverage:export'
     depends_on:
       - db
+    volumes:
+      - .:/opt/app
 
   db:
     image: mongo:5.0
