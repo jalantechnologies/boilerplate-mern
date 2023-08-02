@@ -8,7 +8,7 @@ jobs:
   preview:
     # only run when updating an 'Open' PR
     if: github.event.pull_request.state == 'open'
-    uses: jalantechnologies/github-ci/.github/workflows/ci.yml@4-feat-add-support-for-exporting-test-check-coverage-on-pull-requests
+    uses: jalantechnologies/github-ci/.github/workflows/ci.yml@generate_cov_report
     concurrency:
       group: ci-preview-${{ github.event.pull_request.head.ref }}
       cancel-in-progress: true
