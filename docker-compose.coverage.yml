@@ -10,7 +10,7 @@ services:
         NODE_ENV: 'development'
     environment:
       NODE_APP_INSTANCE: 'docker'
-    command: sh -c 'mkdir -p /opt/app/.nyc_output && ls && npm run coverage:export > coverage-summary.txt && ls'
+    command: sh -c 'mkdir -p /opt/app/.nyc_output && ls && npm run coverage:export > coverage-summary.txt'
     depends_on:
       - db
 
