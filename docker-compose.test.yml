@@ -15,7 +15,7 @@ services:
     depends_on:
       - db
     volumes:
-      - ./coverage:/app
+      - ./output_directory:/app/output
 
   db:
     image: mongo:5.0
