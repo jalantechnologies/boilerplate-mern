@@ -10,7 +10,8 @@ services:
         NODE_ENV: 'development'
     environment:
       NODE_APP_INSTANCE: 'docker'
-    command: command: sh -c "mkdir .nyc_output && npx nyc npm test && output=\$(npx nyc report --reporter=text-summary) && echo \$output"
+    command: >
+      sh -c "mkdir .nyc_output && npx nyc npm test && npx nyc report --reporter=text-summary"
     depends_on:
       - db
     volumes:
@@ -21,3 +22,4 @@ services:
     command: mongod --quiet --logpath /dev/null
     ports:
       - '27017:27017'
+
