@@ -10,7 +10,8 @@ services:
         NODE_ENV: 'development'
     environment:
       NODE_APP_INSTANCE: 'docker'
-    command: 'npm test && npx nyc report --reporter=text-summary > coverage-summary.txt'
+    command: >
+      sh -c "npm test && npx nyc report --reporter=text-summary > coverage-summary.txt"
     depends_on:
       - db
     volumes:
