@@ -13,6 +13,8 @@ services:
     command: 'npx nyc npm run test && nyc report --reporter=text-summary > /app/coverage-summary.txt'
     depends_on:
       - db
+    volumes:
+      - ./coverage:/app
 
   db:
     image: mongo:5.0
