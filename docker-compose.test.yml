@@ -13,7 +13,7 @@ services:
     command: >
       sh -c "mkdir .nyc_output && npx nyc npm test 
       && npx nyc report --reporter=cobertura 
-      && cp coverage/cobertura-coverage.xml /app/output/coverage.cobertura.xml"
+      && cp coverage/cobertura-coverage.xml /app/output/coverage.xml"
     depends_on:
       - db
     volumes:
