@@ -8,7 +8,7 @@ jobs:
   preview:
     # only run when updating an 'Open' PR
     if: github.event.pull_request.state == 'open'
-    uses: jalantechnologies/github-ci/.github/workflows/ci.yml@fix/doppler_token_update_issue
+    uses: jalantechnologies/github-ci/.github/workflows/ci.yml@fix/workflow_version_label_regex
     concurrency:
       group: ci-preview-${{ github.event.pull_request.head.ref }}
       cancel-in-progress: true
