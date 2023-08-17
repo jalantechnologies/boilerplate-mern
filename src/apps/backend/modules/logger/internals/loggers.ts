@@ -3,6 +3,7 @@ import { UnknownTransportError } from '../types';
 
 import ConsoleLogger from './console-logger';
 import GrafanaLokiLogger from './grafana-loki-logger';
+import PapertrailLogger from './papertrail-logger';
 import RollbarLogger from './rollbar-logger';
 import Logger, { LoggerTransport } from './types';
 
@@ -13,7 +14,7 @@ export default class Loggers {
     const transports: LoggerTransport[] = ConfigService.getListValue<LoggerTransport>('logger.transports');
     const loggerTransports: Logger[] = [];
 
-    transports.forEach((loggerTransport: LoggerTransport) => {
+    transports.forEach((loggerTransport: string) => {
       switch (loggerTransport) {
         case LoggerTransport.Console:
           loggerTransports.push(Loggers.getConsoleLogger());
@@ -23,6 +24,9 @@ export default class Loggers {
           break;
         case LoggerTransport.Grafana:
           loggerTransports.push(Loggers.getGrafanaLokiLogger());
+          break;
+        case LoggerTransport.Papertrail:
+          loggerTransports.push(Loggers.getPapertrailLogger());
           break;
         default:
           throw new UnknownTransportError(loggerTransport);
@@ -72,5 +76,9 @@ export default class Loggers {
 
   static getGrafanaLokiLogger(): GrafanaLokiLogger {
     return new GrafanaLokiLogger();
+  }
+
+  static getPapertrailLogger(): PapertrailLogger {
+    return new PapertrailLogger();
   }
 }
