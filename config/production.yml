@@ -1,5 +1,5 @@
 logger:
-  transports: [ 'grafana' ]
+  transports: [ 'papertrail' ]
 
 rollbar:
   env: 'production'

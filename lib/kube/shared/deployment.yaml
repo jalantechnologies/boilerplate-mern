@@ -38,6 +38,8 @@ spec:
               value: $KUBE_ENV
             - name: WEB_APP_HOST
               value: $KUBE_INGRESS_HOSTNAME
+            - name: PAPERTRAIL_PROGRAM
+              value: $KUBE_APP
           envFrom:
             - secretRef:
                 name: $DOPPLER_MANAGED_SECRET_NAME

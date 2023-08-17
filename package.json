@@ -50,6 +50,7 @@
     "twilio": "^3.74.0",
     "winston": "^3.8.1",
     "winston-loki": "^6.0.5",
+    "winston-papertrail-transport": "^1.0.9",
     "winston-transport": "^4.5.0"
   },
   "devDependencies": {
