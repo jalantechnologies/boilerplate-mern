@@ -4,7 +4,7 @@ on: workflow_dispatch
 
 jobs:
   clean:
-    uses: jalantechnologies/github-ci/.github/workflows/clean.yml@v1.3
+    uses: jalantechnologies/github-ci/.github/workflows/clean.yml@fix/clean_docker_images
     concurrency:
       group: ci-preview-${{ github.event.ref }}
       cancel-in-progress: true
