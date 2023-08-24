@@ -1,0 +1,23 @@
+import bodyParser from 'body-parser';
+import express, { Application } from 'express';
+
+import ErrorHandler from '../../error/error-handler';
+import {{titleCase name}}Repository from '../internal/store/{{snakeCase name}}-repository';
+
+import {{titleCase name}}Router from './{{snakeCase name}}-router';
+
+export default class {{titleCase name}}RESTApiServer {
+  public static async create(): Promise<Application> {
+    await {{titleCase name}}Repository.createDBConnection();
+
+    const app = express();
+    app.use(bodyParser.urlencoded({ extended: true }));
+    app.use(bodyParser.json());
+
+    app.use('/{{name}}', {{titleCase name}}Router.getRoutes());
+
+    app.use(ErrorHandler.AppErrorHandler);
+
+    return Promise.resolve(app);
+  }
+}

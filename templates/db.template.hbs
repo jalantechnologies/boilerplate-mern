@@ -1,0 +1,17 @@
+import { Schema, Types } from 'mongoose';
+
+export interface {{titleCase name}}DB {
+  _id: Types.ObjectId;
+}
+
+export const {{camleCase name}}DbSchema: Schema = new Schema<{{titleCase name}}DB>(
+  {
+    //write schema here
+  },
+  {
+    timestamps: {
+      createdAt: 'createdAt',
+      updatedAt: 'updatedAt',
+    },
+  },
+);

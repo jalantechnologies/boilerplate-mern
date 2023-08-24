@@ -1,0 +1,30 @@
+import mongoose, { CallbackError, Connection } from 'mongoose';
+
+import ConfigService from '../../../config/config-service';
+
+import { {{titleCase name}}DB, {{camleCase name}}DbSchema } from './{{snakeCase name}}-db';
+
+export default class {{titleCase name}}Repository {
+  public static {{camleCase name}}DB: mongoose.Model<{{titleCase name}}DB>;
+
+  static async createDBConnection(): Promise<Connection> {
+    return new Promise((resolve, reject) => {
+      const mongoURI = ConfigService.getStringValue('mongoDb.uri');
+      mongoose.createConnection(
+        mongoURI,
+        {},
+        (error: CallbackError, result: Connection): void => {
+          if (error) {
+            reject(error);
+          } else {
+            {{titleCase name}}Repository.{{camleCase name}}DB = result.model(
+              '{{titleCase name}}',
+              {{camleCase name}}DbSchema,
+            ) as unknown as mongoose.Model<{{titleCase name}}DB>;
+            resolve(result);
+          }
+        },
+      );
+    });
+  }
+}

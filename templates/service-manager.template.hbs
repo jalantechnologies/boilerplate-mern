@@ -1,0 +1,9 @@
+import { Application } from 'express';
+
+import {{titleCase name}}RESTApiServer from './rest-api/{{snakeCase name}}-rest-api-server';
+
+export default class {{titleCase name}}ServiceManager {
+  public static async createRestAPIServer(): Promise<Application> {
+    return {{titleCase name}}RESTApiServer.create();
+  }
+}
