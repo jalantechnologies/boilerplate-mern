@@ -1,11 +1,13 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { Router } from 'express';
 
+import {{titleCase name}}Controller from './{{snakeCase name}}-controller';
+
 export default class {{titleCase name}}Router {
   public static getRoutes(): Router {
     const router = Router();
 
-    //router.post('/', {{name}}Controller.create{{titleCase name}});
+    router.post('/', {{titleCase name}}Controller.create{{titleCase name}});
 
     return router;
   }

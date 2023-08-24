@@ -6,7 +6,6 @@ export interface OrganizationAccountDB {
 
 export const organizationAccountDbSchema: Schema = new Schema<OrganizationAccountDB>(
   {
-    //write schema here
   },
   {
     timestamps: {

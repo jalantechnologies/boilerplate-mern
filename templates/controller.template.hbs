@@ -1,2 +1,17 @@
+import {
+  NextFunction, Request, Response,
+} from 'express';
+
 export default class {{titleCase name}}Controller {
+  public static create{{titleCase name}}(
+    _req: Request,
+    res: Response,
+    next: NextFunction,
+  ): void {
+    try {
+      res.status(201).send({});
+    } catch (e) {
+      next(e);
+    }
+  }
 }
