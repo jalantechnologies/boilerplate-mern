@@ -4,7 +4,7 @@ on: workflow_dispatch
 
 jobs:
   preview:
-    uses: jalantechnologies/github-ci/.github/workflows/ci.yml@v1.3.1
+    uses: jalantechnologies/github-ci/.github/workflows/ci.yml@fix/git_build_cache_ref
     concurrency:
       group: ci-preview-${{ github.event.ref }}
       cancel-in-progress: true
