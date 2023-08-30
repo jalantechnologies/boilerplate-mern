@@ -7,7 +7,7 @@ on:
 
 jobs:
   production:
-    uses: jalantechnologies/github-ci/.github/workflows/ci.yml@v1.3.1
+    uses: jalantechnologies/github-ci/.github/workflows/ci.yml@v1.4
     concurrency:
       group: ci-production-${{ github.event.ref }}
       cancel-in-progress: true
