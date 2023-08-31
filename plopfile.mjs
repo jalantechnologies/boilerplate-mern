@@ -8,7 +8,13 @@ export default function (
       {
         type: "input",
         name: "name",
-        message: "Name your resource: ",
+        message: "Name your module: ",
+      },
+      {
+        type: "input",
+        name: "url",
+        message: " What rest base url you want for the module: ",
+        default: (answers) => answers.name,
       },
     ],
     actions: [
@@ -67,6 +73,18 @@ export default function (
         path: "src/apps/backend/modules/{{snakeCase name}}/internal/store/{{snakeCase name}}-repository.ts",
         templateFile: "templates/repository.template.hbs",
       },
+      {
+        path: 'src/apps/backend/app.ts',
+        pattern: /(\/\/ SERVICE MANAGER IMPORTS)/g,
+        template: '$1\nimport {{titleCase name}}ServiceManager from \'./modules/{{snakeCase name}}/{{snakeCase name}}-service-manager\';',
+        type: 'modify',
+    },
+    {
+        path: 'src/apps/backend/app.ts',
+        pattern: /(\/\/ REST API SERVER)/g,
+        template: `$1\n\n\t\tconst {{camleCase name}}ServiceRESTApi = await {{titleCase name}}ServiceManager.createRestAPIServer();\n\t\tapp.use('/', {{camleCase name}}ServiceRESTApi);`,
+        type: 'modify',
+    },
     ],
   });
 

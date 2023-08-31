@@ -14,7 +14,7 @@ export default class OrganizationAccountRESTApiServer {
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(bodyParser.json());
 
-    app.use('/organization account', OrganizationAccountRouter.getRoutes());
+    app.use('/organization-account', OrganizationAccountRouter.getRoutes());
 
     app.use(ErrorHandler.AppErrorHandler);
 

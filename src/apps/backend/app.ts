@@ -5,6 +5,7 @@ import cors from 'cors';
 import express, { Application } from 'express';
 import expressWinston from 'express-winston';
 
+// SERVICE MANAGER IMPORTS
 import AccessTokenServiceManager from './modules/access-token/access-token-manager';
 import AccountServiceManager from './modules/account/account-service-manager';
 import CommunicationServiceManager from './modules/communication/communication-service-manager';
@@ -12,6 +13,7 @@ import ConfigManager from './modules/config/config-manager';
 import ConfigService from './modules/config/config-service';
 import Logger from './modules/logger/logger';
 import LoggerManager from './modules/logger/logger-manager';
+import OrganizationAccountServiceManager from './modules/organization-account/organization-account-service-manager';
 import TaskServiceManager from './modules/task/task-service-manager';
 
 const isDevEnv = process.env.NODE_ENV === 'development';
@@ -54,6 +56,12 @@ export default class App {
         origin: 'http://localhost:3000',
       }));
     }
+
+    // REST API SERVER
+
+    const organizationAccountServiceRESTApi = await
+    OrganizationAccountServiceManager.createRestAPIServer();
+    app.use('/', organizationAccountServiceRESTApi);
 
     const accountServiceRESTApi = await AccountServiceManager.createRestAPIServer();
     app.use('/', accountServiceRESTApi);

@@ -14,7 +14,7 @@ export default class {{titleCase name}}RESTApiServer {
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(bodyParser.json());
 
-    app.use('/{{name}}', {{titleCase name}}Router.getRoutes());
+    app.use('/{{snakeCase url}}', {{titleCase name}}Router.getRoutes());
 
     app.use(ErrorHandler.AppErrorHandler);
 
