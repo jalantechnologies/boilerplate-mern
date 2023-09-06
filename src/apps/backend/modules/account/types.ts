@@ -1,4 +1,6 @@
 /* eslint-disable max-classes-per-file */
+import { IsString, IsDefined } from 'class-validator';
+
 import AppError from '../error/app-error';
 
 export class Account {
@@ -9,10 +11,14 @@ export class Account {
   hashedPassword: string;
 }
 
-export type CreateAccountParams = {
+export class CreateAccountParams {
+  @IsString()
+  @IsDefined()
   username: string;
+
+  @IsString()
   password: string;
-};
+}
 
 export type AccountSearchParams = {
   username: string;
