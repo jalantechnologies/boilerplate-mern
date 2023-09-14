@@ -6,13 +6,21 @@ import AppError from './app-error';
 
 export default class ErrorHandler {
   public static AppErrorHandler(
-    error: AppError,
+    error: Error,
     _req: Request,
     res: Response,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    _next: NextFunction,
-  ) : void {
+    next: NextFunction,
+  ): void {
     Logger.error(error.toString());
-    res.status(error.httpStatusCode).json(error.toJson());
+
+    if (error instanceof AppError) {
+      res.status(error.httpStatusCode).json(error.toJson());
+    } else {
+      // always print stack for unhandled exceptions
+      Logger.error(error.stack);
+
+      res.status(500).json(error);
+      next(error);
+    }
   }
 }
