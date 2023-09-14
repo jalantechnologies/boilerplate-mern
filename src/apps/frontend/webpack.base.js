@@ -21,6 +21,7 @@ module.exports = {
     }),
   ],
   output: {
+    publicPath: '/',
     filename: '[name].bundle.js',
     clean: true,
   },

@@ -37,6 +37,7 @@ Boilerplate project for NodeJS, React based projects in TypeScript. This README 
 - Build Project - `npm build`
 - Start Application (without HotReload) - `npm start`
 - Start Application (with HotReload enabled) - `npm run serve`
+  - To disable opening up browser automatically, set `WEBPACK_DEV_DISABLE_OPEN` to `true`.
 - Run Lint (JavaScript and TypeScript) - `npm run lint`
 - Run Lint (Markdown) - `npm run lint:md`
 - Run E2E tests - `npm run e2e`
