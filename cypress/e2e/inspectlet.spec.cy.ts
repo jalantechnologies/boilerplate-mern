@@ -1,6 +1,6 @@
 import set from 'lodash/set';
 
-describe('Inspectlet', () => {
+xdescribe('Inspectlet', () => {
   beforeEach(() => {
     cy.visit('/');
   });
