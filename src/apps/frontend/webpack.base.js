@@ -3,6 +3,10 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+const webpackBuildConfig = JSON.stringify(config.util.toObject(
+  config.has('public') ? config.get('public') : {}
+));
+
 module.exports = {
   target: 'web',
   entry: {
@@ -13,7 +17,7 @@ module.exports = {
       template: path.resolve(__dirname, 'index.html'),
     }),
     new webpack.DefinePlugin({
-      Config: JSON.stringify(config.util.toObject(config.get('public'))),
+      'window.Config': webpackBuildConfig,
     }),
   ],
   output: {

@@ -4,6 +4,3 @@ logger:
 grafana:
   labels:
     env: 'preview'
-
-public:
-  env: 'preview'

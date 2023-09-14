@@ -26,6 +26,3 @@ mongoDb:
 
 server:
   port: '8080'
-
-public:
-  env: 'testing'
