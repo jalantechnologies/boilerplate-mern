@@ -37,6 +37,7 @@ Boilerplate project for NodeJS, React based projects in TypeScript. This README 
 - Build Project - `npm build`
 - Start Application (without HotReload) - `npm start`
 - Start Application (with HotReload enabled) - `npm run serve`
+  - To disable opening up browser automatically, set `WEBPACK_DEV_DISABLE_OPEN` to `true`.
 - Run Lint (JavaScript and TypeScript) - `npm run lint`
 - Run Lint (Markdown) - `npm run lint:md`
 - Run E2E tests - `npm run e2e`
@@ -67,9 +68,16 @@ In the `config` directory:
 
 **INFO:** Read more about in what order the config entries are loaded [here](https://github.com/lorenwest/node-config/wiki/Configuration-Files#file-load-order).
 
-Each entry here in this documentation follows the following structure:
+**UI Config:**
 
-`object.notation` `data-type` `ENVIRONMENT_OVERRIDE` (if available) - Description (Default - `value`)
+Config module can be also used to inject configuration values into frontend build. `public` accepts key value pairs which will all get injected
+into frontend builds.
+
+- Define the config entry in appropriate config file under `public`, example - `public.myServiceKey`. Note that deployment does not supports injecting config
+values using environment variables so avoid using `custom-environment-variables.yml` here.
+- Use the config value via `Config.getConfigValue('myServiceKey')`
+- For scripts directly using the config from `window`, can use the config directly via `window.Config.myServiceKey`. For type safety for the same, can add the entry in
+`src/apps/frontend/types/globals.d.ts`.
 
 ## Integrations
 

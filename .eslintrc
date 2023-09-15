@@ -51,7 +51,8 @@
         "airbnb-typescript/base",
         "plugin:@typescript-eslint/recommended",
         "plugin:@typescript-eslint/recommended-requiring-type-checking",
-        "plugin:cypress/recommended"
+        "plugin:cypress/recommended",
+        "plugin:react-hooks/recommended"
       ],
       "parserOptions": {
         "project": "./tsconfig.json"

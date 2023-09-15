@@ -2,7 +2,6 @@ import { LooseObject } from './types';
 
 export default class AppError extends Error {
   code: string;
-
   httpStatusCode: number;
 
   toString(): string {
