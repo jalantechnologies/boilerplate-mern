@@ -54,6 +54,7 @@ tmp/*
 
 # local config files
 config/local*
+.env
 
 # distribution
 dist

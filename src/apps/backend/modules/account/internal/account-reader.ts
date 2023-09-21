@@ -10,16 +10,18 @@ import AccountUtil from './account-util';
 import AccountRepository from './store/account-repository';
 
 export default class AccountReader {
-  public static async getAccountByUsername(username: string): Promise<Account> {
-    const dbAccount = await AccountRepository.accountDB.findOne({
+  public static async getAccountByUsername(
+    username: string,
+  ): Promise<Account> {
+    const accDb = await AccountRepository.findOne({
       username,
       active: true,
     });
 
-    if (!dbAccount) {
+    if (!accDb) {
       throw new AccountNotFoundError(username);
     }
-    return AccountUtil.convertAccountDBToAccount(dbAccount);
+    return AccountUtil.convertAccountDBToAccount(accDb);
   }
 
   public static async getAccountByUsernamePassword(
@@ -32,20 +34,22 @@ export default class AccountReader {
     );
     if (!isPasswordValid) {
       throw new InvalidCredentialsError(params.username);
-    } else {
-      return account;
     }
+
+    return account;
   }
 
   public static async checkUsernameNotExists(
     params: AccountSearchParams,
-  ): Promise<void> {
-    const dbAccount = await AccountRepository.accountDB.findOne({
+  ): Promise<boolean> {
+    const accDb = await AccountRepository.findOne({
       username: params.username,
       active: true,
     });
-    if (dbAccount) {
+    if (accDb) {
       throw new AccountWithUserNameExistsError(params.username);
     }
+
+    return false;
   }
 }

@@ -1,90 +1,128 @@
 import { assert } from 'chai';
 import sinon from 'sinon';
 
-import AccountAuthMiddleware from '../../../src/apps/backend/modules/access-token/rest-api/account-auth-middleware';
 import {
+  AccessToken,
   AccessTokenExpiredError,
+  AccessTokenService,
   AuthorizationHeaderNotFound,
   InvalidAuthorizationHeader,
   UnAuthorizedAccessError,
-} from '../../../src/apps/backend/modules/access-token/types';
+} from '../../../src/apps/backend/modules/access-token';
+import AccountAuthMiddleware from '../../../src/apps/backend/modules/access-token/rest-api/account-auth-middleware';
+import {
+  Account,
+} from '../../../src/apps/backend/modules/account';
 import ConfigService from '../../../src/apps/backend/modules/config/config-service';
+import { ObjectIdUtils } from '../../../src/apps/backend/modules/objectid';
+import { createAccount } from '../../helpers/account';
 
 describe('AccountAuthMiddleware', () => {
-  let sinonSandbox: sinon.SinonSandbox;
+  describe('ensureAccess', () => {
+    let account: Account;
+    let password: string;
+    let accessToken: AccessToken;
+    let controller: sinon.SinonSpy;
 
-  beforeEach(() => {
-    sinonSandbox = sinon.createSandbox();
-  });
+    beforeEach(async () => {
+      password = '12345678';
 
-  afterEach(() => {
-    sinonSandbox.restore();
-  });
+      ({ account, accessToken } = await createAccount({
+        accountParams: {
+          password,
+        },
+      }));
 
-  it('should throw if accountId is not valid', async () => {
-    sinonSandbox.stub(ConfigService, 'getStringValue').returns('token');
-    const req = {
-      params: { accountId: 'invalidAccountId' },
-      headers: {
-        authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SWQiOiJ0ZXN0QWNjb3VudElkIiwiaWF0IjoxNjQ0NDE3NTcyLCJleHAiOjE2NzU5NzUxNzJ9.a96PwaQQAZHdPKFNhChyAkMnkGWr2Gt5jvWbFIIzNh0',
-      },
-    } as any;
+      controller = sinon.fake();
+    });
 
-    assert.throws(
-      () => AccountAuthMiddleware.ensureAccess(req, undefined, undefined),
-      new UnAuthorizedAccessError().message,
-    );
-  });
+    it('should invoke provided controller if valid token was provided', () => {
+      AccountAuthMiddleware.ensureAccess({
+        params: {
+          accountId: account.id,
+        },
+        headers: {
+          authorization:
+            `Bearer ${accessToken.token}`,
+        },
+      }, undefined, controller);
 
-  it('should throw if token is expired', async () => {
-    const accountId = 'testAccountId';
-    const expiredToken =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SWQiOiJ0ZXN0QWNjb3VudElkIiwiaWF0IjoxNjQ0NDE5NTk1LCJleHAiOjE2NDQ0MTk2NTV9.YusiAFHAzg1zLNqowOUFGtnc5OobohTJll01aOMFxLc';
+      sinon.assert.calledOnce(controller);
+    });
 
-    sinonSandbox.stub(ConfigService, 'getStringValue').returns('token');
-    const req = {
-      params: { accountId },
-      headers: {
-        authorization: `Bearer ${expiredToken}`,
-      },
-    } as any;
+    it('should throw error if provided accountId different', () => {
+      assert.throws(
+        () => AccountAuthMiddleware.ensureAccess({
+          params: {
+            accountId: ObjectIdUtils.createNew(),
+          },
+          headers: {
+            authorization:
+              `Bearer ${accessToken.token}`,
+          },
+        }, undefined, controller),
+        new UnAuthorizedAccessError().message,
+      );
 
-    assert.throws(
-      () => AccountAuthMiddleware.ensureAccess(req, undefined, undefined),
-      new AccessTokenExpiredError().message,
-    );
-  });
+      sinon.assert.notCalled(controller);
+    });
 
-  it('should throw if no auth token found', async () => {
-    const accountId = 'testAccountId';
+    it('should throw error if provided token is expired', async () => {
+      sinon
+        .stub(ConfigService, 'getValue')
+        .withArgs('accounts.tokenKey')
+        .returns('random-key')
+        .withArgs('accounts.tokenExpiry')
+        .returns('-1h');
 
-    sinonSandbox.stub(ConfigService, 'getStringValue').returns('token');
-    const req = {
-      params: { accountId },
-      headers: {},
-    } as any;
+      const expiredToken = await AccessTokenService.createAccessToken({
+        username: account.username,
+        password,
+      });
 
-    assert.throws(
-      () => AccountAuthMiddleware.ensureAccess(req, undefined, undefined),
-      new AuthorizationHeaderNotFound().message,
-    );
-  });
+      assert.throws(
+        () => AccountAuthMiddleware.ensureAccess({
+          params: {
+            accountId: account.id,
+          },
+          headers: {
+            authorization: `Bearer ${expiredToken.token}`,
+          },
+        }, undefined, controller),
+        new AccessTokenExpiredError().message,
+      );
 
-  it('should throw if no auth header is invalid', async () => {
-    const accountId = 'testAccountId';
+      sinon.assert.notCalled(controller);
+    });
 
-    sinonSandbox.stub(ConfigService, 'getStringValue').returns('token');
-    const req = {
-      params: { accountId },
-      headers: {
-        authorization: 'invalidAuthHeader',
-      },
-    } as any;
+    it('should throw error if no auth token was provided', () => {
+      const accountId = 'testAccountId';
 
-    assert.throws(
-      () => AccountAuthMiddleware.ensureAccess(req, undefined, undefined),
-      new InvalidAuthorizationHeader().message,
-    );
+      assert.throws(
+        () => AccountAuthMiddleware.ensureAccess({
+          params: { accountId },
+          headers: {},
+        }, undefined, controller),
+        new AuthorizationHeaderNotFound().message,
+      );
+
+      sinon.assert.notCalled(controller);
+    });
+
+    it('should throw error if provided auth header is invalid', () => {
+      const accountId = 'testAccountId';
+
+      assert.throws(
+        () => AccountAuthMiddleware.ensureAccess({
+          params: { accountId },
+          headers: {
+            authorization: 'invalidAuthHeader',
+          },
+        }, undefined, controller),
+        new InvalidAuthorizationHeader().message,
+      );
+
+      sinon.assert.notCalled(controller);
+    });
   });
 });

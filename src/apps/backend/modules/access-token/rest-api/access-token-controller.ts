@@ -1,29 +1,18 @@
-import { NextFunction, Request, Response } from 'express';
-
+import { applicationController, Request, Response } from '../../application';
 import AccessTokenService from '../access-token-service';
-import { AccessToken, CreateAccessTokenParams } from '../types';
+import { CreateAccessTokenParams } from '../types';
 
-export default class AccessTokenController {
-  public static async createAccessToken(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ): Promise<void> {
-    try {
-      const { username, password }: CreateAccessTokenParams = req.body as CreateAccessTokenParams;
-      const params: CreateAccessTokenParams = { username, password };
-      const accessToken = await AccessTokenService.createAccessToken(params);
-      res.send(AccessTokenController.serializeAccessTokenAsJSON(accessToken));
-    } catch (e) {
-      next(e);
-    }
-  }
+import { serializeAccessToken } from './access-token-serializer';
 
-  private static serializeAccessTokenAsJSON(accessToken: AccessToken): unknown {
-    return {
-      accountId: accessToken.accountId,
-      expiresAt: accessToken.expiresAt.toUTCString(),
-      token: accessToken.token,
-    };
-  }
-}
+export const createAccessToken = applicationController(async (
+  req: Request<CreateAccessTokenParams>,
+  res: Response,
+) => {
+  const accessToken = await AccessTokenService.createAccessToken({
+    username: req.body.username,
+    password: req.body.password,
+  });
+  const accessTokenJSON = serializeAccessToken(accessToken);
+
+  res.send(accessTokenJSON);
+});

@@ -1,18 +1,18 @@
 import { format } from 'winston';
 import LokiTransport from 'winston-loki';
 
-import ConfigService from '../../config/config-service';
+import { ConfigService } from '../../config';
 
 import WinstonLogger from './winston-logger';
 
 export default class GrafanaLokiLogger extends WinstonLogger {
   constructor() {
     const transport = new LokiTransport({
-      host: ConfigService.getStringValue('grafana.host'),
-      basicAuth: `${ConfigService.getStringValue('grafana.username')}:${ConfigService.getStringValue('grafana.password')}`,
+      host: ConfigService.getValue('grafana.host'),
+      basicAuth: `${ConfigService.getValue<string>('grafana.username')}:${ConfigService.getValue<string>('grafana.password')}`,
       labels: {
-        app: ConfigService.getStringValue('grafana.labels.app'),
-        env: ConfigService.getStringValue('grafana.labels.env'),
+        app: ConfigService.getValue('grafana.labels.app'),
+        env: ConfigService.getValue('grafana.labels.env'),
       },
       json: true,
       format: format.json(),

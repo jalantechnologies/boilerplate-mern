@@ -16,7 +16,6 @@ export default class SMSParams {
 
   public static validate(params: SendSMSParams): void {
     const failures: ValidationFailure[] = [];
-
     const phoneUtil = <PhoneUtilInterface>(<PhoneUtilInstance>PhoneNumberUtil).getInstance();
 
     const isRecipientPhoneValid: boolean = phoneUtil

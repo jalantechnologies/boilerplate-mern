@@ -7,10 +7,16 @@ export interface AccountDB {
   hashedPassword: string;
 }
 
-export const accountDbSchema: Schema = new Schema<AccountDB>(
+export const AccountDbSchema: Schema = new Schema<AccountDB>(
   {
-    active: { type: Boolean, required: true },
-    hashedPassword: { type: String, required: true },
+    active: {
+      type: Boolean,
+      required: true,
+    },
+    hashedPassword: {
+      type: String,
+      required: true,
+    },
     username: {
       type: String,
       index: true,

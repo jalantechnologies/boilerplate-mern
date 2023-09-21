@@ -4,7 +4,7 @@ import {
   ValidationFailure,
 } from '../types';
 
-import emailRegex from './constant';
+import { emailRegex } from './constants';
 
 export default class EmailParams {
   public static validate(params: SendEmailParams): void {
@@ -12,6 +12,7 @@ export default class EmailParams {
     const recipientEmailValid = this.isEmailValid(params.recipient.email);
     const senderEmailValid = this.isEmailValid(params.sender.email);
     const senderNameValid = !!params.sender.name;
+
     if (!recipientEmailValid) {
       failures.push({
         field: 'recipient.email',

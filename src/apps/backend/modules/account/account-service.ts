@@ -1,4 +1,3 @@
-// import AccountReader from './internal/account-reader';
 import AccountReader from './internal/account-reader';
 import AccountWriter from './internal/account-writer';
 import { Account, AccountSearchParams, CreateAccountParams } from './types';

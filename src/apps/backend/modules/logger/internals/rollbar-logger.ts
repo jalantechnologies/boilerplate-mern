@@ -9,28 +9,28 @@ export default class RollbarLogger implements Logger {
 
   constructor() {
     this.rollbar = new Rollbar({
-      accessToken: ConfigService.getStringValue('rollbar.accessToken'),
-      environment: ConfigService.getStringValue('rollbar.env'),
+      accessToken: ConfigService.getValue('rollbar.accessToken'),
+      environment: ConfigService.getValue('rollbar.env'),
     });
   }
 
-  public info(message: string): void {
-    this.rollbar.info(message);
+  public info(message: string, ...args: Rollbar.LogArgument[]): void {
+    this.rollbar.info(message, ...args);
   }
 
-  public debug(message: string): void {
-    this.rollbar.debug(message);
+  public debug(message: string, ...args: Rollbar.LogArgument[]): void {
+    this.rollbar.debug(message, ...args);
   }
 
-  public error(message: string): void {
-    this.rollbar.error(message);
+  public error(message: string, ...args: Rollbar.LogArgument[]): void {
+    this.rollbar.error(message, ...args);
   }
 
-  public warn(message: string): void {
-    this.rollbar.warning(message);
+  public warn(message: string, ...args: Rollbar.LogArgument[]): void {
+    this.rollbar.warning(message, ...args);
   }
 
-  public critical(message: string): void {
-    this.rollbar.critical(message);
+  public critical(message: string, ...args: Rollbar.LogArgument[]): void {
+    this.rollbar.critical(message, ...args);
   }
 }

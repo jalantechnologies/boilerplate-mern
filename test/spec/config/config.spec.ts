@@ -1,16 +1,17 @@
 import { assert } from 'chai';
-import ConfigService from '../../../src/apps/backend/modules/config/config-service';
+
+import { ConfigService } from '../../../src/apps/backend/modules/config';
 
 describe('ConfigService', () => {
   describe('getValue', () => {
     it('should return correct env variable value', () => {
-      const boolValue = ConfigService.getBoolValue('boolTestKey');
+      const boolValue = ConfigService.getValue('test.boolTestKey');
       assert.equal(boolValue, true);
 
-      const numberValue = ConfigService.getIntValue('numberTestKey');
+      const numberValue = ConfigService.getValue('test.numberTestKey');
       assert.equal(numberValue, 1);
 
-      const stringValue = ConfigService.getStringValue('stringTestKey');
+      const stringValue = ConfigService.getValue('test.stringTestKey');
       assert.equal(stringValue, 'string');
     });
 
@@ -18,46 +19,29 @@ describe('ConfigService', () => {
       const missingKey = 'missingKey';
 
       assert.throws(
-        () => ConfigService.getBoolValue(missingKey),
+        () => ConfigService.getValue(missingKey),
         `Configuration property "${missingKey}" is not defined`,
       );
 
       assert.throws(
-        () => ConfigService.getIntValue(missingKey),
+        () => ConfigService.getValue(missingKey),
         `Configuration property "${missingKey}" is not defined`,
       );
 
       assert.throws(
-        () => ConfigService.getStringValue(missingKey),
+        () => ConfigService.getValue(missingKey),
         `Configuration property "${missingKey}" is not defined`,
-      );
-    });
-
-    it('should throw a ValueTypeMismatchError if type of value does not match', () => {
-      assert.throws(
-        () => ConfigService.getBoolValue('stringTestKey'),
-        'Value mismatch for key: stringTestKey. Expected: boolean, Actual: string',
-      );
-
-      assert.throws(
-        () => ConfigService.getIntValue('stringTestKey'),
-        'Value mismatch for key: stringTestKey. Expected: number, Actual: string',
-      );
-
-      assert.throws(
-        () => ConfigService.getStringValue('boolTestKey'),
-        'Value mismatch for key: boolTestKey. Expected: string, Actual: boolean',
       );
     });
   });
 
   describe('hasValue', () => {
     it('should return true if configuration value is defined', () => {
-      assert.equal(ConfigService.hasValue('numberTestKey'), true);
+      assert.equal(ConfigService.hasValue('test.numberTestKey'), true);
     });
 
     it('should return false if configuration value is not defined', () => {
-      assert.equal(ConfigService.hasValue('someRandomConfig'), false);
+      assert.equal(ConfigService.hasValue('test.someRandomConfig'), false);
     });
   });
 });

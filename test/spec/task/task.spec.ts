@@ -1,310 +1,186 @@
-import faker from '@faker-js/faker';
 import chai, { expect } from 'chai';
-import sinon from 'sinon';
 
-import { app } from '../helpers/helper.spec';
-import TaskService from '../../../src/apps/backend/modules/task/task-service';
-import AccountWriter from '../../../src/apps/backend/modules/account/internal/account-writer';
-import AccessTokenWriter from '../../../src/apps/backend/modules/access-token/internal/access-token-writer';
-import AccountRepository from '../../../src/apps/backend/modules/account/internal/store/account-repository';
+import { AccessToken } from '../../../src/apps/backend/modules/access-token';
+import { Account } from '../../../src/apps/backend/modules/account';
+import { ObjectIdUtils } from '../../../src/apps/backend/modules/objectid';
 import TaskRepository from '../../../src/apps/backend/modules/task/internal/store/task-repository';
+import TaskService from '../../../src/apps/backend/modules/task/task-service';
+import { createAccount } from '../../helpers/account';
+import { app } from '../../helpers/app';
 
-describe('API /api/accounts/:accountId/tasks', () => {
-  let sinonSandbox: sinon.SinonSandbox;
+describe('Task API', () => {
+  let account: Account;
+  let accessToken: AccessToken;
 
   beforeEach(async () => {
-    sinonSandbox = sinon.createSandbox();
+    ({ account, accessToken } = await createAccount());
   });
 
-  afterEach(() => {
-    sinonSandbox.restore();
-  });
-
-  describe('GET', () => {
-    it('should return a list of all tasks for a particular accountId', async () => {
-      const accountParams = { username: faker.internet.userName(), password: 'password' };
-      const account = await AccountWriter.createAccount(accountParams);
-      const { token: accessToken } = await AccessTokenWriter.createAccessToken(
-        accountParams,
-      );
-
-      const accountId = account.id;
-
-      const previousTasks = await TaskService.getTasksForAccount({
-        accountId,
+  describe('GET /tasks', () => {
+    it('should be able to return list of tasks created by the account', async () => {
+      await TaskService.createTask({
+        accountId: account.id,
+        name: 'my-task-1',
       });
-      expect(previousTasks.length).to.eq(0);
-
-      for (let i = 0; i < 2; i++) {
-        await TaskService.createTask({
-          accountId,
-          name: `${i}`,
-        });
-      }
-
-      const beforeTestCreatedTasks = await TaskService.getTasksForAccount({
-        accountId,
+      await TaskService.createTask({
+        accountId: account.id,
+        name: 'my-task-2',
       });
-      expect(beforeTestCreatedTasks.length).to.eq(2);
-      expect(accountId).to.not.be.undefined;
-      expect(accessToken).to.not.be.undefined;
 
       const res = await chai
         .request(app)
-        .get(`/api/accounts/${accountId}/tasks`)
+        .get('/api/tasks')
         .set('content-type', 'application/json')
-        .set('Authorization', `Bearer ${accessToken}`)
+        .set('Authorization', `Bearer ${accessToken.token}`)
         .send();
 
-      expect(res).to.have.status(200);
+      expect(res.status).to.eq(200);
       expect(res.body).to.be.an('array');
       expect(res.body.length).to.eq(2);
-
-      const afterTestCreatedtasks = await TaskService.getTasksForAccount({
-        accountId,
-      });
-      expect(afterTestCreatedtasks.length).to.eq(2);
-
-      await AccountRepository.accountDB.deleteOne({ _id: accountId });
-      await TaskRepository.taskDB.deleteMany({ account: accountId });
     });
 
-    it('should return a particular task', async () => {
-      const accountParams = { username: faker.internet.userName(), password: 'password' };
-      const account = await AccountWriter.createAccount(accountParams);
-      const { token: accessToken } = await AccessTokenWriter.createAccessToken(
-        accountParams,
-      );
-      const accountId = account.id;
-
-      let res: any;
-      let task: any;
-      const params = {
-        name: 'another simple task.',
-      };
-
-      try {
-        task = await TaskService.getTaskByNameForAccount({
-          accountId,
-          name: params.name,
-        });
-      } catch (e) {
-        task = await TaskService.createTask({
-          accountId,
-          name: params.name,
-        });
-      }
-
-      const taskId = task.id;
-      const taskName = task.name;
-
-      const isTaskCreated = await TaskService.getTaskForAccount({
-        accountId,
-        taskId,
+    it('should skip out tasks which have been marked as deleted', async () => {
+      const t1 = await TaskService.createTask({
+        accountId: account.id,
+        name: 'my-task-1',
       });
-      expect(isTaskCreated).not.to.be.undefined;
-      expect(isTaskCreated).to.have.property('id');
-      expect(isTaskCreated.id).to.eq(taskId);
-      expect(isTaskCreated.name).to.eq(taskName);
-
-      res = await chai
-        .request(app)
-        .get(`/api/accounts/${accountId}/tasks/${taskId}`)
-        .set('content-type', 'application/json')
-        .set('Authorization', `Bearer ${accessToken}`)
-        .send();
-
-      expect(res).to.have.status(200);
-      expect(res.body).to.have.property('id');
-      expect(res.body.name).to.eq(taskName);
-      expect(res.body.id).to.eq(taskId);
-
-      const particularTask = await TaskService.getTaskForAccount({
-        accountId,
-        taskId: res.body.id,
+      const t2 = await TaskService.createTask({
+        accountId: account.id,
+        name: 'my-task-2',
       });
-      expect(particularTask).not.to.be.undefined;
-      expect(particularTask).to.have.property('id');
-      expect(particularTask.id).to.eq(taskId);
-      expect(particularTask.name).to.eq(taskName);
 
-      await AccountRepository.accountDB.deleteOne({ _id: accountId });
-      await TaskRepository.taskDB.deleteMany({ account: accountId });
-    });
-
-    it('should return 404 Not Found Error if task is deleted', async () => {
-      const accountParams = { username: faker.internet.userName(), password: 'password' };
-      const account = await AccountWriter.createAccount(accountParams);
-      const { token: accessToken } = await AccessTokenWriter.createAccessToken(
-        accountParams,
-      );
-      const accountId = account.id;
-      let res: any;
-      let task: any;
-      const params = {
-        name: 'very simple task.',
-      };
-
-      try {
-        task = await TaskService.getTaskByNameForAccount({
-          accountId,
-          name: params.name,
-        });
-      } catch (e) {
-        task = await TaskService.createTask({
-          accountId,
-          name: params.name,
-        });
-      }
-      const taskId = task.id;
-
-      const isTaskCreated = await TaskService.getTaskForAccount({
-        accountId,
-        taskId,
+      await TaskService.deleteTask({
+        accountId: account.id,
+        taskId: t2.id,
       });
-      expect(isTaskCreated).not.to.be.undefined;
-      expect(isTaskCreated).to.have.property('id');
-      expect(isTaskCreated.id).to.eq(taskId);
-      expect(isTaskCreated.name).to.eq(params.name);
-
-      // trying to get task before deletion.
-      res = await chai
-        .request(app)
-        .get(`/api/accounts/${accountId}/tasks/${taskId}`)
-        .set('content-type', 'application/json')
-        .set('Authorization', `Bearer ${accessToken}`)
-        .send();
-      expect(res.status).to.eq(200);
-      expect(res.body).to.have.property('id');
-      expect(res.body.name).to.eq(params.name);
-      expect(res.body.id).to.eq(taskId);
-
-      // deleting the task with the given task Id
-      res = await chai
-        .request(app)
-        .delete(`/api/accounts/${accountId}/tasks/${taskId}`)
-        .set('content-type', 'application/json')
-        .set('Authorization', `Bearer ${accessToken}`)
-        .send();
-      expect(res).to.have.status(204);
-
-      // trying to get task after soft deletion.
-      res = await chai
-        .request(app)
-        .get(`/api/accounts/${accountId}/tasks/${taskId}`)
-        .set('content-type', 'application/json')
-        .set('Authorization', `Beare ${accessToken}`)
-        .send();
-      expect(res.status).to.eq(404);
-
-      await AccountRepository.accountDB.deleteOne({ _id: accountId });
-      await TaskRepository.taskDB.deleteMany({ account: accountId });
-    });
-  });
-
-  describe('POST', () => {
-    it('should create a new task', async () => {
-      const params = {
-        name: 'simple task.',
-      };
-
-      const accountParams = { username: faker.internet.userName(), password: 'password' };
-      const account = await AccountWriter.createAccount(accountParams);
-      const { token } = await AccessTokenWriter.createAccessToken(accountParams);
-
-      await expect(
-        TaskService.getTaskByNameForAccount({
-          accountId: account.id,
-          name: params.name,
-        }),
-      ).to.be.rejectedWith(`Task with name ${params.name} not found.`);
 
       const res = await chai
         .request(app)
-        .post(`/api/accounts/${account.id}/tasks`)
+        .get('/api/tasks')
         .set('content-type', 'application/json')
-        .set('Authorization', `Bearer ${token}`)
-        .send(params);
+        .set('Authorization', `Bearer ${accessToken.token}`)
+        .send();
 
-      expect(res).to.have.status(201);
+      expect(res.status).to.eq(200);
+      expect(res.body).to.be.an('array');
+      expect(res.body.length).to.eq(1);
+      expect(res.body[0].id).to.eq(t1.id);
+    });
+
+    it('should skip out tasks which do not belong to the logged in account', async () => {
+      const task = await TaskService.createTask({
+        accountId: account.id,
+        name: 'my-task-1',
+      });
+
+      const { account: anotherAccount } = await createAccount();
+      await TaskService.createTask({
+        accountId: anotherAccount.id,
+        name: 'my-task-2',
+      });
+
+      const res = await chai
+        .request(app)
+        .get('/api/tasks')
+        .set('content-type', 'application/json')
+        .set('Authorization', `Bearer ${accessToken.token}`)
+        .send();
+
+      expect(res.status).to.eq(200);
+      expect(res.body).to.be.an('array');
+      expect(res.body.length).to.eq(1);
+      expect(res.body[0].id).to.eq(task.id);
+    });
+  });
+
+  describe('POST /tasks', () => {
+    it('should be able to create a new task', async () => {
+      const res = await chai
+        .request(app)
+        .post('/api/tasks')
+        .set('content-type', 'application/json')
+        .set('Authorization', `Bearer ${accessToken.token}`)
+        .send({
+          name: 'my-task',
+        });
+
+      expect(res.status).to.eq(201);
       expect(res.body).to.have.property('id');
       expect(res.body).to.have.property('account');
       expect(res.body).to.have.property('name');
       expect(res.body.account).to.eq(account.id);
-      expect(res.body.name).to.eq(params.name);
-
-      const createdTask = await TaskService.getTaskForAccount({
-        accountId: account.id,
-        taskId: res.body.id,
-      });
-      expect(createdTask).to.have.property('id');
-      expect(createdTask.id).to.eq(res.body.id);
-      expect(createdTask.name).to.eq(params.name);
-
-      await AccountRepository.accountDB.deleteOne({ _id: account.id });
-      await TaskRepository.taskDB.deleteOne({ _id: res.body.id });
+      expect(res.body.name).to.eq('my-task');
     });
   });
 
-  describe('DELETE', () => {
-    it('should change "active" flag of task to be false', async () => {
-      const accountParams = { username: faker.internet.userName(), password: 'password' };
-      const account = await AccountWriter.createAccount(accountParams);
-      const { token: accessToken } = await AccessTokenWriter.createAccessToken(
-        accountParams,
-      );
-      const accountId = account.id;
-      let res: any;
-      let task: any;
-
-      const params = {
-        name: 'simple task.',
-      };
-
-      try {
-        task = await TaskService.getTaskByNameForAccount({
-          accountId,
-          name: params.name,
-        });
-      } catch (e) {
-        task = await TaskService.createTask({
-          accountId,
-          name: params.name,
-        });
-      }
-
-      const taskId = task.id;
-      const isTaskCreated = await TaskService.getTaskForAccount({
-        accountId,
-        taskId,
+  describe('GET /tasks/:id', () => {
+    it('should be able to return the requested task', async () => {
+      const task = await TaskService.createTask({
+        accountId: account.id,
+        name: 'my-task',
       });
 
-      expect(isTaskCreated).not.to.be.undefined;
-      expect(isTaskCreated).to.have.property('id');
-      expect(isTaskCreated).to.have.property('name');
-      expect(isTaskCreated.id).to.eq(taskId);
-      expect(isTaskCreated.name).to.eq(params.name);
-
-      // deleting the task with the given task Id
-      res = await chai
+      const res = await chai
         .request(app)
-        .delete(`/api/accounts/${accountId}/tasks/${taskId}`)
+        .get(`/api/tasks/${task.id}`)
         .set('content-type', 'application/json')
-        .set('Authorization', `Bearer ${accessToken}`)
+        .set('Authorization', `Bearer ${accessToken.token}`)
         .send();
-      expect(res).to.have.status(204);
 
-      // trying to get task after soft deletion.
-      res = await chai
+      expect(res.status).to.eq(200);
+      expect(res.body.id).to.eq(task.id);
+      expect(res.body.name).to.eq('my-task');
+    });
+
+    it('should return error if requested task does not exists', async () => {
+      const res = await chai
         .request(app)
-        .get(`/api/accounts/${accountId}/tasks/${taskId}`)
+        .get(`/api/tasks/${ObjectIdUtils.createNew()}`)
         .set('content-type', 'application/json')
-        .set('Authorization', `Beare ${accessToken}`)
+        .set('Authorization', `Bearer ${accessToken.token}`)
         .send();
-      expect(res.body.httpStatusCode).to.eq(404);
 
-      await AccountRepository.accountDB.deleteOne({ _id: accountId });
-      await TaskRepository.taskDB.deleteMany({ account: accountId });
+      expect(res.status).to.eq(404);
+    });
+
+    it('should return error if requested task has been marked as deleted', async () => {
+      const task = await TaskService.createTask({
+        accountId: account.id,
+        name: 'my-task-1',
+      });
+      await TaskService.deleteTask({
+        accountId: account.id,
+        taskId: task.id,
+      });
+
+      const res = await chai
+        .request(app)
+        .delete(`/api/tasks/${task.id}`)
+        .set('content-type', 'application/json')
+        .set('Authorization', `Bearer ${accessToken.token}`)
+        .send();
+
+      expect(res.status).to.eq(404);
+    });
+  });
+
+  describe('DELETE /tasks/:taskId', () => {
+    it('should be able to delete provided task', async () => {
+      const task = await TaskService.createTask({
+        accountId: account.id,
+        name: 'my-task',
+      });
+
+      const res = await chai
+        .request(app)
+        .delete(`/api/tasks/${task.id}`)
+        .set('content-type', 'application/json')
+        .set('Authorization', `Bearer ${accessToken.token}`)
+        .send();
+      expect(res.status).to.eq(204);
+
+      const updatedToken = await TaskRepository.findById(task.id);
+      expect(updatedToken.active).to.be.false;
     });
   });
 });

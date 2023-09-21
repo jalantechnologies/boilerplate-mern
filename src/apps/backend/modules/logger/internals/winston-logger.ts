@@ -11,23 +11,23 @@ export default class WinstonLogger implements Logger {
     });
   }
 
-  public info(message: string): void {
-    this.logger.info(message);
+  public info(message: string, ...args: unknown[]): void {
+    this.logger.info(message, ...args);
   }
 
-  public debug(message: string): void {
-    this.logger.debug(message);
+  public debug(message: string, ...args: unknown[]): void {
+    this.logger.debug(message, ...args);
   }
 
-  public error(message: string): void {
-    this.logger.error(message);
+  public error(message: string, ...args: unknown[]): void {
+    this.logger.error(message, ...args);
   }
 
-  public warn(message: string): void {
-    this.logger.warn(message);
+  public warn(message: string, ...args: unknown[]): void {
+    this.logger.warn(message, ...args);
   }
 
-  public critical(message: string): void {
-    this.logger.crit(message);
+  public critical(message: string, ...args: unknown[]): void {
+    this.logger.crit(message, ...args);
   }
 }

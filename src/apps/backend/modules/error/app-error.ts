@@ -1,6 +1,6 @@
 import { LooseObject } from './types';
 
-export default class AppError extends Error {
+export class AppError extends Error {
   code: string;
   httpStatusCode: number;
 
@@ -17,3 +17,5 @@ export default class AppError extends Error {
     return json;
   }
 }
+
+export default AppError;

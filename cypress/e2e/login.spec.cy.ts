@@ -1,8 +1,10 @@
+import { CreateAccountParams } from '../../src/apps/backend/modules/account';
+
 describe('Login', () => {
-  let credentials;
+  let credentials: CreateAccountParams;
 
   beforeEach(() => {
-    cy.task('scenario:setup', 'login').then((creds) => {
+    cy.task('scenario:setup', 'login').then((creds: CreateAccountParams) => {
       credentials = creds;
     });
     cy.visit('/');

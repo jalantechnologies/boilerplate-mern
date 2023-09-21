@@ -90,13 +90,8 @@
             "exceptAfterSingleLine": true
           }
         ],
-        "cypress/assertion-before-screenshot": "warn",
-        "cypress/no-assigning-return-values": "error",
-        "cypress/no-async-tests": "error",
-        "cypress/no-force": "warn",
-        "cypress/no-pause": "error",
-        "cypress/no-unnecessary-waiting": "error",
-        "import/extensions": "off"
+        "import/extensions": "off",
+        "import/prefer-default-export": "off"
       }
     },
     {
@@ -112,9 +107,23 @@
       }
     },
     {
+      "files": "test/**",
+      "rules": {
+        "@typescript-eslint/no-unused-expressions": "off"
+      }
+    },
+    {
       "files": "cypress/**",
       "parserOptions": {
         "project": "./cypress/tsconfig.json"
+      },
+      "rules": {
+        "cypress/assertion-before-screenshot": "warn",
+        "cypress/no-assigning-return-values": "error",
+        "cypress/no-async-tests": "error",
+        "cypress/no-force": "warn",
+        "cypress/no-pause": "error",
+        "cypress/no-unnecessary-waiting": "error"
       }
     }
   ]

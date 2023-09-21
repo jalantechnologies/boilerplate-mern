@@ -1,15 +1,13 @@
-import DataManagers from '../../test/data-managers';
+import AccountsFixture from '../../test/fixtures/accounts';
 
 import { Scenario } from './types';
 
-const loginScenario: Scenario = {
+export default {
   async cleanup() {
-    await DataManagers.accounts.clear();
+    await AccountsFixture.clear();
   },
   async setup<CreateAccountParams>() {
-    const credentials = await DataManagers.accounts.seedOne();
+    const credentials = await AccountsFixture.seedOne();
     return credentials as unknown as CreateAccountParams;
   },
-};
-
-export default loginScenario;
+} as Scenario;

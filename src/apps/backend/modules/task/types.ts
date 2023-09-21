@@ -1,11 +1,10 @@
 // eslint-disable-next-line max-classes-per-file
-import AppError from '../error/app-error';
+import { AppError } from '../error';
+import { HttpStatusCodes } from '../http';
 
 export class Task {
   id: string;
-
   account: string;
-
   name: string;
 }
 
@@ -43,7 +42,6 @@ export type PaginationParams = {
 export enum TaskErrorCode {
   NOT_FOUND = 'TASK_ERR_01',
   TASK_ALREADY_EXISTS = 'TASK_ERR_02',
-  UNAUTHORIZED_TASK_ACCESS = 'TASK_ERR_03',
 }
 
 export class TaskWithNameExistsError extends AppError {
@@ -52,7 +50,7 @@ export class TaskWithNameExistsError extends AppError {
   constructor(name: string) {
     super(`Task with name ${name} already exists.`);
     this.code = TaskErrorCode.TASK_ALREADY_EXISTS;
-    this.httpStatusCode = 409;
+    this.httpStatusCode = HttpStatusCodes.CONFLICT;
   }
 }
 
@@ -62,7 +60,7 @@ export class TaskNotFoundError extends AppError {
   constructor(taskId: string) {
     super(`Task with taskId ${taskId} not found.`);
     this.code = TaskErrorCode.NOT_FOUND;
-    this.httpStatusCode = 404;
+    this.httpStatusCode = HttpStatusCodes.NOT_FOUND;
   }
 }
 
@@ -72,6 +70,6 @@ export class TaskWithNameNotFoundError extends AppError {
   constructor(taskName: string) {
     super(`Task with name ${taskName} not found.`);
     this.code = TaskErrorCode.NOT_FOUND;
-    this.httpStatusCode = 404;
+    this.httpStatusCode = HttpStatusCodes.NOT_FOUND;
   }
 }

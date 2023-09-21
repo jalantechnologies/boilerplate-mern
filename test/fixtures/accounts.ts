@@ -1,26 +1,17 @@
 import { faker } from '@faker-js/faker';
 
+import { CreateAccountParams } from '../../src/apps/backend/modules/account';
 import AccountService from '../../src/apps/backend/modules/account/account-service';
 import AccountRepository from '../../src/apps/backend/modules/account/internal/store/account-repository';
-import { CreateAccountParams } from '../../src/apps/backend/modules/account/types';
 
-export default class AccountsE2EDataManager {
-  private static async checkRepository() {
-    if (!AccountRepository.accountDB) {
-      await AccountRepository.createDBConnection();
-    }
-  }
-
+export default class AccountsFixture {
   public static async clear(): Promise<void> {
-    await this.checkRepository();
-    await AccountRepository.accountDB.remove();
+    await AccountRepository.remove();
   }
 
   public static async seedMany(
     numberOfEntries = 10,
   ): Promise<CreateAccountParams[]> {
-    await this.checkRepository();
-
     const data: CreateAccountParams[] = new Array(numberOfEntries)
       .fill('x')
       .map(() => ({
@@ -36,19 +27,12 @@ export default class AccountsE2EDataManager {
   public static async seedOne(
     newAccountData?: CreateAccountParams,
   ): Promise<CreateAccountParams> {
-    await this.checkRepository();
-
     const data: CreateAccountParams = newAccountData || {
       username: faker.internet.email(),
       password: faker.internet.password(),
     };
 
-    try {
-      await AccountService.createAccount(data);
-
-      return data;
-    } catch (err) {
-      throw new Error(err);
-    }
+    await AccountService.createAccount(data);
+    return data;
   }
 }

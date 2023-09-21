@@ -1,7 +1,5 @@
-import {
-  NextFunction, Request, Response,
-} from 'express';
-
+import { applicationController, Request, Response } from '../../application';
+import { HttpStatusCodes } from '../../http';
 import TaskService from '../task-service';
 import {
   Task,
@@ -11,83 +9,68 @@ import {
   GetTaskParams,
 } from '../types';
 
-export default class TaskController {
-  public static async createTask(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ): Promise<void> {
-    try {
-      const params: CreateTaskParams = {
-        accountId: req.params.accountId,
-        name: req.body.name as string,
-      };
-      const task: Task = await TaskService.createTask(params);
-      res.status(201).send(TaskController.serializeTaskAsJSON(task));
-    } catch (e) {
-      next(e);
-    }
-  }
+import { serializeTask } from './task-serializer';
 
-  public static async deleteTask(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ): Promise<void> {
-    try {
-      const params: DeleteTaskParams = {
-        accountId: req.params.accountId,
-        taskId: req.params.id,
-      };
-      await TaskService.deleteTask(params);
-      res.status(204).send();
-    } catch (e) {
-      next(e);
-    }
-  }
+export const createTask = applicationController(async (
+  req: Request<CreateTaskParams>,
+  res: Response,
+) => {
+  const task: Task = await TaskService.createTask({
+    accountId: req.accountId,
+    name: req.body.name,
+  });
+  const taskJSON = serializeTask(task);
 
-  public static async getAllTasks(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ): Promise <void> {
-    try {
-      const page = +req.query.page;
-      const size = +req.query.size;
-      const params: GetAllTaskParams = {
-        accountId: req.params.accountId,
-        page,
-        size,
-      };
-      const tasks = await TaskService.getTasksForAccount(params);
-      res.status(200).send(tasks.map((task) => TaskController.serializeTaskAsJSON(task)));
-    } catch (e) {
-      next(e);
-    }
-  }
+  res
+    .status(HttpStatusCodes.CREATED)
+    .send(taskJSON);
+});
 
-  public static async getTask(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ): Promise<void> {
-    try {
-      const params: GetTaskParams = {
-        accountId: req.params.accountId,
-        taskId: req.params.id,
-      };
-      const task = await TaskService.getTaskForAccount(params);
-      res.status(200).send(TaskController.serializeTaskAsJSON(task));
-    } catch (e) {
-      next(e);
-    }
-  }
+export const deleteTask = applicationController(async (
+  req: Request<DeleteTaskParams>,
+  res: Response,
+) => {
+  await TaskService.deleteTask({
+    accountId: req.accountId,
+    taskId: req.params.id,
+  });
 
-  private static serializeTaskAsJSON(task: Task): unknown {
-    return {
-      id: task.id,
-      account: task.account,
-      name: task.name,
-    };
-  }
-}
+  res
+    .status(HttpStatusCodes.NO_CONTENT)
+    .send();
+});
+
+export const getTask = applicationController(async (
+  req: Request<GetTaskParams>,
+  res: Response,
+) => {
+  const task = await TaskService.getTaskForAccount({
+    accountId: req.accountId,
+    taskId: req.params.id,
+  });
+  const taskJSON = serializeTask(task);
+
+  res
+    .status(HttpStatusCodes.OK)
+    .send(taskJSON);
+});
+
+export const getTasks = applicationController(async (
+  req: Request,
+  res: Response,
+) => {
+  const page = +req.query.page;
+  const size = +req.query.size;
+  const params: GetAllTaskParams = {
+    accountId: req.accountId,
+    page,
+    size,
+  };
+
+  const tasks = await TaskService.getTasksForAccount(params);
+  const tasksJSON = tasks.map((task) => serializeTask(task));
+
+  res
+    .status(HttpStatusCodes.OK)
+    .send(tasksJSON);
+});

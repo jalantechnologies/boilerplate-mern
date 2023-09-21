@@ -1,18 +1,17 @@
-import { Router } from 'express';
+import { AccountAuthMiddleware } from '../../access-token';
+import { ApplicationRouter } from '../../application';
 
-import AccountAuthMiddleware from '../../access-token/rest-api/account-auth-middleware';
+import * as TaskController from './task-controller';
 
-import TaskController from './task-controller';
+export default class TaskRouter extends ApplicationRouter {
+  configure(): void {
+    const { router } = this;
 
-export default class TaskRouter {
-  public static getRoutes(): Router {
-    const router = Router({ mergeParams: true });
+    router.use(AccountAuthMiddleware.ensureAccess);
 
-    router.post('/', AccountAuthMiddleware.ensureAccess, TaskController.createTask);
-    router.get('/', AccountAuthMiddleware.ensureAccess, TaskController.getAllTasks);
-    router.get('/:id', AccountAuthMiddleware.ensureAccess, TaskController.getTask);
-    router.delete('/:id', AccountAuthMiddleware.ensureAccess, TaskController.deleteTask);
-
-    return router;
+    router.post('/', TaskController.createTask);
+    router.get('/', TaskController.getTasks);
+    router.get('/:id', TaskController.getTask);
+    router.delete('/:id', TaskController.deleteTask);
   }
 }

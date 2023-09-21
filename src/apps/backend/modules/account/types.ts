@@ -1,11 +1,10 @@
 /* eslint-disable max-classes-per-file */
-import AppError from '../error/app-error';
+import { AppError } from '../error';
+import { HttpStatusCodes } from '../http';
 
 export class Account {
   id: string;
-
   username: string;
-
   hashedPassword: string;
 }
 
@@ -31,7 +30,7 @@ export class AccountWithUserNameExistsError extends AppError {
   constructor(username: string) {
     super(`An account with username ${username} already exists.`);
     this.code = AccountErrorCode.USERNAME_ALREADY_EXISTS;
-    this.httpStatusCode = 409;
+    this.httpStatusCode = HttpStatusCodes.CONFLICT;
   }
 }
 
@@ -41,7 +40,7 @@ export class AccountNotFoundError extends AppError {
   constructor(username: string) {
     super(`${username} not found with provided parameters.`);
     this.code = AccountErrorCode.NOT_FOUND;
-    this.httpStatusCode = 404;
+    this.httpStatusCode = HttpStatusCodes.NOT_FOUND;
   }
 }
 
@@ -50,7 +49,7 @@ export class InvalidCredentialsError extends AppError {
 
   constructor(username: string) {
     super(`Invalid credentials for ${username}. Please try again.`);
-    this.code = AccountErrorCode.NOT_FOUND;
-    this.httpStatusCode = 401;
+    this.code = AccountErrorCode.INVALID_CREDENTIALS;
+    this.httpStatusCode = HttpStatusCodes.UNAUTHORIZED;
   }
 }

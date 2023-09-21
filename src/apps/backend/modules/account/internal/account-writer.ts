@@ -1,4 +1,3 @@
-/* eslint-disable no-useless-catch */
 import { Account, CreateAccountParams } from '../types';
 
 import AccountReader from './account-reader';
@@ -9,13 +8,17 @@ export default class AccountWriter {
   public static async createAccount(
     params: CreateAccountParams,
   ): Promise<Account> {
+    // check if account already exists
+    // this will throw an error if it does
     await AccountReader.checkUsernameNotExists(params);
-    const hashedPassword = await AccountUtil.hashPassword(params.password);
-    const dbAccount = await AccountRepository.accountDB.create({
+
+    const accHashedPwd = await AccountUtil.hashPassword(params.password);
+    const accDb = await AccountRepository.create({
       username: params.username,
-      hashedPassword,
+      hashedPassword: accHashedPwd,
       active: true,
     });
-    return AccountUtil.convertAccountDBToAccount(dbAccount);
+
+    return AccountUtil.convertAccountDBToAccount(accDb);
   }
 }

@@ -1,17 +1,24 @@
 /* eslint-disable max-classes-per-file */
-import AppError from '../error/app-error';
+import { AppError } from '../error';
+import { HttpStatusCodes } from '../http';
 
 export class AccessToken {
-  accountId: string;
-
-  expiresAt?: Date;
-
   token: string;
+  accountId: string;
+  expiresAt: Date;
 }
+
+export type AccessTokenPayload = {
+  accountId: string;
+};
 
 export type CreateAccessTokenParams = {
   username: string;
   password: string;
+};
+
+export type VerifyAccessTokenParams = {
+  token: string;
 };
 
 export enum AccessTokenErrorCode {
@@ -19,6 +26,17 @@ export enum AccessTokenErrorCode {
   ACCESS_TOKEN_EXPIRED = 'ACCESS_TOKEN_ERR_02',
   AUTHORIZATION_HEADER_NOT_FOUND = 'ACCESS_TOKEN_ERR_03',
   INVALID_AUTHORIZATION_HEADER = 'ACCESS_TOKEN_ERR_04',
+  ACCESS_TOKEN_INVALID = 'ACCESS_TOKEN_ERR_05',
+}
+
+export class AccessTokenInvalidError extends AppError {
+  code: AccessTokenErrorCode;
+
+  constructor() {
+    super('This token is invalid. Please request a new one.');
+    this.code = AccessTokenErrorCode.ACCESS_TOKEN_INVALID;
+    this.httpStatusCode = HttpStatusCodes.UNAUTHORIZED;
+  }
 }
 
 export class AccessTokenExpiredError extends AppError {
@@ -27,7 +45,7 @@ export class AccessTokenExpiredError extends AppError {
   constructor() {
     super('This token is expired. Please request a new one.');
     this.code = AccessTokenErrorCode.ACCESS_TOKEN_EXPIRED;
-    this.httpStatusCode = 401;
+    this.httpStatusCode = HttpStatusCodes.UNAUTHORIZED;
   }
 }
 
@@ -37,7 +55,7 @@ export class AuthorizationHeaderNotFound extends AppError {
   constructor() {
     super('No authorization header found.');
     this.code = AccessTokenErrorCode.AUTHORIZATION_HEADER_NOT_FOUND;
-    this.httpStatusCode = 401;
+    this.httpStatusCode = HttpStatusCodes.UNAUTHORIZED;
   }
 }
 
@@ -47,7 +65,7 @@ export class InvalidAuthorizationHeader extends AppError {
   constructor() {
     super('Invalid authorization header. Expected format is "Bearer <token>".');
     this.code = AccessTokenErrorCode.INVALID_AUTHORIZATION_HEADER;
-    this.httpStatusCode = 401;
+    this.httpStatusCode = HttpStatusCodes.UNAUTHORIZED;
   }
 }
 
@@ -57,6 +75,6 @@ export class UnAuthorizedAccessError extends AppError {
   constructor() {
     super('This token is not authorized to access the given resource');
     this.code = AccessTokenErrorCode.UNAUTHORIZED_ACCESS;
-    this.httpStatusCode = 401;
+    this.httpStatusCode = HttpStatusCodes.UNAUTHORIZED;
   }
 }
