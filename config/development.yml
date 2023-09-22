@@ -1,4 +1,4 @@
-account:
+accounts:
   tokenKey: 'dev_auth_token'
 
 mongoDb:

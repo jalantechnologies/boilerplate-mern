@@ -74,3 +74,6 @@ terraform/*.tfvars
 
 # asdf npm version manager
 .tool-versions
+
+# cypress artifacts
+cypress/screenshots/

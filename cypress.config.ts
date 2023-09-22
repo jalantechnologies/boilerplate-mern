@@ -1,25 +1,30 @@
+import config from 'config';
 import { defineConfig } from 'cypress';
 
 import scenarios from './cypress/scenarios';
 
 export default defineConfig({
   e2e: {
-    baseUrl: 'http://localhost:8080',
+    baseUrl: config.get('webAppHost'),
     setupNodeEvents(on) {
       on('task', {
-        'scenario:cleanup': async (scenario: string) => {
-          if (scenarios[scenario] === undefined) throw new Error('Undefined Scenario');
+        'scenario:setup': async ({ name, params }: { name: string, params?: unknown }) => {
+          const scenario = scenarios[name];
+          if (!scenario) {
+            throw new Error(`Could not run setup - Scenario with name ${name} not found`);
+          }
 
-          await scenarios[scenario].cleanup();
-
-          return null;
-        },
-        'scenario:setup': async (scenario: string) => {
-          if (scenarios[scenario] === undefined) throw new Error('Undefined Scenario');
-
-          const res = await scenarios[scenario].setup();
-
+          const res = await scenario.setup(params);
           return res || null;
+        },
+        'scenario:cleanup': async ({ name }: { name: string }) => {
+          const scenario = scenarios[name];
+          if (!scenario) {
+            throw new Error(`Could not run cleanup - Scenario with name ${name} not found`);
+          }
+
+          await scenario.cleanup();
+          return null;
         },
       });
     },
@@ -32,6 +37,6 @@ export default defineConfig({
     // Default is 0
     openMode: 0,
   },
-  screenshotOnRunFailure: false,
+  screenshotOnRunFailure: true,
   video: false,
 });

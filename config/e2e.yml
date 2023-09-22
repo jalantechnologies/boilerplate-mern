@@ -3,3 +3,5 @@ accounts:
 
 mongoDb:
   uri: 'mongodb://localhost:27017/boilerplate-mern-e2e'
+
+webAppHost: 'http://localhost:8080'

@@ -1,15 +1,14 @@
-interface CleanupFunc {
+export interface ScenarioSetupFunc {
+  <T = unknown>(params?: unknown): Promise<T>;
+}
+
+export interface ScenarioCleanupFunc {
   (): Promise<void>;
 }
 
-interface SetupFunc {
-  <T>(): Promise<T>;
-}
-
 export interface Scenario {
-  cleanup: CleanupFunc;
-
-  setup: SetupFunc;
+  setup: ScenarioSetupFunc;
+  cleanup: ScenarioCleanupFunc;
 }
 
 export interface Scenarios {
