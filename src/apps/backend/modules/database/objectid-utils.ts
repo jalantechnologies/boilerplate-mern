@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import mongoose from 'mongoose';
 
-const { ObjectId } = mongoose.mongo;
+const { ObjectId } = mongoose.Types;
 
 export class ObjectIdUtils {
   public static checkIfValidId(input: string): boolean {

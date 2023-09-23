@@ -14,7 +14,7 @@ import {
   Account,
 } from '../../../src/apps/backend/modules/account';
 import ConfigService from '../../../src/apps/backend/modules/config/config-service';
-import { ObjectIdUtils } from '../../../src/apps/backend/modules/objectid';
+import { ObjectIdUtils } from '../../../src/apps/backend/modules/database';
 import { createAccount } from '../../helpers/account';
 
 describe('AccountAuthMiddleware', () => {
