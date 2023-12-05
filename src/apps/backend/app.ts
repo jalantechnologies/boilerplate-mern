@@ -40,6 +40,9 @@ export default class App {
     const server = this.app.listen(port);
 
     Logger.info(`http server started listening on port - ${port}`);
+    Logger.error('this is a sample error log');
+    Logger.debug('this is a sample error log');
+    Logger.warn('this is a sample error log');
     return server;
   }
 
