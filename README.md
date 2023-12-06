@@ -4,15 +4,46 @@ Boilerplate project for NodeJS, React based projects in TypeScript. This README 
 
 ## Table of Contents
 
-- [Getting Started](#getting-started)
-- [Configuration](#configuration)
-- [Integrations](#integrations)
-- [Deployment](#deployment)
-- [E2E Testing](#e2e-testing)
+- [Boilerplate - MERN](#boilerplate---mern)
+  - [Table of Contents](#table-of-contents)
+  - [Getting Started](#getting-started)
+  - [Configuration](#configuration)
+  - [Integrations](#integrations)
+  - [Deployment](#deployment)
+  - [E2E Testing](#e2e-testing)
 
 ## Getting Started
 
-**Quickstart:**
+> Clone this repository
+- either create a new repository through `Use this template` button or directly clone it into your local system.
+```bash
+git clone < repository url>
+
+// url ex: https://github.com/jalantechnologies/boilerplate-mern.git
+```
+
+> **Normal Setup**
+
+note: recomended setup - `Quickstart with Docker`.
+
+- clone this repository
+- Navigate to the repository folder and open terminal there.
+- install all the require packages/dependencies
+```bash 
+npm install
+```
+- start application // this will autometically open site on the browser. otherwise navigate to this: `http://localhost:3000`
+```bash
+npm run serve 
+```
+
+- You're ready to begin your work on this project.
+- do checkout `package.json` for more scripts
+
+<br/>
+<br/>
+
+> **Quickstart with Docker:**
 
 - This project supports running the application with all the required dependencies using `docker compose`
 - Install [docker](https://docs.docker.com/engine/install/)
@@ -86,8 +117,8 @@ This project support following integrations
 
 | Name    | Type   | Documentation                                                                                    | Configuration                                                                                                                                                                                                                                                                                                                                                                                        |
 |---------|--------|--------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Grafana | Logger | https://grafana.com/blog/2022/07/07/how-to-configure-grafana-loki-with-a-node.js-e-commerce-app/ | - logger.transports = ['grafana']<br>- grafana.host - Hostname for Loki logger on Grafana<br>- grafana.username - Username for authenticating with Loki logger on Grafana- grafana.password - Password for authenticating with Loki logger on Grafana<br>- grafana.labels.app - Label 'app' to be associated with the logs<br>- grafana.labels.env - Label 'env' to be associated with the logs<br>  |
-| Inspectlet | Analytics | https://docs.inspectlet.com/hc/en-us/articles/206355438-Installing-Inspectlet | - inspectlet.wid = Unique Inspectlet key provided by inspectlet |         
+| Grafana | Logger | [how to configure grafana loki with a node.js commerce app](https://grafana.com/blog/2022/07/07/how-to-configure-grafana-loki-with-a-node.js-e-commerce-app) | - logger.transports = `grafana` <br>- grafana.host - Hostname for Loki logger on Grafana<br>- grafana.username - Username for authenticating with Loki logger on Grafana- grafana.password - Password for authenticating with Loki logger on Grafana<br>- grafana.labels.app - Label 'app' to be associated with the logs<br>- grafana.labels.env - Label 'env' to be associated with the logs<br>  |
+| Inspectlet | Analytics | [Installing Inspectlet](https://docs.inspectlet.com/hc/en-us/articles/206355438-Installing-Inspectlet) | - inspectlet.wid = Unique Inspectlet key provided by inspectlet |  
 |        |                                                                                                  |                                                                                                                                                                                                                                                                                                                                                                                                      |
 
 ## Deployment
@@ -186,9 +217,9 @@ Get the application up and running via following steps in [Getting Started](#get
 
 If you're running into ```npm ERR! code ELIFECYCLE npm ERR! err no1``` error, follow these steps to fix it:
 
-- `sudo npm cache clean -f (force) clear you npm cache`
-- `sudo npm install -g n install n`
-- `sudo n stable upgrade to the current stable version)`
+- `sudo npm cache clean -f` (force) clear you npm cache
+- `sudo npm install -g n` install n
+- `sudo n stable` upgrade to the current stable version)
 
 For more detailed info, check out this official [guide](https://docs.cypress.io/guides/references/troubleshooting) on troubleshooting.
 
@@ -207,6 +238,21 @@ cypress run --spec "cypress/e2e/login.spec.cy.ts"
 # run all specs within the folder matching the glob (Note: Using double quotes is strongly recommended.
 cypress run --spec "cypress/e2e/**/*"
 ```
+<details>
+<summary> Troubleshooting Cypress </summary>
+
+- - if unable to start cypress or recieving these error messages
+- - - error: `The term 'cypress' is not recognized as the name`
+- - - error: `It looks like you are running the Cypress binary directly.`
+```shell
+# install cypress package
+npm install --save-dev cypress
+
+# start cypress
+npx cypress open
+```
+</details>
+<br/>
 
 **Running specs from the GUI:**
 
