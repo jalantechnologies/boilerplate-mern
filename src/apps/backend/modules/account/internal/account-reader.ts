@@ -15,6 +15,7 @@ export default class AccountReader {
       username,
       active: true,
     });
+    console.log(username.indexOf)
 
     if (!dbAccount) {
       throw new AccountNotFoundError(username);
