@@ -1,5 +1,5 @@
 logger:
-  transports: [ 'papertrail' ]
+  transports: [ 'datadog' ]
 
 grafana:
   labels:

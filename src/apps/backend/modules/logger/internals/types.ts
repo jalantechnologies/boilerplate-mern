@@ -15,4 +15,5 @@ export enum LoggerTransport {
   Rollbar = 'rollbar',
   Grafana = 'grafana',
   Papertrail = 'papertrail',
+  Datadog = 'datadog',
 }

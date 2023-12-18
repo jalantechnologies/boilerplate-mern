@@ -2,6 +2,7 @@ import ConfigService from '../../config/config-service';
 import { UnknownTransportError } from '../types';
 
 import ConsoleLogger from './console-logger';
+import DatedogLogger from './datadog-logger';
 import GrafanaLokiLogger from './grafana-loki-logger';
 import PapertrailLogger from './papertrail-logger';
 import RollbarLogger from './rollbar-logger';
@@ -27,6 +28,9 @@ export default class Loggers {
           break;
         case LoggerTransport.Papertrail:
           loggerTransports.push(Loggers.getPapertrailLogger());
+          break;
+        case LoggerTransport.Datadog:
+          loggerTransports.push(Loggers.getDatedogLogger());
           break;
         default:
           throw new UnknownTransportError(loggerTransport);
@@ -80,5 +84,9 @@ export default class Loggers {
 
   static getPapertrailLogger(): PapertrailLogger {
     return new PapertrailLogger();
+  }
+
+  static getDatedogLogger(): DatedogLogger {
+    return new DatedogLogger();
   }
 }
