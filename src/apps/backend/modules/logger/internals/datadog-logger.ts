@@ -4,7 +4,7 @@ import ConfigService from '../../config/config-service';
 
 import WinstonLogger from './winston-logger';
 
-export default class DatedogLogger extends WinstonLogger {
+export default class DatadogLogger extends WinstonLogger {
   constructor() {
     const DATADOG_API_KEY = ConfigService.getStringValue('datadog.api_key');
     const APP_NAME = ConfigService.getStringValue('datadog.app_name');
