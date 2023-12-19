@@ -41,3 +41,7 @@ papertrail:
   host: 'PAPERTRAIL_HOST'
   port: 'PAPERTRAIL_PORT'
   program: 'PAPERTRAIL_PROGRAM'
+
+datadog:
+  api_key: 'DD_API_KEY'
+  app_name: 'DD_APP_NAME'

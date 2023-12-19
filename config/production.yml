@@ -1,5 +1,5 @@
 logger:
-  transports: [ 'papertrail' ]
+  transports: [ 'datadog' ]
 
 rollbar:
   env: 'production'
