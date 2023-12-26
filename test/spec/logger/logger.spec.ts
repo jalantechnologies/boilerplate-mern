@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import LoggerManager from '../../../src/apps/backend/modules/logger/logger-manager';
 import Logger from '../../../src/apps/backend/modules/logger/logger';
 import ConfigService from '../../../src/apps/backend/modules/config/config-service';
-import RollbarLogger from '../../../src/apps/backend/modules/logger/internals/rollbar-logger';
+import DatadogLogger from '../../../src/apps/backend/modules/logger/internals/datadog-logger';
 import ConsoleLogger from '../../../src/apps/backend/modules/logger/internals/console-logger';
 import Loggers from '../../../src/apps/backend/modules/logger/internals/loggers';
 import { LoggerTransport } from '../../../src/apps/backend/modules/logger/internals/types';
@@ -12,7 +12,7 @@ import { LoggerTransport } from '../../../src/apps/backend/modules/logger/intern
 describe('Logger', () => {
   let sinonSandbox: sinon.SinonSandbox;
   const consoleLogger = new ConsoleLogger();
-  const rollbarLogger = new RollbarLogger();
+  const datadogLogger = new DatadogLogger();
 
   beforeEach(() => {
     sinonSandbox = sinon.createSandbox();
@@ -43,13 +43,13 @@ describe('Logger', () => {
     expect(stub.calledOnce).to.be.true;
   });
 
-  it('should be able to register rollbar as a logger', () => {
+  it('should be able to register datadog as a logger', () => {
     sinonSandbox
       .stub(ConfigService, 'getListValue')
-      .returns([LoggerTransport.Rollbar]);
-    sinonSandbox.stub(Loggers, 'getRollbarLogger').returns(rollbarLogger);
+      .returns([LoggerTransport.Datadog]);
+    sinonSandbox.stub(Loggers, 'getDatadogLogger').returns(datadogLogger);
 
-    const stub = sinonSandbox.stub(rollbarLogger, 'info');
+    const stub = sinonSandbox.stub(datadogLogger, 'info');
     LoggerManager.mountLogger();
     Logger.info('test');
 

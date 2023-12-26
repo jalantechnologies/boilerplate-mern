@@ -1,6 +1,2 @@
 logger:
   transports: [ 'datadog' ]
-
-grafana:
-  labels:
-    env: 'preview'

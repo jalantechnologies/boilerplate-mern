@@ -3,9 +3,6 @@ import { UnknownTransportError } from '../types';
 
 import ConsoleLogger from './console-logger';
 import DatadogLogger from './datadog-logger';
-import GrafanaLokiLogger from './grafana-loki-logger';
-import PapertrailLogger from './papertrail-logger';
-import RollbarLogger from './rollbar-logger';
 import Logger, { LoggerTransport } from './types';
 
 export default class Loggers {
@@ -19,15 +16,6 @@ export default class Loggers {
       switch (loggerTransport) {
         case LoggerTransport.Console:
           loggerTransports.push(Loggers.getConsoleLogger());
-          break;
-        case LoggerTransport.Rollbar:
-          loggerTransports.push(Loggers.getRollbarLogger());
-          break;
-        case LoggerTransport.Grafana:
-          loggerTransports.push(Loggers.getGrafanaLokiLogger());
-          break;
-        case LoggerTransport.Papertrail:
-          loggerTransports.push(Loggers.getPapertrailLogger());
           break;
         case LoggerTransport.Datadog:
           loggerTransports.push(Loggers.getDatadogLogger());
@@ -72,18 +60,6 @@ export default class Loggers {
 
   static getConsoleLogger(): ConsoleLogger {
     return new ConsoleLogger();
-  }
-
-  static getRollbarLogger(): RollbarLogger {
-    return new RollbarLogger();
-  }
-
-  static getGrafanaLokiLogger(): GrafanaLokiLogger {
-    return new GrafanaLokiLogger();
-  }
-
-  static getPapertrailLogger(): PapertrailLogger {
-    return new PapertrailLogger();
   }
 
   static getDatadogLogger(): DatadogLogger {

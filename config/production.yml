@@ -1,9 +1,2 @@
 logger:
   transports: [ 'datadog' ]
-
-rollbar:
-  env: 'production'
-
-grafana:
-  labels:
-    env: 'production'
