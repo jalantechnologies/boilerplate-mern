@@ -13,23 +13,28 @@ describe('Login', () => {
   });
 
   it('should allow login', () => {
-    cy.get('#username').clear();
-    cy.get('#username').type(credentials.username);
-    cy.get('#password').clear();
-    cy.get('#password').type(credentials.password);
-    cy.get('button').click();
+    cy.get('[data-testid="username"]').clear();
+    cy.get('[data-testid="username"]').type(credentials.username);
+    cy.get('[data-testid="password"]').clear();
+    cy.get('[data-testid="password"]').type(credentials.password);
+    cy.get('button[data-baseweb="button"]').click();
 
-    cy.get('#success').should('be.visible').should('have.text', 'SUCCESS!');
+    const toaster = () => cy.get('div[data-baseweb="toast"]');
+    toaster().should('contain', 'Login Successful');
   });
 
   it('should not allow login for removed credentials', () => {
     cy.task('scenario:cleanup', 'login');
-    cy.get('#username').clear();
-    cy.get('#username').type(credentials.username);
-    cy.get('#password').clear();
-    cy.get('#password').type(credentials.password);
-    cy.get('button').click();
+    cy.get('[data-testid="username"]').clear();
+    cy.get('[data-testid="username"]').type(credentials.username);
+    cy.get('[data-testid="password"]').clear();
+    cy.get('[data-testid="password"]').type(credentials.password);
+    cy.get('button[data-baseweb="button"]').click();
 
-    cy.get('#error').should('be.visible').should('have.text', 'ERROR!');
+    const toaster = () => cy.get('div[data-baseweb="toast"]');
+    toaster().should(
+      'contain',
+      `${credentials.username as string} not found with provided parameters.`,
+    );
   });
 });

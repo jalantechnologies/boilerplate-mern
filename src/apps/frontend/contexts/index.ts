@@ -1,6 +1,4 @@
-import { DepsProvider, useDeps } from './deps.provider';
+import { AuthProvider, useAuthContext } from './auth.provider';
+import BaseWebProvider from './base-web.provider';
 
-export {
-  DepsProvider,
-  useDeps,
-};
+export { AuthProvider, BaseWebProvider, useAuthContext };

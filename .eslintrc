@@ -6,9 +6,7 @@
     "es6": true,
     "node": true
   },
-  "plugins": [
-    "cypress"
-  ],
+  "plugins": ["cypress"],
   "overrides": [
     {
       "files": [
@@ -106,9 +104,30 @@
             }
           }
         ],
-        "import/prefer-default-export": "off",
-        "max-classes-per-file": "off",
-        "no-underscore-dangle": "off"
+        "eslint-comments/disable-enable-pair": "off",
+        "no-underscore-dangle": "off",
+        "@typescript-eslint/no-unsafe-member-access": "off",
+        "@typescript-eslint/unbound-method": [
+          "error",
+          {
+            "ignoreStatic": true
+          }
+        ],
+        "@typescript-eslint/lines-between-class-members": [
+          "error",
+          "always",
+          {
+            "exceptAfterSingleLine": true
+          }
+        ],
+        "cypress/assertion-before-screenshot": "warn",
+        "cypress/no-assigning-return-values": "error",
+        "cypress/no-async-tests": "error",
+        "cypress/no-force": "warn",
+        "cypress/no-pause": "error",
+        "cypress/no-unnecessary-waiting": "error",
+        "import/extensions": "off",
+        "max-classes-per-file": "off"
       }
     },
     {
