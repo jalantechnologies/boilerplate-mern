@@ -1,4 +1,5 @@
 import { assert } from 'chai';
+import { Request } from 'express';
 import sinon from 'sinon';
 
 import {
@@ -8,8 +9,8 @@ import {
   AuthorizationHeaderNotFound,
   InvalidAuthorizationHeader,
   UnAuthorizedAccessError,
+  accessAuthMiddleware,
 } from '../../../src/apps/backend/modules/access-token';
-import AccountAuthMiddleware from '../../../src/apps/backend/modules/access-token/rest-api/account-auth-middleware';
 import {
   Account,
 } from '../../../src/apps/backend/modules/account';
@@ -17,112 +18,110 @@ import ConfigService from '../../../src/apps/backend/modules/config/config-servi
 import { ObjectIdUtils } from '../../../src/apps/backend/modules/database';
 import { createAccount } from '../../helpers/account';
 
-describe('AccountAuthMiddleware', () => {
-  describe('ensureAccess', () => {
-    let account: Account;
-    let password: string;
-    let accessToken: AccessToken;
-    let controller: sinon.SinonSpy;
+describe('accessAuthMiddleware', () => {
+  let account: Account;
+  let password: string;
+  let accessToken: AccessToken;
+  let controller: sinon.SinonSpy;
 
-    beforeEach(async () => {
-      password = '12345678';
+  beforeEach(async () => {
+    password = '12345678';
 
-      ({ account, accessToken } = await createAccount({
-        accountParams: {
-          password,
-        },
-      }));
+    ({ account, accessToken } = await createAccount({
+      accountParams: {
+        password,
+      },
+    }));
 
-      controller = sinon.fake();
-    });
+    controller = sinon.fake();
+  });
 
-    it('should invoke provided controller if valid token was provided', () => {
-      AccountAuthMiddleware.ensureAccess({
+  it('should invoke provided controller if valid token was provided', () => {
+    accessAuthMiddleware({
+      params: {
+        accountId: account.id,
+      },
+      headers: {
+        authorization:
+          `Bearer ${accessToken.token}`,
+      },
+    } as unknown as Request, undefined, controller);
+
+    sinon.assert.calledOnce(controller);
+  });
+
+  it('should throw error if provided accountId different', () => {
+    assert.throws(
+      () => accessAuthMiddleware({
         params: {
-          accountId: account.id,
+          accountId: ObjectIdUtils.createNew(),
         },
         headers: {
           authorization:
             `Bearer ${accessToken.token}`,
         },
-      }, undefined, controller);
+      } as unknown as Request, undefined, controller),
+      new UnAuthorizedAccessError().message,
+    );
 
-      sinon.assert.calledOnce(controller);
+    sinon.assert.notCalled(controller);
+  });
+
+  it('should throw error if provided token is expired', async () => {
+    sinon
+      .stub(ConfigService, 'getValue')
+      .withArgs('accounts.tokenKey')
+      .returns('random-key')
+      .withArgs('accounts.tokenExpiry')
+      .returns('-1h');
+
+    const expiredToken = await AccessTokenService.createAccessToken({
+      username: account.username,
+      password,
     });
 
-    it('should throw error if provided accountId different', () => {
-      assert.throws(
-        () => AccountAuthMiddleware.ensureAccess({
-          params: {
-            accountId: ObjectIdUtils.createNew(),
-          },
-          headers: {
-            authorization:
-              `Bearer ${accessToken.token}`,
-          },
-        }, undefined, controller),
-        new UnAuthorizedAccessError().message,
-      );
+    assert.throws(
+      () => accessAuthMiddleware({
+        params: {
+          accountId: account.id,
+        },
+        headers: {
+          authorization: `Bearer ${expiredToken.token}`,
+        },
+      } as unknown as Request, undefined, controller),
+      new AccessTokenExpiredError().message,
+    );
 
-      sinon.assert.notCalled(controller);
-    });
+    sinon.assert.notCalled(controller);
+  });
 
-    it('should throw error if provided token is expired', async () => {
-      sinon
-        .stub(ConfigService, 'getValue')
-        .withArgs('accounts.tokenKey')
-        .returns('random-key')
-        .withArgs('accounts.tokenExpiry')
-        .returns('-1h');
+  it('should throw error if no auth token was provided', () => {
+    const accountId = 'testAccountId';
 
-      const expiredToken = await AccessTokenService.createAccessToken({
-        username: account.username,
-        password,
-      });
+    assert.throws(
+      () => accessAuthMiddleware({
+        params: { accountId },
+        headers: {},
+      } as unknown as Request, undefined, controller),
+      new AuthorizationHeaderNotFound().message,
+    );
 
-      assert.throws(
-        () => AccountAuthMiddleware.ensureAccess({
-          params: {
-            accountId: account.id,
-          },
-          headers: {
-            authorization: `Bearer ${expiredToken.token}`,
-          },
-        }, undefined, controller),
-        new AccessTokenExpiredError().message,
-      );
+    sinon.assert.notCalled(controller);
+  });
 
-      sinon.assert.notCalled(controller);
-    });
+  it('should throw error if provided auth header is invalid', () => {
+    const accountId = 'testAccountId';
 
-    it('should throw error if no auth token was provided', () => {
-      const accountId = 'testAccountId';
+    assert.throws(
+      () => accessAuthMiddleware({
+        params: { accountId },
+        headers: {
+          authorization: 'invalidAuthHeader',
+        },
+      } as unknown as Request, undefined, controller),
+      new InvalidAuthorizationHeader().message,
+    );
 
-      assert.throws(
-        () => AccountAuthMiddleware.ensureAccess({
-          params: { accountId },
-          headers: {},
-        }, undefined, controller),
-        new AuthorizationHeaderNotFound().message,
-      );
-
-      sinon.assert.notCalled(controller);
-    });
-
-    it('should throw error if provided auth header is invalid', () => {
-      const accountId = 'testAccountId';
-
-      assert.throws(
-        () => AccountAuthMiddleware.ensureAccess({
-          params: { accountId },
-          headers: {
-            authorization: 'invalidAuthHeader',
-          },
-        }, undefined, controller),
-        new InvalidAuthorizationHeader().message,
-      );
-
-      sinon.assert.notCalled(controller);
-    });
+    sinon.assert.notCalled(controller);
   });
 });

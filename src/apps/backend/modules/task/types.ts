@@ -1,4 +1,3 @@
-// eslint-disable-next-line max-classes-per-file
 import { AppError } from '../error';
 import { HttpStatusCodes } from '../http';
 

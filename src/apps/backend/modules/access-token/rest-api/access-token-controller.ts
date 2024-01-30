@@ -2,7 +2,7 @@ import { applicationController, Request, Response } from '../../application';
 import AccessTokenService from '../access-token-service';
 import { CreateAccessTokenParams } from '../types';
 
-import { serializeAccessToken } from './access-token-serializer';
+import { serializeAccessTokenAsJSON } from './access-token-serializer';
 
 export const createAccessToken = applicationController(async (
   req: Request<CreateAccessTokenParams>,
@@ -12,7 +12,7 @@ export const createAccessToken = applicationController(async (
     username: req.body.username,
     password: req.body.password,
   });
-  const accessTokenJSON = serializeAccessToken(accessToken);
+  const accessTokenJSON = serializeAccessTokenAsJSON(accessToken);
 
   res.send(accessTokenJSON);
 });

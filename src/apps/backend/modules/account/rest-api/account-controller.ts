@@ -3,7 +3,7 @@ import { HttpStatusCodes } from '../../http';
 import AccountService from '../account-service';
 import { CreateAccountParams } from '../types';
 
-import { serializeAccount } from './account-serializer';
+import { serializeAccountAsJSON } from './account-serializer';
 
 export const createAccount = applicationController(async (
   req: Request<CreateAccountParams>,
@@ -13,7 +13,7 @@ export const createAccount = applicationController(async (
     username: req.body.username,
     password: req.body.password,
   });
-  const accountJSON = serializeAccount(account);
+  const accountJSON = serializeAccountAsJSON(account);
 
   res
     .status(HttpStatusCodes.CREATED)

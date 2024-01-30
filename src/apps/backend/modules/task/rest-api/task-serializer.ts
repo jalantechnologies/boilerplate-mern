@@ -1,6 +1,6 @@
 import { Task } from '../types';
 
-export const serializeTask = (task: Task): unknown => ({
+export const serializeTaskAsJSON = (task: Task): unknown => ({
   id: task.id,
   account: task.account,
   name: task.name,

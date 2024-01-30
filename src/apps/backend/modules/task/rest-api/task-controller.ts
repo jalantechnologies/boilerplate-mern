@@ -9,7 +9,7 @@ import {
   GetTaskParams,
 } from '../types';
 
-import { serializeTask } from './task-serializer';
+import { serializeTaskAsJSON } from './task-serializer';
 
 export const createTask = applicationController(async (
   req: Request<CreateTaskParams>,
@@ -19,7 +19,7 @@ export const createTask = applicationController(async (
     accountId: req.accountId,
     name: req.body.name,
   });
-  const taskJSON = serializeTask(task);
+  const taskJSON = serializeTaskAsJSON(task);
 
   res
     .status(HttpStatusCodes.CREATED)
@@ -48,7 +48,7 @@ export const getTask = applicationController(async (
     accountId: req.accountId,
     taskId: req.params.id,
   });
-  const taskJSON = serializeTask(task);
+  const taskJSON = serializeTaskAsJSON(task);
 
   res
     .status(HttpStatusCodes.OK)
@@ -68,7 +68,7 @@ export const getTasks = applicationController(async (
   };
 
   const tasks = await TaskService.getTasksForAccount(params);
-  const tasksJSON = tasks.map((task) => serializeTask(task));
+  const tasksJSON = tasks.map((task) => serializeTaskAsJSON(task));
 
   res
     .status(HttpStatusCodes.OK)

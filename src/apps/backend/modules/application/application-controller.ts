@@ -1,9 +1,15 @@
-import { Request as ExpressReq, Response as ExpressRes } from 'express';
+import {
+  Request as ExpressReq,
+  Response as ExpressRes,
+  RequestHandler as ExpressRequestHandler,
+} from 'express';
 import _ from 'lodash';
 
+export type AsyncController = (...args: ControllerArgs) => Promise<unknown> | unknown;
+
 export const applicationController = (
-  ctrl: (...args: unknown[]) => Promise<unknown> | unknown,
-) => (...args: unknown[]): void => {
+  ctrl: AsyncController,
+): ExpressRequestHandler => (...args: ControllerArgs): void => {
   // invoke provided middleware
   const fnReturn = ctrl(...args);
 
@@ -27,3 +33,5 @@ export interface Response<T = unknown> extends ExpressRes {
 }
 
 export type NextFunc = (err?: Error) => void;
+
+export type ControllerArgs = [Request, Response, NextFunc];

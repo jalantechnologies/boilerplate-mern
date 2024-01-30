@@ -1,6 +1,10 @@
 accounts:
   tokenExpiry: '1y' # default token expire time 1 year. Examples - https://github.com/vercel/ms#examples
 
+datadog:
+  app_name: 'boilerplate-mern'
+  region: 'us5'
+
 logger:
   transports: [ 'console' ]
 
