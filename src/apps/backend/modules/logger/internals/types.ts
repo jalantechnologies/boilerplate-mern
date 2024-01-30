@@ -12,7 +12,5 @@ export default interface Logger {
 
 export enum LoggerTransport {
   Console = 'console',
-  Rollbar = 'rollbar',
-  Grafana = 'grafana',
-  Papertrail = 'papertrail',
+  Datadog = 'datadog',
 }

@@ -4,8 +4,4 @@ accounts:
 mongoDb:
   uri: 'mongodb://localhost:27017/boilerplate-mern-dev'
 
-grafana:
-  labels:
-    env: 'development'
-
 webAppHost: 'http://localhost:3000'
