@@ -5,7 +5,7 @@ import {
 } from 'express';
 import _ from 'lodash';
 
-export type AsyncController = (...args: ControllerArgs) => Promise<unknown> | unknown;
+export type AsyncController = (...args: ControllerArgs) => Promise<void> | void;
 
 export const applicationController = (
   ctrl: AsyncController,

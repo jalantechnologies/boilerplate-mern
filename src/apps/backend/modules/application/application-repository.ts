@@ -10,7 +10,7 @@ const getDatabaseConnection = (): mongoose.Connection => {
   if (mongoConnCaching) {
     mongoose
       .connect(mongoURI)
-      .catch((err) => {
+      .catch((err: Error) => {
         Logger.error(err.message);
       });
 
@@ -26,5 +26,9 @@ export default function ApplicationRepository<T>(
   collection?: string,
 ): mongoose.Model<T> {
   const connection = getDatabaseConnection();
+
+  // TODO: Typings for repositories is not working as expected, this needs
+  //  to be fixed.
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   return connection.model<T>(name, schema, collection);
 }

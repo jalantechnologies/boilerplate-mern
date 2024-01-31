@@ -10,16 +10,18 @@ export default function Login(): React.ReactElement {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
 
-  const login = useCallback(async () => {
+  const login = useCallback(() => {
     setSuccess(false);
     setError(false);
 
-    try {
-      await accessService.login(username, password);
-      setSuccess(true);
-    } catch (err) {
-      setError(true);
-    }
+    accessService
+      .login(username, password)
+      .then(() => {
+        setSuccess(true);
+      })
+      .catch(() => {
+        setError(true);
+      });
   }, [
     accessService,
     username,

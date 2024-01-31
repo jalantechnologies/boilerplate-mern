@@ -42,7 +42,7 @@ export default class Loggers {
     const transports: LoggerTransport[] = ConfigService.getValue<LoggerTransport[]>('logger.transports');
     const loggers: Logger[] = [];
 
-    transports.forEach((loggerTransport: string) => {
+    transports.forEach((loggerTransport: LoggerTransport) => {
       switch (loggerTransport) {
         case LoggerTransport.Console:
           loggers.push(Loggers.getConsoleLogger());
@@ -62,7 +62,7 @@ export default class Loggers {
     return new ConsoleLogger();
   }
 
-  static getDatadogLogger(): DatadogLogger {
+  private static getDatadogLogger(): DatadogLogger {
     return new DatadogLogger();
   }
 }

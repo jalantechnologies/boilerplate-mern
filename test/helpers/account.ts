@@ -7,8 +7,8 @@ import { Account, CreateAccountParams, AccountService } from '../../src/apps/bac
 export const createAccount = async (params?: {
   accountParams?: Partial<CreateAccountParams>,
 }): Promise<{
-  account: Account,
   accessToken: AccessToken,
+  account: Account,
 }> => {
   const fName = faker.name.firstName();
   const lName = faker.name.lastName();

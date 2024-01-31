@@ -29,15 +29,15 @@ export type EmailRecipient = {
 };
 
 export type SendEmailParams = {
-  sender: EmailSender;
   recipient: EmailRecipient;
-  templateId: string;
+  sender: EmailSender;
   templateData?: LooseObject;
+  templateId: string;
 };
 
 export type SendSMSParams = {
-  recipientPhone: PhoneNumber;
   messageBody: string;
+  recipientPhone: PhoneNumber;
 };
 
 export enum CommunicationErrorCode {

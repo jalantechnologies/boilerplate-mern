@@ -21,8 +21,8 @@ export default class TwilioService {
         ),
         body: params.messageBody,
       });
-    } catch (e) {
-      throw new ServiceError(e);
+    } catch (err) {
+      throw new ServiceError(err as Error);
     }
   }
 

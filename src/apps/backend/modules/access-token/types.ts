@@ -12,8 +12,8 @@ export type AccessTokenPayload = {
 };
 
 export type CreateAccessTokenParams = {
-  username: string;
   password: string;
+  username: string;
 };
 
 export type VerifyAccessTokenParams = {

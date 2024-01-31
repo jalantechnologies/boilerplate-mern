@@ -8,13 +8,13 @@ export class Account {
 }
 
 export type CreateAccountParams = {
-  username: string;
   password: string;
+  username: string;
 };
 
 export type AccountSearchParams = {
-  username: string;
   password: string;
+  username: string;
 };
 
 export enum AccountErrorCode {

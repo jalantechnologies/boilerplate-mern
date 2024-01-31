@@ -31,8 +31,8 @@ export default class SendGridService {
     try {
       const client = this.getClient();
       await client.send(msg);
-    } catch (e) {
-      throw new ServiceError(e);
+    } catch (err) {
+      throw new ServiceError(err as Error);
     }
   }
 
