@@ -1,5 +1,5 @@
 accounts:
-  tokenExpiry: '1y' # default token expire time 1 year. Examples - https://github.com/vercel/ms#examples
+  tokenExpiry: '1d' # default token expire time 1 day. Examples - https://github.com/vercel/ms#examples
 
 datadog:
   app_name: 'boilerplate-mern'
