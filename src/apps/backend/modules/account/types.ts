@@ -1,4 +1,4 @@
-import { AppError } from '../error';
+import { ApplicationError } from '../application';
 import { HttpStatusCodes } from '../http';
 
 export class Account {
@@ -23,7 +23,7 @@ export enum AccountErrorCode {
   INVALID_CREDENTIALS = 'ACCOUNT_ERR_03',
 }
 
-export class AccountWithUserNameExistsError extends AppError {
+export class AccountWithUserNameExistsError extends ApplicationError {
   code: AccountErrorCode;
 
   constructor(username: string) {
@@ -33,7 +33,7 @@ export class AccountWithUserNameExistsError extends AppError {
   }
 }
 
-export class AccountNotFoundError extends AppError {
+export class AccountNotFoundError extends ApplicationError {
   code: AccountErrorCode;
 
   constructor(username: string) {
@@ -43,7 +43,7 @@ export class AccountNotFoundError extends AppError {
   }
 }
 
-export class InvalidCredentialsError extends AppError {
+export class InvalidCredentialsError extends ApplicationError {
   code: AccountErrorCode;
 
   constructor(username: string) {

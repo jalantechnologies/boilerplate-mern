@@ -1,6 +1,6 @@
-import { LooseObject } from './types';
+type LooseObject = { [key: string]: unknown };
 
-export class AppError extends Error {
+export class ApplicationError extends Error {
   code: string;
   httpStatusCode: number;
 
@@ -17,5 +17,3 @@ export class AppError extends Error {
     return json;
   }
 }
-
-export default AppError;

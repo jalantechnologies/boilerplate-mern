@@ -1,4 +1,4 @@
-import { AppError } from '../error';
+import { ApplicationError } from '../application';
 import { HttpStatusCodes } from '../http';
 
 export class AccessToken {
@@ -28,7 +28,7 @@ export enum AccessTokenErrorCode {
   ACCESS_TOKEN_INVALID = 'ACCESS_TOKEN_ERR_05',
 }
 
-export class AccessTokenInvalidError extends AppError {
+export class AccessTokenInvalidError extends ApplicationError {
   code: AccessTokenErrorCode;
 
   constructor() {
@@ -38,7 +38,7 @@ export class AccessTokenInvalidError extends AppError {
   }
 }
 
-export class AccessTokenExpiredError extends AppError {
+export class AccessTokenExpiredError extends ApplicationError {
   code: AccessTokenErrorCode;
 
   constructor() {
@@ -48,7 +48,7 @@ export class AccessTokenExpiredError extends AppError {
   }
 }
 
-export class AuthorizationHeaderNotFound extends AppError {
+export class AuthorizationHeaderNotFound extends ApplicationError {
   code: AccessTokenErrorCode;
 
   constructor() {
@@ -58,7 +58,7 @@ export class AuthorizationHeaderNotFound extends AppError {
   }
 }
 
-export class InvalidAuthorizationHeader extends AppError {
+export class InvalidAuthorizationHeader extends ApplicationError {
   code: AccessTokenErrorCode;
 
   constructor() {
@@ -68,7 +68,7 @@ export class InvalidAuthorizationHeader extends AppError {
   }
 }
 
-export class UnAuthorizedAccessError extends AppError {
+export class UnAuthorizedAccessError extends ApplicationError {
   code: AccessTokenErrorCode;
 
   constructor() {

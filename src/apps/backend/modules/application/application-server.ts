@@ -3,9 +3,10 @@ import express, {
   Application, NextFunction, Request, Response,
 } from 'express';
 
-import { AppError } from '../error';
 import { HttpStatusCodes } from '../http';
 import { Logger } from '../logger';
+
+import { ApplicationError } from './application-error';
 
 export enum ApplicationServerErrorCodes {
   UNHANDLED_ERROR = 'SERVER_ERR_01',
@@ -27,16 +28,16 @@ export default abstract class ApplicationServer {
   }
 
   private handleError = (
-    error: AppError,
+    error: ApplicationError,
     _req: Request,
     res: Response,
     next: NextFunction,
   ) => {
     Logger.error(error.toString());
-    if (error instanceof AppError) {
+    if (error instanceof ApplicationError) {
       res.status(error.httpStatusCode).json(error.toJson());
     } else {
-      const err = new AppError('Server encountered unexpected error');
+      const err = new ApplicationError('Server encountered unexpected error');
       err.code = ApplicationServerErrorCodes.UNHANDLED_ERROR;
       err.httpStatusCode = HttpStatusCodes.SERVER_ERROR;
 

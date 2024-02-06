@@ -1,4 +1,4 @@
-import { AppError } from '../error';
+import { ApplicationError } from '../application';
 import { HttpStatusCodes } from '../http';
 
 export class Task {
@@ -43,7 +43,7 @@ export enum TaskErrorCode {
   TASK_ALREADY_EXISTS = 'TASK_ERR_02',
 }
 
-export class TaskWithNameExistsError extends AppError {
+export class TaskWithNameExistsError extends ApplicationError {
   code: TaskErrorCode;
 
   constructor(name: string) {
@@ -53,7 +53,7 @@ export class TaskWithNameExistsError extends AppError {
   }
 }
 
-export class TaskNotFoundError extends AppError {
+export class TaskNotFoundError extends ApplicationError {
   code: TaskErrorCode;
 
   constructor(taskId: string) {
@@ -63,7 +63,7 @@ export class TaskNotFoundError extends AppError {
   }
 }
 
-export class TaskWithNameNotFoundError extends AppError {
+export class TaskWithNameNotFoundError extends ApplicationError {
   code: TaskErrorCode;
 
   constructor(taskName: string) {

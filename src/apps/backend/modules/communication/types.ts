@@ -1,4 +1,4 @@
-import { AppError } from '../error';
+import { ApplicationError } from '../application';
 import { HttpStatusCodes } from '../http';
 
 export interface LooseObject {
@@ -50,7 +50,7 @@ export type ValidationFailure = {
   message: string;
 };
 
-export class ValidationError extends AppError {
+export class ValidationError extends ApplicationError {
   code: CommunicationErrorCode;
   failures: ValidationFailure[];
 
@@ -62,7 +62,7 @@ export class ValidationError extends AppError {
   }
 }
 
-export class ServiceError extends AppError {
+export class ServiceError extends ApplicationError {
   code: CommunicationErrorCode;
 
   constructor(err: Error) {
