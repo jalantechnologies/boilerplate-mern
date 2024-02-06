@@ -1,7 +1,15 @@
 import bodyParser from 'body-parser';
-import express, { Application } from 'express';
+import express, {
+  Application, NextFunction, Request, Response,
+} from 'express';
 
-import ErrorHandler from '../error/error-handler';
+import { AppError } from '../error';
+import { HttpStatusCodes } from '../http';
+import { Logger } from '../logger';
+
+export enum ApplicationServerErrorCodes {
+  UNHANDLED_ERROR = 'SERVER_ERR_01',
+}
 
 export default abstract class ApplicationServer {
   readonly server: Application;
@@ -15,8 +23,30 @@ export default abstract class ApplicationServer {
     this.server = server;
     this.configure();
 
-    server.use(ErrorHandler.AppErrorHandler);
+    server.use(this.handleError);
   }
+
+  private handleError = (
+    error: AppError,
+    _req: Request,
+    res: Response,
+    next: NextFunction,
+  ) => {
+    Logger.error(error.toString());
+    if (error instanceof AppError) {
+      res.status(error.httpStatusCode).json(error.toJson());
+    } else {
+      const err = new AppError('Server encountered unexpected error');
+      err.code = ApplicationServerErrorCodes.UNHANDLED_ERROR;
+      err.httpStatusCode = HttpStatusCodes.SERVER_ERROR;
+
+      res
+        .status(err.httpStatusCode)
+        .json(err.toJson());
+
+      next(error);
+    }
+  };
 
   protected abstract configure(): void;
 }
