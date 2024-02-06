@@ -8,12 +8,13 @@ import React from 'react';
 import {
   Button,
 } from '../../../components';
+import { AsyncError } from '../../../types';
 
 import useLoginForm from './login-form.hook';
 
 interface LoginFormProps {
   onSuccess: () => void;
-  onError: (error: string) => void;
+  onError: (error: AsyncError) => void;
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
@@ -30,6 +31,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
         >
           <Input
             autoComplete="off"
+            disabled={isLoginLoading}
             name="username"
             onBlur={formik.handleBlur}
             onChange={formik.handleChange}
@@ -52,6 +54,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
         >
           <Input
             autoComplete="off"
+            disabled={isLoginLoading}
             name="password"
             onBlur={formik.handleBlur}
             onChange={formik.handleChange}
@@ -74,7 +77,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
           fullWidth
           isLoading={isLoginLoading}
           kind={KIND.primary}
-          type='submit'
+          type="submit"
         >
           Sign in
         </Button>

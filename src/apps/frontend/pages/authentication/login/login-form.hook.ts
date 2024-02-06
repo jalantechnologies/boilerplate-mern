@@ -3,10 +3,11 @@ import * as Yup from 'yup';
 
 import constant from '../../../constants';
 import { useAuthContext } from '../../../contexts';
+import { AsyncError } from '../../../types';
 
 interface LoginFormProps {
   onSuccess: () => void;
-  onError: (msg) => void;
+  onError: (err: AsyncError) => void;
 }
 const useLoginForm = ({ onError, onSuccess }: LoginFormProps) => {
   const {
@@ -32,7 +33,7 @@ const useLoginForm = ({ onError, onSuccess }: LoginFormProps) => {
           onSuccess();
         })
         .catch((err) => {
-          onError(err);
+          onError(err as AsyncError);
         });
     },
   });

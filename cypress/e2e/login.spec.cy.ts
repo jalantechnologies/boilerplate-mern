@@ -34,7 +34,7 @@ describe('Login', () => {
     const toaster = () => cy.get('div[data-baseweb="toast"]');
     toaster().should(
       'contain',
-      `${credentials.username as string} not found with provided parameters.`,
+      `${credentials.username} not found with provided parameters.`,
     );
   });
 });

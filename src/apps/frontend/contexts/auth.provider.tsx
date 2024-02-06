@@ -11,12 +11,9 @@ import useAsync from './async.hook';
 
 type AuthContextType = {
   isLoginLoading: boolean;
-  signIn: (
-    username: string,
-    password: string,
-  ) => Promise<AccessToken>;
   loginError: AsyncError;
   loginResult: AccessToken;
+  signIn: (username: string, password: string) => Promise<AccessToken>;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);

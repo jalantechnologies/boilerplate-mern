@@ -8,14 +8,14 @@ import {
 import { AsyncOperationError } from '../types/async-operation';
 
 const useAsync = <T>(
-  asyncFn: (...args: any[]) => Promise<AsyncResult<T>>,
+  asyncFn: (...args: unknown[]) => Promise<AsyncResult<T>>,
 ): UseAsyncResponse<T> => {
   const [result, setResult] = useState<T | undefined>(undefined);
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState<AsyncError | undefined>(undefined);
 
   const asyncCallback = useCallback(
-    async (...args) => {
+    async (...args: unknown[]) => {
       setError(undefined);
       setLoading(true);
       try {

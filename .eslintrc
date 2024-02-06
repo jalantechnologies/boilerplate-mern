@@ -9,9 +9,7 @@
   "plugins": ["cypress"],
   "overrides": [
     {
-      "files": [
-        ".js"
-      ],
+      "files": [".js"],
       "extends": [
         "airbnb-base",
         "plugin:eslint-comments/recommended",
@@ -46,10 +44,7 @@
       }
     },
     {
-      "files": [
-        "*.ts",
-        "*.tsx"
-      ],
+      "files": ["*.ts", "*.tsx"],
       "extends": [
         "airbnb-base",
         "plugin:eslint-comments/recommended",
@@ -104,30 +99,9 @@
             }
           }
         ],
-        "eslint-comments/disable-enable-pair": "off",
-        "no-underscore-dangle": "off",
-        "@typescript-eslint/no-unsafe-member-access": "off",
-        "@typescript-eslint/unbound-method": [
-          "error",
-          {
-            "ignoreStatic": true
-          }
-        ],
-        "@typescript-eslint/lines-between-class-members": [
-          "error",
-          "always",
-          {
-            "exceptAfterSingleLine": true
-          }
-        ],
-        "cypress/assertion-before-screenshot": "warn",
-        "cypress/no-assigning-return-values": "error",
-        "cypress/no-async-tests": "error",
-        "cypress/no-force": "warn",
-        "cypress/no-pause": "error",
-        "cypress/no-unnecessary-waiting": "error",
-        "import/extensions": "off",
-        "max-classes-per-file": "off"
+        "import/prefer-default-export": "off",
+        "max-classes-per-file": "off",
+        "no-underscore-dangle": "off"
       }
     },
     {

@@ -12,7 +12,7 @@ export interface AsyncResult<T> {
 
 export interface UseAsyncResponse<T> extends AsyncResult<T> {
   result: T;
-  asyncCallback: (...args: any[]) => Promise<T>;
+  asyncCallback: (...args: unknown[]) => Promise<T>;
   isLoading: boolean;
 }
 
