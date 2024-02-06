@@ -1,7 +1,6 @@
-import Footer from './footer/footer.component';
-import Header from './header/header.component';
+import Button from './button/button.component';
+import Grid from './grid/grid.component';
 
 export {
-  Header,
-  Footer,
+  Button, Grid,
 };

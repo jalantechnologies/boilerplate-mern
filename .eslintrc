@@ -6,14 +6,10 @@
     "es6": true,
     "node": true
   },
-  "plugins": [
-    "cypress"
-  ],
+  "plugins": ["cypress"],
   "overrides": [
     {
-      "files": [
-        ".js"
-      ],
+      "files": [".js"],
       "extends": [
         "airbnb-base",
         "plugin:eslint-comments/recommended",
@@ -48,10 +44,7 @@
       }
     },
     {
-      "files": [
-        "*.ts",
-        "*.tsx"
-      ],
+      "files": ["*.ts", "*.tsx"],
       "extends": [
         "airbnb-base",
         "plugin:eslint-comments/recommended",

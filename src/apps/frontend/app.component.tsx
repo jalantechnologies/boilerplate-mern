@@ -1,14 +1,13 @@
+import { PLACEMENT, ToasterContainer } from 'baseui/toast';
 import React, { useEffect } from 'react';
 import { Route, Routes, BrowserRouter as Router } from 'react-router-dom';
+import './app.global.css';
 
-import { Header, Footer } from './components';
-import { DepsProvider } from './contexts';
+import constant from './constants';
+import { AuthProvider, BaseWebProvider } from './contexts';
 import { Config } from './helpers';
 import { About, Login, NotFound } from './pages';
-import { AccessService } from './services';
 import InspectLet from './vendor/inspectlet';
-
-import './app.global.scss';
 
 export default function App(): React.ReactElement {
   useEffect(() => {
@@ -20,20 +19,20 @@ export default function App(): React.ReactElement {
   }, []);
 
   return (
-    <DepsProvider deps={{
-      accessService: new AccessService(),
-    }}>
-      <Router>
-        <div className='container'>
-          <Header />
+    <AuthProvider>
+      <BaseWebProvider>
+        <ToasterContainer
+          placement={PLACEMENT.topRight}
+          autoHideDuration={constant.TOASTER_AUTO_HIDE_DURATION}
+        />
+        <Router>
           <Routes>
-            <Route path='/about' element={<About />} />
-            <Route path='/' element={<Login />} />
-            <Route path='*' element={<NotFound />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/" element={<Login />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
-          <Footer />
-        </div>
-      </Router>
-    </DepsProvider>
+        </Router>
+      </BaseWebProvider>
+    </AuthProvider>
   );
 }
