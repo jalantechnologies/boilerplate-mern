@@ -1,11 +1,15 @@
-jwt:
-  expiresIn: '1y' # default token expire time 1 year. Examples - https://github.com/vercel/ms#examples
+accounts:
+  tokenExpiry: '1d' # default token expire time 1 day. Examples - https://github.com/vercel/ms#examples
+
+datadog:
+  app_name: 'boilerplate-mern'
+  region: 'us5'
 
 logger:
   transports: [ 'console' ]
 
-communication:
-  services: [ ]
+mongoDb:
+  connCaching: true
 
 server:
   port: '8080'

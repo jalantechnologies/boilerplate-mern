@@ -1,30 +1,10 @@
-import mongoose, { CallbackError, Connection } from 'mongoose';
+import { ApplicationRepository } from '../../../application';
 
-import ConfigService from '../../../config/config-service';
+import { AccountDB, AccountDbSchema } from './account-db';
 
-import { AccountDB, accountDbSchema } from './account-db';
+const AccountRepository = ApplicationRepository<AccountDB>(
+  'Account',
+  AccountDbSchema,
+);
 
-export default class AccountRepository {
-  public static accountDB: mongoose.Model<AccountDB>;
-
-  static async createDBConnection(): Promise<Connection> {
-    return new Promise((resolve, reject) => {
-      const mongoURI = ConfigService.getStringValue('mongoDb.uri');
-      mongoose.createConnection(
-        mongoURI,
-        {},
-        (error: CallbackError, result: Connection): void => {
-          if (error) {
-            reject(error);
-          } else {
-            AccountRepository.accountDB = result.model(
-              'Account',
-              accountDbSchema,
-            ) as unknown as mongoose.Model<AccountDB>;
-            resolve(result);
-          }
-        },
-      );
-    });
-  }
-}
+export default AccountRepository;

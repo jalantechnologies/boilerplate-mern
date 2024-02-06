@@ -5,14 +5,11 @@ import cors from 'cors';
 import express, { Application } from 'express';
 import expressWinston from 'express-winston';
 
-import AccessTokenServiceManager from './modules/access-token/access-token-manager';
-import AccountServiceManager from './modules/account/account-service-manager';
-import CommunicationServiceManager from './modules/communication/communication-service-manager';
-import ConfigManager from './modules/config/config-manager';
-import ConfigService from './modules/config/config-service';
-import Logger from './modules/logger/logger';
-import LoggerManager from './modules/logger/logger-manager';
-import TaskServiceManager from './modules/task/task-service-manager';
+import { AccessTokenServer } from './modules/access-token';
+import { AccountServer } from './modules/account';
+import { ConfigService } from './modules/config';
+import { Logger, CustomLoggerTransport } from './modules/logger';
+import { TaskServer } from './modules/task';
 
 const isDevEnv = process.env.NODE_ENV === 'development';
 
@@ -23,27 +20,28 @@ export default class App {
     this.app = express();
     this.app.use(App.getRequestLogger());
 
-    await ConfigManager.mountConfig();
-    await LoggerManager.mountLogger();
-    await CommunicationServiceManager.mountService();
+    const restAPIServer = this.createRESTApiServer();
+    this.app.use('/api', restAPIServer);
 
-    const restAPIServices = await this.createRESTApiServer();
-    this.app.use('/api', restAPIServices);
-
-    const app = await this.createExperienceService();
+    const app = this.createExperienceService();
     this.app.use('/', app);
 
     // error logger, to be always registered at last
     this.app.use(App.getErrorLogger());
 
-    const port = ConfigService.getStringValue('server.port');
-    const server = this.app.listen(port);
+    Logger.info('app - attempting to start server...');
+    Logger.info('app - node env - %s', process.env.NODE_ENV);
+    Logger.info('app - config env - %s', process.env.NODE_CONFIG_ENV);
 
-    Logger.info(`http server started listening on port - ${port}`);
-    return server;
+    const port = ConfigService.getValue<string>('server.port');
+    const server = this.app.listen(port, () => {
+      Logger.info('app - server started listening on  - %s', server.address());
+    });
+
+    return Promise.resolve(server);
   }
 
-  private static async createRESTApiServer(): Promise<Application> {
+  private static createRESTApiServer(): Application {
     const app: Application = express();
 
     // if running server in development mode, allow cross-origin calls
@@ -55,19 +53,19 @@ export default class App {
       }));
     }
 
-    const accountServiceRESTApi = await AccountServiceManager.createRestAPIServer();
-    app.use('/', accountServiceRESTApi);
-
-    const accessTokenServiceRESTApi = await AccessTokenServiceManager.createRestAPIServer();
-    app.use('/', accessTokenServiceRESTApi);
-
-    const taskServiceRESTApi = await TaskServiceManager.createRestAPIServer();
-    app.use('/', taskServiceRESTApi);
+    // add your new server here to the list
+    [
+      new AccountServer(),
+      new AccessTokenServer(),
+      new TaskServer(),
+    ].forEach((server) => {
+      app.use('/', server.server);
+    });
 
     return app;
   }
 
-  private static async createExperienceService(): Promise<Application> {
+  private static createExperienceService(): Application {
     const app: Application = express();
 
     app.use('/assets', express.static('dist/assets'));
@@ -78,17 +76,17 @@ export default class App {
       res.sendFile(path.join(process.cwd(), 'dist/public/index.html'));
     });
 
-    return Promise.resolve(app);
+    return app;
   }
 
   private static getRequestLogger(): express.Handler {
     return expressWinston.logger({
       transports: [
-        LoggerManager.getWinstonTransport(),
+        new CustomLoggerTransport(),
       ],
       // no pre-build meta
       meta: false,
-      msg: 'www - request - {{req.ip}} - {{res.statusCode}} - {{req.method}} - {{res.responseTime}}ms - {{req.url}} - {{req.headers[\'user-agent\']}}',
+      msg: 'app - request - {{req.ip}} - {{res.statusCode}} - {{req.method}} - {{res.responseTime}}ms - {{req.url}} - {{req.headers[\'user-agent\']}}',
       // use the default express/morgan request formatting
       // enabling this will override any msg if true
       expressFormat: false,
@@ -102,7 +100,7 @@ export default class App {
   private static getErrorLogger(): express.ErrorRequestHandler {
     return expressWinston.errorLogger({
       transports: [
-        LoggerManager.getWinstonTransport(),
+        new CustomLoggerTransport(),
       ],
     });
   }

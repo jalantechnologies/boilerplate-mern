@@ -1,29 +1,12 @@
-boolTestKey: true
-numberTestKey: 1
-stringTestKey: 'string'
-
-jwt:
-  token: 'test_auth_token'
-
-communication:
-  services: [ 'twilio', 'sendgrid' ]
-
-twilio:
-  verify:
-    accountSid: 'AC.TWILIO_ACCOUNT_SID'
-    authToken: 'TWILIO_AUTH_TOKEN'
-  messaging:
-    messagingServiceSid: 'TWILIO_MESSAGING_SERVICE_SID'
-
-sendgridApiKey: 'SG.SENDGRID_API_KEY'
+accounts:
+  tokenKey: 'test_auth_token'
 
 mongoDb:
   uri: 'mongodb://localhost:27017/boilerplate-mern-test'
 
-server:
-  port: '8080'
+test:
+  boolTestKey: true
+  numberTestKey: 1
+  stringTestKey: 'string'
 
-datadog:
-  api_key: 'DD_API_KEY'
-  app_name: 'DD_APP_NAME'
-  
+webAppHost: 'http://localhost:8080'

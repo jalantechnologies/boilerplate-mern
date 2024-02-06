@@ -1,9 +1,8 @@
-/* eslint-disable max-classes-per-file */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import AppError from '../error/app-error';
+import { ApplicationError } from '../application';
+import { HttpStatusCodes } from '../http';
 
 export interface LooseObject {
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export interface PhoneUtilInterface {
@@ -12,7 +11,7 @@ export interface PhoneUtilInterface {
 }
 
 export interface PhoneUtilInstance {
-  getInstance: () => any;
+  getInstance: () => unknown;
 }
 
 export type PhoneNumber = {
@@ -30,27 +29,20 @@ export type EmailRecipient = {
 };
 
 export type SendEmailParams = {
-  sender: EmailSender;
   recipient: EmailRecipient;
+  sender: EmailSender;
+  templateData?: LooseObject;
   templateId: string;
-  templateData: LooseObject;
 };
 
 export type SendSMSParams = {
-  recipientPhone: PhoneNumber;
   messageBody: string;
+  recipientPhone: PhoneNumber;
 };
 
 export enum CommunicationErrorCode {
   VALIDATION_ERROR = 'COMMUNICATION_ERR_01',
-  THIRD_PARTY_ERROR = 'COMMUNICATION_ERR_02',
-  SERVER_ERROR = 'COMMUNICATION_ERR_03',
-  UNKNOWN_SERVICE_ERROR = 'COMMUNICATION_ERR_04',
-}
-
-export enum CommunicationService {
-  Twilio = 'twilio',
-  SendGrid = 'sendgrid',
+  SERVICE_ERROR = 'COMMUNICATION_ERR_02',
 }
 
 export type ValidationFailure = {
@@ -58,35 +50,25 @@ export type ValidationFailure = {
   message: string;
 };
 
-export class ValidationError extends AppError {
+export class ValidationError extends ApplicationError {
   code: CommunicationErrorCode;
-
   failures: ValidationFailure[];
 
   constructor(msg: string, failures: ValidationFailure[] = []) {
     super(msg);
     this.code = CommunicationErrorCode.VALIDATION_ERROR;
     this.failures = failures;
-    this.httpStatusCode = 403;
+    this.httpStatusCode = HttpStatusCodes.BAD_REQUEST;
   }
 }
 
-export class ThirdPartyServiceError extends AppError {
+export class ServiceError extends ApplicationError {
   code: CommunicationErrorCode;
 
-  constructor(msg: string) {
-    super(msg);
-    this.code = CommunicationErrorCode.THIRD_PARTY_ERROR;
-    this.httpStatusCode = 403;
-  }
-}
-
-export class UnknownServiceError extends AppError {
-  code: CommunicationErrorCode;
-
-  constructor(service: string) {
-    super(`${service} is not supported`);
-    this.code = CommunicationErrorCode.UNKNOWN_SERVICE_ERROR;
-    this.httpStatusCode = 403;
+  constructor(err: Error) {
+    super(err.message);
+    this.stack = err.stack;
+    this.code = CommunicationErrorCode.SERVICE_ERROR;
+    this.httpStatusCode = HttpStatusCodes.SERVICE_UNAVAILABLE;
   }
 }

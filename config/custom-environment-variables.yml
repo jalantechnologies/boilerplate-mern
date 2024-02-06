@@ -1,13 +1,9 @@
-node:
-  config:
-    env: 'NODE_CONFIG_ENV'
+accounts:
+  tokenKey: 'JWT_TOKEN'
 
 rollbar:
   env: 'ROLLBAR_ENV'
   accessToken: 'ROLLBAR_ACCESS_TOKEN'
-
-jwt:
-  token: 'JWT_TOKEN'
 
 twilio:
   verify:
@@ -16,7 +12,8 @@ twilio:
   messaging:
     messagingServiceSid: 'TWILIO_MESSAGING_SERVICE_SID'
 
-sendgridApiKey: 'SENDGRID_API_KEY'
+sendgrid:
+  apiKey: 'SENDGRID_API_KEY'
 
 mongoDb:
   uri: 'MONGODB_URI'

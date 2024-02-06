@@ -1,4 +1,4 @@
-import ConfigService from '../../config/config-service';
+import { ConfigService } from '../../config';
 import { UnknownTransportError } from '../types';
 
 import ConsoleLogger from './console-logger';
@@ -6,63 +6,63 @@ import DatadogLogger from './datadog-logger';
 import Logger, { LoggerTransport } from './types';
 
 export default class Loggers {
-  private static loggers: Logger[];
+  private static loggers = this.getLoggers();
 
-  public static initializeLoggers(): void {
-    const transports: LoggerTransport[] = ConfigService.getListValue<LoggerTransport>('logger.transports');
-    const loggerTransports: Logger[] = [];
+  public static info(message: string, ...args: unknown[]): void {
+    Loggers.loggers.forEach((logger) => {
+      logger.info(message, ...args);
+    });
+  }
 
-    transports.forEach((loggerTransport: string) => {
+  public static debug(message: string, ...args: unknown[]): void {
+    Loggers.loggers.forEach((logger) => {
+      logger.debug(message, ...args);
+    });
+  }
+
+  public static error(message: string, ...args: unknown[]): void {
+    Loggers.loggers.forEach((logger) => {
+      logger.error(message, ...args);
+    });
+  }
+
+  public static warn(message: string, ...args: unknown[]): void {
+    Loggers.loggers.forEach((logger) => {
+      logger.warn(message, ...args);
+    });
+  }
+
+  public static critical(message: string, ...args: unknown[]): void {
+    Loggers.loggers.forEach((logger) => {
+      logger.critical(message, ...args);
+    });
+  }
+
+  private static getLoggers(): Logger[] {
+    const transports: LoggerTransport[] = ConfigService.getValue<LoggerTransport[]>('logger.transports');
+    const loggers: Logger[] = [];
+
+    transports.forEach((loggerTransport: LoggerTransport) => {
       switch (loggerTransport) {
         case LoggerTransport.Console:
-          loggerTransports.push(Loggers.getConsoleLogger());
+          loggers.push(Loggers.getConsoleLogger());
           break;
         case LoggerTransport.Datadog:
-          loggerTransports.push(Loggers.getDatadogLogger());
+          loggers.push(Loggers.getDatadogLogger());
           break;
         default:
           throw new UnknownTransportError(loggerTransport);
       }
     });
 
-    Loggers.loggers = loggerTransports;
+    return loggers;
   }
 
-  public static info(message: string): void {
-    Loggers.loggers.forEach((logger) => {
-      logger.info(message);
-    });
-  }
-
-  public static debug(message: string): void {
-    Loggers.loggers.forEach((logger) => {
-      logger.debug(message);
-    });
-  }
-
-  public static error(message: string): void {
-    Loggers.loggers.forEach((logger) => {
-      logger.error(message);
-    });
-  }
-
-  public static warn(message: string): void {
-    Loggers.loggers.forEach((logger) => {
-      logger.warn(message);
-    });
-  }
-
-  public static critical(message: string): void {
-    Loggers.loggers.forEach((logger) => {
-      logger.critical(message);
-    });
-  }
-
-  static getConsoleLogger(): ConsoleLogger {
+  private static getConsoleLogger(): ConsoleLogger {
     return new ConsoleLogger();
   }
 
-  static getDatadogLogger(): DatadogLogger {
+  private static getDatadogLogger(): DatadogLogger {
     return new DatadogLogger();
   }
 }

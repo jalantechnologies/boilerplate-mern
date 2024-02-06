@@ -1,33 +1,24 @@
+/* eslint-disable no-console,class-methods-use-this */
 import Logger from './types';
 
 export default class ConsoleLogger implements Logger {
-  // eslint-disable-next-line class-methods-use-this
-  public info(message: string): void {
-    // eslint-disable-next-line no-console
-    console.log(`[INFO] ${message}`);
+  public info(message: string, ...args: unknown[]): void {
+    console.info(`[INFO] ${message}`, ...args);
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  public debug(message: string): void {
-    // eslint-disable-next-line no-console
-    console.log(`[DEBUG] ${message}`);
+  public debug(message: string, ...args: unknown[]): void {
+    console.debug(`[DEBUG] ${message}`, ...args);
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  public error(message: string): void {
-    // eslint-disable-next-line no-console
-    console.log(`[ERROR] ${message}`);
+  public error(message: string, ...args: unknown[]): void {
+    console.error(`[ERROR] ${message}`, ...args);
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  public warn(message: string): void {
-    // eslint-disable-next-line no-console
-    console.log(`[WARN] ${message}`);
+  public warn(message: string, ...args: unknown[]): void {
+    console.warn(`[WARN] ${message}`, ...args);
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  public critical(message: string): void {
-    // eslint-disable-next-line no-console
-    console.log(`[CRITICAL] ${message}`);
+  public critical(message: string, ...args: unknown[]): void {
+    console.error(`[CRITICAL] ${message}`, ...args);
   }
 }

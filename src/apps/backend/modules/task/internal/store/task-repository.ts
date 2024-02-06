@@ -1,30 +1,10 @@
-import mongoose, { CallbackError, Connection } from 'mongoose';
+import { ApplicationRepository } from '../../../application';
 
-import ConfigService from '../../../config/config-service';
+import { TaskDB, TaskDbSchema } from './task-db';
 
-import { TaskDB, taskDbSchema } from './task-db';
+const TaskRepository = ApplicationRepository<TaskDB>(
+  'Task',
+  TaskDbSchema,
+);
 
-export default class TaskRepository {
-  public static taskDB: mongoose.Model<TaskDB>;
-
-  static async createDBConnection(): Promise<Connection> {
-    return new Promise((resolve, reject) => {
-      const mongoURI = ConfigService.getStringValue('mongoDb.uri');
-      mongoose.createConnection(
-        mongoURI,
-        {},
-        (error: CallbackError, result: Connection): void => {
-          if (error) {
-            reject(error);
-          } else {
-            TaskRepository.taskDB = result.model(
-              'Task',
-              taskDbSchema,
-            ) as unknown as mongoose.Model<TaskDB>;
-            resolve(result);
-          }
-        },
-      );
-    });
-  }
-}
+export default TaskRepository;

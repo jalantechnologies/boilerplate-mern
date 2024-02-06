@@ -1,14 +1,12 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
-import { Router } from 'express';
+import { ApplicationRouter } from '../../application';
 
-import AccessTokenController from './access-token-controller';
+import { AccessTokenController } from './access-token-controller';
 
-export default class AccessTokenRouter {
-  public static getRoutes(): Router {
-    const router = Router();
+export default class AccessTokenRouter extends ApplicationRouter {
+  configure(): void {
+    const { router } = this;
+    const ctrl = new AccessTokenController();
 
-    router.post('/', AccessTokenController.createAccessToken);
-
-    return router;
+    router.post('/', ctrl.createAccessToken);
   }
 }

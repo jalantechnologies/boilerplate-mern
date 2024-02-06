@@ -1,10 +1,10 @@
+import { CreateAccountParams } from '../../src/apps/backend/modules/account';
+import { setupScenario } from '../helpers/scenario';
+
 describe('Login', () => {
-  let credentials;
+  const credentials: CreateAccountParams = setupScenario('login');
 
   beforeEach(() => {
-    cy.task('scenario:setup', 'login').then((creds) => {
-      credentials = creds;
-    });
     cy.visit('/');
   });
 
@@ -31,10 +31,5 @@ describe('Login', () => {
     cy.get('button').click();
 
     cy.get('#error').should('be.visible').should('have.text', 'ERROR!');
-  });
-
-  afterEach(() => {
-    credentials = null;
-    cy.task('scenario:cleanup', 'login');
   });
 });

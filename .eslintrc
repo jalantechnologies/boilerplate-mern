@@ -1,4 +1,5 @@
 {
+  "root": true,
   "env": {
     "browser": true,
     "cypress/globals": true,
@@ -19,6 +20,7 @@
         "plugin:import/recommended"
       ],
       "rules": {
+        "eslint-comments/disable-enable-pair": "off",
         "import/no-extraneous-dependencies": [
           "error",
           {
@@ -35,8 +37,14 @@
             }
           }
         ],
-        "eslint-comments/disable-enable-pair": "off",
-        "no-underscore-dangle": "off"
+        "no-underscore-dangle": "off",
+        "sort-keys": [
+          "error",
+          "asc",
+          {
+            "natural": true
+          }
+        ]
       }
     },
     {
@@ -58,12 +66,36 @@
         "project": "./tsconfig.json"
       },
       "rules": {
+        "@typescript-eslint/lines-between-class-members": [
+          "error",
+          "always",
+          {
+            "exceptAfterSingleLine": true
+          }
+        ],
+        "@typescript-eslint/member-ordering": [
+          "error",
+          {
+            "typeLiterals": {
+              "order": "natural"
+            }
+          }
+        ],
+        "@typescript-eslint/no-unsafe-member-access": "off",
+        "@typescript-eslint/unbound-method": [
+          "error",
+          {
+            "ignoreStatic": true
+          }
+        ],
+        "eslint-comments/disable-enable-pair": "off",
         "import/no-extraneous-dependencies": [
           "error",
           {
             "devDependencies": true
           }
         ],
+        "import/extensions": "off",
         "import/order": [
           "error",
           {
@@ -74,29 +106,9 @@
             }
           }
         ],
-        "eslint-comments/disable-enable-pair": "off",
-        "no-underscore-dangle": "off",
-        "@typescript-eslint/no-unsafe-member-access": "off",
-        "@typescript-eslint/unbound-method": [
-          "error",
-          {
-            "ignoreStatic": true
-          }
-        ],
-        "@typescript-eslint/lines-between-class-members": [
-          "error",
-          "always",
-          {
-            "exceptAfterSingleLine": true
-          }
-        ],
-        "cypress/assertion-before-screenshot": "warn",
-        "cypress/no-assigning-return-values": "error",
-        "cypress/no-async-tests": "error",
-        "cypress/no-force": "warn",
-        "cypress/no-pause": "error",
-        "cypress/no-unnecessary-waiting": "error",
-        "import/extensions": "off"
+        "import/prefer-default-export": "off",
+        "max-classes-per-file": "off",
+        "no-underscore-dangle": "off"
       }
     },
     {
@@ -112,9 +124,23 @@
       }
     },
     {
+      "files": "test/**",
+      "rules": {
+        "@typescript-eslint/no-unused-expressions": "off"
+      }
+    },
+    {
       "files": "cypress/**",
       "parserOptions": {
         "project": "./cypress/tsconfig.json"
+      },
+      "rules": {
+        "cypress/assertion-before-screenshot": "warn",
+        "cypress/no-assigning-return-values": "error",
+        "cypress/no-async-tests": "error",
+        "cypress/no-force": "warn",
+        "cypress/no-pause": "error",
+        "cypress/no-unnecessary-waiting": "error"
       }
     }
   ]

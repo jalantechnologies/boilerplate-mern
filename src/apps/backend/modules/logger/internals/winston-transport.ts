@@ -12,6 +12,11 @@ type TransportLogInfo = {
 };
 
 export default class CustomWinstonTransport extends WinstonTransport {
+  private static logMessage(level: TransportLogLevel, message: string) {
+    const log = Logger[level] || Logger.info;
+    log(message);
+  }
+
   log(info: TransportLogInfo, callback: TransportLogCallback): void {
     setImmediate(() => {
       this.emit('logged', info);
@@ -19,10 +24,5 @@ export default class CustomWinstonTransport extends WinstonTransport {
 
     CustomWinstonTransport.logMessage(info.level, info.message);
     callback();
-  }
-
-  private static logMessage(level: TransportLogLevel, message: string) {
-    const log = Logger[level] || Logger.info;
-    log(message);
   }
 }

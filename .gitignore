@@ -54,6 +54,7 @@ tmp/*
 
 # local config files
 config/local*
+.env
 
 # distribution
 dist
@@ -73,3 +74,6 @@ terraform/*.tfvars
 
 # asdf npm version manager
 .tool-versions
+
+# cypress artifacts
+cypress/screenshots/

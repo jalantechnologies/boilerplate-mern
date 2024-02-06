@@ -1,14 +1,12 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
-import { Router } from 'express';
+import { ApplicationRouter } from '../../application';
 
-import AccountController from './account-controller';
+import { AccountController } from './account-controller';
 
-export default class AccountRouter {
-  public static getRoutes(): Router {
-    const router = Router();
+export default class AccountRouter extends ApplicationRouter {
+  configure(): void {
+    const { router } = this;
+    const ctrl = new AccountController();
 
-    router.post('/', AccountController.createAccount);
-
-    return router;
+    router.post('/', ctrl.createAccount);
   }
 }

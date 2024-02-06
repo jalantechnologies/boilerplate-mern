@@ -7,9 +7,13 @@ export interface TaskDB {
   name: string;
 }
 
-export const taskDbSchema: Schema = new Schema<TaskDB>(
+export const TaskDbSchema: Schema = new Schema<TaskDB>(
   {
-    active: { type: Boolean, required: true, default: true },
+    active: {
+      type: Boolean,
+      required: true,
+      default: true,
+    },
     account: {
       type: Schema.Types.ObjectId,
       ref: 'Account',

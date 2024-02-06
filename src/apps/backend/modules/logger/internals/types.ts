@@ -1,13 +1,13 @@
 export default interface Logger {
-  info(message: string): void;
+  info(message: string, ...args: unknown[]): void;
 
-  debug(message: string): void;
+  debug(message: string, ...args: unknown[]): void;
 
-  error(message: string): void;
+  error(message: string, ...args: unknown[]): void;
 
-  warn(message: string): void;
+  warn(message: string, ...args: unknown[]): void;
 
-  critical(message: string): void;
+  critical(message: string, ...args: unknown[]): void;
 }
 
 export enum LoggerTransport {

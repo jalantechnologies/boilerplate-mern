@@ -1,28 +1,23 @@
-import { NextFunction, Request, Response } from 'express';
-
+import { applicationController, Request, Response } from '../../application';
+import { HttpStatusCodes } from '../../http';
 import AccountService from '../account-service';
-import { Account, CreateAccountParams } from '../types';
+import { CreateAccountParams } from '../types';
 
-export default class AccountController {
-  public static async createAccount(
-    req: Request,
+import { serializeAccountAsJSON } from './account-serializer';
+
+export class AccountController {
+  createAccount = applicationController(async (
+    req: Request<CreateAccountParams>,
     res: Response,
-    next: NextFunction,
-  ): Promise<void> {
-    try {
-      const { username, password }: CreateAccountParams = req.body as CreateAccountParams;
-      const params: CreateAccountParams = { username, password };
-      const account = await AccountService.createAccount(params);
-      res.status(201).send(AccountController.serializeAccountAsJSON(account));
-    } catch (e) {
-      next(e);
-    }
-  }
+  ) => {
+    const account = await AccountService.createAccount({
+      username: req.body.username,
+      password: req.body.password,
+    });
+    const accountJSON = serializeAccountAsJSON(account);
 
-  private static serializeAccountAsJSON(account: Account): unknown {
-    return {
-      id: account.id,
-      username: account.username,
-    };
-  }
+    res
+      .status(HttpStatusCodes.CREATED)
+      .send(accountJSON);
+  });
 }

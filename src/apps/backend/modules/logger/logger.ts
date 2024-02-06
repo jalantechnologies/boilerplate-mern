@@ -1,23 +1,23 @@
 import Loggers from './internals/loggers';
 
 export default class Logger {
-  public static info(message: string): void {
-    Loggers.info(message);
+  public static info(message: string, ...args: unknown[]): void {
+    Loggers.info(message, ...args);
   }
 
-  public static debug(message: string): void {
-    Loggers.debug(message);
+  public static debug(message: string, ...args: unknown[]): void {
+    Loggers.debug(message, ...args);
   }
 
-  public static error(message: string): void {
-    Loggers.error(message);
+  public static error(message: string, ...args: unknown[]): void {
+    Loggers.error(message, ...args);
   }
 
-  public static warn(message: string): void {
-    Loggers.warn(message);
+  public static warn(message: string, ...args: unknown[]): void {
+    Loggers.warn(message, ...args);
   }
 
-  public static critical(message: string): void {
-    Loggers.critical(message);
+  public static critical(message: string, ...args: unknown[]): void {
+    Loggers.critical(message, ...args);
   }
 }

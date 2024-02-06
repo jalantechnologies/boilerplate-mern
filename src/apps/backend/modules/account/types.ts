@@ -1,22 +1,20 @@
-/* eslint-disable max-classes-per-file */
-import AppError from '../error/app-error';
+import { ApplicationError } from '../application';
+import { HttpStatusCodes } from '../http';
 
 export class Account {
   id: string;
-
   username: string;
-
   hashedPassword: string;
 }
 
 export type CreateAccountParams = {
-  username: string;
   password: string;
+  username: string;
 };
 
 export type AccountSearchParams = {
-  username: string;
   password: string;
+  username: string;
 };
 
 export enum AccountErrorCode {
@@ -25,32 +23,32 @@ export enum AccountErrorCode {
   INVALID_CREDENTIALS = 'ACCOUNT_ERR_03',
 }
 
-export class AccountWithUserNameExistsError extends AppError {
+export class AccountWithUserNameExistsError extends ApplicationError {
   code: AccountErrorCode;
 
   constructor(username: string) {
     super(`An account with username ${username} already exists.`);
     this.code = AccountErrorCode.USERNAME_ALREADY_EXISTS;
-    this.httpStatusCode = 409;
+    this.httpStatusCode = HttpStatusCodes.CONFLICT;
   }
 }
 
-export class AccountNotFoundError extends AppError {
+export class AccountNotFoundError extends ApplicationError {
   code: AccountErrorCode;
 
   constructor(username: string) {
     super(`${username} not found with provided parameters.`);
     this.code = AccountErrorCode.NOT_FOUND;
-    this.httpStatusCode = 404;
+    this.httpStatusCode = HttpStatusCodes.NOT_FOUND;
   }
 }
 
-export class InvalidCredentialsError extends AppError {
+export class InvalidCredentialsError extends ApplicationError {
   code: AccountErrorCode;
 
   constructor(username: string) {
     super(`Invalid credentials for ${username}. Please try again.`);
-    this.code = AccountErrorCode.NOT_FOUND;
-    this.httpStatusCode = 401;
+    this.code = AccountErrorCode.INVALID_CREDENTIALS;
+    this.httpStatusCode = HttpStatusCodes.UNAUTHORIZED;
   }
 }

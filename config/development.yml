@@ -1,8 +1,7 @@
-webAppHost: 'http://localhost:3000'
-
-jwt:
-  token: 'dev_auth_token'
+accounts:
+  tokenKey: 'dev_auth_token'
 
 mongoDb:
   uri: 'mongodb://localhost:27017/boilerplate-mern-dev'
 
+webAppHost: 'http://localhost:3000'
