@@ -1,11 +1,12 @@
 import { ApplicationRouter } from '../../application';
 
-import * as AccountController from './account-controller';
+import { AccountController } from './account-controller';
 
 export default class AccountRouter extends ApplicationRouter {
   configure(): void {
     const { router } = this;
+    const ctrl = new AccountController();
 
-    router.post('/', AccountController.createAccount);
+    router.post('/', ctrl.createAccount);
   }
 }

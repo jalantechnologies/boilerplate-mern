@@ -4,15 +4,17 @@ import { CreateAccessTokenParams } from '../types';
 
 import { serializeAccessTokenAsJSON } from './access-token-serializer';
 
-export const createAccessToken = applicationController(async (
-  req: Request<CreateAccessTokenParams>,
-  res: Response,
-) => {
-  const accessToken = await AccessTokenService.createAccessToken({
-    username: req.body.username,
-    password: req.body.password,
-  });
-  const accessTokenJSON = serializeAccessTokenAsJSON(accessToken);
+export class AccessTokenController {
+  createAccessToken = applicationController(async (
+    req: Request<CreateAccessTokenParams>,
+    res: Response,
+  ) => {
+    const accessToken = await AccessTokenService.createAccessToken({
+      username: req.body.username,
+      password: req.body.password,
+    });
+    const accessTokenJSON = serializeAccessTokenAsJSON(accessToken);
 
-  res.send(accessTokenJSON);
-});
+    res.send(accessTokenJSON);
+  });
+}
