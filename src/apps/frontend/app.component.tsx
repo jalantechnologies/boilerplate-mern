@@ -6,8 +6,9 @@ import './app.global.css';
 import constant from './constants';
 import { AuthProvider, BaseWebProvider } from './contexts';
 import { Config } from './helpers';
-import { About, Login, NotFound } from './pages';
+import { About, NotFound } from './pages';
 import InspectLet from './vendor/inspectlet';
+import MainLayout from './pages/app-layout/main-layout';
 
 export default function App(): React.ReactElement {
   useEffect(() => {
@@ -28,7 +29,8 @@ export default function App(): React.ReactElement {
         <Router>
           <Routes>
             <Route path="/about" element={<About />} />
-            <Route path="/" element={<Login />} />
+            {/* <Route path="/" element={<Login />} /> */}
+            <Route path="/" element={<MainLayout />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>
