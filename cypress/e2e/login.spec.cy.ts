@@ -19,8 +19,7 @@ describe('Login', () => {
     cy.get('[data-testid="password"]').type(credentials.password);
     cy.get('button[data-baseweb="button"]').click();
 
-    const toaster = () => cy.get('div[data-baseweb="toast"]');
-    toaster().should('contain', 'Login Successful');
+    cy.url().should('be.equal', `${Cypress.config('baseUrl')}/app`);
   });
 
   it('should not allow login for removed credentials', () => {
