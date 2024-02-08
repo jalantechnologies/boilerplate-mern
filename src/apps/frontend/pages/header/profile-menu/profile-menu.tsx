@@ -23,20 +23,18 @@ const ProfileMenu: React.FunctionComponent<ProfileMenuProps> = ({
     triggerType={TRIGGER_TYPE.click}
     placement={PLACEMENT.bottomLeft}
     content={() => (
-      <Block>
         <StatefulMenu
           items={items}
           onItemSelect={({ item }: { item: ProfileMenuItem }) => item.onClickHandler()
           }
         />
-      </Block>
     )}
     returnFocus
     autoFocus
   >
-    <a href="#">
+    <Block>
       <Avatar size="scale1600" src={userAvatarUrl} />
-    </a>
+    </Block>
   </StatefulPopover>
 );
 
