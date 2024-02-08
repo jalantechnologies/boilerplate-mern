@@ -1,14 +1,13 @@
 import { PLACEMENT, ToasterContainer } from 'baseui/toast';
 import React, { useEffect } from 'react';
-import { Route, Routes, BrowserRouter as Router } from 'react-router-dom';
-import './app.global.css';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 import constant from './constants';
 import { AuthProvider, BaseWebProvider } from './contexts';
 import { Config } from './helpers';
-import { About, NotFound } from './pages';
-import MainLayout from './pages/app-layout/main-layout';
+import { AppRoutes } from './routes';
 import InspectLet from './vendor/inspectlet';
+import './app.global.css';
 
 export default function App(): React.ReactElement {
   useEffect(() => {
@@ -27,12 +26,7 @@ export default function App(): React.ReactElement {
           autoHideDuration={constant.TOASTER_AUTO_HIDE_DURATION}
         />
         <Router>
-          <Routes>
-            <Route path="/about" element={<About />} />
-            {/* <Route path="/" element={<Login />} /> */}
-            <Route path="/" element={<MainLayout />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <AppRoutes />
         </Router>
       </BaseWebProvider>
     </AuthProvider>

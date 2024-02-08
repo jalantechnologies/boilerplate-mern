@@ -12,14 +12,12 @@ export interface ProfileMenuItem {
 
 interface ProfileMenuProps {
   items: ProfileMenuItem[];
-  userName: string;
   userAvatarUrl: string;
 }
 
 const ProfileMenu: React.FunctionComponent<ProfileMenuProps> = ({
   items,
   userAvatarUrl,
-  userName,
 }) => (
   <StatefulPopover
     triggerType={TRIGGER_TYPE.click}
@@ -37,7 +35,7 @@ const ProfileMenu: React.FunctionComponent<ProfileMenuProps> = ({
     autoFocus
   >
     <a href="#">
-      <Avatar name={userName} size="scale1600" src={userAvatarUrl} />
+      <Avatar size="scale1600" src={userAvatarUrl} />
     </a>
   </StatefulPopover>
 );

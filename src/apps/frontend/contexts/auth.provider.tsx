@@ -11,9 +11,11 @@ import useAsync from './async.hook';
 
 type AuthContextType = {
   isLoginLoading: boolean;
+  isUserAuthenticated: () => boolean;
   loginError: AsyncError;
   loginResult: AccessToken;
   signIn: (username: string, password: string) => Promise<AccessToken>;
+  signOut: () => void;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -33,6 +35,12 @@ const login = async (
   return result;
 };
 
+const logout = (): void => localStorage.removeItem('access-token');
+
+const getAccessToken = (): AccessToken => JSON.parse(localStorage.getItem('access-token')) as AccessToken;
+
+const isUserAuthenticated = () => !!getAccessToken();
+
 export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const {
     isLoading: isLoginLoading,
@@ -44,7 +52,9 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
+        signOut: logout,
         isLoginLoading,
+        isUserAuthenticated,
         signIn,
         loginError,
         loginResult,

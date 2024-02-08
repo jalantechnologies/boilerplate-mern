@@ -5,10 +5,7 @@ import * as React from 'react';
 const NavbarDesktopCenterSection: React.FC = () => (
     <StyledNavigationList $align={ALIGN.center}>
       <StyledNavigationItem>
-        <StyledLink href="/dashboard">Dashboard</StyledLink>
-      </StyledNavigationItem>
-      <StyledNavigationItem>
-        <StyledLink href="/about">About</StyledLink>
+        <StyledLink href="/app">Dashboard</StyledLink>
       </StyledNavigationItem>
     </StyledNavigationList>
 );

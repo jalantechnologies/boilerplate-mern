@@ -1,7 +1,7 @@
 import { toaster } from 'baseui/toast';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import constant from '../../../constants';
 import { AsyncError } from '../../../types';
 import AuthenticationFormLayout from '../authentication-form-layout';
 import AuthenticationPageLayout from '../authentication-page-layout';
@@ -9,8 +9,9 @@ import AuthenticationPageLayout from '../authentication-page-layout';
 import LoginForm from './login-form';
 
 export const Login: React.FC = () => {
+  const navigate = useNavigate();
   const onSuccess = () => {
-    toaster.positive(constant.LOGIN_SUCCESS_MSG);
+    navigate('/app');
   };
 
   const onError = (error: AsyncError) => {

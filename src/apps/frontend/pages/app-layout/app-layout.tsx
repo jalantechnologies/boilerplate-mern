@@ -4,13 +4,13 @@ import React, { PropsWithChildren } from 'react';
 import { Grid } from '../../components';
 import Header from '../header/header';
 
-export const MainLayout: React.FC<PropsWithChildren> = ({ children }) => (
-  <Grid minHeight="100vh" fullHeight justifyContent={'space-between'}>
+export const AppLayout: React.FC<PropsWithChildren> = ({ children }) => (
+  <Grid fullHeight>
     <FlexGridItem>
       <Header />
     </FlexGridItem>
-    {children}
+    <FlexGridItem>{children}</FlexGridItem>
   </Grid>
 );
 
-export default MainLayout;
+export default AppLayout;

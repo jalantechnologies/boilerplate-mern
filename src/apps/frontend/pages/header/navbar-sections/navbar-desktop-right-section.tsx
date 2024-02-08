@@ -10,20 +10,17 @@ import { ProfileMenuItem } from '../types';
 
 interface NavbarDesktopRightSectionProps {
   profileMenuItems: ProfileMenuItem[];
-  userName: string;
   userAvatarUrl: string;
 }
 
 const NavbarDesktopRightSection: React.FC<NavbarDesktopRightSectionProps> = ({
   profileMenuItems,
   userAvatarUrl,
-  userName,
 }) => (
   <StyledNavigationList $align={ALIGN.right}>
     <StyledNavigationItem style={{ padding: '0 40px' }}>
       <ProfileMenu
         items={profileMenuItems}
-        userName={userName}
         userAvatarUrl={userAvatarUrl}
       />
     </StyledNavigationItem>
