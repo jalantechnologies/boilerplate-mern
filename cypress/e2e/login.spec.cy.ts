@@ -5,7 +5,7 @@ describe('Login', () => {
   const credentials: CreateAccountParams = setupScenario('login');
 
   beforeEach(() => {
-    cy.visit('/');
+    cy.visit('/login');
   });
 
   it('loads the login component', () => {
@@ -19,7 +19,7 @@ describe('Login', () => {
     cy.get('[data-testid="password"]').type(credentials.password);
     cy.get('button[data-baseweb="button"]').click();
 
-    cy.url().should('be.equal', `${Cypress.config('baseUrl')}/app`);
+    cy.url().should('be.equal', `${Cypress.config('baseUrl')}/`);
   });
 
   it('should not allow login for removed credentials', () => {

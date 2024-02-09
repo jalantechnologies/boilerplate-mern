@@ -1,10 +1,9 @@
 import React from 'react';
-import { Navigate } from 'react-router-dom';
 
-import { About, Login } from '../pages';
+import { About, Login, NotFound } from '../pages';
 
 export const publicRoutes = [
-  { path: '/', element: <Login /> },
-  { path: 'about', element: <About /> },
-  { path: '*', element: <Navigate to="." /> },
+  { path: '/login', element: <Login /> },
+  { path: '/about', element: <About /> },
+  { path: '*', element: <NotFound /> },
 ];

@@ -11,7 +11,7 @@ import LoginForm from './login-form';
 export const Login: React.FC = () => {
   const navigate = useNavigate();
   const onSuccess = () => {
-    navigate('/app');
+    navigate('/');
   };
 
   const onError = (error: AsyncError) => {

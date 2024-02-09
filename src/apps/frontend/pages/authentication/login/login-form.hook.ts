@@ -11,7 +11,7 @@ interface LoginFormProps {
 }
 const useLoginForm = ({ onError, onSuccess }: LoginFormProps) => {
   const {
-    isLoginLoading, signIn, loginError, loginResult,
+    isLoginLoading, login, loginError, loginResult,
   } = useAuthContext();
 
   const formik = useFormik({
@@ -28,7 +28,7 @@ const useLoginForm = ({ onError, onSuccess }: LoginFormProps) => {
         .required('Required'),
     }),
     onSubmit: (values) => {
-      signIn(values.username, values.password)
+      login(values.username, values.password)
         .then(() => {
           onSuccess();
         })
