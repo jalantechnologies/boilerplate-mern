@@ -3,6 +3,7 @@ import { HeaderNavigation } from 'baseui/header-navigation';
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import constants from '../../constants/routes';
 import { useAuthContext } from '../../contexts';
 
 import NavbarRightSection from './navbar-sections/navbar-right-section';
@@ -15,7 +16,7 @@ const Header: React.FC<HeaderNavbarProps> = () => {
 
   const handleSignOut = () => {
     logout();
-    navigate('/login');
+    navigate(constants.LOGIN);
   };
 
   const profileMenuItems = [
