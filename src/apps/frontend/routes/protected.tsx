@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 
-import { Dashboard } from '../pages';
+import { Dashboard, NotFound } from '../pages';
 import AppLayout from '../pages/app-layout/app-layout';
 
 const App = () => (
@@ -16,6 +16,7 @@ export const protectedRoutes = [
     element: <App />,
     children: [
       { path: '', element: <Dashboard /> },
+      { path: '*', element: <NotFound /> },
     ],
   },
 ];
