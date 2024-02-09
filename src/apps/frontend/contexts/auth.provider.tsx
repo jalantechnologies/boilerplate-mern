@@ -11,9 +11,11 @@ import useAsync from './async.hook';
 
 type AuthContextType = {
   isLoginLoading: boolean;
+  isUserAuthenticated: () => boolean;
+  login: (username: string, password: string) => Promise<AccessToken>;
   loginError: AsyncError;
   loginResult: AccessToken;
-  signIn: (username: string, password: string) => Promise<AccessToken>;
+  logout: () => void;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -22,7 +24,7 @@ const authService = new AuthService();
 
 export const useAuthContext = (): AuthContextType => useContext(AuthContext);
 
-const login = async (
+const loginFn = async (
   username: string,
   password: string,
 ): Promise<ApiResponse<AccessToken>> => {
@@ -33,19 +35,27 @@ const login = async (
   return result;
 };
 
+const logoutFn = (): void => localStorage.removeItem('access-token');
+
+const getAccessToken = (): AccessToken => JSON.parse(localStorage.getItem('access-token')) as AccessToken;
+
+const isUserAuthenticated = () => !!getAccessToken();
+
 export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const {
     isLoading: isLoginLoading,
     error: loginError,
     result: loginResult,
-    asyncCallback: signIn,
-  } = useAsync(login);
+    asyncCallback: login,
+  } = useAsync(loginFn);
 
   return (
     <AuthContext.Provider
       value={{
+        logout: logoutFn,
         isLoginLoading,
-        signIn,
+        isUserAuthenticated,
+        login,
         loginError,
         loginResult,
       }}

@@ -4,6 +4,6 @@ describe('App', () => {
       failOnStatusCode: false,
     });
 
-    cy.get('[data-testid="notFoundContainer"]').should('be.visible');
+    cy.url().should('be.equal', `${Cypress.config('baseUrl')}/login`);
   });
 });
