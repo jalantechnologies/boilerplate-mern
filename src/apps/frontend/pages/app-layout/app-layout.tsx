@@ -1,16 +1,17 @@
-import { FlexGridItem } from 'baseui/flex-grid';
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, useState } from 'react';
 
-import { Grid } from '../../components';
-import Header from '../header/header';
+import { Header } from '../../components';
 
-export const AppLayout: React.FC<PropsWithChildren> = ({ children }) => (
-  <Grid fullHeight>
-    <FlexGridItem>
-      <Header />
-    </FlexGridItem>
-    <FlexGridItem>{children}</FlexGridItem>
-  </Grid>
-);
+export const AppLayout: React.FC<PropsWithChildren> = ({ children }) => {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  return (
+    <div>
+      <div className="flex">
+        <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+      </div>
+      <div className="flex">{children}</div>
+    </div>
+  );
+};
 
 export default AppLayout;

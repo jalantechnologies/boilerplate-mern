@@ -6,14 +6,15 @@
     "es6": true,
     "node": true
   },
-  "plugins": ["cypress"],
+  "plugins": ["cypress", "tailwindcss"],
   "overrides": [
     {
       "files": [".js"],
       "extends": [
         "airbnb-base",
         "plugin:eslint-comments/recommended",
-        "plugin:import/recommended"
+        "plugin:import/recommended",
+        "plugin:tailwindcss/recommended"
       ],
       "rules": {
         "eslint-comments/disable-enable-pair": "off",
@@ -53,7 +54,8 @@
         "plugin:@typescript-eslint/recommended",
         "plugin:@typescript-eslint/recommended-requiring-type-checking",
         "plugin:cypress/recommended",
-        "plugin:react-hooks/recommended"
+        "plugin:react-hooks/recommended",
+        "plugin:tailwindcss/recommended"
       ],
       "parserOptions": {
         "project": "./tsconfig.json"

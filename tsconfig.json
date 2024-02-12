@@ -18,6 +18,7 @@
     "strictNullChecks": false,
     "experimentalDecorators": true,
     "resolveJsonModule": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "jsx": "react-jsx"
   }
 }
