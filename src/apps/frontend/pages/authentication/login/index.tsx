@@ -1,7 +1,9 @@
 import React from 'react';
+import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
 import constants from '../../../constants/routes';
+import { AsyncError } from '../../../types';
 import AuthenticationFormLayout from '../authentication-form-layout';
 import AuthenticationPageLayout from '../authentication-page-layout';
 
@@ -13,8 +15,8 @@ export const Login: React.FC = () => {
     navigate(constants.DASHBOARD);
   };
 
-  const onError = () => {
-    // toaster.negative(error.message);
+  const onError = (error: AsyncError) => {
+    toast.error(error.message);
   };
 
   return (

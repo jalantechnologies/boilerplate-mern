@@ -2,7 +2,11 @@ import * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-const DropdownUser: React.FC = () => {
+interface DropdownUserProps {
+  logout: () => void;
+}
+
+const DropdownUser: React.FC<DropdownUserProps> = ({ logout }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const trigger = useRef<HTMLAnchorElement>(null);
@@ -10,12 +14,13 @@ const DropdownUser: React.FC = () => {
 
   // close on click outside
   useEffect(() => {
-    const clickHandler = ({ target }: MouseEvent) => {
+    const clickHandler = (event: MouseEvent) => {
+      const targetNode = event.target as Node;
       if (!dropdown.current) return;
       if (
         !dropdownOpen
-        || dropdown.current.contains(target)
-        || trigger.current.contains(target)
+        || dropdown.current.contains(targetNode)
+        || trigger.current.contains(targetNode)
       ) return;
       setDropdownOpen(false);
     };
@@ -25,8 +30,8 @@ const DropdownUser: React.FC = () => {
 
   // close if the esc key is pressed
   useEffect(() => {
-    const keyHandler = ({ keyCode }: KeyboardEvent) => {
-      if (!dropdownOpen || keyCode !== 27) return;
+    const keyHandler = ({ key }: KeyboardEvent) => {
+      if (!dropdownOpen || key !== 'Escape') return;
       setDropdownOpen(false);
     };
     document.addEventListener('keydown', keyHandler);
@@ -151,7 +156,10 @@ const DropdownUser: React.FC = () => {
             </Link>
           </li>
         </ul>
-        <button className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
+        <button
+          className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
+          onClick={logout}
+        >
           <svg
             className="fill-current"
             width="22"

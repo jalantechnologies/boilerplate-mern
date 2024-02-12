@@ -10,9 +10,6 @@
   }
 }
 
-@layer components {
-}
-
 @layer utilities {
   /* Chrome, Safari and Opera */
   .no-scrollbar::-webkit-scrollbar {
@@ -137,7 +134,6 @@ span.flatpickr-weekday,
 }
 .flatpickr-day.selected,
 .flatpickr-day.startRange,
-.flatpickr-day.selected,
 .flatpickr-day.endRange {
   @apply dark:!text-white;
 }

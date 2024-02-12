@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Toaster } from 'react-hot-toast';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 import { AuthProvider } from './contexts';
@@ -17,10 +18,7 @@ export default function App(): React.ReactElement {
 
   return (
     <AuthProvider>
-        {/* <ToasterContainer
-          placement={PLACEMENT.topRight}
-          autoHideDuration={constant.TOASTER_AUTO_HIDE_DURATION}
-        /> */}
+        <Toaster />
         <Router>
           <AppRoutes />
         </Router>
