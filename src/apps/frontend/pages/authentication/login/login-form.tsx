@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import { FormControl, Input } from '../../../components';
 import { AsyncError } from '../../../types';
 
 import useLoginForm from './login-form.hook';
@@ -27,50 +28,35 @@ const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
 
         <form onSubmit={formik.handleSubmit}>
           <div className="mb-4">
-            <label className="mb-2.5 block font-medium text-black dark:text-white">
-              Email
-            </label>
-            <div className="relative">
-              <input
-                autoComplete="off"
-                className={`w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary ${
-                  formik.touched.username && formik.errors.username
-                    ? 'border-red-500'
-                    : ''
-                }`}
+            <FormControl
+              label={'Email'}
+              error={formik.touched.username && formik.errors.username}
+            >
+              <Input
                 data-testid="username"
                 disabled={isLoginLoading}
+                error={formik.touched.username && formik.errors.username}
                 name="username"
-                onBlur={formik.handleBlur}
                 onChange={formik.handleChange}
+                onSubmit={formik.handleBlur}
                 placeholder="Enter your email"
                 value={formik.values.username}
               />
-            </div>
-            {formik.touched.username && formik.errors.username && (
-              <div className="ml-1 mt-1 flex items-center text-xs font-medium tracking-wide text-red-500">
-                {formik.errors.username}
-              </div>
-            )}
+            </FormControl>
           </div>
 
           <div className="mb-6">
-            <label className="mb-2.5 block font-medium text-black dark:text-white">
-              Password
-            </label>
-            <div className="relative">
-              <input
-                autoComplete="off"
-                className={`w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary ${
-                  formik.touched.password && formik.errors.password
-                    ? 'border-red-500'
-                    : ''
-                }`}
+            <FormControl
+              label={'Password'}
+              error={formik.touched.password && formik.errors.password}
+            >
+              <Input
                 data-testid="password"
                 disabled={isLoginLoading}
+                error={formik.touched.password && formik.errors.password}
                 name="password"
-                onBlur={formik.handleBlur}
                 onChange={formik.handleChange}
+                onSubmit={formik.handleBlur}
                 placeholder="Enter your password"
                 type={isPasswordVisible ? 'text' : 'password'}
                 value={formik.values.password}
@@ -120,12 +106,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
                   </svg>
                 )}
               </button>
-            </div>
-            {formik.touched.password && formik.errors.password && (
-              <div className="ml-1 mt-1 flex items-center text-xs font-medium tracking-wide text-red-500">
-                {formik.errors.password}
-              </div>
-            )}
+            </FormControl>
           </div>
 
           <div className="mb-5">

@@ -11,12 +11,12 @@ const AuthenticationFormLayout: React.FC<PropsWithChildren> = ({
           <Link className="mb-5.5 inline-block" to="/">
             <img
               className="hidden dark:block"
-              src="/assets/images/logo/logo.svg"
+              src="/assets/img/logo.jpg"
               alt="Logo"
             />
             <img
-              className="dark:hidden"
-              src="/assets/images/logo/logo-dark.svg"
+              className="h-24 w-44 dark:hidden"
+              src="/assets/img/logo.jpg"
               alt="Logo"
             />
           </Link>
