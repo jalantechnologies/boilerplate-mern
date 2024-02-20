@@ -3,9 +3,7 @@ import React, { PropsWithChildren } from 'react';
 const AuthenticationPageLayout: React.FC<PropsWithChildren> = ({
   children,
 }) => (
-  <div
-    className="flex min-h-screen items-center justify-center"
-  >
+  <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
     {children}
   </div>
 );

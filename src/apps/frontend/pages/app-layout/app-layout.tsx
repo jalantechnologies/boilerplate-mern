@@ -7,7 +7,7 @@ export const AppLayout: React.FC<PropsWithChildren> = ({ children }) => (
       <div className="flex">
         <Header />
       </div>
-      <div className="flex">{children}</div>
+      <div className='flex'>{children}</div>
     </div>
 );
 

@@ -1,3 +1,4 @@
+import { Account } from './account';
 import {
   AsyncError,
   AsyncResult,
@@ -8,6 +9,7 @@ import { ApiResponse, ApiError } from './service-response';
 
 export {
   AccessToken,
+  Account,
   AsyncError,
   AsyncResult,
   ApiError,
