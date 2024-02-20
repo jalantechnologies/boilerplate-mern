@@ -205,12 +205,6 @@ module.exports = {
       opacity: {
         65: '.65',
       },
-      backgroundImage: {
-        video: "url('../images/video/video.png')",
-      },
-      content: {
-        'icon-copy': 'url("../images/icon/icon-copy-alt.svg")',
-      },
       transitionProperty: { width: 'width', stroke: 'stroke' },
       borderWidth: {
         6: '6px',
