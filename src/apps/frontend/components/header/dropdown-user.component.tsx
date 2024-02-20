@@ -5,15 +5,17 @@ import { Link } from 'react-router-dom';
 import { Account } from '../../types';
 
 interface DropdownUserProps {
-  account?: Account;
+  account: Account;
   logout: () => void;
 }
 
-const DropdownUser: React.FC<DropdownUserProps> = ({ logout }) => {
+const DropdownUser: React.FC<DropdownUserProps> = ({ account, logout }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const trigger = useRef<HTMLAnchorElement>(null);
   const dropdown = useRef<HTMLDivElement>(null);
+
+  const username = account?.name || account?.username || 'Guest';
 
   // close on click outside
   useEffect(() => {
@@ -29,7 +31,7 @@ const DropdownUser: React.FC<DropdownUserProps> = ({ logout }) => {
     };
     document.addEventListener('click', clickHandler);
     return () => document.removeEventListener('click', clickHandler);
-  }, []);
+  }, [dropdownOpen]);
 
   // close if the esc key is pressed
   useEffect(() => {
@@ -39,7 +41,7 @@ const DropdownUser: React.FC<DropdownUserProps> = ({ logout }) => {
     };
     document.addEventListener('keydown', keyHandler);
     return () => document.removeEventListener('keydown', keyHandler);
-  }, []);
+  }, [dropdownOpen]);
 
   return (
     <div className="relative">
@@ -51,13 +53,13 @@ const DropdownUser: React.FC<DropdownUserProps> = ({ logout }) => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            {/* {account.name || account.username} */}
+            {username}
           </span>
           <span className="block text-xs">User</span>
         </span>
 
         <span className="size-12 rounded-full">
-          <img src="" alt="User" />
+          <img src="/assets/img/user.png" alt="User" />
         </span>
 
         <svg
