@@ -1,3 +1,4 @@
+import { TourProvider } from '@reactour/tour';
 import { PLACEMENT, ToasterContainer } from 'baseui/toast';
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -8,6 +9,8 @@ import { Config } from './helpers';
 import { AppRoutes } from './routes';
 import InspectLet from './vendor/inspectlet';
 import './app.global.css';
+import { TourContent } from './components';
+import tourProviderStyles from './components/tour-content/tour-provider-styles';
 
 export default function App(): React.ReactElement {
   useEffect(() => {
@@ -25,9 +28,15 @@ export default function App(): React.ReactElement {
           placement={PLACEMENT.topRight}
           autoHideDuration={constant.TOASTER_AUTO_HIDE_DURATION}
         />
-        <Router>
-          <AppRoutes />
-        </Router>
+        <TourProvider
+          steps={[]}
+          ContentComponent={TourContent}
+          styles={tourProviderStyles}
+        >
+          <Router>
+            <AppRoutes />
+          </Router>
+        </TourProvider>
       </BaseWebProvider>
     </AuthProvider>
   );
