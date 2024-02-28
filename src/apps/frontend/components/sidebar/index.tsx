@@ -1,8 +1,9 @@
 import React, { useRef } from 'react';
 import { NavLink } from 'react-router-dom';
 
-import SidebarMenuItem from './sidebar-menu-item';
 import constants from '../../constants/routes';
+
+import SidebarMenuItem from './sidebar-menu-item';
 
 type SidebarProps = {
   isSidebarOpen: boolean;

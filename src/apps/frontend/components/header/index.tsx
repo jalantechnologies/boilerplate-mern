@@ -2,7 +2,6 @@ import * as React from 'react';
 import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-// import constants from '../../constants/routes';
 import { useAuthContext } from '../../contexts';
 
 import DropdownUser from './dropdown-user.component';

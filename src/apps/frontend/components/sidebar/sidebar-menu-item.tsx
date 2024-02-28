@@ -3,8 +3,8 @@ import { NavLink, useLocation } from 'react-router-dom';
 
 type SidebarMenuItemProps = {
   path: string;
-  title: string;
   setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  title: string;
 };
 
 const SidebarMenuItem: React.FC<SidebarMenuItemProps> = ({
