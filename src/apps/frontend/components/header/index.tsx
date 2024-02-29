@@ -4,8 +4,8 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import { useAuthContext } from '../../contexts';
 
-import DropdownUser from './dropdown-user.component';
 import HamburgerToggleButton from './hamburger-toggle-button';
+import DropdownUser from './user-profile-snippet.component';
 
 type HeaderProps = {
   isSidebarOpen: boolean;
