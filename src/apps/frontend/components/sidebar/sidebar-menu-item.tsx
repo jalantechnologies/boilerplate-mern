@@ -2,12 +2,14 @@ import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 
 type SidebarMenuItemProps = {
+  iconPath: string;
   path: string;
   setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
   title: string;
 };
 
 const SidebarMenuItem: React.FC<SidebarMenuItemProps> = ({
+  iconPath,
   path,
   title,
   setIsSidebarOpen,
@@ -24,6 +26,9 @@ const SidebarMenuItem: React.FC<SidebarMenuItemProps> = ({
         }`}
         onClick={() => setIsSidebarOpen(false)}
       >
+        <img
+          src={iconPath}
+        />
         {title}
       </NavLink>
     </li>

@@ -1,5 +1,4 @@
 import React, { useRef } from 'react';
-import { NavLink } from 'react-router-dom';
 
 import constants from '../../constants/routes';
 
@@ -25,15 +24,7 @@ const Sidebar: React.FC<SidebarProps> = ({
       }`}
     >
       {/* <!-- SIDEBAR HEADER --> */}
-      <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
-        <NavLink to={constants.DASHBOARD}>
-          <img
-            className='size-13'
-            src='/assets/img/logo-small.jpg'
-            alt="Logo"
-          />
-        </NavLink>
-
+      <div className="flex items-center justify-end gap-2 px-6 py-5.5 lg:py-6.5">
         <button
           ref={trigger}
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -48,19 +39,21 @@ const Sidebar: React.FC<SidebarProps> = ({
       {/* <!-- SIDEBAR MENU --> */}
       <div className="flex flex-col overflow-y-auto duration-300 ease-linear">
         <nav className="p-2 lg:px-6">
-          <h3 className="mb-2 ml-4 text-sm font-semibold text-bodydark2">
+          <h3 className="mb-2 ml-4 mt-4 text-sm font-semibold text-bodydark2">
             MENU
           </h3>
           <ul className="mb-6 ml-6 flex flex-col gap-1.5">
             <SidebarMenuItem
+              iconPath='/assets/img/icon/dashboard-sidebar-icon.svg'
               path={constants.DASHBOARD}
-              title='Dashboard'
               setIsSidebarOpen={setIsSidebarOpen}
+              title='Dashboard'
             />
             <SidebarMenuItem
+              iconPath='/assets/img/icon/tasks-sidebar-icon.svg'
               path={constants.TASKS}
-              title='Tasks'
               setIsSidebarOpen={setIsSidebarOpen}
+              title='Tasks'
             />
           </ul>
         </nav>

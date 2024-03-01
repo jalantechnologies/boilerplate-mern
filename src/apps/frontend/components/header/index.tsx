@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { useEffect } from 'react';
 import toast from 'react-hot-toast';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-import constants from '../../constants/routes';
 import { useAccountContext, useAuthContext } from '../../contexts';
 
 import HamburgerToggleButton from './hamburger-toggle-button';
@@ -48,14 +47,6 @@ const Header: React.FC<HeaderProps> = ({
             isActive={isSidebarOpen}
             onClick={handleSidebarToggle}
           />
-          <Link className="block shrink-0 lg:hidden" to={constants.DASHBOARD}>
-            {/* Logo */}
-            <img
-              className='size-13'
-              src='/assets/img/logo-small.jpg'
-              alt="Logo"
-            />
-          </Link>
         </div>
         <div className="flex flex-1 items-center justify-end gap-3 2xsm:gap-7">
           {/* User Area */}
