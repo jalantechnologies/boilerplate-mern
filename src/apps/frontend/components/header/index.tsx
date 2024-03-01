@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import constants from '../../constants/routes';
-import { useAuthContext } from '../../contexts';
+import { useAccountContext, useAuthContext } from '../../contexts';
 
 import HamburgerToggleButton from './hamburger-toggle-button';
 import UserProfileSnippet from './user-profile-snippet.component';
@@ -18,7 +18,8 @@ const Header: React.FC<HeaderProps> = ({
   setIsSidebarOpen,
 }) => {
   const navigate = useNavigate();
-  const { accountResult, getAccountDetails, logout } = useAuthContext();
+  const { logout } = useAuthContext();
+  const { accountDetails, getAccountDetails } = useAccountContext();
 
   const handleSidebarToggle = (state: boolean) => {
     setIsSidebarOpen(state);
@@ -54,7 +55,7 @@ const Header: React.FC<HeaderProps> = ({
         </div>
         <div className="flex flex-1 items-center justify-end gap-3 2xsm:gap-7">
           {/* User Area */}
-          <UserProfileSnippet logout={handleSignOut} account={accountResult} />
+          <UserProfileSnippet logout={handleSignOut} account={accountDetails} />
         </div>
       </div>
     </header>

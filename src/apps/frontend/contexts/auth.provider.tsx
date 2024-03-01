@@ -4,18 +4,14 @@ import React, {
   useContext,
 } from 'react';
 
-import { AccountService, AuthService } from '../services';
+import { AuthService } from '../services';
 import {
-  AccessToken, Account, ApiResponse, AsyncError,
+  AccessToken, ApiResponse, AsyncError,
 } from '../types';
 
 import useAsync from './async.hook';
 
 type AuthContextType = {
-  accountError: AsyncError;
-  accountResult: Account;
-  getAccountDetails: () => Promise<Account>;
-  isAccountLoading: boolean;
   isLoginLoading: boolean;
   isUserAuthenticated: () => boolean;
   login: (username: string, password: string) => Promise<AccessToken>;
@@ -27,7 +23,6 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType | null>(null);
 
 const authService = new AuthService();
-const accountService = new AccountService();
 
 export const useAuthContext = (): AuthContextType => useContext(AuthContext);
 
@@ -48,11 +43,6 @@ const getAccessToken = (): AccessToken => JSON.parse(localStorage.getItem('acces
 
 const isUserAuthenticated = () => !!getAccessToken();
 
-const getAccountDetailsFn = async (): Promise<ApiResponse<Account>> => {
-  const token = getAccessToken();
-  return accountService.getAccountDetails(token.accountId);
-};
-
 export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const {
     isLoading: isLoginLoading,
@@ -61,23 +51,12 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
     asyncCallback: login,
   } = useAsync(loginFn);
 
-  const {
-    isLoading: isAccountLoading,
-    error: accountError,
-    result: accountResult,
-    asyncCallback: getAccountDetails,
-  } = useAsync(getAccountDetailsFn);
-
   return (
     <AuthContext.Provider
       value={{
-        accountError,
-        accountResult,
         logout: logoutFn,
-        isAccountLoading,
         isLoginLoading,
         isUserAuthenticated,
-        getAccountDetails,
         login,
         loginError,
         loginResult,

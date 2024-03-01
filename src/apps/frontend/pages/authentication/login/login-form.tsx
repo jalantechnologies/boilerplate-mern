@@ -94,7 +94,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
           </div>
 
           <button
-            className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 font-medium text-white transition hover:bg-opacity-90"
+            className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 font-medium text-white transition hover:bg-primary/90"
             disabled={isLoginLoading}
             type="submit"
           >
