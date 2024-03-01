@@ -17,7 +17,7 @@ const UserMenuDropdown: React.FC<UserMenuDropdownProps> = ({
       ref={dropdownRef}
       onFocus={() => setDropdownOpen(true)}
       onBlur={() => setDropdownOpen(false)}
-      className={`absolute right-0 mt-4 flex w-62.5 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ${
+      className={`absolute right-0 mt-4.5 flex w-55 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ${
         dropdownOpen === true ? 'block' : 'hidden'
       }`}
     >
@@ -26,7 +26,7 @@ const UserMenuDropdown: React.FC<UserMenuDropdownProps> = ({
         onClick={logout}
       >
         <img
-          className="hidden fill-current opacity-50 sm:block"
+          className="fill-current opacity-50 sm:block"
           src="/assets/img/icon/logout.svg"
           alt="logout icon"
         />
