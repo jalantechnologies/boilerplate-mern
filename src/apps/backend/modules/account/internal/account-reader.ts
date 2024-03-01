@@ -10,7 +10,9 @@ import AccountUtil from './account-util';
 import AccountRepository from './store/account-repository';
 
 export default class AccountReader {
-  public static async getAccountByUsername(username: string): Promise<Account> {
+  public static async getAccountByUsername(
+    username: string,
+  ): Promise<Account> {
     const accDb = await AccountRepository.findOne({
       username,
       active: true,
@@ -37,7 +39,9 @@ export default class AccountReader {
     return account;
   }
 
-  public static async getAccountById(accountId: string): Promise<Account> {
+  public static async getAccountById(
+    accountId: string,
+  ): Promise<Account> {
     const accDb = await AccountRepository.findOne({
       _id: accountId,
       active: true,

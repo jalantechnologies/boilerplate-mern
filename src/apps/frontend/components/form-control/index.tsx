@@ -1,14 +1,14 @@
 import React, { PropsWithChildren } from 'react';
 
 interface FormControlProps {
-  label: string,
   error: string,
+  label: string,
 }
 
 const FormControl: React.FC<PropsWithChildren<FormControlProps>> = ({
   children,
-  label,
   error,
+  label,
 }) => (
   <>
     <label className="mb-2.5 block font-medium text-black dark:text-white">

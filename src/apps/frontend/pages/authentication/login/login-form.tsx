@@ -38,11 +38,11 @@ const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
                 error={formik.touched.username && formik.errors.username}
                 name="username"
                 onChange={formik.handleChange}
-                onSubmit={formik.handleBlur}
+                onBlur={formik.handleBlur}
                 placeholder="Enter your email"
                 value={formik.values.username}
               />
-              <span className="absolute right-4 top-4">
+              <span className="absolute right-4 top-4.5">
                 <img
                   className="fill-current opacity-50"
                   src="/assets/img/icon/email.svg"
@@ -63,7 +63,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
                 error={formik.touched.password && formik.errors.password}
                 name="password"
                 onChange={formik.handleChange}
-                onSubmit={formik.handleBlur}
+                onBlur={formik.handleBlur}
                 placeholder="Enter your password"
                 type={isPasswordVisible ? 'text' : 'password'}
                 value={formik.values.password}
@@ -93,14 +93,13 @@ const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
             </FormControl>
           </div>
 
-          <div className="mb-5">
-            <input
-              disabled={isLoginLoading}
-              type="submit"
-              value="Sign In"
-              className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 font-medium text-white transition hover:bg-opacity-90"
-            />
-          </div>
+          <button
+            className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 font-medium text-white transition hover:bg-opacity-90"
+            disabled={isLoginLoading}
+            type="submit"
+          >
+            Sign In
+          </button>
         </form>
       </div>
     </div>

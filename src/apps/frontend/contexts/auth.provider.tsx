@@ -15,6 +15,7 @@ type AuthContextType = {
   accountError: AsyncError;
   accountResult: Account;
   getAccountDetails: () => Promise<Account>;
+  isAccountLoading: boolean;
   isLoginLoading: boolean;
   isUserAuthenticated: () => boolean;
   login: (username: string, password: string) => Promise<AccessToken>;
@@ -61,6 +62,7 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
   } = useAsync(loginFn);
 
   const {
+    isLoading: isAccountLoading,
     error: accountError,
     result: accountResult,
     asyncCallback: getAccountDetails,
@@ -72,6 +74,7 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
         accountError,
         accountResult,
         logout: logoutFn,
+        isAccountLoading,
         isLoginLoading,
         isUserAuthenticated,
         getAccountDetails,
