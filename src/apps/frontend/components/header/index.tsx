@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useEffect } from 'react';
+import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
 
 import constants from '../../constants/routes';
@@ -31,9 +32,12 @@ const Header: React.FC<HeaderProps> = ({
   };
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    getAccountDetails();
-  }, [getAccountDetails]);
+    (async () => {
+      await getAccountDetails();
+    })().catch((error) => {
+      toast.error(error.message as string);
+    });
+  });
 
   return (
     <header className="sticky top-0 z-999 flex w-full bg-white drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none">
