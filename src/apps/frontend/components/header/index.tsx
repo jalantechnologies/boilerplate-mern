@@ -1,12 +1,18 @@
 import * as React from 'react';
 import { useEffect } from 'react';
-import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
+import constants from '../../constants/routes';
 import { useAccountContext, useAuthContext } from '../../contexts';
 
 import HamburgerToggleButton from './hamburger-toggle-button';
 import UserProfileSnippet from './user-profile-snippet.component';
+
+export type UserMenuDropdownItem = {
+  iconPath: string;
+  label: string;
+  onClick: () => void;
+};
 
 type HeaderProps = {
   isSidebarOpen: boolean;
@@ -27,16 +33,21 @@ const Header: React.FC<HeaderProps> = ({
 
   const handleSignOut = () => {
     logout();
-    navigate('/login');
+    navigate(constants.LOGIN);
   };
 
   useEffect(() => {
-    (async () => {
-      await getAccountDetails();
-    })().catch((error) => {
-      toast.error(error.message as string);
-    });
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    getAccountDetails();
   }, [getAccountDetails]);
+
+  const userMenuDropdownItems: UserMenuDropdownItem[] = [
+    {
+      iconPath: '/assets/img/icon/logout.svg',
+      label: 'Log Out',
+      onClick: handleSignOut,
+    },
+  ];
 
   return (
     <header className="sticky top-0 z-999 flex w-full bg-white drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none">
@@ -50,7 +61,10 @@ const Header: React.FC<HeaderProps> = ({
         </div>
         <div className="flex flex-1 items-center justify-end gap-3 2xsm:gap-7">
           {/* User Area */}
-          <UserProfileSnippet logout={handleSignOut} account={accountDetails} />
+          <UserProfileSnippet
+            account={accountDetails}
+            userMenuDropdownItems={userMenuDropdownItems}
+          />
         </div>
       </div>
     </header>

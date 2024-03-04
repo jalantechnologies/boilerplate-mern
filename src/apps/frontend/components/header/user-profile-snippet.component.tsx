@@ -6,12 +6,17 @@ import { Account } from '../../types';
 
 import UserMenuDropdown from './user-menu-dropdown.component';
 
+import { UserMenuDropdownItem } from '.';
+
 interface DropdownUserProps {
   account: Account;
-  logout: () => void;
+  userMenuDropdownItems: UserMenuDropdownItem[];
 }
 
-const UserProfileSnippet: React.FC<DropdownUserProps> = ({ account, logout }) => {
+const UserProfileSnippet: React.FC<DropdownUserProps> = ({
+  account,
+  userMenuDropdownItems,
+}) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const trigger = useRef<HTMLAnchorElement>(null);
@@ -74,8 +79,8 @@ const UserProfileSnippet: React.FC<DropdownUserProps> = ({ account, logout }) =>
       <UserMenuDropdown
         dropdownOpen={dropdownOpen}
         dropdownRef={dropdown}
-        logout={logout}
         setDropdownOpen={setDropdownOpen}
+        userMenuDropdownItems={userMenuDropdownItems}
       />
     </div>
   );
