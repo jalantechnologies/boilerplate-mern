@@ -26,7 +26,6 @@ const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
       <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
         Sign Up
       </h2>
-
       <form onSubmit={formik.handleSubmit}>
         <div className="mb-4">
           <FormControl
@@ -34,42 +33,40 @@ const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
             error={formik.touched.username && formik.errors.username}
           >
             <Input
+              error={formik.touched.username && formik.errors.username}
               data-testid="username"
               disabled={isSignupLoading}
-              error={formik.touched.username && formik.errors.username}
               name="username"
-              onChange={formik.handleChange}
               onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
               placeholder="Enter your email"
               value={formik.values.username}
             />
             <span className="absolute right-4 top-4.5">
               <img
+                alt="email icon"
                 className="fill-current opacity-50"
                 src="/assets/img/icon/email.svg"
-                alt="email icon"
               />
             </span>
           </FormControl>
         </div>
-
         <div className="mb-6">
           <FormControl
             label={'Password'}
             error={formik.touched.password && formik.errors.password}
           >
             <Input
+              error={formik.touched.password && formik.errors.password}
               data-testid="password"
               disabled={isSignupLoading}
-              error={formik.touched.password && formik.errors.password}
               name="password"
-              onChange={formik.handleChange}
               onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
               placeholder="Enter your password"
               type={isPasswordVisible ? 'text' : 'password'}
               value={formik.values.password}
             />
-
             <button
               className="absolute inset-y-0 right-0 flex items-center px-4"
               onClick={(e) => {
@@ -79,15 +76,15 @@ const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
             >
               {isPasswordVisible ? (
                 <img
-                  className="size-6.5 opacity-65"
-                  src="/assets/img/icon/eye-closed.svg"
                   alt="hide password icon"
+                  src="/assets/img/icon/eye-closed.svg"
+                  className="size-6.5 opacity-65"
                 />
               ) : (
                 <img
-                  className="size-6.5 opacity-65"
-                  src="/assets/img/icon/eye-open.svg"
                   alt="show password icon"
+                  src="/assets/img/icon/eye-open.svg"
+                  className="size-6.5 opacity-65"
                 />
               )}
             </button>
@@ -95,7 +92,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
         </div>
 
         <button
-          className={`w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 font-medium text-white transition hover:bg-primary/90
+          className={`w-full bg-primary cursor-pointer rounded-lg border border-primary p-4 font-medium text-white transition hover:bg-primary/90
             ${isSignupLoading && 'cursor-not-allowed bg-primary/70'}`
           }
           disabled={isSignupLoading}
