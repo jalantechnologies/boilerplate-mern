@@ -5,7 +5,9 @@ import React, {
 } from 'react';
 
 import { AuthService } from '../services';
-import { AccessToken, ApiResponse, AsyncError } from '../types';
+import {
+  AccessToken, ApiResponse, AsyncError,
+} from '../types';
 
 import useAsync from './async.hook';
 

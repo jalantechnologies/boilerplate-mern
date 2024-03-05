@@ -1,18 +1,11 @@
 import React, { PropsWithChildren } from 'react';
 
-import { Grid } from '../../components';
-
 const AuthenticationPageLayout: React.FC<PropsWithChildren> = ({
   children,
 }) => (
-  <Grid
-    justifyContent={'center'}
-    alignItems={'center'}
-    minHeight="100vh"
-    fullHeight
-  >
+  <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
     {children}
-  </Grid>
+  </div>
 );
 
 export default AuthenticationPageLayout;

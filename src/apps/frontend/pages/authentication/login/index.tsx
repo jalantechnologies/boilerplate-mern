@@ -1,7 +1,8 @@
-import { toaster } from 'baseui/toast';
 import React from 'react';
+import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
+import constants from '../../../constants/routes';
 import { AsyncError } from '../../../types';
 import AuthenticationFormLayout from '../authentication-form-layout';
 import AuthenticationPageLayout from '../authentication-page-layout';
@@ -11,11 +12,11 @@ import LoginForm from './login-form';
 export const Login: React.FC = () => {
   const navigate = useNavigate();
   const onSuccess = () => {
-    navigate('/');
+    navigate(constants.DASHBOARD);
   };
 
   const onError = (error: AsyncError) => {
-    toaster.negative(error.message);
+    toast.error(error.message);
   };
 
   return (

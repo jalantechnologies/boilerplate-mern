@@ -1,12 +1,11 @@
-import { Block } from 'baseui/block';
 import React, { PropsWithChildren } from 'react';
 
 const AuthenticationFormLayout: React.FC<PropsWithChildren> = ({
   children,
 }) => (
-  <Block width={['95%', '300px', '300px', '300px']}>
+  <div className="flex min-h-screen flex-wrap items-center justify-center">
     {children}
-  </Block>
+  </div>
 );
 
 export default AuthenticationFormLayout;

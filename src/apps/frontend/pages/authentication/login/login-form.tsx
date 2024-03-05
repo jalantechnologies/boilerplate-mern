@@ -1,13 +1,6 @@
-import { Block } from 'baseui/block';
-import { KIND } from 'baseui/button';
-import { FormControl } from 'baseui/form-control';
-import { Input } from 'baseui/input';
-import { HeadingMedium } from 'baseui/typography';
-import React from 'react';
+import React, { useState } from 'react';
 
-import {
-  Button,
-} from '../../../components';
+import { FormControl, Input } from '../../../components';
 import { AsyncError } from '../../../types';
 
 import useLoginForm from './login-form.hook';
@@ -20,69 +13,98 @@ interface LoginFormProps {
 const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
   const { formik, isLoginLoading } = useLoginForm({ onSuccess, onError });
 
-  return (
-    <form onSubmit={formik.handleSubmit}>
-      <HeadingMedium marginBottom="scale600">Please sign in</HeadingMedium>
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-      <Block>
-        <FormControl
-          error={formik.touched.username && formik.errors.username}
-          label={'Email address'}
-        >
-          <Input
-            autoComplete="off"
+  function togglePasswordVisibility() {
+    setIsPasswordVisible((prevState) => !prevState);
+  }
+
+  return (
+    <div className="w-full xl:w-1/3">
+      <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
+        <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
+          Sign In
+        </h2>
+
+        <form onSubmit={formik.handleSubmit}>
+          <div className="mb-4">
+            <FormControl
+              label={'Email'}
+              error={formik.touched.username && formik.errors.username}
+            >
+              <Input
+                data-testid="username"
+                disabled={isLoginLoading}
+                error={formik.touched.username && formik.errors.username}
+                name="username"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                placeholder="Enter your email"
+                value={formik.values.username}
+              />
+              <span className="absolute right-4 top-4.5">
+                <img
+                  className="fill-current opacity-50"
+                  src="/assets/img/icon/email.svg"
+                  alt="email icon"
+                />
+              </span>
+            </FormControl>
+          </div>
+
+          <div className="mb-6">
+            <FormControl
+              label={'Password'}
+              error={formik.touched.password && formik.errors.password}
+            >
+              <Input
+                data-testid="password"
+                disabled={isLoginLoading}
+                error={formik.touched.password && formik.errors.password}
+                name="password"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                placeholder="Enter your password"
+                type={isPasswordVisible ? 'text' : 'password'}
+                value={formik.values.password}
+              />
+
+              <button
+                className="absolute inset-y-0 right-0 flex items-center px-4"
+                onClick={(e) => {
+                  e.preventDefault();
+                  togglePasswordVisibility();
+                }}
+              >
+                {isPasswordVisible ? (
+                  <img
+                    className="size-6.5 opacity-65"
+                    src="/assets/img/icon/eye-closed.svg"
+                    alt="hide password icon"
+                  />
+                ) : (
+                  <img
+                    className="size-6.5 opacity-65"
+                    src="/assets/img/icon/eye-open.svg"
+                    alt="show password icon"
+                  />
+                )}
+              </button>
+            </FormControl>
+          </div>
+
+          <button
+            className={`w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 font-medium text-white transition hover:bg-primary/90
+              ${isLoginLoading && 'cursor-not-allowed bg-primary/90'}`
+            }
             disabled={isLoginLoading}
-            name="username"
-            onBlur={formik.handleBlur}
-            onChange={formik.handleChange}
-            overrides={{
-              Input: {
-                props: {
-                  'data-testid': 'username',
-                },
-              },
-            }}
-            placeholder="Email address"
-            value={formik.values.username}
-          />
-        </FormControl>
-      </Block>
-      <Block>
-        <FormControl
-          error={formik.touched.password && formik.errors.password}
-          label={'Password'}
-        >
-          <Input
-            autoComplete="off"
-            disabled={isLoginLoading}
-            name="password"
-            onBlur={formik.handleBlur}
-            onChange={formik.handleChange}
-            overrides={{
-              Input: {
-                props: {
-                  'data-testid': 'password',
-                },
-              },
-            }}
-            placeholder="Password"
-            type="password"
-            value={formik.values.password}
-          />
-        </FormControl>
-      </Block>
-      <Block>
-        <Button
-          disabled={isLoginLoading}
-          fullWidth
-          isLoading={isLoginLoading}
-          kind={KIND.primary}
-          type="submit"
-        >
-          Sign in
-        </Button>
-      </Block>
-    </form>
+            type="submit"
+          >
+            Sign In
+          </button>
+        </form>
+      </div>
+    </div>
   );
 };
 export default LoginForm;

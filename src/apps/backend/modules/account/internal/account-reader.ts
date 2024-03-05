@@ -39,6 +39,20 @@ export default class AccountReader {
     return account;
   }
 
+  public static async getAccountById(
+    accountId: string,
+  ): Promise<Account> {
+    const accDb = await AccountRepository.findOne({
+      _id: accountId,
+      active: true,
+    });
+
+    if (!accDb) {
+      throw new AccountNotFoundError(accountId);
+    }
+    return AccountUtil.convertAccountDBToAccount(accDb);
+  }
+
   public static async checkUsernameNotExists(
     params: AccountSearchParams,
   ): Promise<boolean> {

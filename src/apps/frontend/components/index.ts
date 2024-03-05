@@ -1,6 +1,5 @@
-import ProfileMenu from '../pages/header/profile-menu/profile-menu';
+import FormControl from './form-control';
+import Header from './header';
+import Input from './input';
 
-import Button from './button/button.component';
-import Grid from './grid/grid.component';
-
-export { Button, Grid, ProfileMenu };
+export { FormControl, Header, Input };

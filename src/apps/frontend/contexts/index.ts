@@ -1,4 +1,7 @@
+import { AccountProvider, useAccountContext } from './account.provider';
 import { AuthProvider, useAuthContext } from './auth.provider';
-import BaseWebProvider from './base-web.provider';
 
-export { AuthProvider, BaseWebProvider, useAuthContext };
+export {
+  AuthProvider, useAuthContext,
+  AccountProvider, useAccountContext,
+};
