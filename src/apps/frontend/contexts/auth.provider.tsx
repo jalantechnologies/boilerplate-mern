@@ -13,11 +13,15 @@ import useAsync from './async.hook';
 
 type AuthContextType = {
   isLoginLoading: boolean;
+  isSignupLoading: boolean;
   isUserAuthenticated: () => boolean;
   login: (username: string, password: string) => Promise<AccessToken>;
   loginError: AsyncError;
   loginResult: AccessToken;
   logout: () => void;
+  signup: (username: string, password: string) => Promise<AccessToken>;
+  signupError: AsyncError;
+  signupResult: AccessToken;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -31,6 +35,17 @@ const loginFn = async (
   password: string,
 ): Promise<ApiResponse<AccessToken>> => {
   const result = await authService.login(username, password);
+  if (result.data) {
+    localStorage.setItem('access-token', JSON.stringify(result.data));
+  }
+  return result;
+};
+
+const signupFn = async (
+  username: string,
+  password: string,
+): Promise<ApiResponse<AccessToken>> => {
+  const result = await authService.signup(username, password);
   if (result.data) {
     localStorage.setItem('access-token', JSON.stringify(result.data));
   }
@@ -51,15 +66,26 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
     asyncCallback: login,
   } = useAsync(loginFn);
 
+  const {
+    isLoading: isSignupLoading,
+    error: signupError,
+    result: signupResult,
+    asyncCallback: signup,
+  } = useAsync(signupFn);
+
   return (
     <AuthContext.Provider
       value={{
         logout: logoutFn,
         isLoginLoading,
+        isSignupLoading,
         isUserAuthenticated,
         login,
         loginError,
         loginResult,
+        signup,
+        signupError,
+        signupResult,
       }}
     >
       {children}

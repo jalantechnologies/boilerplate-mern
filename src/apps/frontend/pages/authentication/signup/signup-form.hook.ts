@@ -5,13 +5,13 @@ import constant from '../../../constants';
 import { useAuthContext } from '../../../contexts';
 import { AsyncError } from '../../../types';
 
-interface LoginFormProps {
+interface SignupFormProps {
   onSuccess: () => void;
   onError: (err: AsyncError) => void;
 }
-const useLoginForm = ({ onError, onSuccess }: LoginFormProps) => {
+const useSignupForm = ({ onError, onSuccess }: SignupFormProps) => {
   const {
-    isLoginLoading, login, loginError, loginResult,
+    isSignupLoading, signupError, signupResult, signup,
   } = useAuthContext();
 
   const formik = useFormik({
@@ -28,7 +28,7 @@ const useLoginForm = ({ onError, onSuccess }: LoginFormProps) => {
         .required(constant.PASSWORD_VALIDATION_ERROR),
     }),
     onSubmit: (values) => {
-      login(values.username, values.password)
+      signup(values.username, values.password)
         .then(() => {
           onSuccess();
         })
@@ -39,11 +39,11 @@ const useLoginForm = ({ onError, onSuccess }: LoginFormProps) => {
   });
 
   return {
-    isLoginLoading,
-    loginError,
-    loginResult,
+    isSignupLoading,
+    signupError,
+    signupResult,
     formik,
   };
 };
 
-export default useLoginForm;
+export default useSignupForm;

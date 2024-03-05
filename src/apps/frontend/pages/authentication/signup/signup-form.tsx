@@ -5,15 +5,15 @@ import { FormControl, Input } from '../../../components';
 import constants from '../../../constants/routes';
 import { AsyncError } from '../../../types';
 
-import useLoginForm from './login-form.hook';
+import useSignupForm from './signup-form.hook';
 
-interface LoginFormProps {
+interface SignupFormProps {
   onSuccess: () => void;
   onError: (error: AsyncError) => void;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
-  const { formik, isLoginLoading } = useLoginForm({ onSuccess, onError });
+const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
+  const { formik, isSignupLoading } = useSignupForm({ onSuccess, onError });
 
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
@@ -24,7 +24,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
   return (
     <>
       <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-        Sign In
+        Sign Up
       </h2>
 
       <form onSubmit={formik.handleSubmit}>
@@ -35,7 +35,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
           >
             <Input
               data-testid="username"
-              disabled={isLoginLoading}
+              disabled={isSignupLoading}
               error={formik.touched.username && formik.errors.username}
               name="username"
               onChange={formik.handleChange}
@@ -60,7 +60,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
           >
             <Input
               data-testid="password"
-              disabled={isLoginLoading}
+              disabled={isSignupLoading}
               error={formik.touched.password && formik.errors.password}
               name="password"
               onChange={formik.handleChange}
@@ -96,21 +96,21 @@ const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
 
         <button
           className={`w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 font-medium text-white transition hover:bg-primary/90
-            ${isLoginLoading && 'cursor-not-allowed bg-primary/70'}`
+            ${isSignupLoading && 'cursor-not-allowed bg-primary/70'}`
           }
-          disabled={isLoginLoading}
+          disabled={isSignupLoading}
           type="submit"
         >
-          {isLoginLoading ? 'Loading...' : 'Sign In'}
+          {isSignupLoading ? 'Loading...' : 'Sign Up'}
         </button>
         <div className='mr-2 mt-3 flex justify-end'>
-          Don't have an account?&nbsp;
-          <Link to={constants.SIGNUP} className="text-primary">
-            Sign Up
+          Already have an account?&nbsp;
+          <Link to={constants.LOGIN} className="text-primary">
+            Login
           </Link>
         </div>
       </form>
     </>
   );
 };
-export default LoginForm;
+export default SignupForm;
