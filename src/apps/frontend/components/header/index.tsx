@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import constants from '../../constants/routes';
@@ -25,7 +24,7 @@ const Header: React.FC<HeaderProps> = ({
 }) => {
   const navigate = useNavigate();
   const { logout } = useAuthContext();
-  const { accountDetails, getAccountDetails } = useAccountContext();
+  const { accountDetails } = useAccountContext();
 
   const handleSidebarToggle = (state: boolean) => {
     setIsSidebarOpen(state);
@@ -35,11 +34,6 @@ const Header: React.FC<HeaderProps> = ({
     logout();
     navigate(constants.LOGIN);
   };
-
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    getAccountDetails();
-  }, [getAccountDetails]);
 
   const userMenuDropdownItems: UserMenuDropdownItem[] = [
     {
