@@ -92,7 +92,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
         </div>
 
         <button
-          className={`w-full bg-primary cursor-pointer rounded-lg border border-primary p-4 font-medium text-white transition hover:bg-primary/90
+          className={`w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 font-medium text-white transition hover:bg-primary/90
             ${isSignupLoading && 'cursor-not-allowed bg-primary/70'}`
           }
           disabled={isSignupLoading}

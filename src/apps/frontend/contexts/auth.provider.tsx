@@ -19,9 +19,8 @@ type AuthContextType = {
   loginError: AsyncError;
   loginResult: AccessToken;
   logout: () => void;
-  signup: (username: string, password: string) => Promise<AccessToken>;
+  signup: (username: string, password: string) => Promise<void>;
   signupError: AsyncError;
-  signupResult: AccessToken;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -44,13 +43,7 @@ const loginFn = async (
 const signupFn = async (
   username: string,
   password: string,
-): Promise<ApiResponse<AccessToken>> => {
-  const result = await authService.signup(username, password);
-  if (result.data) {
-    localStorage.setItem('access-token', JSON.stringify(result.data));
-  }
-  return result;
-};
+): Promise<ApiResponse<void>> => authService.signup(username, password);
 
 const logoutFn = (): void => localStorage.removeItem('access-token');
 
@@ -69,7 +62,6 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const {
     isLoading: isSignupLoading,
     error: signupError,
-    result: signupResult,
     asyncCallback: signup,
   } = useAsync(signupFn);
 
@@ -85,7 +77,6 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
         loginResult,
         signup,
         signupError,
-        signupResult,
       }}
     >
       {children}

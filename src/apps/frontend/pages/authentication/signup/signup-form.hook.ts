@@ -11,7 +11,7 @@ interface SignupFormProps {
 }
 const useSignupForm = ({ onError, onSuccess }: SignupFormProps) => {
   const {
-    isSignupLoading, signupError, signupResult, signup,
+    isSignupLoading, signupError, signup,
   } = useAuthContext();
 
   const formik = useFormik({
@@ -41,7 +41,6 @@ const useSignupForm = ({ onError, onSuccess }: SignupFormProps) => {
   return {
     isSignupLoading,
     signupError,
-    signupResult,
     formik,
   };
 };

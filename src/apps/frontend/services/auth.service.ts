@@ -14,7 +14,7 @@ export default class AuthService extends APIService {
   signup = async (
     username: string,
     password: string,
-  ): Promise<ApiResponse<AccessToken>> => this.apiClient.post('/accounts', {
+  ): Promise<ApiResponse<void>> => this.apiClient.post('/accounts', {
     username,
     password,
   });
