@@ -16,9 +16,14 @@ const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
   const { formik, isSignupLoading } = useSignupForm({ onSuccess, onError });
 
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isRetypePasswordVisible, setIsRetypePasswordVisible] = useState(false);
 
   function togglePasswordVisibility() {
     setIsPasswordVisible((prevState) => !prevState);
+  }
+
+  function toggleRetypePasswordVisibility() {
+    setIsRetypePasswordVisible((prevState) => !prevState);
   }
 
   return (
@@ -75,6 +80,45 @@ const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
               }}
             >
               {isPasswordVisible ? (
+                <img
+                  alt="hide password icon"
+                  src="/assets/img/icon/eye-closed.svg"
+                  className="size-6.5 opacity-65"
+                />
+              ) : (
+                <img
+                  alt="show password icon"
+                  src="/assets/img/icon/eye-open.svg"
+                  className="size-6.5 opacity-65"
+                />
+              )}
+            </button>
+          </FormControl>
+        </div>
+        <div className="mb-6">
+          <FormControl
+            label={'Re-type Password'}
+            error={formik.touched.retypePassword && formik.errors.retypePassword}
+          >
+            <Input
+              error={formik.touched.retypePassword && formik.errors.retypePassword}
+              data-testid="retypePassword"
+              disabled={isSignupLoading}
+              name="retypePassword"
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              placeholder="Re-enter the password"
+              type={isRetypePasswordVisible ? 'text' : 'password'}
+              value={formik.values.retypePassword}
+            />
+            <button
+              className="absolute inset-y-0 right-0 flex items-center px-4"
+              onClick={(e) => {
+                e.preventDefault();
+                toggleRetypePasswordVisibility();
+              }}
+            >
+              {isRetypePasswordVisible ? (
                 <img
                   alt="hide password icon"
                   src="/assets/img/icon/eye-closed.svg"

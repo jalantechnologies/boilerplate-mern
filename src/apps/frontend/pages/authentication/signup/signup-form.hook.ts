@@ -18,6 +18,7 @@ const useSignupForm = ({ onError, onSuccess }: SignupFormProps) => {
     initialValues: {
       username: '',
       password: '',
+      retypePassword: '',
     },
     validationSchema: Yup.object({
       username: Yup.string()
@@ -26,6 +27,9 @@ const useSignupForm = ({ onError, onSuccess }: SignupFormProps) => {
       password: Yup.string()
         .min(constant.PASSWORD_MIN_LENGTH, constant.PASSWORD_VALIDATION_ERROR)
         .required(constant.PASSWORD_VALIDATION_ERROR),
+      retypePassword: Yup.string()
+        .oneOf([Yup.ref('password')], constant.PASSWORD_MATCH_VALIDATION_ERROR)
+        .required(constant.PASSWORD_MATCH_VALIDATION_ERROR),
     }),
     onSubmit: (values) => {
       signup(values.username, values.password)
