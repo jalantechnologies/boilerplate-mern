@@ -1,7 +1,9 @@
 const constant = {
   EMAIL_VALIDATION_ERROR: 'Please enter a valid email',
-  FIRST_NAME_MIN_LENGTH: 2,
-  FIRST_NAME_VALIDATION_ERROR: 'Please enter at least 2 character long first name',
+  FIRST_NAME_MIN_LENGTH: 1,
+  FIRST_NAME_VALIDATION_ERROR: 'First name should not be empty',
+  LAST_NAME_MIN_LENGTH: 1,
+  LAST_NAME_VALIDATION_ERROR: 'Last name should not be empty',
   PASSWORD_MIN_LENGTH: 8,
   PASSWORD_MATCH_VALIDATION_ERROR: 'The confirmed password doesn\'t match the chosen password.',
   PASSWORD_VALIDATION_ERROR: 'Please enter at least 8 characters long password',

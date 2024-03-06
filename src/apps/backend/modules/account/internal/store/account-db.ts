@@ -21,6 +21,7 @@ export const AccountDbSchema: Schema = new Schema<AccountDB>(
     },
     lastName: {
       type: String,
+      required: true,
     },
     hashedPassword: {
       type: String,

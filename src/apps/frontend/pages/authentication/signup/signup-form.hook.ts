@@ -26,6 +26,9 @@ const useSignupForm = ({ onError, onSuccess }: SignupFormProps) => {
       firstName: Yup.string()
         .min(constant.FIRST_NAME_MIN_LENGTH, constant.FIRST_NAME_VALIDATION_ERROR)
         .required(constant.FIRST_NAME_VALIDATION_ERROR),
+      lastName: Yup.string()
+        .min(constant.LAST_NAME_MIN_LENGTH, constant.LAST_NAME_VALIDATION_ERROR)
+        .required(constant.LAST_NAME_VALIDATION_ERROR),
       username: Yup.string()
         .email(constant.EMAIL_VALIDATION_ERROR)
         .required(constant.EMAIL_VALIDATION_ERROR),
