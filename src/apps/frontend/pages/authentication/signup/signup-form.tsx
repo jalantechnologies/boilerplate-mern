@@ -48,7 +48,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
                   name="firstName"
                   onBlur={formik.handleBlur}
                   onChange={formik.handleChange}
-                  placeholder="Enter your first name (required)"
+                  placeholder="Enter your first name"
                   value={formik.values.firstName}
                 />
               </FormControl>
@@ -65,7 +65,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
                   name="lastName"
                   onBlur={formik.handleBlur}
                   onChange={formik.handleChange}
-                  placeholder="Enter your last name (optional)"
+                  placeholder="Enter your last name"
                   value={formik.values.lastName}
                 />
               </FormControl>
