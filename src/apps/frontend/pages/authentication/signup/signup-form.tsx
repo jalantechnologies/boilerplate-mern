@@ -181,7 +181,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
             disabled={isSignupLoading}
             type="submit"
           >
-            {isSignupLoading ? 'Loading...' : 'Sign Up'}
+            Sign Up
           </button>
           <div className='mt-4 flex justify-end'>
             Already have an account?&nbsp;

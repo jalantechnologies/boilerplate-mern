@@ -8,7 +8,12 @@ import { app } from '../../helpers/app';
 describe('Account API', () => {
   describe('POST /accounts', () => {
     it('should create a new account', async () => {
-      const params = { username: faker.internet.userName(), password: 'password' };
+      const params = { 
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
+        username: faker.internet.userName(), 
+        password: 'password' 
+      };
       const res = await chai
         .request(app)
         .post('/api/accounts')
@@ -20,7 +25,12 @@ describe('Account API', () => {
     });
 
     it('should throw error if account with username already exists', async () => {
-      const params = { username: faker.internet.userName(), password: 'password' };
+      const params = { 
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
+        username: faker.internet.userName(), 
+        password: 'password' 
+      };
       await AccountWriter.createAccount(params);
       const res = await chai
         .request(app)

@@ -33,7 +33,7 @@ const useSignupForm = ({ onError, onSuccess }: SignupFormProps) => {
         .min(constant.PASSWORD_MIN_LENGTH, constant.PASSWORD_VALIDATION_ERROR)
         .required(constant.PASSWORD_VALIDATION_ERROR),
       retypePassword: Yup.string()
-        .equals([Yup.ref('password')], constant.PASSWORD_MATCH_VALIDATION_ERROR)
+        .oneOf([Yup.ref('password')], constant.PASSWORD_MATCH_VALIDATION_ERROR)
         .required(constant.PASSWORD_MATCH_VALIDATION_ERROR),
     }),
     onSubmit: (values) => {
