@@ -19,7 +19,12 @@ type AuthContextType = {
   loginError: AsyncError;
   loginResult: AccessToken;
   logout: () => void;
-  signup: (username: string, password: string) => Promise<void>;
+  signup: (
+    firstName: string,
+    lastName: string,
+    username: string,
+    password: string
+  ) => Promise<void>;
   signupError: AsyncError;
 };
 
@@ -41,9 +46,16 @@ const loginFn = async (
 };
 
 const signupFn = async (
+  firstName: string,
+  lastName: string,
   username: string,
   password: string,
-): Promise<ApiResponse<void>> => authService.signup(username, password);
+): Promise<ApiResponse<void>> => authService.signup(
+  firstName,
+  lastName,
+  username,
+  password,
+);
 
 const logoutFn = (): void => localStorage.removeItem('access-token');
 

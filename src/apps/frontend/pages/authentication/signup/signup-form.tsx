@@ -35,6 +35,42 @@ const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
       </div>
       <form onSubmit={formik.handleSubmit}>
         <div className="p-6.5">
+          <div className="mb-4.5 flex flex-col gap-6 2sm:flex-row">
+            <div className="w-full 2sm:w-1/2">
+              <FormControl
+                label={'First name'}
+                error={formik.touched.firstName && formik.errors.firstName}
+              >
+                <Input
+                  error={formik.touched.firstName && formik.errors.firstName}
+                  data-testid="firstName"
+                  disabled={isSignupLoading}
+                  name="firstName"
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  placeholder="Enter your first name (required)"
+                  value={formik.values.firstName}
+                />
+              </FormControl>
+            </div>
+            <div className="w-full 2sm:w-1/2">
+              <FormControl
+                label={'Last name'}
+                error={formik.touched.lastName && formik.errors.lastName}
+              >
+                <Input
+                  error={formik.touched.lastName && formik.errors.lastName}
+                  data-testid="lastName"
+                  disabled={isSignupLoading}
+                  name="lastName"
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  placeholder="Enter your last name (optional)"
+                  value={formik.values.lastName}
+                />
+              </FormControl>
+            </div>
+          </div>
           <div className="mb-4.5">
             <FormControl
               label={'Email'}

@@ -22,7 +22,10 @@ const UserProfileSnippet: React.FC<DropdownUserProps> = ({
   const trigger = useRef<HTMLAnchorElement>(null);
   const dropdown = useRef<HTMLDivElement>(null);
 
-  const username = account?.name || account?.username || 'Guest';
+  let username = account?.username || 'Guest';
+  if (account?.firstName) {
+    username = `${account?.firstName} ${account?.lastName}`;
+  }
 
   // close on click outside
   useEffect(() => {

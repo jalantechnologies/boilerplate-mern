@@ -16,11 +16,16 @@ const useSignupForm = ({ onError, onSuccess }: SignupFormProps) => {
 
   const formik = useFormik({
     initialValues: {
+      firstName: '',
+      lastName: '',
       username: '',
       password: '',
       retypePassword: '',
     },
     validationSchema: Yup.object({
+      firstName: Yup.string()
+        .min(constant.FIRST_NAME_MIN_LENGTH, constant.FIRST_NAME_VALIDATION_ERROR)
+        .required(constant.FIRST_NAME_VALIDATION_ERROR),
       username: Yup.string()
         .email(constant.EMAIL_VALIDATION_ERROR)
         .required(constant.EMAIL_VALIDATION_ERROR),
@@ -28,11 +33,16 @@ const useSignupForm = ({ onError, onSuccess }: SignupFormProps) => {
         .min(constant.PASSWORD_MIN_LENGTH, constant.PASSWORD_VALIDATION_ERROR)
         .required(constant.PASSWORD_VALIDATION_ERROR),
       retypePassword: Yup.string()
-        .oneOf([Yup.ref('password')], constant.PASSWORD_MATCH_VALIDATION_ERROR)
+        .equals([Yup.ref('password')], constant.PASSWORD_MATCH_VALIDATION_ERROR)
         .required(constant.PASSWORD_MATCH_VALIDATION_ERROR),
     }),
     onSubmit: (values) => {
-      signup(values.username, values.password)
+      signup(
+        values.firstName,
+        values.lastName,
+        values.username,
+        values.password,
+      )
         .then(() => {
           onSuccess();
         })
