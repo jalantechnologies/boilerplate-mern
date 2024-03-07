@@ -6,7 +6,7 @@ import React, {
 
 import { AuthService } from '../services';
 import {
-  AccessToken, ApiResponse, AsyncError,
+  AccessToken, ApiResponse, AsyncError, AuthRecord,
 } from '../types';
 
 import useAsync from './async.hook';
@@ -18,6 +18,14 @@ type AuthContextType = {
   loginError: AsyncError;
   loginResult: AccessToken;
   logout: () => void;
+  sendOTP: (
+    countryCode: string,
+    phoneNumber: string,
+  ) => Promise<AuthRecord>;
+  verifyOTP: (
+    authRecordId: string,
+    otp: string,
+  ) => Promise<AuthRecord>;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -43,6 +51,21 @@ const getAccessToken = (): AccessToken => JSON.parse(localStorage.getItem('acces
 
 const isUserAuthenticated = () => !!getAccessToken();
 
+const sendOTP = (countryCode: string, phoneNumber: string): Promise<AuthRecord> => {
+  // Backend Integration
+  console.log(countryCode, phoneNumber);
+  return null;
+};
+
+const verifyOTP = (
+  authRecordId: string,
+  otp: string,
+): Promise<AuthRecord> => {
+  // Backend Integration
+  console.log(authRecordId, otp);
+  return null;
+};
+
 export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const {
     isLoading: isLoginLoading,
@@ -60,6 +83,8 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
         login,
         loginError,
         loginResult,
+        sendOTP,
+        verifyOTP,
       }}
     >
       {children}
