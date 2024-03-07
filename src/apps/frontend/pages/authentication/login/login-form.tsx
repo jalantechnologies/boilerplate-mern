@@ -115,7 +115,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
         <div className="mt-6 text-center">
           <p className="font-medium">
             Don’t have any account?{' '}
-            <Link  to={constants.SIGNUP} className="text-primary">
+            <Link to={constants.SIGNUP} className="text-primary">
               Sign Up
             </Link>
           </p>
