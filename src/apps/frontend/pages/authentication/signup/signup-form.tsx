@@ -131,7 +131,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
             </button>
           </FormControl>
         </div>
-        <div className="mb-5.5">
+        <div className="mb-6">
           <FormControl
             label={'Re-type Password'}
             error={formik.touched.retypePassword && formik.errors.retypePassword}
@@ -180,11 +180,13 @@ const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
         >
           Sign Up
         </button>
-        <div className='mt-4 flex justify-end'>
-          Already have an account?&nbsp;
-          <Link to={constants.LOGIN} className="text-primary">
-            Sign In
-          </Link>
+        <div className="mt-6 text-center">
+          <p className="font-medium">
+            Already have an account?{' '}
+            <Link to={constants.LOGIN} className="text-primary">
+              Sign in
+            </Link>
+          </p>
         </div>
       </form>
     </>

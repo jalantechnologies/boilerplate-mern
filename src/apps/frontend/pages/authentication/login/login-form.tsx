@@ -112,11 +112,13 @@ const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
         >
           Sign In
         </button>
-        <div className='mt-4 flex justify-end'>
-          Don't have an account?&nbsp;
-          <Link to={constants.SIGNUP} className="text-primary">
-            Sign Up
-          </Link>
+        <div className="mt-6 text-center">
+          <p className="font-medium">
+            Don’t have any account?{' '}
+            <Link  to={constants.SIGNUP} className="text-primary">
+              Sign Up
+            </Link>
+          </p>
         </div>
       </form>
     </>
