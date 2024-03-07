@@ -11,17 +11,15 @@ import useForgotPasswordForm from './forgot-password-form.hook';
 interface ForgotPasswordFormProps {
   onError: (error: AsyncError) => void;
   onSuccess: (username: string) => void;
-  username: string;
 }
 
 const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
   onError,
   onSuccess,
-  username,
 }) => {
   const navigate = useNavigate();
   const isLoginLoading = false;
-  const { formik } = useForgotPasswordForm({ onError, onSuccess, username });
+  const { formik } = useForgotPasswordForm({ onError, onSuccess });
   return (
     <>
       <BackButton onClick={() => navigate(constants.LOGIN)} />

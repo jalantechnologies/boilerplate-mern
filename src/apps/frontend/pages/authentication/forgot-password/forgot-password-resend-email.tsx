@@ -8,7 +8,7 @@ import BackButton from './back-button';
 interface ForgotPasswordResendEmailProps {
   isResendEnabled: boolean;
   onError: (error: AsyncError) => void;
-  onSuccess: (username: string) => void;
+  onSuccess: () => void;
   setIsResendEmailPage: React.Dispatch<React.SetStateAction<boolean>>;
   timerRemainingSeconds: string;
   username: string;
@@ -28,7 +28,7 @@ const ForgotPasswordResendEmail: React.FC<ForgotPasswordResendEmailProps> = ({
     e.preventDefault();
     sendForgotPasswordEmail(username)
       .then(() => {
-        onSuccess(username);
+        onSuccess();
       })
       .catch((error: AsyncError) => {
         onError(error);

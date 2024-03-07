@@ -6,13 +6,12 @@ import { useAuthContext } from '../../../contexts';
 import { AsyncError } from '../../../types';
 
 interface UseForgotPasswordFormProps {
-  onSuccess: (username: string) => void;
+  onSuccess: (newUsername: string) => void;
   onError: (err: AsyncError) => void;
-  username: string;
 }
 
 const useForgotPasswordForm = (
-  { onError, onSuccess, username }: UseForgotPasswordFormProps,
+  { onError, onSuccess }: UseForgotPasswordFormProps,
 ) => {
   const {
     isSendForgotPasswordEmailLoading,
@@ -22,7 +21,7 @@ const useForgotPasswordForm = (
 
   const formik = useFormik({
     initialValues: {
-      username,
+      username: '',
     },
     validationSchema: Yup.object({
       username: Yup.string()
