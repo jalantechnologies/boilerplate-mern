@@ -17,6 +17,8 @@ export class AccountController {
     async (req: Request<CreateAccountParams>, res: Response) => {
       const account = await AccountService.createAccount({
         contactNumber: req.body.contactNumber,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
         username: req.body.username,
         password: req.body.password,
       });

@@ -14,6 +14,8 @@ export default class AccountWriter {
 
     const accHashedPwd = await AccountUtil.hashPassword(params.password);
     const accDb = await AccountRepository.create({
+      firstName: params.firstName,
+      lastName: params.lastName,
       username: params.username,
       hashedPassword: accHashedPwd,
       active: true,

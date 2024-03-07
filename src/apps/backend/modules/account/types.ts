@@ -4,12 +4,16 @@ import { HttpStatusCodes } from '../http';
 export class Account {
   id: string;
   contactNumber: string;
+  firstName: string;
+  lastName: string;
   username: string;
   hashedPassword: string;
 }
 
 export type CreateAccountParams = {
   contactNumber: string;
+  firstName: string;
+  lastName: string;
   password: string;
   username: string;
 };
