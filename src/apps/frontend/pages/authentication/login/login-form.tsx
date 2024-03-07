@@ -100,7 +100,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
             <p>Remember me</p>
           </label>
 
-          <a href="#" className="text-sm text-primary hover:underline">Forget password?</a>
+          <Link to={constants.FORGOT_PASSWORD} className="text-sm text-primary hover:underline">
+            Forget password?
+          </Link>
         </div>
 
         <button

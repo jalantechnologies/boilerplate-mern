@@ -7,7 +7,8 @@ import Signup from './authentication/signup';
 import Dashboard from './dashboard';
 import NotFound from './not-found/not-found.page';
 import Tasks from './tasks';
+import ForgotPassword from './authentication/forgot-password';
 
 export {
-  About, AppLayout, Dashboard, Header, Login, NotFound, Signup, Tasks,
+  About, AppLayout, Dashboard, ForgotPassword, Header, Login, NotFound, Signup, Tasks,
 };
