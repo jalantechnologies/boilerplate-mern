@@ -29,27 +29,31 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
       <p className="mb-4 text-xl font-medium">
         Enter your details to receive a reset link
       </p>
+
       <form onSubmit={formik.handleSubmit}>
         <div className="mb-4.5">
           <FormControl
-            label={'Email'}
             error={formik.touched.username && formik.errors.username}
+            label={'Email'}
           >
             <Input
               data-testid="username"
               disabled={isLoginLoading}
               error={formik.touched.username && formik.errors.username}
-              name="username"
-              onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              placeholder="Enter your email"
+              onChange={formik.handleChange}
+              name="username"
               value={formik.values.username}
+              placeholder="Enter your email"
             />
-            <span className="absolute right-4 top-4.5">
+
+            <span
+              className="absolute right-4 top-4.5"
+            >
               <img
+                alt="email icon"
                 className="fill-current opacity-50"
                 src="/assets/img/icon/email.svg"
-                alt="email icon"
               />
             </span>
           </FormControl>
