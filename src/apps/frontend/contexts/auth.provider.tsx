@@ -67,7 +67,7 @@ const getAccessToken = (): AccessToken => JSON.parse(localStorage.getItem('acces
 const isUserAuthenticated = () => !!getAccessToken();
 
 const sendForgotPasswordEmailFn = async (
-  username: string
+  username: string,
 ): Promise<ApiResponse<void>> => authService.sendForgotPasswordEmail(username);
 
 export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {

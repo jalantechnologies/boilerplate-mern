@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom';
 
 import { FormControl, Input } from '../../../components';
 import constants from '../../../constants/routes';
+import { AsyncError } from '../../../types';
 
 import BackButton from './back-button';
 import useForgotPasswordForm from './forgot-password-form.hook';
-import { AsyncError } from '../../../types';
 
 interface ForgotPasswordFormProps {
   onError: (error: AsyncError) => void;
