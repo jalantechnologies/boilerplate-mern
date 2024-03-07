@@ -22,4 +22,10 @@ export default class AuthService extends APIService {
     username,
     password,
   });
+
+  sendForgotPasswordEmail = async (
+    username: string,
+  ): Promise<ApiResponse<void>> => this.apiClient.post('/accounts/password-reset-email', {
+    username,
+  });
 }

@@ -13,12 +13,15 @@ import useAsync from './async.hook';
 
 type AuthContextType = {
   isLoginLoading: boolean;
+  isSendForgotPasswordEmailLoading: boolean;
   isSignupLoading: boolean;
   isUserAuthenticated: () => boolean;
   login: (username: string, password: string) => Promise<AccessToken>;
   loginError: AsyncError;
   loginResult: AccessToken;
   logout: () => void;
+  sendForgotPasswordEmail: (username: string) => Promise<void>;
+  sendForgotPasswordEmailError: AsyncError;
   signup: (
     firstName: string,
     lastName: string,
@@ -63,6 +66,10 @@ const getAccessToken = (): AccessToken => JSON.parse(localStorage.getItem('acces
 
 const isUserAuthenticated = () => !!getAccessToken();
 
+const sendForgotPasswordEmailFn = async (
+  username: string
+): Promise<ApiResponse<void>> => authService.sendForgotPasswordEmail(username);
+
 export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const {
     isLoading: isLoginLoading,
@@ -77,16 +84,25 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
     asyncCallback: signup,
   } = useAsync(signupFn);
 
+  const {
+    isLoading: isSendForgotPasswordEmailLoading,
+    error: sendForgotPasswordEmailError,
+    asyncCallback: sendForgotPasswordEmail,
+  } = useAsync(sendForgotPasswordEmailFn);
+
   return (
     <AuthContext.Provider
       value={{
         logout: logoutFn,
         isLoginLoading,
+        isSendForgotPasswordEmailLoading,
         isSignupLoading,
         isUserAuthenticated,
         login,
         loginError,
         loginResult,
+        sendForgotPasswordEmail,
+        sendForgotPasswordEmailError,
         signup,
         signupError,
       }}
