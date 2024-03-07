@@ -21,4 +21,19 @@ export default class AccountWriter {
 
     return AccountUtil.convertAccountDBToAccount(accDb);
   }
+
+  public static async createAccountWithContactNumber(
+    params: CreateAccountParams,
+  ): Promise<Account> {
+    // check if account already exists with the given contact number
+    // this will throw an error if it does
+    await AccountReader.checkContactNumberNotExists(params);
+
+    const accDb = await AccountRepository.create({
+      contactNumber: params.contactNumber,
+      active: true,
+    });
+
+    return AccountUtil.convertAccountDBToAccount(accDb);
+  }
 }

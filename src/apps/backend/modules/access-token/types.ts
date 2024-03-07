@@ -12,8 +12,9 @@ export type AccessTokenPayload = {
 };
 
 export type CreateAccessTokenParams = {
-  password: string;
-  username: string;
+  contactNumber?: string;
+  password?: string;
+  username?: string;
 };
 
 export type VerifyAccessTokenParams = {

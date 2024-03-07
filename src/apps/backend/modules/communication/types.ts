@@ -45,6 +45,16 @@ export enum CommunicationErrorCode {
   SERVICE_ERROR = 'COMMUNICATION_ERR_02',
 }
 
+export enum VerifyOtpResponseStatus {
+  FAILURE = 'Failure',
+  SUCCESS = 'Success',
+}
+
+export type VerifyOtpResponse = {
+  responseMessage: string;
+  status: VerifyOtpResponseStatus;
+};
+
 export type ValidationFailure = {
   field: string;
   message: string;

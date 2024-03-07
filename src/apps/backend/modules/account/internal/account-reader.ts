@@ -2,6 +2,7 @@ import {
   Account,
   AccountNotFoundError,
   AccountSearchParams,
+  AccountWithContactNumberExistsError,
   AccountWithUserNameExistsError,
   InvalidCredentialsError,
 } from '../types';
@@ -53,6 +54,21 @@ export default class AccountReader {
     return AccountUtil.convertAccountDBToAccount(accDb);
   }
 
+  public static async getAccountByContactNumber(
+    contactNumber: string,
+  ): Promise<Account> {
+    const accDb = await AccountRepository.findOne({
+      contactNumber,
+      active: true,
+    });
+
+    if (!accDb) {
+      return null;
+    }
+
+    return AccountUtil.convertAccountDBToAccount(accDb);
+  }
+
   public static async checkUsernameNotExists(
     params: AccountSearchParams,
   ): Promise<boolean> {
@@ -62,6 +78,20 @@ export default class AccountReader {
     });
     if (accDb) {
       throw new AccountWithUserNameExistsError(params.username);
+    }
+
+    return false;
+  }
+
+  public static async checkContactNumberNotExists(
+    params: AccountSearchParams,
+  ): Promise<boolean> {
+    const accDb = await AccountRepository.findOne({
+      contactNumber: params.contactNumber,
+      active: true,
+    });
+    if (accDb) {
+      throw new AccountWithContactNumberExistsError(params.contactNumber);
     }
 
     return false;

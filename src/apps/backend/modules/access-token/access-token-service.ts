@@ -11,16 +11,12 @@ import {
   CreateAccessTokenParams,
   VerifyAccessTokenParams,
 } from './types';
+import { Account } from '../account';
 
 export default class AccessTokenService {
-  public static async createAccessToken(
-    params: CreateAccessTokenParams,
+  public static async generateAccessToken(
+    account: Account,
   ): Promise<AccessToken> {
-    const account = await AccountService.getAccountByUsernamePassword({
-      password: params.password,
-      username: params.username,
-    });
-
     const jwtSigningKey = ConfigService.getValue<string>('accounts.tokenKey');
     const jwtExpiry = ConfigService.getValue<string>('accounts.tokenExpiry');
 
@@ -38,6 +34,27 @@ export default class AccessTokenService {
     accessToken.expiresAt = new Date(jwtTokenDecoded.exp * 1000);
 
     return accessToken;
+  }
+
+  public static async createAccessTokenWithUsernameAndPassword(
+    params: CreateAccessTokenParams,
+  ): Promise<AccessToken> {
+    const account = await AccountService.getAccountByUsernamePassword({
+      password: params.password,
+      username: params.username,
+    });
+
+    return AccessTokenService.generateAccessToken(account);
+  }
+
+  public static async createAccessTokenWithContactNumber(
+    params: CreateAccessTokenParams,
+  ): Promise<AccessToken> {
+    const account = await AccountService.getAccountByContactNumber({
+      contactNumber: params.contactNumber,
+    });
+
+    return AccessTokenService.generateAccessToken(account);
   }
 
   public static verifyAccessToken(

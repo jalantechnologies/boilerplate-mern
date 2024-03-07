@@ -10,6 +10,11 @@ export default class AccountRouter extends ApplicationRouter {
 
     router.post('/', ctrl.createAccount);
 
+    // TODO: Confirm if this are the correct routes
+    router.post('/otps', ctrl.sendOTP);
+
+    router.post('/access-tokens', ctrl.verifyOTP);
+
     router.use(accessAuthMiddleware);
 
     router.get('/:accountId', ctrl.getAccountById);

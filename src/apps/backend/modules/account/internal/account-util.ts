@@ -8,6 +8,7 @@ export default class AccountUtil {
   public static convertAccountDBToAccount(accountDb: AccountDB): Account {
     const account = new Account();
     account.id = accountDb._id.toString();
+    account.contactNumber = accountDb.contactNumber;
     account.username = accountDb.username;
     account.hashedPassword = accountDb.hashedPassword;
     return account;

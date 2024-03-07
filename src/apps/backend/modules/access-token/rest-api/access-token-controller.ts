@@ -9,7 +9,7 @@ export class AccessTokenController {
     req: Request<CreateAccessTokenParams>,
     res: Response,
   ) => {
-    const accessToken = await AccessTokenService.createAccessToken({
+    const accessToken = await AccessTokenService.createAccessTokenWithUsernameAndPassword({
       username: req.body.username,
       password: req.body.password,
     });

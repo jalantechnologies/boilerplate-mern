@@ -3,6 +3,7 @@ import { Schema, Types } from 'mongoose';
 export interface AccountDB {
   _id: Types.ObjectId;
   active: boolean;
+  contactNumber: string;
   username: string;
   hashedPassword: string;
 }
@@ -13,14 +14,17 @@ export const AccountDbSchema: Schema = new Schema<AccountDB>(
       type: Boolean,
       required: true,
     },
+    contactNumber: {
+      type: String,
+      index: true,
+      unique: true,
+    },
     hashedPassword: {
       type: String,
-      required: true,
     },
     username: {
       type: String,
       index: true,
-      required: true,
       unique: true,
     },
   },
