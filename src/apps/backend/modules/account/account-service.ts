@@ -49,6 +49,8 @@ export default class AccountService {
 
     const params: CreateAccountParams = {
       contactNumber,
+      firstName: null,
+      lastName: null,
       password: null,
       username: null,
     };

@@ -20,6 +20,7 @@ export const AccountDbSchema: Schema = new Schema<AccountDB>(
       type: String,
       index: true,
       unique: true,
+    },
     firstName: {
       type: String,
       required: true,
