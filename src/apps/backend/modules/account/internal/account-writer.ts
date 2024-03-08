@@ -1,8 +1,10 @@
-import { Account, CreateAccountParams } from '../types';
+import { ConfigService } from '../../config';
+import { Account, CreateAccountParams, PasswordResetToken } from '../types';
 
 import AccountReader from './account-reader';
 import AccountUtil from './account-util';
 import AccountRepository from './store/account-repository';
+import PasswordResetTokenRepository from './store/password-reset-token-repository';
 
 export default class AccountWriter {
   public static async createAccount(
@@ -22,5 +24,26 @@ export default class AccountWriter {
     });
 
     return AccountUtil.convertAccountDBToAccount(accDb);
+  }
+
+  public static async createPasswordResetToken(
+    accountId: string,
+  ): Promise<PasswordResetToken> {
+    const defaultExpiresIn = ConfigService.getValue<string>(
+      'passwordResetToken.expiresInSeconds',
+    );
+
+    const token = AccountUtil.generatePasswordResetToken();
+    const tokenHash = await AccountUtil.hashPasswordResetToken(token);
+
+    const passwordResetTokenDB = await PasswordResetTokenRepository.create({
+      account: accountId,
+      expiresAt: AccountUtil.getTokenExpiresAt(defaultExpiresIn),
+      token: tokenHash,
+    });
+
+    return AccountUtil.convertPasswordResetTokenDBToPasswordResetToken(
+      passwordResetTokenDB,
+    );
   }
 }

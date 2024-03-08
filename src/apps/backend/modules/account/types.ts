@@ -25,7 +25,21 @@ export type GetAccountParams = {
   accountId: string;
 };
 
-export type PasswordResetEmailParams = {
+export class PasswordResetToken {
+  id: string;
+
+  account: string;
+
+  expiresAt: Date;
+
+  isExpired: boolean;
+
+  token: string;
+
+  used: boolean;
+}
+
+export type CreatePasswordResetTokenParams = {
   username: string;
 };
 

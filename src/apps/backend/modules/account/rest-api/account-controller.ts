@@ -1,7 +1,7 @@
 import { applicationController, Request, Response } from '../../application';
 import { HttpStatusCodes } from '../../http';
 import AccountService from '../account-service';
-import { CreateAccountParams, GetAccountParams, PasswordResetEmailParams } from '../types';
+import { CreateAccountParams, GetAccountParams, CreatePasswordResetTokenParams } from '../types';
 
 import { serializeAccountAsJSON } from './account-serializer';
 
@@ -32,7 +32,7 @@ export class AccountController {
   );
 
   createPasswordResetToken = applicationController(
-    async (req: Request<PasswordResetEmailParams>, res: Response) => {
+    async (req: Request<CreatePasswordResetTokenParams>, res: Response) => {
       await AccountService.createPasswordResetToken({
         username: req.body.username,
       });

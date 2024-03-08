@@ -1,7 +1,12 @@
 import AccountReader from './internal/account-reader';
 import AccountWriter from './internal/account-writer';
 import {
-  Account, AccountSearchParams, CreateAccountParams, GetAccountParams, PasswordResetEmailParams,
+  Account,
+  AccountNotFoundError,
+  AccountSearchParams,
+  CreateAccountParams,
+  GetAccountParams,
+  CreatePasswordResetTokenParams,
 } from './types';
 
 export default class AccountService {
@@ -24,9 +29,32 @@ export default class AccountService {
   }
 
   public static async createPasswordResetToken(
-    params: PasswordResetEmailParams,
+    params: CreatePasswordResetTokenParams,
   ): Promise<void> {
-    const account = await AccountReader.getAccountByUsername(params.username);
-    console.log('Sending password reset email to:', account);
+    let account: Account;
+    try {
+      account = await AccountReader.getAccountByUsername(params.username);
+    } catch (e) {
+      if (e instanceof AccountNotFoundError) {
+        throw new AccountNotFoundError(params.username);
+      }
+      throw e;
+    }
+
+    const passwordResetToken = await AccountWriter.createPasswordResetToken(account.id);
+
+    await this.sendPasswordResetEmail(
+      params.username,
+      passwordResetToken.token,
+    );
+  }
+
+  private static async sendPasswordResetEmail(
+    username: string,
+    token: string,
+  ): Promise<void> {
+    // Send email
+    console.log('Sending email to', username);
+    console.log('Password reset token:', token);
   }
 }
