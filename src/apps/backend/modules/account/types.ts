@@ -48,7 +48,7 @@ export enum AccountErrorCode {
   USERNAME_ALREADY_EXISTS = 'ACCOUNT_ERR_01',
   NOT_FOUND = 'ACCOUNT_ERR_02',
   INVALID_CREDENTIALS = 'ACCOUNT_ERR_03',
-  CONTACT_NUMBER_ALREADY_EXISTS = 'ACCOUNT_ERR_04',
+  PHONE_NUMBER_ALREADY_EXISTS = 'ACCOUNT_ERR_04',
 }
 
 export class AccountWithUserNameExistsError extends ApplicationError {
@@ -66,7 +66,7 @@ export class AccountWithPhoneNumberExistsError extends ApplicationError {
 
   constructor(phoneNumber: string) {
     super(`An account with phone number ${phoneNumber} already exists.`);
-    this.code = AccountErrorCode.CONTACT_NUMBER_ALREADY_EXISTS;
+    this.code = AccountErrorCode.PHONE_NUMBER_ALREADY_EXISTS;
     this.httpStatusCode = HttpStatusCodes.CONFLICT;
   }
 }
