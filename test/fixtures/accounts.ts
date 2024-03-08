@@ -21,7 +21,12 @@ export default class AccountsFixture {
         password: faker.internet.password(),
       }));
 
-    await Promise.all(data.map((datum) => AccountService.createAccount(datum)));
+    await Promise.all(data.map((datum) => AccountService.createAccountByUsernameAndPassword(
+      datum.firstName,
+      datum.lastName,
+      datum.password,
+      datum.username,
+    )));
 
     return data;
   }
@@ -36,7 +41,12 @@ export default class AccountsFixture {
       password: faker.internet.password(),
     };
 
-    await AccountService.createAccount(data);
+    await AccountService.createAccountByUsernameAndPassword(
+      data.firstName,
+      data.lastName,
+      data.password,
+      data.username,
+    );
     return data;
   }
 }

@@ -1,13 +1,11 @@
-import { AccessTokenService } from '../../access-token';
-import { serializeAccessTokenAsJSON } from '../../access-token/rest-api/access-token-serializer';
 import { applicationController, Request, Response } from '../../application';
 import { HttpStatusCodes } from '../../http';
+import { OtpService } from '../../otp';
 import AccountService from '../account-service';
 import {
+  Account,
   CreateAccountParams,
-  GenerateOTPParams,
   GetAccountParams,
-  VerifyOTPParams,
 } from '../types';
 
 import { serializeAccountAsJSON } from './account-serializer';
@@ -15,44 +13,28 @@ import { serializeAccountAsJSON } from './account-serializer';
 export class AccountController {
   createAccount = applicationController(
     async (req: Request<CreateAccountParams>, res: Response) => {
-      const account = await AccountService.createAccount({
-        contactNumber: req.body.contactNumber,
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        username: req.body.username,
-        password: req.body.password,
-      });
+      let account: Account;
+
+      if (req.body.username && req.body.password) {
+        account = await AccountService.createAccountByUsernameAndPassword(
+          req.body.firstName,
+          req.body.lastName,
+          req.body.password,
+          req.body.username,
+        );
+      } else if (req.body.contactNumber) {
+        account = await AccountService.createAccountByContactNumber(
+          req.body.contactNumber,
+        );
+
+        if (account) {
+          await OtpService.createOtp(req.body.contactNumber);
+        }
+      }
+
       const accountJSON = serializeAccountAsJSON(account);
 
       res.status(HttpStatusCodes.CREATED).send(accountJSON);
-    },
-  );
-
-  sendOTP = applicationController(
-    async (req: Request<GenerateOTPParams>, res: Response) => {
-
-      const account = await AccountService.sendOTP(req.body.contactNumber);
-
-      const accountJSON = serializeAccountAsJSON(account);
-
-      res.status(HttpStatusCodes.OK).send(accountJSON);
-    },
-  );
-
-  verifyOTP = applicationController(
-    async (req: Request<VerifyOTPParams>, res: Response) => {
-      const account = await AccountService.verifyOTP(
-        req.body.accountId,
-        req.body.otp,
-      );
-
-      const accessToken = await AccessTokenService.createAccessTokenWithContactNumber({
-        contactNumber: account.contactNumber,
-      });
-
-      const accessTokenJSON = serializeAccessTokenAsJSON(accessToken);
-
-      res.status(HttpStatusCodes.OK).send(accessTokenJSON);
     },
   );
 

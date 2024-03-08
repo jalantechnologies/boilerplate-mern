@@ -1,22 +1,26 @@
-import { Account, CreateAccountParams } from '../types';
+import { Account, ContactNumber } from '../types';
 
 import AccountReader from './account-reader';
 import AccountUtil from './account-util';
 import AccountRepository from './store/account-repository';
 
 export default class AccountWriter {
-  public static async createAccount(
-    params: CreateAccountParams,
+  public static async createAccountByUsernameAndPassword(
+    firstName: string,
+    lastName: string,
+    password: string,
+    username: string,
   ): Promise<Account> {
     // check if account already exists
     // this will throw an error if it does
-    await AccountReader.checkUsernameNotExists(params);
+    await AccountReader.checkUsernameNotExists(username);
 
-    const accHashedPwd = await AccountUtil.hashPassword(params.password);
+    const accHashedPwd = await AccountUtil.hashPassword(password);
     const accDb = await AccountRepository.create({
-      firstName: params.firstName,
-      lastName: params.lastName,
-      username: params.username,
+      contactNumber: null,
+      firstName,
+      lastName,
+      username,
       hashedPassword: accHashedPwd,
       active: true,
     });
@@ -24,15 +28,19 @@ export default class AccountWriter {
     return AccountUtil.convertAccountDBToAccount(accDb);
   }
 
-  public static async createAccountWithContactNumber(
-    params: CreateAccountParams,
+  public static async createAccountByContactNumber(
+    contactNumber: ContactNumber,
   ): Promise<Account> {
     // check if account already exists with the given contact number
     // this will throw an error if it does
-    await AccountReader.checkContactNumberNotExists(params);
+    await AccountReader.checkContactNumberNotExists(contactNumber);
 
     const accDb = await AccountRepository.create({
-      contactNumber: params.contactNumber,
+      contactNumber,
+      firstName: null,
+      lastName: null,
+      username: null,
+      hashedPassword: null,
       active: true,
     });
 

@@ -1,9 +1,14 @@
 import { ApplicationError } from '../application';
 import { HttpStatusCodes } from '../http';
 
+export type ContactNumber = {
+  countryCode: string;
+  phoneNumber: string;
+};
+
 export class Account {
   id: string;
-  contactNumber: string;
+  contactNumber: ContactNumber;
   firstName: string;
   lastName: string;
   username: string;
@@ -11,7 +16,7 @@ export class Account {
 }
 
 export type CreateAccountParams = {
-  contactNumber: string;
+  contactNumber?: ContactNumber;
   firstName: string;
   lastName: string;
   password: string;
@@ -19,7 +24,7 @@ export type CreateAccountParams = {
 };
 
 export type AccountSearchParams = {
-  contactNumber?: string;
+  contactNumber?: ContactNumber;
   password?: string;
   username?: string;
 };
@@ -28,24 +33,11 @@ export type GetAccountParams = {
   accountId: string;
 };
 
-export type GenerateOTPParams = {
-  contactNumber: string;
-};
-
-export type VerifyOTPParams = {
-  accountId: string;
-  otp: string;
-};
-
 export enum AccountErrorCode {
   USERNAME_ALREADY_EXISTS = 'ACCOUNT_ERR_01',
   NOT_FOUND = 'ACCOUNT_ERR_02',
   INVALID_CREDENTIALS = 'ACCOUNT_ERR_03',
   CONTACT_NUMBER_ALREADY_EXISTS = 'ACCOUNT_ERR_04',
-}
-
-export enum OtpErrorCode {
-  VERIFY_OTP = 'OTP_ERR_01',
 }
 
 export class AccountWithUserNameExistsError extends ApplicationError {
@@ -95,15 +87,5 @@ export class InvalidCredentialsError extends ApplicationError {
     super(`Invalid credentials for ${username}. Please try again.`);
     this.code = AccountErrorCode.INVALID_CREDENTIALS;
     this.httpStatusCode = HttpStatusCodes.UNAUTHORIZED;
-  }
-}
-
-export class VerifyOTPError extends ApplicationError {
-  code: OtpErrorCode;
-
-  constructor(errorMsg: string) {
-    super(errorMsg);
-    this.code = OtpErrorCode.VERIFY_OTP;
-    this.httpStatusCode = 401;
   }
 }

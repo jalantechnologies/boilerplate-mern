@@ -13,7 +13,12 @@ describe('AccessToken API', () => {
         username: faker.internet.email(),
         password: 'password',
       };
-      await AccountWriter.createAccount(params);
+      await AccountWriter.createAccountByUsernameAndPassword(
+        params.firstName,
+        params.lastName,
+        params.password,
+        params.username,
+      );
 
       const res = await chai
         .request(app)

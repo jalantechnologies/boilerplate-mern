@@ -1,9 +1,9 @@
 import {
   Account,
   AccountNotFoundError,
-  AccountSearchParams,
   AccountWithContactNumberExistsError,
   AccountWithUserNameExistsError,
+  ContactNumber,
   InvalidCredentialsError,
 } from '../types';
 
@@ -25,16 +25,17 @@ export default class AccountReader {
     return AccountUtil.convertAccountDBToAccount(accDb);
   }
 
-  public static async getAccountByUsernamePassword(
-    params: AccountSearchParams,
+  public static async getAccountByUsernameAndPassword(
+    password: string,
+    username: string,
   ): Promise<Account> {
-    const account = await AccountReader.getAccountByUsername(params.username);
+    const account = await AccountReader.getAccountByUsername(username);
     const isPasswordValid = await AccountUtil.comparePassword(
-      params.password,
+      password,
       account.hashedPassword,
     );
     if (!isPasswordValid) {
-      throw new InvalidCredentialsError(params.username);
+      throw new InvalidCredentialsError(username);
     }
 
     return account;
@@ -55,10 +56,11 @@ export default class AccountReader {
   }
 
   public static async getAccountByContactNumber(
-    contactNumber: string,
+    contactNumber: ContactNumber,
   ): Promise<Account> {
     const accDb = await AccountRepository.findOne({
-      contactNumber,
+      'contactNumber.countryCode': contactNumber.countryCode,
+      'contactNumber.phoneNumber': contactNumber.phoneNumber,
       active: true,
     });
 
@@ -70,28 +72,33 @@ export default class AccountReader {
   }
 
   public static async checkUsernameNotExists(
-    params: AccountSearchParams,
+    username: string,
   ): Promise<boolean> {
     const accDb = await AccountRepository.findOne({
-      username: params.username,
+      username,
       active: true,
     });
+
     if (accDb) {
-      throw new AccountWithUserNameExistsError(params.username);
+      throw new AccountWithUserNameExistsError(username);
     }
 
     return false;
   }
 
   public static async checkContactNumberNotExists(
-    params: AccountSearchParams,
+    contactNumber: ContactNumber,
   ): Promise<boolean> {
+    const { countryCode, phoneNumber } = contactNumber;
+
     const accDb = await AccountRepository.findOne({
-      contactNumber: params.contactNumber,
+      'contactNumber.countryCode': countryCode,
+      'contactNumber.phoneNumber': phoneNumber,
       active: true,
     });
+
     if (accDb) {
-      throw new AccountWithContactNumberExistsError(params.contactNumber);
+      throw new AccountWithContactNumberExistsError(`${countryCode} ${phoneNumber}`);
     }
 
     return false;

@@ -1,6 +1,6 @@
 import * as bcrypt from 'bcrypt';
 
-import { Account } from '../types';
+import { Account, ContactNumber } from '../types';
 
 import { AccountDB } from './store/account-db';
 
@@ -25,5 +25,13 @@ export default class AccountUtil {
     hashedPassword: string,
   ): Promise<boolean> {
     return bcrypt.compare(password, hashedPassword);
+  }
+
+  public static getContactNumberString(
+    contactNumber: ContactNumber,
+  ): string {
+    const { countryCode, phoneNumber } = contactNumber;
+
+    return `${countryCode} ${phoneNumber}`;
   }
 }

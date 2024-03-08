@@ -1,5 +1,6 @@
 import jsonwebtoken from 'jsonwebtoken';
 
+import { Account, ContactNumber } from '../account';
 import AccountService from '../account/account-service';
 import { ConfigService } from '../config';
 
@@ -8,51 +9,23 @@ import {
   AccessTokenExpiredError,
   AccessTokenInvalidError,
   AccessTokenPayload,
-  CreateAccessTokenParams,
   VerifyAccessTokenParams,
 } from './types';
-import { Account } from '../account';
 
 export default class AccessTokenService {
-  public static async generateAccessToken(
-    account: Account,
+  public static async createAccessTokenByUsernameAndPassword(
+    password: string,
+    username: string,
   ): Promise<AccessToken> {
-    const jwtSigningKey = ConfigService.getValue<string>('accounts.tokenKey');
-    const jwtExpiry = ConfigService.getValue<string>('accounts.tokenExpiry');
-
-    const jwtToken = jsonwebtoken.sign(
-      { accountId: account.id },
-      jwtSigningKey,
-      { expiresIn: jwtExpiry },
-    );
-
-    const accessToken = new AccessToken();
-    accessToken.accountId = account.id;
-    accessToken.token = jwtToken;
-
-    const jwtTokenDecoded = jsonwebtoken.decode(jwtToken) as jsonwebtoken.JwtPayload;
-    accessToken.expiresAt = new Date(jwtTokenDecoded.exp * 1000);
-
-    return accessToken;
-  }
-
-  public static async createAccessTokenWithUsernameAndPassword(
-    params: CreateAccessTokenParams,
-  ): Promise<AccessToken> {
-    const account = await AccountService.getAccountByUsernamePassword({
-      password: params.password,
-      username: params.username,
-    });
+    const account = await AccountService.getAccountByUsernameAndPassword(password, username);
 
     return AccessTokenService.generateAccessToken(account);
   }
 
-  public static async createAccessTokenWithContactNumber(
-    params: CreateAccessTokenParams,
+  public static async createAccessTokenByContactNumber(
+    contactNumber: ContactNumber,
   ): Promise<AccessToken> {
-    const account = await AccountService.getAccountByContactNumber({
-      contactNumber: params.contactNumber,
-    });
+    const account = await AccountService.getAccountByContactNumber(contactNumber);
 
     return AccessTokenService.generateAccessToken(account);
   }
@@ -82,5 +55,27 @@ export default class AccessTokenService {
     return {
       accountId: verifiedToken.accountId as string,
     };
+  }
+
+  private static generateAccessToken(
+    account: Account,
+  ): AccessToken {
+    const jwtSigningKey = ConfigService.getValue<string>('accounts.tokenKey');
+    const jwtExpiry = ConfigService.getValue<string>('accounts.tokenExpiry');
+
+    const jwtToken = jsonwebtoken.sign(
+      { accountId: account.id },
+      jwtSigningKey,
+      { expiresIn: jwtExpiry },
+    );
+
+    const accessToken = new AccessToken();
+    accessToken.accountId = account.id;
+    accessToken.token = jwtToken;
+
+    const jwtTokenDecoded = jsonwebtoken.decode(jwtToken) as jsonwebtoken.JwtPayload;
+    accessToken.expiresAt = new Date(jwtTokenDecoded.exp * 1000);
+
+    return accessToken;
   }
 }
