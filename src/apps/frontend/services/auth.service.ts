@@ -25,7 +25,7 @@ export default class AuthService extends APIService {
 
   sendForgotPasswordEmail = async (
     username: string,
-  ): Promise<ApiResponse<void>> => this.apiClient.post('/accounts/password-reset-email', {
+  ): Promise<ApiResponse<void>> => this.apiClient.post('/accounts/password-reset-token', {
     username,
   });
 }
