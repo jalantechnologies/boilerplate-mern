@@ -2,31 +2,33 @@ import React, {
   createContext,
   PropsWithChildren,
   useContext,
+  useState,
 } from 'react';
 
 import { AuthService } from '../services';
 import {
-  AccessToken, ApiResponse, AsyncError, AuthRecord,
+  AccessToken, ApiResponse, AsyncError, PhoneNumber,
 } from '../types';
 
 import useAsync from './async.hook';
 
 type AuthContextType = {
   isLoginLoading: boolean;
+  isSendOtpLoading: boolean;
   isSignupLoading: boolean;
   isUserAuthenticated: () => boolean;
+  isVerifyOtpLoading: boolean;
   login: (username: string, password: string) => Promise<AccessToken>;
   loginError: AsyncError;
   loginResult: AccessToken;
   logout: () => void;
-  sendOTP: (
+  phoneNumber: PhoneNumber;
+  sendOtp: (
     countryCode: string,
     phoneNumber: string,
-  ) => Promise<AuthRecord>;
-  verifyOTP: (
-    authRecordId: string,
-    otp: string,
-  ) => Promise<AuthRecord>;
+  ) => Promise<void>;
+  sendOtpError: AsyncError;
+  setPhoneNumber: React.Dispatch<React.SetStateAction<PhoneNumber>>;
   signup: (
     firstName: string,
     lastName: string,
@@ -34,6 +36,13 @@ type AuthContextType = {
     password: string
   ) => Promise<void>;
   signupError: AsyncError;
+  verifyOtp: (
+    countryCode: string,
+    phoneNumber: string,
+    otp: string,
+  ) => Promise<AccessToken>;
+  verifyOtpError: AsyncError;
+  verifyOtpResult: AccessToken;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -71,22 +80,29 @@ const getAccessToken = (): AccessToken => JSON.parse(localStorage.getItem('acces
 
 const isUserAuthenticated = () => !!getAccessToken();
 
-const sendOTP = (countryCode: string, phoneNumber: string): Promise<AuthRecord> => {
-  // Backend Integration
-  console.log(countryCode, phoneNumber);
-  return null;
-};
+const sendOtpFn = async (
+  countryCode: string,
+  phoneNumber: string,
+): Promise<ApiResponse<void>> => authService.sendOtp(
+  countryCode,
+  phoneNumber,
+);
 
-const verifyOTP = (
-  authRecordId: string,
+const verifyOtpFn = async (
+  countryCode: string,
+  phoneNumber: string,
   otp: string,
-): Promise<AuthRecord> => {
-  // Backend Integration
-  console.log(authRecordId, otp);
-  return null;
+): Promise<ApiResponse<AccessToken>> => {
+  const result = await authService.verifyOtp(countryCode, phoneNumber, otp);
+  if (result.data) {
+    localStorage.setItem('access-token', JSON.stringify(result.data));
+  }
+  return result;
 };
 
 export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
+  const [phoneNumber, setPhoneNumber] = useState<PhoneNumber>();
+
   const {
     isLoading: isLoginLoading,
     error: loginError,
@@ -100,20 +116,40 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
     asyncCallback: signup,
   } = useAsync(signupFn);
 
+  const {
+    isLoading: isSendOtpLoading,
+    error: sendOtpError,
+    asyncCallback: sendOtp,
+  } = useAsync(sendOtpFn);
+
+  const {
+    isLoading: isVerifyOtpLoading,
+    error: verifyOtpError,
+    result: verifyOtpResult,
+    asyncCallback: verifyOtp,
+  } = useAsync(verifyOtpFn);
+
   return (
     <AuthContext.Provider
       value={{
-        logout: logoutFn,
         isLoginLoading,
+        isSendOtpLoading,
         isSignupLoading,
         isUserAuthenticated,
+        isVerifyOtpLoading,
         login,
         loginError,
         loginResult,
-        sendOTP,
-        verifyOTP,
+        logout: logoutFn,
+        phoneNumber,
+        sendOtp,
+        sendOtpError,
+        setPhoneNumber,
         signup,
         signupError,
+        verifyOtp,
+        verifyOtpError,
+        verifyOtpResult,
       }}
     >
       {children}

@@ -16,6 +16,10 @@ export const Otp: React.FC = () => {
     navigate(constants.DASHBOARD);
   };
 
+  const onResendSuccess = () => {
+    toast.success('OTP resent success');
+  };
+
   const onError = (error: AsyncError) => {
     toast.error(error.message);
   };
@@ -23,7 +27,11 @@ export const Otp: React.FC = () => {
   return (
     <AuthenticationPageLayout>
       <AuthenticationFormLayout>
-        <OtpForm onSuccess={onSuccess} onError={onError}></OtpForm>
+        <OtpForm
+          onSuccess={onSuccess}
+          onError={onError}
+          onResendSuccess={onResendSuccess}
+        ></OtpForm>
       </AuthenticationFormLayout>
     </AuthenticationPageLayout>
   );

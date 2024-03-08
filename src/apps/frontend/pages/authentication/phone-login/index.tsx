@@ -2,17 +2,18 @@ import React from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
+import constants from '../../../constants/routes';
 import { AsyncError } from '../../../types';
 import AuthenticationFormLayout from '../authentication-form-layout';
 import AuthenticationPageLayout from '../authentication-page-layout';
 
-import LoginWithPhoneForm from './login-with-phone-form';
+import PhoneLoginForm from './phone-login-form';
 
-export const LoginWithPhone: React.FC = () => {
+export const PhoneLogin: React.FC = () => {
   const navigate = useNavigate();
   const onSuccess = () => {
-    toast.success('OTP sent');
-    navigate('/otp');
+    toast.success('OTP sent success');
+    navigate(constants.OTP);
   };
 
   const onError = (error: AsyncError) => {
@@ -22,10 +23,10 @@ export const LoginWithPhone: React.FC = () => {
   return (
     <AuthenticationPageLayout>
       <AuthenticationFormLayout>
-        <LoginWithPhoneForm onSuccess={onSuccess} onError={onError}></LoginWithPhoneForm>
+        <PhoneLoginForm onSuccess={onSuccess} onError={onError}></PhoneLoginForm>
       </AuthenticationFormLayout>
     </AuthenticationPageLayout>
   );
 };
 
-export default LoginWithPhone;
+export default PhoneLogin;

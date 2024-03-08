@@ -22,4 +22,21 @@ export default class AuthService extends APIService {
     username,
     password,
   });
+
+  sendOtp = async (
+    countryCode: string,
+    phoneNumber: string,
+  ): Promise<ApiResponse<void>> => this.apiClient.post('/accounts', {
+    countryCode,
+    phoneNumber,
+  });
+
+  verifyOtp = async (
+    countryCode: string,
+    phoneNumber: string,
+    otp: string,
+  ): Promise<ApiResponse<AccessToken>> => this.apiClient.post('/access-tokens', {
+    contactNumber: { countryCode, phoneNumber },
+    otpCode: otp,
+  });
 }

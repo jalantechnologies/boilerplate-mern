@@ -2,8 +2,8 @@ const constants = {
   ABOUT: '/about',
   DASHBOARD: '/',
   LOGIN: '/login',
-  OTP: '/otp',
-  PHONELOGIN: '/phone-login',
+  OTP: '/signup?auth_mode=otp',
+  PHONE_LOGIN: '/login?auth_mode=otp',
   SIGNUP: '/signup',
   TASKS: '/tasks',
 };

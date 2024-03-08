@@ -10,21 +10,19 @@ interface OtpFormProps {
 }
 const useOtpForm = ({ onError, onSuccess }: OtpFormProps) => {
   const {
-    isLoginLoading, sendOTP, verifyOTP,
+    isVerifyOtpLoading, verifyOtpError, verifyOtpResult, phoneNumber, sendOtp, verifyOtp,
   } = useAuthContext();
 
   const formik = useFormik({
     initialValues: {
-      otp: Array(6).fill(''),
+      otp: Array(4).fill(''),
     },
     validationSchema: Yup.object({
       otp: Yup.array()
         .of(Yup.string().required('')),
     }),
     onSubmit: (values) => {
-      // authRecordId Part of Backend Integration
-      const authRecordId = '';
-      verifyOTP(authRecordId, values.otp.join(''))
+      verifyOtp(phoneNumber.countryCode, phoneNumber.phoneNumber, values.otp.join(''))
         .then(() => {
           onSuccess();
         })
@@ -35,9 +33,12 @@ const useOtpForm = ({ onError, onSuccess }: OtpFormProps) => {
   });
 
   return {
+    phoneNumber,
     formik,
-    isLoginLoading,
-    sendOTP,
+    isVerifyOtpLoading,
+    sendOtp,
+    verifyOtpError,
+    verifyOtpResult,
   };
 };
 

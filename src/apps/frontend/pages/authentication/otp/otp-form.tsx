@@ -1,19 +1,24 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { FormControl } from '../../../components';
+import constants from '../../../constants/routes';
 import { AsyncError } from '../../../types';
 
 import useOtpForm from './otp-form-hook';
 
-interface LoginWithPhoneFormProps {
+interface OTPFormProps {
   onSuccess: () => void;
+  onResendSuccess: () => void;
   onError: (error: AsyncError) => void;
 }
 
 let currentOtpIndex:number = 0;
 
-const OtpForm: React.FC<LoginWithPhoneFormProps> = ({ onError, onSuccess }) => {
-  const { formik, isLoginLoading } = useOtpForm({ onSuccess, onError });
+const OtpForm: React.FC<OTPFormProps> = ({ onError, onSuccess, onResendSuccess }) => {
+  const {
+    formik, isVerifyOtpLoading, phoneNumber, sendOtp,
+  } = useOtpForm({ onSuccess, onError });
 
   const [activeOtpIndex, setActiveOtpIndex] = useState(0);
   const [timer, setTimer] = useState(59);
@@ -21,16 +26,24 @@ const OtpForm: React.FC<LoginWithPhoneFormProps> = ({ onError, onSuccess }) => {
 
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!phoneNumber) {
+      navigate(constants.PHONE_LOGIN);
+    }
+  }, [phoneNumber, navigate]);
+
   const handleChangeOtp = (
     { target }: React.ChangeEvent<HTMLInputElement>,
   ): void => {
     const { value } = target;
     const newOtp = [...formik.values.otp as string[]];
     newOtp[currentOtpIndex] = value.substring(value.length - 1);
-    formik.setFieldValue('otp', newOtp).then(() => {}).catch(() => {});
-
-    if (!value) setActiveOtpIndex(currentOtpIndex - 1);
-    else setActiveOtpIndex(currentOtpIndex + 1);
+    formik.setFieldValue('otp', newOtp).then(() => {
+      if (!value) setActiveOtpIndex(currentOtpIndex - 1);
+      else setActiveOtpIndex(currentOtpIndex + 1);
+    }).catch((err) => { onError(err as AsyncError); });
   };
 
   useEffect(() => {
@@ -57,13 +70,20 @@ const OtpForm: React.FC<LoginWithPhoneFormProps> = ({ onError, onSuccess }) => {
   };
 
   const handleResendOtp = () => {
-    setIsResendClickable(false);
-    startTimer();
+    setTimer(59);
+    sendOtp(phoneNumber.countryCode, phoneNumber.phoneNumber)
+      .then(() => {
+        onResendSuccess();
+        startTimer();
+        setIsResendClickable(false);
+      })
+      .catch((err) => {
+        onError(err as AsyncError);
+      });
   };
 
   return (
-    <div className="w-full xl:w-2/5">
-      <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
+      <>
         <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
           Verify Your Account
         </h2>
@@ -71,12 +91,13 @@ const OtpForm: React.FC<LoginWithPhoneFormProps> = ({ onError, onSuccess }) => {
         <form onSubmit={formik.handleSubmit}>
           <div className="mb-6">
             <FormControl
-              label={'Enter the 6 digit code sent to the mobile number'}
+              label={`Enter the 4 digit code sent to the mobile number ${phoneNumber?.countryCode} ${phoneNumber?.phoneNumber}`}
               error={formik.touched.otp && formik.errors.otp as string}
             >
-              <div className="flex items-center justify-center gap-3">
+              <div className="flex items-center justify-center gap-6">
                 {formik.values.otp.map((_, index) => (
                     <input
+                      disabled={isVerifyOtpLoading}
                       key={index}
                       autoComplete="off"
                       className={`flex w-full rounded-lg border bg-transparent py-4 text-center outline-none [appearance:textfield] focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary [&::-webkit-inner-spin-button]:appearance-none ${formik.touched.otp && formik.errors.otp ? 'border-red-500' : 'border-stroke'}`}
@@ -107,8 +128,8 @@ const OtpForm: React.FC<LoginWithPhoneFormProps> = ({ onError, onSuccess }) => {
 
           <button
             className={`w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 font-medium text-white transition hover:bg-primary/90
-              ${isLoginLoading && 'cursor-not-allowed bg-primary/90'}`}
-            disabled={isLoginLoading}
+              ${isVerifyOtpLoading && 'cursor-not-allowed bg-primary/90'}`}
+            disabled={isVerifyOtpLoading}
             type="submit"
           >
             Verify
@@ -117,8 +138,7 @@ const OtpForm: React.FC<LoginWithPhoneFormProps> = ({ onError, onSuccess }) => {
             Don’t share the verification code with anyone!
           </h2>
         </form>
-      </div>
-    </div>
+      </>
   );
 };
 export default OtpForm;
