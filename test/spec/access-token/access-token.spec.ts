@@ -13,6 +13,10 @@ describe('AccessToken API', () => {
 
   beforeEach(() => {
     sinonSandbox = sinon.createSandbox();
+
+    sinonSandbox
+      .stub(SMSService, 'sendSMS')
+      .returns(Promise.resolve());
   });
 
   afterEach(async () => {
@@ -50,8 +54,6 @@ describe('AccessToken API', () => {
         countryCode: '+91',
         phoneNumber: '9834567890',
       };
-
-      sinonSandbox.stub(SMSService, <any>'sendSMS').returns(Promise.resolve(true));
 
       await AccountWriter.createAccountByPhoneNumber({
         countryCode: phoneNumber.countryCode,

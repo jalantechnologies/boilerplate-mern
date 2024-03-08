@@ -9,9 +9,14 @@ import { app } from '../../helpers/app';
 
 describe('Account API', () => {
   let sinonSandbox: sinon.SinonSandbox;
+  let sendSMSStub: sinon.SinonStub;
 
   beforeEach(() => {
     sinonSandbox = sinon.createSandbox();
+
+    sendSMSStub = sinonSandbox
+      .stub(SMSService, 'sendSMS')
+      .returns(Promise.resolve());
   });
 
   afterEach(() => {
@@ -67,8 +72,6 @@ describe('Account API', () => {
         phoneNumber: '7895586769',
       };
 
-      const sendSMSStub = sinonSandbox.stub(SMSService, <any>'sendSMS').returns(Promise.resolve(true));
-
       const res = await chai
         .request(app)
         .post('/api/accounts')
@@ -89,10 +92,11 @@ describe('Account API', () => {
         phoneNumber: '7895586769',
       };
 
-      await AccountWriter.createAccountByPhoneNumber(phoneNumber);
+      const account = await AccountWriter.createAccountByPhoneNumber(phoneNumber);
 
-      const createAccountByPhoneNumberStub = sinonSandbox.stub(AccountWriter, <any>'createAccountByPhoneNumber').returns(Promise.resolve(true));
-      const sendSMSStub = sinonSandbox.stub(SMSService, <any>'sendSMS').returns(Promise.resolve(true));
+      const createAccountByPhoneNumberStub = sinonSandbox
+        .stub(AccountWriter, 'createAccountByPhoneNumber')
+        .returns(Promise.resolve(account));
 
       const res = await chai
         .request(app)
@@ -114,8 +118,6 @@ describe('Account API', () => {
         countryCode: '+1',
         phoneNumber: '7895586',
       };
-
-      const sendSMSStub = sinonSandbox.stub(SMSService, <any>'sendSMS').returns(Promise.resolve(true));
 
       const res = await chai
         .request(app)
