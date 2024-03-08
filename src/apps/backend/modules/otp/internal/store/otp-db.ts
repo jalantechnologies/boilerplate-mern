@@ -19,8 +19,10 @@ export const OtpDbSchema: Schema = new Schema<OtpDB>(
     contactNumber: {
       index: true,
       required: true,
-      type: Object,
-      unique: true,
+      type: {
+        countryCode: String,
+        phoneNumber: String,
+      },
     },
     otpCode: {
       required: true,

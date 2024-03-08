@@ -1,10 +1,11 @@
+import TwilioService from '../communication/internals/twilio-service';
+
+import OtpWriter from './internal/otp-writer';
 import {
   ContactNumber,
   Otp,
   OtpRequestError,
 } from './types';
-import OtpWriter from './internal/otp-writer';
-import TwilioService from '../communication/internals/twilio-service';
 
 export default class OtpService {
   public static async createOtp(

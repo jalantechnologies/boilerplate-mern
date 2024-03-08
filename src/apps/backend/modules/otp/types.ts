@@ -35,31 +35,31 @@ export type VerifyOTPParams = {
 };
 
 export class OtpIncorrectError extends ApplicationError {
-  otpCode: OtpErrorCode;
+  code: OtpErrorCode;
 
   constructor() {
     super('Incorrect OTP.');
-    this.otpCode = OtpErrorCode.INCORRECT_OTP;
+    this.code = OtpErrorCode.INCORRECT_OTP;
     this.httpStatusCode = HttpStatusCodes.UNAUTHORIZED;
   }
 }
 
 export class OtpExpiredError extends ApplicationError {
-  otpCode: OtpErrorCode;
+  code: OtpErrorCode;
 
   constructor() {
     super('OTP has expired. Please request a new OTP.');
-    this.otpCode = OtpErrorCode.OTP_EXPIRED;
+    this.code = OtpErrorCode.OTP_EXPIRED;
     this.httpStatusCode = HttpStatusCodes.UNAUTHORIZED;
   }
 }
 
 export class OtpRequestError extends ApplicationError {
-  otpCode: OtpErrorCode;
+  code: OtpErrorCode;
 
   constructor(message: string) {
     super(message);
-    this.otpCode = OtpErrorCode.FAILED_TO_CREATE_OTP;
+    this.code = OtpErrorCode.FAILED_TO_CREATE_OTP;
     this.httpStatusCode = HttpStatusCodes.SERVER_ERROR;
   }
 }
