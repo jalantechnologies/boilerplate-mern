@@ -17,7 +17,7 @@ const PhoneLoginForm: React.FC<PhoneLoginFormProps> = ({ onError, onSuccess }) =
 
   const setFormikFieldValue = (firstName: string, data: string) => {
     formik.setFieldValue(firstName, data)
-      .then(() => {}).catch((err) => { onError(err as AsyncError); });
+      .then().catch((err) => { onError(err as AsyncError); });
   };
 
   const handleChangePhone = (e) => {
