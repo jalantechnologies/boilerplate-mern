@@ -61,7 +61,7 @@ describe('Account API', () => {
       );
     });
 
-    it('should create a new account if it does not exist and send otp when user signing up through contact number ', async () => {
+    it('should create a new account if it does not exist and send OTP when a user signs up through the contact number', async () => {
       const contactNumber = {
         countryCode: '+91',
         phoneNumber: '7895586769',
@@ -83,7 +83,7 @@ describe('Account API', () => {
       expect(sendSMSStub.calledOnce).to.be.true;
     });
 
-    it('should send otp if account already exists when user signing up through contact number', async () => {
+    it('should send OTP for the already existing account when a user signs up through the contact number', async () => {
       const contactNumber = {
         countryCode: '+91',
         phoneNumber: '7895586769',
@@ -109,7 +109,7 @@ describe('Account API', () => {
       expect(createAccountByContactNumberStub.calledOnce).to.be.false;
     });
 
-    it('should throw error when creating a new account with invalid contact number', async () => {
+    it('should throw an error when creating a new account with an invalid contact number', async () => {
       const contactNumber = {
         countryCode: '+1',
         phoneNumber: '7895586',
