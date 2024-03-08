@@ -4,6 +4,7 @@ const constants = {
   LOGIN: '/login',
   OTP: '/otp',
   PHONELOGIN: '/phone-login',
+  SIGNUP: '/signup',
   TASKS: '/tasks',
 };
 
