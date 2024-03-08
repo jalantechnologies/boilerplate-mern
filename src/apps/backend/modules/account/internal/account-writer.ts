@@ -17,7 +17,6 @@ export default class AccountWriter {
 
     const accHashedPwd = await AccountUtil.hashPassword(password);
     const accDb = await AccountRepository.create({
-      contactNumber: null,
       firstName,
       lastName,
       username,
@@ -34,13 +33,10 @@ export default class AccountWriter {
     // check if account already exists with the given contact number
     // this will throw an error if it does
     await AccountReader.checkContactNumberNotExists(contactNumber);
+console.log('Am I here?');
 
     const accDb = await AccountRepository.create({
       contactNumber,
-      firstName: null,
-      lastName: null,
-      username: null,
-      hashedPassword: null,
       active: true,
     });
 

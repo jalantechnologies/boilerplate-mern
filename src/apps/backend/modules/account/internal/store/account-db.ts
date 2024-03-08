@@ -19,20 +19,28 @@ export const AccountDbSchema: Schema = new Schema<AccountDB>(
       required: true,
     },
     contactNumber: {
-      type: Object,
+      default: null,
+      type: {
+        countryCode: String,
+        phoneNumber: String,
+      },
       index: true,
       unique: true,
     },
     firstName: {
+      default: '',
       type: String,
     },
     lastName: {
+      default: '',
       type: String,
     },
     hashedPassword: {
+      default: '',
       type: String,
     },
     username: {
+      default: '',
       type: String,
       index: true,
       unique: true,
