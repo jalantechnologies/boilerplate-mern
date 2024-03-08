@@ -1,6 +1,6 @@
 import * as bcrypt from 'bcrypt';
 
-import { Account, ContactNumber } from '../types';
+import { Account } from '../types';
 
 import { AccountDB } from './store/account-db';
 
@@ -8,7 +8,7 @@ export default class AccountUtil {
   public static convertAccountDBToAccount(accountDb: AccountDB): Account {
     const account = new Account();
     account.id = accountDb._id.toString();
-    account.contactNumber = accountDb.contactNumber;
+    account.phoneNumber = accountDb.phoneNumber;
     account.firstName = accountDb.firstName;
     account.lastName = accountDb.lastName;
     account.username = accountDb.username;
@@ -25,13 +25,5 @@ export default class AccountUtil {
     hashedPassword: string,
   ): Promise<boolean> {
     return bcrypt.compare(password, hashedPassword);
-  }
-
-  public static getContactNumberString(
-    contactNumber: ContactNumber,
-  ): string {
-    const { countryCode, phoneNumber } = contactNumber;
-
-    return `${countryCode} ${phoneNumber}`;
   }
 }

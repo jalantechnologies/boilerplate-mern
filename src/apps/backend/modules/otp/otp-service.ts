@@ -1,24 +1,24 @@
-import CommunicationUtil from '../communication/communication-util';
+import { PhoneNumber } from '../account';
 import { SMSService } from '../communication';
+import CommunicationUtil from '../communication/communication-util';
 
 import OtpWriter from './internal/otp-writer';
 import {
-  ContactNumber,
   Otp,
   OtpRequestError,
 } from './types';
 
 export default class OtpService {
   public static async createOtp(
-    contactNumber: ContactNumber,
+    phoneNumber: PhoneNumber,
   ): Promise<Otp> {
-    const isValidContactNumber = CommunicationUtil.checkPhoneNumberValidation(`${contactNumber.countryCode}${contactNumber.phoneNumber}`);
+    const isValidPhoneNumber = CommunicationUtil.checkPhoneNumberValidation(phoneNumber.toString());
 
-    if (!isValidContactNumber) {
-      throw new OtpRequestError('Invalid contact number');
+    if (!isValidPhoneNumber) {
+      throw new OtpRequestError('Invalid phone number');
     }
 
-    const otp = await OtpWriter.createOtp(contactNumber);
+    const otp = await OtpWriter.createOtp(phoneNumber);
 
     if (!otp) {
       throw new OtpRequestError('Failed to create OTP');
@@ -26,16 +26,16 @@ export default class OtpService {
 
     await SMSService.sendSMS({
       messageBody: `Your OTP is ${otp.otpCode}`,
-      recipientPhone: contactNumber,
+      recipientPhone: phoneNumber,
     });
 
     return otp;
   }
 
   public static async verifyOTP(
-    contactNumber: ContactNumber,
     otpCode: string,
+    phoneNumber: PhoneNumber,
   ): Promise<Otp> {
-    return OtpWriter.verifyOTP(contactNumber, otpCode);
+    return OtpWriter.verifyOTP(phoneNumber, otpCode);
   }
 }

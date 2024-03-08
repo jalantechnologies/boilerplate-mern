@@ -1,6 +1,5 @@
 import { applicationController, Request, Response } from '../../application';
 import { HttpStatusCodes } from '../../http';
-import { OtpService } from '../../otp';
 import AccountService from '../account-service';
 import {
   Account,
@@ -22,14 +21,10 @@ export class AccountController {
           req.body.password,
           req.body.username,
         );
-      } else if (req.body.contactNumber) {
-        account = await AccountService.createAccountByContactNumber(
-          req.body.contactNumber,
+      } else if (req.body.phoneNumber) {
+        account = await AccountService.createAccountByPhoneNumber(
+          req.body.phoneNumber,
         );
-
-        if (account) {
-          await OtpService.createOtp(req.body.contactNumber);
-        }
       }
 
       const accountJSON = serializeAccountAsJSON(account);

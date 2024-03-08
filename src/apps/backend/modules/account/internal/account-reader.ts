@@ -1,10 +1,11 @@
 import {
   Account,
   AccountNotFoundError,
-  AccountWithContactNumberExistsError,
+  AccountWithPhoneNumberExistsError,
   AccountWithUserNameExistsError,
-  ContactNumber,
   InvalidCredentialsError,
+  Nullable,
+  PhoneNumber,
 } from '../types';
 
 import AccountUtil from './account-util';
@@ -55,12 +56,28 @@ export default class AccountReader {
     return AccountUtil.convertAccountDBToAccount(accDb);
   }
 
-  public static async getAccountByContactNumber(
-    contactNumber: ContactNumber,
+  public static async getAccountByPhoneNumber(
+    phoneNumber: PhoneNumber,
   ): Promise<Account> {
     const accDb = await AccountRepository.findOne({
-      'contactNumber.countryCode': contactNumber.countryCode,
-      'contactNumber.phoneNumber': contactNumber.phoneNumber,
+      'phoneNumber.countryCode': phoneNumber.countryCode,
+      'phoneNumber.phoneNumber': phoneNumber.phoneNumber,
+      active: true,
+    });
+
+    if (!accDb) {
+      throw new AccountNotFoundError(phoneNumber.toString());
+    }
+
+    return AccountUtil.convertAccountDBToAccount(accDb);
+  }
+
+  public static async getAccountByPhoneNumberOptional(
+    phoneNumber: PhoneNumber,
+  ): Promise<Nullable<Account>> {
+    const accDb = await AccountRepository.findOne({
+      'phoneNumber.countryCode': phoneNumber.countryCode,
+      'phoneNumber.phoneNumber': phoneNumber.phoneNumber,
       active: true,
     });
 
@@ -86,19 +103,17 @@ export default class AccountReader {
     return false;
   }
 
-  public static async checkContactNumberNotExists(
-    contactNumber: ContactNumber,
+  public static async checkPhoneNumberNotExists(
+    phoneNumber: PhoneNumber,
   ): Promise<boolean> {
-    const { countryCode, phoneNumber } = contactNumber;
-
     const accDb = await AccountRepository.findOne({
-      'contactNumber.countryCode': countryCode,
-      'contactNumber.phoneNumber': phoneNumber,
+      'phoneNumber.countryCode': phoneNumber.countryCode,
+      'phoneNumber.phoneNumber': phoneNumber.phoneNumber,
       active: true,
     });
 
     if (accDb) {
-      throw new AccountWithContactNumberExistsError(`${countryCode} ${phoneNumber}`);
+      throw new AccountWithPhoneNumberExistsError(phoneNumber.toString());
     }
 
     return false;

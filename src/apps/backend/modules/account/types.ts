@@ -1,31 +1,42 @@
 import { ApplicationError } from '../application';
 import { HttpStatusCodes } from '../http';
 
-export type ContactNumber = {
+export type Nullable<T> = T | null;
+
+export class PhoneNumber {
   countryCode: string;
   phoneNumber: string;
-};
+
+  constructor(countryCode: string, phoneNumber: string) {
+    this.countryCode = countryCode;
+    this.phoneNumber = phoneNumber;
+  }
+
+  toString(): string {
+    return `${this.countryCode} ${this.phoneNumber}`;
+  }
+}
 
 export class Account {
-  id: string;
-  contactNumber: ContactNumber;
   firstName: string;
-  lastName: string;
-  username: string;
   hashedPassword: string;
+  id: string;
+  lastName: string;
+  phoneNumber: PhoneNumber;
+  username: string;
 }
 
 export type CreateAccountParams = {
-  contactNumber?: ContactNumber;
   firstName: string;
   lastName: string;
   password: string;
+  phoneNumber?: PhoneNumber;
   username: string;
 };
 
 export type AccountSearchParams = {
-  contactNumber?: ContactNumber;
   password?: string;
+  phoneNumber?: PhoneNumber;
   username?: string;
 };
 
@@ -50,21 +61,21 @@ export class AccountWithUserNameExistsError extends ApplicationError {
   }
 }
 
-export class AccountWithContactNumberExistsError extends ApplicationError {
+export class AccountWithPhoneNumberExistsError extends ApplicationError {
   code: AccountErrorCode;
 
-  constructor(contactNumber: string) {
-    super(`An account with contact number ${contactNumber} already exists.`);
+  constructor(phoneNumber: string) {
+    super(`An account with phone number ${phoneNumber} already exists.`);
     this.code = AccountErrorCode.CONTACT_NUMBER_ALREADY_EXISTS;
     this.httpStatusCode = HttpStatusCodes.CONFLICT;
   }
 }
 
-export class AccountWithContactNumberNotFoundError extends ApplicationError {
+export class AccountWithPhoneNumberNotFoundError extends ApplicationError {
   code: AccountErrorCode;
 
-  constructor(contactNumber: string) {
-    super(`Account with contact number ${contactNumber} not found.`);
+  constructor(phoneNumber: string) {
+    super(`Account with phone number ${phoneNumber} not found.`);
     this.code = AccountErrorCode.NOT_FOUND;
     this.httpStatusCode = HttpStatusCodes.NOT_FOUND;
   }

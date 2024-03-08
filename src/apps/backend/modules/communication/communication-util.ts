@@ -8,18 +8,18 @@ import {
 } from './types';
 
 export default class CommunicationUtil {
-  public static checkPhoneNumberValidation(contactNumber: string): boolean {
+  public static checkPhoneNumberValidation(phoneNumber: string): boolean {
     const phoneUtil = <PhoneUtilInterface>(<PhoneUtilInstance>PhoneNumberUtil).getInstance();
 
     return phoneUtil.isValidNumber(
       phoneUtil.parse(
-        contactNumber,
+        phoneNumber,
       ),
     );
   }
 
-  public static validatePhoneNumber(contactNumber: string): boolean {
-    if (this.checkPhoneNumberValidation(contactNumber)) {
+  public static validatePhoneNumber(phoneNumber: string): boolean {
+    if (this.checkPhoneNumberValidation(phoneNumber)) {
       return true;
     }
 

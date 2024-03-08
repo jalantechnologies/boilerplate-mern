@@ -1,8 +1,9 @@
 import jsonwebtoken from 'jsonwebtoken';
 
-import { Account, ContactNumber } from '../account';
+import { Account, PhoneNumber } from '../account';
 import AccountService from '../account/account-service';
 import { ConfigService } from '../config';
+import { OtpIncorrectError, OtpService, OtpStatus } from '../otp';
 
 import {
   AccessToken,
@@ -22,10 +23,20 @@ export default class AccessTokenService {
     return AccessTokenService.generateAccessToken(account);
   }
 
-  public static async createAccessTokenByContactNumber(
-    contactNumber: ContactNumber,
+  public static async createAccessTokenByPhoneNumber(
+    otpCode: string,
+    phoneNumber: PhoneNumber,
   ): Promise<AccessToken> {
-    const account = await AccountService.getAccountByContactNumber(contactNumber);
+    const account = await AccountService.getAccountByPhoneNumber(phoneNumber);
+
+    const otp = await OtpService.verifyOTP(
+      otpCode,
+      phoneNumber,
+    );
+
+    if (otp.status !== OtpStatus.SUCCESS) {
+      throw new OtpIncorrectError();
+    }
 
     return AccessTokenService.generateAccessToken(account);
   }

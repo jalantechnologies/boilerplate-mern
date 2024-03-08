@@ -1,12 +1,13 @@
 import { Schema, Types } from 'mongoose';
-import { ContactNumber } from '../../../account';
+
+import { PhoneNumber } from '../../../account';
 import { OtpStatus } from '../../types';
 
 export interface OtpDB {
   _id: Types.ObjectId;
   active: boolean;
-  contactNumber: ContactNumber;
   otpCode: string;
+  phoneNumber: PhoneNumber;
   status: OtpStatus;
 }
 
@@ -16,17 +17,17 @@ export const OtpDbSchema: Schema = new Schema<OtpDB>(
       required: true,
       type: Boolean,
     },
-    contactNumber: {
+    otpCode: {
+      required: true,
+      type: String,
+    },
+    phoneNumber: {
       index: true,
       required: true,
       type: {
         countryCode: String,
         phoneNumber: String,
       },
-    },
-    otpCode: {
-      required: true,
-      type: String,
     },
     status: {
       enum: Object.values(OtpStatus),

@@ -1,9 +1,11 @@
+import { OtpService } from '../otp';
+
 import AccountReader from './internal/account-reader';
 import AccountWriter from './internal/account-writer';
 import {
   Account,
-  ContactNumber,
   GetAccountParams,
+  PhoneNumber,
 } from './types';
 
 export default class AccountService {
@@ -21,16 +23,18 @@ export default class AccountService {
     );
   }
 
-  public static async createAccountByContactNumber(
-    contactNumber: ContactNumber,
+  public static async createAccountByPhoneNumber(
+    phoneNumber: PhoneNumber,
   ): Promise<Account> {
-    const account = await AccountReader.getAccountByContactNumber(contactNumber);
+    let account = await AccountReader.getAccountByPhoneNumberOptional(phoneNumber);
 
-    if (account) {
-      return account;
+    if (!account) {
+      account = await AccountWriter.createAccountByPhoneNumber(phoneNumber);
     }
 
-    return AccountWriter.createAccountByContactNumber(contactNumber);
+    await OtpService.createOtp(phoneNumber);
+
+    return account;
   }
 
   public static async getAccountByUsernameAndPassword(
@@ -40,10 +44,10 @@ export default class AccountService {
     return AccountReader.getAccountByUsernameAndPassword(password, username);
   }
 
-  public static async getAccountByContactNumber(
-    contactNumber: ContactNumber,
+  public static async getAccountByPhoneNumber(
+    phoneNumber: PhoneNumber,
   ): Promise<Account> {
-    return AccountReader.getAccountByContactNumber(contactNumber);
+    return AccountReader.getAccountByPhoneNumber(phoneNumber);
   }
 
   public static async getAccountById(

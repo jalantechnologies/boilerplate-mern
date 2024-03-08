@@ -61,8 +61,8 @@ describe('Account API', () => {
       );
     });
 
-    it('should create a new account if it does not exist and send OTP when a user signs up through the contact number', async () => {
-      const contactNumber = {
+    it('should create a new account if it does not exist and send OTP when a user signs up through the phone number', async () => {
+      const phoneNumber = {
         countryCode: '+91',
         phoneNumber: '7895586769',
       };
@@ -74,24 +74,24 @@ describe('Account API', () => {
         .post('/api/accounts')
         .set('content-type', 'application/json')
         .send({
-          contactNumber,
+          phoneNumber,
         });
 
       expect(res.status).to.be.eq(201);
-      expect(res.body.contactNumber.countryCode).to.eq(contactNumber.countryCode);
-      expect(res.body.contactNumber.phoneNumber).to.eq(contactNumber.phoneNumber);
+      expect(res.body.phoneNumber.countryCode).to.eq(phoneNumber.countryCode);
+      expect(res.body.phoneNumber.phoneNumber).to.eq(phoneNumber.phoneNumber);
       expect(sendSMSStub.calledOnce).to.be.true;
     });
 
-    it('should send OTP for the already existing account when a user signs up through the contact number', async () => {
-      const contactNumber = {
+    it('should send OTP for the already existing account when a user signs up through the phone number', async () => {
+      const phoneNumber = {
         countryCode: '+91',
         phoneNumber: '7895586769',
       };
 
-      await AccountWriter.createAccountByContactNumber(contactNumber);
+      await AccountWriter.createAccountByPhoneNumber(phoneNumber);
 
-      const createAccountByContactNumberStub = sinonSandbox.stub(AccountWriter, <any>'createAccountByContactNumber').returns(Promise.resolve(true));
+      const createAccountByPhoneNumberStub = sinonSandbox.stub(AccountWriter, <any>'createAccountByPhoneNumber').returns(Promise.resolve(true));
       const sendSMSStub = sinonSandbox.stub(SMSService, <any>'sendSMS').returns(Promise.resolve(true));
 
       const res = await chai
@@ -99,18 +99,18 @@ describe('Account API', () => {
         .post('/api/accounts')
         .set('content-type', 'application/json')
         .send({
-          contactNumber,
+          phoneNumber,
         });
 
       expect(res.status).to.be.eq(201);
-      expect(res.body.contactNumber.countryCode).to.eq(contactNumber.countryCode);
-      expect(res.body.contactNumber.phoneNumber).to.eq(contactNumber.phoneNumber);
+      expect(res.body.phoneNumber.countryCode).to.eq(phoneNumber.countryCode);
+      expect(res.body.phoneNumber.phoneNumber).to.eq(phoneNumber.phoneNumber);
       expect(sendSMSStub.calledOnce).to.be.true;
-      expect(createAccountByContactNumberStub.calledOnce).to.be.false;
+      expect(createAccountByPhoneNumberStub.calledOnce).to.be.false;
     });
 
-    it('should throw an error when creating a new account with an invalid contact number', async () => {
-      const contactNumber = {
+    it('should throw an error when creating a new account with an invalid phone number', async () => {
+      const phoneNumber = {
         countryCode: '+1',
         phoneNumber: '7895586',
       };
@@ -122,11 +122,11 @@ describe('Account API', () => {
         .post('/api/accounts')
         .set('content-type', 'application/json')
         .send({
-          contactNumber,
+          phoneNumber,
         });
 
       expect(res.status).to.be.eq(500);
-      expect(res.body.message).to.eq('Invalid contact number');
+      expect(res.body.message).to.eq('Invalid phone number');
       expect(sendSMSStub.calledOnce).to.be.false;
     });
   });

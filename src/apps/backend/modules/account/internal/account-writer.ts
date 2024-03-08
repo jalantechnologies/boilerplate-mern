@@ -1,4 +1,4 @@
-import { Account, ContactNumber } from '../types';
+import { Account, PhoneNumber } from '../types';
 
 import AccountReader from './account-reader';
 import AccountUtil from './account-util';
@@ -27,16 +27,15 @@ export default class AccountWriter {
     return AccountUtil.convertAccountDBToAccount(accDb);
   }
 
-  public static async createAccountByContactNumber(
-    contactNumber: ContactNumber,
+  public static async createAccountByPhoneNumber(
+    phoneNumber: PhoneNumber,
   ): Promise<Account> {
-    // check if account already exists with the given contact number
+    // check if account already exists with the given phone number
     // this will throw an error if it does
-    await AccountReader.checkContactNumberNotExists(contactNumber);
-console.log('Am I here?');
+    await AccountReader.checkPhoneNumberNotExists(phoneNumber);
 
     const accDb = await AccountRepository.create({
-      contactNumber,
+      phoneNumber,
       active: true,
     });
 

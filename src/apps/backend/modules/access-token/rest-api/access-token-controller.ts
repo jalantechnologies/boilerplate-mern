@@ -1,5 +1,4 @@
 import { applicationController, Request, Response } from '../../application';
-import { OtpService, OtpStatus } from '../../otp';
 import AccessTokenService from '../access-token-service';
 import { AccessToken, CreateAccessTokenParams } from '../types';
 
@@ -17,17 +16,11 @@ export class AccessTokenController {
         req.body.password,
         req.body.username,
       );
-    } else if (req.body.contactNumber && req.body.otpCode) {
-      const otp = await OtpService.verifyOTP(
-        req.body.contactNumber,
+    } else if (req.body.phoneNumber && req.body.otpCode) {
+      accessToken = await AccessTokenService.createAccessTokenByPhoneNumber(
         req.body.otpCode,
+        req.body.phoneNumber,
       );
-
-      if (otp.status === OtpStatus.SUCCESS) {
-        accessToken = await AccessTokenService.createAccessTokenByContactNumber(
-          req.body.contactNumber,
-        );
-      }
     }
 
     const accessTokenJSON = serializeAccessTokenAsJSON(accessToken);

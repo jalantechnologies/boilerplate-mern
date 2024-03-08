@@ -2,7 +2,7 @@ import { Account } from '../types';
 
 export const serializeAccountAsJSON = (account: Account): unknown => ({
   id: account.id,
-  contactNumber: account.contactNumber,
+  phoneNumber: account.phoneNumber,
   firstName: account.firstName,
   lastName: account.lastName,
   username: account.username,

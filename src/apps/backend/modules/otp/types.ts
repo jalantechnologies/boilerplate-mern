@@ -1,10 +1,6 @@
+import { PhoneNumber } from '../account';
 import { ApplicationError } from '../application';
 import { HttpStatusCodes } from '../http';
-
-export type ContactNumber = {
-  countryCode: string;
-  phoneNumber: string;
-};
 
 export enum OtpStatus {
   FAILURE = 'FAILURE',
@@ -13,9 +9,9 @@ export enum OtpStatus {
 }
 
 export class Otp {
-  contactNumber: ContactNumber;
   id: string;
   otpCode: string;
+  phoneNumber: PhoneNumber;
   status: OtpStatus;
 }
 
@@ -26,12 +22,12 @@ export enum OtpErrorCode {
 }
 
 export type CreateOTPParams = {
-  contactNumber: ContactNumber;
+  phoneNumber: PhoneNumber;
 };
 
 export type VerifyOTPParams = {
-  contactNumber: ContactNumber;
   otpCode: string;
+  phoneNumber: PhoneNumber;
 };
 
 export class OtpIncorrectError extends ApplicationError {

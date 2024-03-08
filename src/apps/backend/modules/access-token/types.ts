@@ -1,4 +1,4 @@
-import { ContactNumber } from '../account';
+import { PhoneNumber } from '../account';
 import { ApplicationError } from '../application';
 import { HttpStatusCodes } from '../http';
 
@@ -13,9 +13,9 @@ export type AccessTokenPayload = {
 };
 
 export type CreateAccessTokenParams = {
-  contactNumber?: ContactNumber;
   otpCode?: string;
   password?: string;
+  phoneNumber?: PhoneNumber;
   username?: string;
 };
 

@@ -1,5 +1,5 @@
+import { PhoneNumber } from '../../account';
 import {
-  ContactNumber,
   Otp,
   OtpExpiredError,
   OtpIncorrectError,
@@ -11,12 +11,12 @@ import OtpRepository from './store/otp-repository';
 
 export default class OtpWriter {
   public static async createOtp(
-    contactNumber: ContactNumber,
+    phoneNumber: PhoneNumber,
   ): Promise<Otp> {
     const otpDb = await OtpRepository.create({
       active: true,
-      contactNumber,
       otpCode: OtpUtil.generateOtp(),
+      phoneNumber,
       status: OtpStatus.PENDING,
     });
 
@@ -24,12 +24,12 @@ export default class OtpWriter {
   }
 
   public static async verifyOTP(
-    contactNumber: ContactNumber,
+    phoneNumber: PhoneNumber,
     otpCode: string,
   ): Promise<Otp> {
     const otpDb = await OtpRepository.findOne({
-      'contactNumber.countryCode': contactNumber.countryCode,
-      'contactNumber.phoneNumber': contactNumber.phoneNumber,
+      'phoneNumber.countryCode': phoneNumber.countryCode,
+      'phoneNumber.phoneNumber': phoneNumber.phoneNumber,
       otpCode,
     });
 

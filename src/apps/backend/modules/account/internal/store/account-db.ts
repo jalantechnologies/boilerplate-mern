@@ -1,15 +1,15 @@
 import { Schema, Types } from 'mongoose';
 
-import { ContactNumber } from '../../types';
+import { PhoneNumber } from '../../types';
 
 export interface AccountDB {
   _id: Types.ObjectId;
   active: boolean;
-  contactNumber: ContactNumber;
   firstName: string;
-  lastName: string;
-  username: string;
   hashedPassword: string;
+  lastName: string;
+  phoneNumber: PhoneNumber;
+  username: string;
 }
 
 export const AccountDbSchema: Schema = new Schema<AccountDB>(
@@ -18,20 +18,7 @@ export const AccountDbSchema: Schema = new Schema<AccountDB>(
       type: Boolean,
       required: true,
     },
-    contactNumber: {
-      default: null,
-      type: {
-        countryCode: String,
-        phoneNumber: String,
-      },
-      index: true,
-      unique: true,
-    },
     firstName: {
-      default: '',
-      type: String,
-    },
-    lastName: {
       default: '',
       type: String,
     },
@@ -39,11 +26,22 @@ export const AccountDbSchema: Schema = new Schema<AccountDB>(
       default: '',
       type: String,
     },
+    lastName: {
+      default: '',
+      type: String,
+    },
+    phoneNumber: {
+      default: null,
+      type: {
+        countryCode: String,
+        phoneNumber: String,
+      },
+      index: true,
+    },
     username: {
       default: '',
       type: String,
       index: true,
-      unique: true,
     },
   },
   {
