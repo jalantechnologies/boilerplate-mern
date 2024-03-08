@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 import { ContactNumber, Otp } from '../types';
 
 import { OtpDB } from './store/otp-db';
@@ -13,7 +15,7 @@ export default class OtpUtil {
   }
 
   public static generateOtp(): string {
-    return Math.floor(1000 + Math.random() * 9000).toString(); // 4 digit OTP
+    return _.random(1000, 9999).toString(); // 4 digit OTP
   }
 
   public static getContactNumberString(
