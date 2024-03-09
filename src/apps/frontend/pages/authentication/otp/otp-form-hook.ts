@@ -46,7 +46,6 @@ const useOTPForm = ({
         onResendSuccess();
       })
       .catch((err) => {
-        onResendSuccess();
         onError(err as AsyncError);
       });
   };
