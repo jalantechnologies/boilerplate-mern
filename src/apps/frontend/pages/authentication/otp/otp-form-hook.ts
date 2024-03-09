@@ -4,14 +4,21 @@ import * as Yup from 'yup';
 import { useAuthContext } from '../../../contexts';
 import { AsyncError } from '../../../types';
 
-interface OtpFormProps {
-  onSuccess: () => void;
+interface OTPFormProps {
   onError: (err: AsyncError) => void;
+  onResendSuccess: () => void;
+  onSuccess: () => void;
 }
-const useOtpForm = ({ onError, onSuccess }: OtpFormProps) => {
+const useOTPForm = ({
+  onError, onResendSuccess, onSuccess,
+}: OTPFormProps) => {
   const {
-    isVerifyOtpLoading, verifyOtpError, verifyOtpResult, phoneNumber, sendOtp, verifyOtp,
+    isVerifyOTPLoading, verifyOTPError, verifyOTPResult, sendOTP, verifyOTP,
   } = useAuthContext();
+
+  const searchParams = new URLSearchParams(window.location.search);
+  const phoneNumber = searchParams.get('ph');
+  const code = searchParams.get('code');
 
   const formik = useFormik({
     initialValues: {
@@ -22,7 +29,7 @@ const useOtpForm = ({ onError, onSuccess }: OtpFormProps) => {
         .of(Yup.string().required('')),
     }),
     onSubmit: (values) => {
-      verifyOtp(phoneNumber.countryCode, phoneNumber.phoneNumber, values.otp.join(''))
+      verifyOTP(`+${code}`, phoneNumber, values.otp.join(''))
         .then(() => {
           onSuccess();
         })
@@ -32,14 +39,28 @@ const useOtpForm = ({ onError, onSuccess }: OtpFormProps) => {
     },
   });
 
+  const handleResendOTP = () => {
+    sendOTP(`+${code}`, phoneNumber)
+      .then(() => {
+        formik.setFieldValue('otp', Array(4).fill('')).then().catch((err) => { onError(err as AsyncError); });
+        onResendSuccess();
+      })
+      .catch((err) => {
+        onResendSuccess();
+        onError(err as AsyncError);
+      });
+  };
+
   return {
-    phoneNumber,
+    code,
     formik,
-    isVerifyOtpLoading,
-    sendOtp,
-    verifyOtpError,
-    verifyOtpResult,
+    handleResendOTP,
+    isVerifyOTPLoading,
+    phoneNumber,
+    sendOTP,
+    verifyOTPError,
+    verifyOTPResult,
   };
 };
 
-export default useOtpForm;
+export default useOTPForm;

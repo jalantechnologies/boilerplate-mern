@@ -1,8 +1,10 @@
 import { useFormik } from 'formik';
 import { PhoneNumberUtil } from 'google-libphonenumber';
+import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 
 import constant from '../../../constants';
+import constants from '../../../constants/routes';
 import { useAuthContext } from '../../../contexts';
 import { AsyncError } from '../../../types';
 
@@ -12,8 +14,10 @@ interface PhoneLoginFormProps {
 }
 const usePhoneLoginForm = ({ onSuccess, onError }: PhoneLoginFormProps) => {
   const {
-    isSendOtpLoading, sendOtpError, sendOtp, setPhoneNumber,
+    isSendOTPLoading, sendOTPError, sendOTP,
   } = useAuthContext();
+
+  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
@@ -46,10 +50,10 @@ const usePhoneLoginForm = ({ onSuccess, onError }: PhoneLoginFormProps) => {
       const formattedPhoneNumber = validateAndFormatPhoneNumber(values.phoneNumber, values.country);
 
       if (formattedPhoneNumber.length > 0) {
-        setPhoneNumber({ countryCode: values.countryCode, phoneNumber: formattedPhoneNumber });
-        sendOtp(values.countryCode, values.phoneNumber)
+        sendOTP(values.countryCode, values.phoneNumber)
           .then(() => {
             onSuccess();
+            navigate(`${constants.OTP}&code=${values.countryCode}&ph=${formattedPhoneNumber}`);
           })
           .catch((err) => {
             onError(err as AsyncError);
@@ -60,8 +64,8 @@ const usePhoneLoginForm = ({ onSuccess, onError }: PhoneLoginFormProps) => {
 
   return {
     formik,
-    isSendOtpLoading,
-    sendOtpError,
+    isSendOTPLoading,
+    sendOTPError,
   };
 };
 

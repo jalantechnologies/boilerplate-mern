@@ -4,20 +4,25 @@ import { useNavigate } from 'react-router-dom';
 
 import constants from '../../../constants/routes';
 import { AsyncError } from '../../../types';
+import useTimer from '../../../utils/use-timer.hook';
 import AuthenticationFormLayout from '../authentication-form-layout';
 import AuthenticationPageLayout from '../authentication-page-layout';
 
-import OtpForm from './otp-form';
+import OTPForm from './otp-form';
 
-export const Otp: React.FC = () => {
+export const OTPPage: React.FC = () => {
+  const { startTimer, remaininingSecondsStr, isResendEnabled } = useTimer();
+
   const navigate = useNavigate();
+
   const onSuccess = () => {
-    toast.success('OTP verification success');
+    toast.success('Logged in success');
     navigate(constants.DASHBOARD);
   };
 
   const onResendSuccess = () => {
-    toast.success('OTP resent success');
+    startTimer();
+    toast.success('OTP resent');
   };
 
   const onError = (error: AsyncError) => {
@@ -27,14 +32,16 @@ export const Otp: React.FC = () => {
   return (
     <AuthenticationPageLayout>
       <AuthenticationFormLayout>
-        <OtpForm
-          onSuccess={onSuccess}
+        <OTPForm
+          isResendEnabled={isResendEnabled}
           onError={onError}
           onResendSuccess={onResendSuccess}
-        ></OtpForm>
+          onSuccess={onSuccess}
+          timerRemainingSeconds={remaininingSecondsStr}
+        ></OTPForm>
       </AuthenticationFormLayout>
     </AuthenticationPageLayout>
   );
 };
 
-export default Otp;
+export default OTPPage;

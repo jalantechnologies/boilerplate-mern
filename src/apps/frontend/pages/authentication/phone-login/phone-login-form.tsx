@@ -13,29 +13,29 @@ interface PhoneLoginFormProps {
 }
 
 const PhoneLoginForm: React.FC<PhoneLoginFormProps> = ({ onError, onSuccess }) => {
-  const { formik, isSendOtpLoading } = usePhoneLoginForm({ onSuccess, onError });
+  const { formik, isSendOTPLoading } = usePhoneLoginForm({ onSuccess, onError });
 
-  const setFormikFieldValue = (firstName: string, data: string) => {
-    formik.setFieldValue(firstName, data)
+  const setFormikFieldValue = (fieldName: string, data: string) => {
+    formik.setFieldValue(fieldName, data)
       .then().catch((err) => { onError(err as AsyncError); });
   };
 
-  const handleChangePhone = (e) => {
-    const val = e.target.value as string;
-    if (!/[a-z]/gi.test(val)) {
+  const handleChangePhone = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = target;
+    if (!/[a-z]/gi.test(value)) {
       if (formik.values.phoneNumber.length > 3) {
-        const parsedPhoneNumber = PhoneNumberUtil.getInstance().parse(val, formik.values.country);
+        const parsedPhoneNumber = PhoneNumberUtil.getInstance().parse(value, formik.values.country);
         const formattedPhoneNumber: string = PhoneNumberUtil.getInstance().format(
           parsedPhoneNumber, PhoneNumberFormat.NATIONAL,
         );
         setFormikFieldValue('phoneNumber', formattedPhoneNumber);
-      } else setFormikFieldValue('phoneNumber', val);
+      } else setFormikFieldValue('phoneNumber', value);
     }
   };
 
-  const handleChangeSelect = (e) => {
-    const val = e.target.value as string;
-    const [code, country] = val.split(',');
+  const handleChangeSelect = ({ target }: React.ChangeEvent<HTMLSelectElement>) => {
+    const { value } = target;
+    const [code, country] = value.split(',');
     setFormikFieldValue('country', country);
     setFormikFieldValue('countryCode', code);
     setFormikFieldValue('phoneNumber', '');
@@ -55,13 +55,13 @@ const PhoneLoginForm: React.FC<PhoneLoginFormProps> = ({ onError, onSuccess }) =
             >
               <div className="flex gap-5">
                 <CountryCodeSelect
-                  isLoading={isSendOtpLoading}
+                  isLoading={isSendOTPLoading}
                   value={[formik.values.countryCode, formik.values.country]}
                   handleChange={handleChangeSelect}
                 />
                 <Input
                   data-testid="phoneNumber"
-                  disabled={isSendOtpLoading}
+                  disabled={isSendOTPLoading}
                   error={formik.touched.phoneNumber && formik.errors.phoneNumber}
                   name="phoneNumber"
                   onChange={handleChangePhone}
@@ -75,8 +75,8 @@ const PhoneLoginForm: React.FC<PhoneLoginFormProps> = ({ onError, onSuccess }) =
 
           <button
             className={`w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 font-medium text-white transition hover:bg-primary/90
-              ${isSendOtpLoading && 'cursor-not-allowed bg-primary/90'}`}
-            disabled={isSendOtpLoading}
+              ${isSendOTPLoading && 'cursor-not-allowed bg-primary/90'}`}
+            disabled={isSendOTPLoading}
             type="submit"
           >
             Get OTP

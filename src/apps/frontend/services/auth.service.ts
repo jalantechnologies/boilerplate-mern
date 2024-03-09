@@ -23,7 +23,7 @@ export default class AuthService extends APIService {
     password,
   });
 
-  sendOtp = async (
+  sendOTP = async (
     countryCode: string,
     phoneNumber: string,
   ): Promise<ApiResponse<void>> => this.apiClient.post('/accounts', {
@@ -31,7 +31,7 @@ export default class AuthService extends APIService {
     phoneNumber,
   });
 
-  verifyOtp = async (
+  verifyOTP = async (
     countryCode: string,
     phoneNumber: string,
     otp: string,

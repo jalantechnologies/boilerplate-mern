@@ -1,77 +1,77 @@
 interface CountryCode {
-  dial_code: string;
   code: string;
+  dialCode: string;
   flag: string;
   name: string;
 }
 
-const COUNTRY_CODE: CountryCode[] = [
+const COUNTRIES: CountryCode[] = [
   {
-    dial_code: '+1',
     code: 'US',
+    dialCode: '+1',
     flag: '🇺🇸',
     name: 'United States',
   },
   {
-    dial_code: '+86',
     code: 'CN',
+    dialCode: '+86',
     flag: '🇨🇳',
     name: 'China',
   },
   {
-    dial_code: '+91',
     code: 'IN',
+    dialCode: '+91',
     flag: '🇮🇳',
     name: 'India',
   },
   {
-    dial_code: '+62',
     code: 'ID',
+    dialCode: '+62',
     flag: '🇮🇩',
     name: 'Indonesia',
   },
   {
-    dial_code: '+55',
     code: 'BR',
+    dialCode: '+55',
     flag: '🇧🇷',
     name: 'Brazil',
   },
   {
-    dial_code: '+234',
     code: 'NG',
+    dialCode: '+234',
     flag: '🇳🇬',
     name: 'Nigeria',
   },
   {
-    dial_code: '+2',
     code: 'EG',
+    dialCode: '+2',
     flag: '🇪🇬',
     name: 'Egypt',
   },
   {
-    dial_code: '+92',
     code: 'PK',
+    dialCode: '+92',
     flag: '🇵🇰',
     name: 'Pakistan',
   },
   {
-    dial_code: '+880',
     code: 'BD',
+    dialCode: '+880',
     flag: '🇧🇩',
     name: 'Bangladesh',
   },
   {
-    dial_code: '+7',
     code: 'RU',
+    dialCode: '+7',
     flag: '🇷🇺',
     name: 'Russia',
   },
   {
-    dial_code: '+81',
     code: 'JP',
+    dialCode: '+81',
     flag: '🇯🇵',
     name: 'Japan',
   },
 ];
 
-export default COUNTRY_CODE;
+export default COUNTRIES;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import COUNTRIES from '../../../constants/country-code';
+import COUNTRIES from '../../../constants/countries';
 
 interface CountryCodeSelectProps {
   isLoading: boolean;
@@ -21,9 +21,9 @@ const CountryCodeSelect: React.FC<CountryCodeSelectProps> = ({
       className='w-44 items-center justify-center rounded-lg border bg-transparent px-2 py-4 text-lg outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
     >
       {COUNTRIES.map((item, index) => (
-        <option key={index} value={[item.dial_code, item.code]}>
+        <option key={index} value={[item.dialCode, item.code]}>
           <p>{item.flag}</p>
-          <p> {item.code} ({item.dial_code})</p>
+          <p> {item.code} ({item.dialCode})</p>
         </option>
       ))}
     </select>
