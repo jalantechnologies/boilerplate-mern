@@ -1,5 +1,6 @@
 import { applicationController, Request, Response } from '../../application';
 import { HttpStatusCodes } from '../../http';
+import { Logger } from '../../logger';
 import AccountService from '../account-service';
 import { CreateAccountParams, GetAccountParams, CreatePasswordResetTokenParams } from '../types';
 
@@ -38,6 +39,14 @@ export class AccountController {
       });
 
       res.status(HttpStatusCodes.CREATED).send();
+    },
+  );
+
+  resetPassword = applicationController(
+    (req: Request<CreatePasswordResetTokenParams>, res: Response) => {
+      // under development
+      Logger.info('req body', req.body);
+      res.status(HttpStatusCodes.OK).send();
     },
   );
 }

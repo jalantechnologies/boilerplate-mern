@@ -28,4 +28,13 @@ export default class AuthService extends APIService {
   ): Promise<ApiResponse<void>> => this.apiClient.post('/accounts/password-reset-token', {
     username,
   });
+
+  resetPassword = async (
+    accountId: string,
+    password: string,
+    token: string,
+  ): Promise<ApiResponse<void>> => this.apiClient.patch(`/accounts/${accountId}/reset-password`, {
+    password,
+    token,
+  });
 }

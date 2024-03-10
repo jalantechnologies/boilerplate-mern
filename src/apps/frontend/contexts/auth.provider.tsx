@@ -13,6 +13,7 @@ import useAsync from './async.hook';
 
 type AuthContextType = {
   isLoginLoading: boolean;
+  isResetPasswordLoading: boolean;
   isSendForgotPasswordEmailLoading: boolean;
   isSignupLoading: boolean;
   isUserAuthenticated: () => boolean;
@@ -20,6 +21,8 @@ type AuthContextType = {
   loginError: AsyncError;
   loginResult: AccessToken;
   logout: () => void;
+  resetPassword: (accountId: string, password: string, token: string) => Promise<void>;
+  resetPasswordError: AsyncError;
   sendForgotPasswordEmail: (username: string) => Promise<void>;
   sendForgotPasswordEmailError: AsyncError;
   signup: (
@@ -60,6 +63,12 @@ const signupFn = async (
   password,
 );
 
+const resetPasswordFn = async (
+  accountId: string,
+  password: string,
+  token: string,
+): Promise<ApiResponse<void>> => authService.resetPassword(accountId, password, token);
+
 const logoutFn = (): void => localStorage.removeItem('access-token');
 
 const getAccessToken = (): AccessToken => JSON.parse(localStorage.getItem('access-token')) as AccessToken;
@@ -90,17 +99,26 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
     asyncCallback: sendForgotPasswordEmail,
   } = useAsync(sendForgotPasswordEmailFn);
 
+  const {
+    isLoading: isResetPasswordLoading,
+    error: resetPasswordError,
+    asyncCallback: resetPassword,
+  } = useAsync(resetPasswordFn);
+
   return (
     <AuthContext.Provider
       value={{
         logout: logoutFn,
         isLoginLoading,
+        isResetPasswordLoading,
         isSendForgotPasswordEmailLoading,
         isSignupLoading,
         isUserAuthenticated,
         login,
         loginError,
         loginResult,
+        resetPassword,
+        resetPasswordError,
         sendForgotPasswordEmail,
         sendForgotPasswordEmailError,
         signup,
