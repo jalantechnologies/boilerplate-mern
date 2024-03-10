@@ -28,17 +28,16 @@ export default class AccountWriter {
 
   public static async createPasswordResetToken(
     accountId: string,
+    token: string,
   ): Promise<PasswordResetToken> {
-    const defaultExpiresIn = ConfigService.getValue<string>(
+    const defaultTokenExpireTimeInSeconds = ConfigService.getValue<string>(
       'passwordResetToken.expiresInSeconds',
     );
-
-    const token = AccountUtil.generatePasswordResetToken();
     const tokenHash = await AccountUtil.hashPasswordResetToken(token);
 
     const passwordResetTokenDB = await PasswordResetTokenRepository.create({
       account: accountId,
-      expiresAt: AccountUtil.getTokenExpiresAt(defaultExpiresIn),
+      expiresAt: AccountUtil.getTokenExpiresAt(defaultTokenExpireTimeInSeconds),
       token: tokenHash,
     });
 

@@ -5,3 +5,6 @@ mongoDb:
   uri: 'mongodb://localhost:27017/boilerplate-mern-dev'
 
 webAppHost: 'http://localhost:3000'
+
+account:
+  passwordResetTokenEmailEnabled: 'false'
