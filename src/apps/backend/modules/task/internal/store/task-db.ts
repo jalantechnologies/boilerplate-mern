@@ -4,7 +4,8 @@ export interface TaskDB {
   _id: Types.ObjectId;
   account: Types.ObjectId;
   active: boolean;
-  name: string;
+  description: string;
+  title: string;
 }
 
 export const TaskDbSchema: Schema = new Schema<TaskDB>(
@@ -20,7 +21,12 @@ export const TaskDbSchema: Schema = new Schema<TaskDB>(
       index: true,
       required: true,
     },
-    name: {
+    description: {
+      type: String,
+      index: true,
+      required: true,
+    },
+    title: {
       type: String,
       index: true,
       required: true,

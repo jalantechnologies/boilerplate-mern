@@ -2,7 +2,7 @@ import {
   CreateTaskParams,
   DeleteTaskParams,
   Task,
-  TaskWithNameExistsError,
+  TaskWithTitleExistsError,
 } from '../types';
 
 import TaskRepository from './store/task-repository';
@@ -13,16 +13,17 @@ export default class TaskWriter {
   public static async createTask(params: CreateTaskParams): Promise<Task> {
     const existingTask = await TaskRepository.findOne({
       account: params.accountId,
-      name: params.name,
+      title: params.title,
       active: true,
     });
     if (existingTask) {
-      throw new TaskWithNameExistsError(params.name);
+      throw new TaskWithTitleExistsError(params.title);
     }
 
     const createdTask = await TaskRepository.create({
       account: params.accountId,
-      name: params.name,
+      description: params.description,
+      title: params.title,
       active: true,
     });
     return TaskUtil.convertTaskDBToTask(createdTask);

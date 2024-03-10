@@ -4,7 +4,8 @@ import { HttpStatusCodes } from '../http';
 export class Task {
   id: string;
   account: string;
-  name: string;
+  description: string;
+  title: string;
 }
 
 export type GetAllTaskParams = {
@@ -18,14 +19,15 @@ export type GetTaskParams = {
   taskId: string;
 };
 
-export type GetTaskByNameParams = {
+export type GetTaskByTitleParams = {
   accountId: string,
-  name: string;
+  title: string;
 };
 
 export type CreateTaskParams = {
   accountId: string;
-  name: string;
+  description: string;
+  title: string;
 };
 
 export type DeleteTaskParams = {
@@ -43,11 +45,11 @@ export enum TaskErrorCode {
   TASK_ALREADY_EXISTS = 'TASK_ERR_02',
 }
 
-export class TaskWithNameExistsError extends ApplicationError {
+export class TaskWithTitleExistsError extends ApplicationError {
   code: TaskErrorCode;
 
-  constructor(name: string) {
-    super(`Task with name ${name} already exists.`);
+  constructor(title: string) {
+    super(`Task with Title ${title} already exists.`);
     this.code = TaskErrorCode.TASK_ALREADY_EXISTS;
     this.httpStatusCode = HttpStatusCodes.CONFLICT;
   }
@@ -63,11 +65,11 @@ export class TaskNotFoundError extends ApplicationError {
   }
 }
 
-export class TaskWithNameNotFoundError extends ApplicationError {
+export class TaskWithTitleNotFoundError extends ApplicationError {
   code: TaskErrorCode;
 
-  constructor(taskName: string) {
-    super(`Task with name ${taskName} not found.`);
+  constructor(taskTitle: string) {
+    super(`Task with title ${taskTitle} not found.`);
     this.code = TaskErrorCode.NOT_FOUND;
     this.httpStatusCode = HttpStatusCodes.NOT_FOUND;
   }

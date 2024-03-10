@@ -18,7 +18,8 @@ export class TaskController {
   ) => {
     const task: Task = await TaskService.createTask({
       accountId: req.accountId,
-      name: req.body.name,
+      description: req.body.description,
+      title: req.body.title,
     });
     const taskJSON = serializeTaskAsJSON(task);
 

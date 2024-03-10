@@ -20,11 +20,13 @@ describe('Task API', () => {
     it('should be able to return list of tasks created by the account', async () => {
       await TaskService.createTask({
         accountId: account.id,
-        name: 'my-task-1',
+        title: 'my-task-1',
+        description: 'This is a test description.',
       });
       await TaskService.createTask({
         accountId: account.id,
-        name: 'my-task-2',
+        title: 'my-task-2',
+        description: 'This is a test description.',
       });
 
       const res = await chai
@@ -42,11 +44,13 @@ describe('Task API', () => {
     it('should skip out tasks which have been marked as deleted', async () => {
       const t1 = await TaskService.createTask({
         accountId: account.id,
-        name: 'my-task-1',
+        title: 'my-task-1',
+        description: 'This is a test description.',
       });
       const t2 = await TaskService.createTask({
         accountId: account.id,
-        name: 'my-task-2',
+        title: 'my-task-2',
+        description: 'This is a test description.',
       });
 
       await TaskService.deleteTask({
@@ -70,13 +74,15 @@ describe('Task API', () => {
     it('should skip out tasks which do not belong to the logged in account', async () => {
       const task = await TaskService.createTask({
         accountId: account.id,
-        name: 'my-task-1',
+        title: 'my-task-1',
+        description: 'This is a test description.',
       });
 
       const { account: anotherAccount } = await createAccount();
       await TaskService.createTask({
         accountId: anotherAccount.id,
-        name: 'my-task-2',
+        title: 'my-task-2',
+        description: 'This is a test description.',
       });
 
       const res = await chai
@@ -101,15 +107,18 @@ describe('Task API', () => {
         .set('content-type', 'application/json')
         .set('Authorization', `Bearer ${accessToken.token}`)
         .send({
-          name: 'my-task',
+          title: 'my-task',
+          description: 'This is a test description.',
         });
 
       expect(res.status).to.eq(201);
       expect(res.body).to.have.property('id');
       expect(res.body).to.have.property('account');
-      expect(res.body).to.have.property('name');
+      expect(res.body).to.have.property('title');
+      expect(res.body).to.have.property('description');
       expect(res.body.account).to.eq(account.id);
-      expect(res.body.name).to.eq('my-task');
+      expect(res.body.title).to.eq('my-task');
+      expect(res.body.description).to.eq('This is a test description.');
     });
   });
 
@@ -117,7 +126,8 @@ describe('Task API', () => {
     it('should be able to return the requested task', async () => {
       const task = await TaskService.createTask({
         accountId: account.id,
-        name: 'my-task',
+        title: 'my-task',
+        description: 'This is a test description.',
       });
 
       const res = await chai
@@ -129,7 +139,8 @@ describe('Task API', () => {
 
       expect(res.status).to.eq(200);
       expect(res.body.id).to.eq(task.id);
-      expect(res.body.name).to.eq('my-task');
+      expect(res.body.title).to.eq('my-task');
+      expect(res.body.description).to.eq('This is a test description.');
     });
 
     it('should return error if requested task does not exists', async () => {
@@ -146,7 +157,8 @@ describe('Task API', () => {
     it('should return error if requested task has been marked as deleted', async () => {
       const task = await TaskService.createTask({
         accountId: account.id,
-        name: 'my-task-1',
+        title: 'my-task-1',
+        description: 'This is a test description.',
       });
       await TaskService.deleteTask({
         accountId: account.id,
@@ -168,7 +180,8 @@ describe('Task API', () => {
     it('should be able to delete provided task', async () => {
       const task = await TaskService.createTask({
         accountId: account.id,
-        name: 'my-task',
+        title: 'my-task',
+        description: 'This is a test description.',
       });
 
       const res = await chai

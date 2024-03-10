@@ -4,8 +4,8 @@ import {
   Task,
   TaskNotFoundError,
   PaginationParams,
-  GetTaskByNameParams,
-  TaskWithNameNotFoundError,
+  GetTaskByTitleParams,
+  TaskWithTitleNotFoundError,
 } from '../types';
 
 import TaskRepository from './store/task-repository';
@@ -25,14 +25,14 @@ export default class TaskReader {
     return TaskUtil.convertTaskDBToTask(taskDb);
   }
 
-  public static async getTaskByNameForAccount(params: GetTaskByNameParams): Promise<Task> {
+  public static async getTaskByTitleForAccount(params: GetTaskByTitleParams): Promise<Task> {
     const taskDb = await TaskRepository.findOne({
       account: params.accountId,
-      name: params.name,
+      title: params.title,
       active: true,
     });
     if (!taskDb) {
-      throw new TaskWithNameNotFoundError(params.name);
+      throw new TaskWithTitleNotFoundError(params.title);
     }
 
     return TaskUtil.convertTaskDBToTask(taskDb);
