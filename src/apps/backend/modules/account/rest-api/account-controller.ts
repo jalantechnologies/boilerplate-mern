@@ -1,8 +1,9 @@
 import { applicationController, Request, Response } from '../../application';
 import { HttpStatusCodes } from '../../http';
-import { Logger } from '../../logger';
 import AccountService from '../account-service';
-import { CreateAccountParams, GetAccountParams, CreatePasswordResetTokenParams } from '../types';
+import {
+  CreateAccountParams, GetAccountParams, CreatePasswordResetTokenParams, ResetPasswordParams,
+} from '../types';
 
 import { serializeAccountAsJSON } from './account-serializer';
 
@@ -43,10 +44,16 @@ export class AccountController {
   );
 
   resetPassword = applicationController(
-    (req: Request<CreatePasswordResetTokenParams>, res: Response) => {
-      // under development
-      Logger.info('req body', req.body);
-      res.status(HttpStatusCodes.OK).send();
+    async (req: Request<ResetPasswordParams>, res: Response) => {
+      const account = await AccountService.resetPassword({
+        accountId: req.params.accountId,
+        newPassword: req.body.newPassword,
+        token: req.body.token,
+      });
+
+      const accountJSON = serializeAccountAsJSON(account);
+
+      res.status(HttpStatusCodes.OK).send(accountJSON);
     },
   );
 }

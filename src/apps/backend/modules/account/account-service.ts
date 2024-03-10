@@ -7,13 +7,13 @@ import AccountUtil from './internal/account-util';
 import AccountWriter from './internal/account-writer';
 import {
   Account,
-  AccountNotFoundError,
   AccountSearchParams,
   CreateAccountParams,
   GetAccountParams,
   CreatePasswordResetTokenParams,
   PasswordResetToken,
   PasswordResetTokenEmailNotEnabledForTheEnvironmentError,
+  ResetPasswordParams,
 } from './types';
 
 export default class AccountService {
@@ -38,16 +38,8 @@ export default class AccountService {
   public static async createPasswordResetToken(
     params: CreatePasswordResetTokenParams,
   ): Promise<PasswordResetToken> {
-    let account: Account;
+    const account = await AccountReader.getAccountByUsername(params.username);
 
-    try {
-      account = await AccountReader.getAccountByUsername(params.username);
-    } catch (e) {
-      if (e instanceof AccountNotFoundError) {
-        throw new AccountNotFoundError(params.username);
-      }
-      throw e;
-    }
     const passwordResetToken = AccountUtil.generatePasswordResetToken();
 
     const passwordResetTokenDbData = await AccountWriter.createPasswordResetToken(
@@ -64,7 +56,18 @@ export default class AccountService {
     return passwordResetTokenDbData;
   }
 
-  private static sendPasswordResetEmail(
+  public static async resetPassword(
+    params: ResetPasswordParams,
+  ): Promise<Account> {
+    const { accountId, newPassword, token } = params;
+    return AccountWriter.resetPassword(
+      accountId,
+      newPassword,
+      token,
+    );
+  }
+
+  private static async sendPasswordResetEmail(
     accountId: string,
     name: string,
     username: string,
@@ -89,7 +92,7 @@ export default class AccountService {
 
     const templateData = {
       name,
-      passwordResetLink: `${webAppHost}/accounts/${accountId}/password_reset?token=${encodeURIComponent(
+      passwordResetLink: `${webAppHost}/accounts/${accountId}/reset_password?token=${encodeURIComponent(
         passwordResetToken,
       )}`,
       username,

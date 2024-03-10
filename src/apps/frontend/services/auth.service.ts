@@ -31,10 +31,10 @@ export default class AuthService extends APIService {
 
   resetPassword = async (
     accountId: string,
-    password: string,
+    newPassword: string,
     token: string,
   ): Promise<ApiResponse<void>> => this.apiClient.patch(`/accounts/${accountId}/reset-password`, {
-    password,
+    newPassword,
     token,
   });
 }

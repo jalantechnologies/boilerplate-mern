@@ -21,7 +21,7 @@ type AuthContextType = {
   loginError: AsyncError;
   loginResult: AccessToken;
   logout: () => void;
-  resetPassword: (accountId: string, password: string, token: string) => Promise<void>;
+  resetPassword: (accountId: string, newPassword: string, token: string) => Promise<void>;
   resetPasswordError: AsyncError;
   sendForgotPasswordEmail: (username: string) => Promise<void>;
   sendForgotPasswordEmailError: AsyncError;
@@ -65,9 +65,9 @@ const signupFn = async (
 
 const resetPasswordFn = async (
   accountId: string,
-  password: string,
+  newPassword: string,
   token: string,
-): Promise<ApiResponse<void>> => authService.resetPassword(accountId, password, token);
+): Promise<ApiResponse<void>> => authService.resetPassword(accountId, newPassword, token);
 
 const logoutFn = (): void => localStorage.removeItem('access-token');
 

@@ -36,18 +36,29 @@ export class PasswordResetToken {
 
   token: string;
 
-  used: boolean;
+  isUsed: boolean;
 }
 
 export type CreatePasswordResetTokenParams = {
   username: string;
 };
 
+export type ResetPasswordParams = {
+  accountId: string;
+  newPassword: string;
+  token: string;
+};
+
 export enum AccountErrorCode {
   USERNAME_ALREADY_EXISTS = 'ACCOUNT_ERR_01',
   NOT_FOUND = 'ACCOUNT_ERR_02',
   INVALID_CREDENTIALS = 'ACCOUNT_ERR_03',
-  PASSWORD_RESET_TOKEN_NOT_ENABLED_FOR_THE_ENVIRONMENT = 'ACCOUNT_ERR_04',
+  BAD_REQUEST = 'ACCOUNT_ERR_04',
+}
+
+export enum PasswordResetTokenErrorCode {
+  PASSWORD_RESET_TOKEN_NOT_FOUND = 'PASSWORD_RESET_TOKEN_ERR_01',
+  PASSWORD_RESET_EMAIL_NOT_ENABLED_FOR_THE_ENVIRONMENT = 'PASSWORD_RESET_TOKEN_ERR_02',
 }
 
 export class AccountWithUserNameExistsError extends ApplicationError {
@@ -80,12 +91,32 @@ export class InvalidCredentialsError extends ApplicationError {
   }
 }
 
-export class PasswordResetTokenEmailNotEnabledForTheEnvironmentError extends ApplicationError {
+export class AccountBadRequestError extends ApplicationError {
   code: AccountErrorCode;
+
+  constructor(msg: string) {
+    super(msg);
+    this.code = AccountErrorCode.BAD_REQUEST;
+    this.httpStatusCode = HttpStatusCodes.BAD_REQUEST;
+  }
+}
+
+export class PasswordResetTokenEmailNotEnabledForTheEnvironmentError extends ApplicationError {
+  code: PasswordResetTokenErrorCode;
 
   constructor() {
     super('Password reset token is not enabled for the environment.');
-    this.code = AccountErrorCode.PASSWORD_RESET_TOKEN_NOT_ENABLED_FOR_THE_ENVIRONMENT;
+    this.code = PasswordResetTokenErrorCode.PASSWORD_RESET_EMAIL_NOT_ENABLED_FOR_THE_ENVIRONMENT;
     this.httpStatusCode = HttpStatusCodes.CONFLICT;
+  }
+}
+
+export class PasswordResetTokenNotFoundError extends ApplicationError {
+  code: PasswordResetTokenErrorCode;
+
+  constructor(account: string) {
+    super(`System is unable to find a token with accountId ${account}.`);
+    this.code = PasswordResetTokenErrorCode.PASSWORD_RESET_TOKEN_NOT_FOUND;
+    this.httpStatusCode = HttpStatusCodes.NOT_FOUND;
   }
 }

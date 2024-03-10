@@ -5,7 +5,7 @@ export interface PasswordResetTokenDB {
   account: Types.ObjectId;
   expiresAt: Date;
   token: string;
-  used: boolean;
+  isUsed: boolean;
 }
 
 export const passwordResetTokenDbSchema: Schema = new Schema<PasswordResetTokenDB>(
@@ -17,7 +17,7 @@ export const passwordResetTokenDbSchema: Schema = new Schema<PasswordResetTokenD
     },
     expiresAt: { type: Date, required: true },
     token: { type: String, required: true },
-    used: {
+    isUsed: {
       type: Boolean,
       default: false,
     },

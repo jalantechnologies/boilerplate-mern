@@ -4,10 +4,13 @@ import {
   AccountSearchParams,
   AccountWithUserNameExistsError,
   InvalidCredentialsError,
+  PasswordResetToken,
+  PasswordResetTokenNotFoundError,
 } from '../types';
 
 import AccountUtil from './account-util';
 import AccountRepository from './store/account-repository';
+import PasswordResetTokenRepository from './store/password-reset-token-repository';
 
 export default class AccountReader {
   public static async getAccountByUsername(
@@ -28,7 +31,7 @@ export default class AccountReader {
     params: AccountSearchParams,
   ): Promise<Account> {
     const account = await AccountReader.getAccountByUsername(params.username);
-    const isPasswordValid = await AccountUtil.comparePassword(
+    const isPasswordValid = await AccountUtil.comparePasswordOrResetToken(
       params.password,
       account.hashedPassword,
     );
@@ -65,5 +68,19 @@ export default class AccountReader {
     }
 
     return false;
+  }
+
+  public static async getPasswordResetTokenByAccountId(
+    accountId: string,
+  ): Promise<PasswordResetToken> {
+    const tokenDB = await PasswordResetTokenRepository.findOne({
+      account: accountId,
+    }).sort({ createdAt: -1 }); // to get the latest token
+
+    if (!tokenDB) {
+      throw new PasswordResetTokenNotFoundError(accountId);
+    }
+
+    return AccountUtil.convertPasswordResetTokenDBToPasswordResetToken(tokenDB);
   }
 }

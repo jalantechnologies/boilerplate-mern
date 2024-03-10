@@ -3,7 +3,7 @@ const constants = {
   DASHBOARD: '/',
   FORGOT_PASSWORD: '/forgot-password',
   LOGIN: '/login',
-  RESET_PASSWORD: '/accounts/:accountId/reset-password',
+  RESET_PASSWORD: '/accounts/:accountId/reset_password',
   SIGNUP: '/signup',
   TASKS: '/tasks',
 };

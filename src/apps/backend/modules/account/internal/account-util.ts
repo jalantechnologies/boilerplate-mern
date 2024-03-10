@@ -27,7 +27,7 @@ export default class AccountUtil {
     passwordResetToken.account = passwordResetTokenDb.account.toString();
     passwordResetToken.expiresAt = passwordResetTokenDb.expiresAt;
     passwordResetToken.token = passwordResetTokenDb.token;
-    passwordResetToken.used = passwordResetTokenDb.used;
+    passwordResetToken.isUsed = passwordResetTokenDb.isUsed;
     passwordResetToken.isExpired = !moment(passwordResetTokenDb.expiresAt).isAfter(moment());
     return passwordResetToken;
   }
@@ -36,7 +36,7 @@ export default class AccountUtil {
     return bcrypt.hash(password, 10);
   }
 
-  public static async comparePassword(
+  public static async comparePasswordOrResetToken(
     password: string,
     hashedPassword: string,
   ): Promise<boolean> {

@@ -1,5 +1,7 @@
 import { ConfigService } from '../../config';
-import { Account, CreateAccountParams, PasswordResetToken } from '../types';
+import {
+  Account, AccountBadRequestError, CreateAccountParams, PasswordResetToken,
+} from '../types';
 
 import AccountReader from './account-reader';
 import AccountUtil from './account-util';
@@ -43,6 +45,62 @@ export default class AccountWriter {
 
     return AccountUtil.convertPasswordResetTokenDBToPasswordResetToken(
       passwordResetTokenDB,
+    );
+  }
+
+  public static async resetPassword(
+    accountId: string,
+    newPassword: string,
+    token: string,
+  ): Promise<Account> {
+    const passwordResetToken = await AccountReader.getPasswordResetTokenByAccountId(accountId);
+
+    if (passwordResetToken.isExpired) {
+      throw new AccountBadRequestError(
+        `Password reset link is expired for accountId ${accountId}. Please retry with new link`,
+      );
+    }
+
+    if (passwordResetToken.isUsed) {
+      throw new AccountBadRequestError(
+        `Password reset is already used for accountId ${accountId}. Please retry with new link`,
+      );
+    }
+
+    const isTokenValid = await AccountUtil.comparePasswordOrResetToken(
+      token,
+      passwordResetToken.token,
+    );
+    if (!isTokenValid) {
+      throw new AccountBadRequestError(
+        `Password reset link is invalid for accountId ${accountId}. Please retry with new link.`,
+      );
+    }
+
+    const hashedPassword = await AccountUtil.hashPassword(newPassword);
+
+    const dbAccount = await AccountRepository.findByIdAndUpdate(
+      accountId,
+      {
+        hashedPassword,
+      },
+    );
+
+    await AccountWriter.setPasswordResetTokenAsUsed(
+      passwordResetToken.id,
+    );
+
+    return AccountUtil.convertAccountDBToAccount(dbAccount);
+  }
+
+  private static async setPasswordResetTokenAsUsed(
+    passwordResetTokenId: string,
+  ): Promise<PasswordResetToken> {
+    return PasswordResetTokenRepository.findByIdAndUpdate(
+      passwordResetTokenId,
+      {
+        used: true,
+      },
     );
   }
 }
