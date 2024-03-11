@@ -1,3 +1,4 @@
+import { PasswordResetTokenService } from '../password-reset-token';
 import AccountReader from './internal/account-reader';
 import AccountWriter from './internal/account-writer';
 import {
@@ -33,14 +34,23 @@ export default class AccountService {
     return AccountReader.getAccountByUsername(username);
   }
 
-  public static async resetPassword(
+  public static async resetAccountPassword(
     params: ResetPasswordParams,
   ): Promise<Account> {
     const { accountId, newPassword, token } = params;
-    return AccountWriter.resetPassword(
+
+    const passwordResetToken = await PasswordResetTokenService.verifyPasswordResetToken(
+      accountId,
+      token,
+    )
+
+    const updatedAccount = await AccountWriter.updatePasswordByAccountId(
       accountId,
       newPassword,
-      token,
     );
+
+    await PasswordResetTokenService.setPasswordResetTokenAsUsedById(passwordResetToken.id);
+
+    return updatedAccount;
   }
 }

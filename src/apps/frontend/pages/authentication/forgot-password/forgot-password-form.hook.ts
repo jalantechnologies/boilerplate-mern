@@ -2,7 +2,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 import constant from '../../../constants';
-import { useAuthContext } from '../../../contexts';
+import { useResetPasswordContext } from '../../../contexts';
 import { AsyncError } from '../../../types';
 
 interface UseForgotPasswordFormProps {
@@ -17,7 +17,7 @@ const useForgotPasswordForm = (
     isSendForgotPasswordEmailLoading,
     sendForgotPasswordEmail,
     sendForgotPasswordEmailError,
-  } = useAuthContext();
+  } = useResetPasswordContext();
 
   const formik = useFormik({
     initialValues: {

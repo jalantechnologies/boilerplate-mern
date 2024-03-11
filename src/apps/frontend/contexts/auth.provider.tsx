@@ -13,18 +13,12 @@ import useAsync from './async.hook';
 
 type AuthContextType = {
   isLoginLoading: boolean;
-  isResetPasswordLoading: boolean;
-  isSendForgotPasswordEmailLoading: boolean;
   isSignupLoading: boolean;
   isUserAuthenticated: () => boolean;
   login: (username: string, password: string) => Promise<AccessToken>;
   loginError: AsyncError;
   loginResult: AccessToken;
   logout: () => void;
-  resetPassword: (accountId: string, newPassword: string, token: string) => Promise<void>;
-  resetPasswordError: AsyncError;
-  sendForgotPasswordEmail: (username: string) => Promise<void>;
-  sendForgotPasswordEmailError: AsyncError;
   signup: (
     firstName: string,
     lastName: string,
@@ -63,21 +57,11 @@ const signupFn = async (
   password,
 );
 
-const resetPasswordFn = async (
-  accountId: string,
-  newPassword: string,
-  token: string,
-): Promise<ApiResponse<void>> => authService.resetPassword(accountId, newPassword, token);
-
 const logoutFn = (): void => localStorage.removeItem('access-token');
 
 const getAccessToken = (): AccessToken => JSON.parse(localStorage.getItem('access-token')) as AccessToken;
 
 const isUserAuthenticated = () => !!getAccessToken();
-
-const sendForgotPasswordEmailFn = async (
-  username: string,
-): Promise<ApiResponse<void>> => authService.sendForgotPasswordEmail(username);
 
 export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const {
@@ -93,34 +77,16 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
     asyncCallback: signup,
   } = useAsync(signupFn);
 
-  const {
-    isLoading: isSendForgotPasswordEmailLoading,
-    error: sendForgotPasswordEmailError,
-    asyncCallback: sendForgotPasswordEmail,
-  } = useAsync(sendForgotPasswordEmailFn);
-
-  const {
-    isLoading: isResetPasswordLoading,
-    error: resetPasswordError,
-    asyncCallback: resetPassword,
-  } = useAsync(resetPasswordFn);
-
   return (
     <AuthContext.Provider
       value={{
         logout: logoutFn,
         isLoginLoading,
-        isResetPasswordLoading,
-        isSendForgotPasswordEmailLoading,
         isSignupLoading,
         isUserAuthenticated,
         login,
         loginError,
         loginResult,
-        resetPassword,
-        resetPasswordError,
-        sendForgotPasswordEmail,
-        sendForgotPasswordEmailError,
         signup,
         signupError,
       }}

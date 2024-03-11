@@ -3,7 +3,7 @@ import { useLocation, useParams } from 'react-router-dom';
 import * as Yup from 'yup';
 
 import constant from '../../../constants';
-import { useAuthContext } from '../../../contexts';
+import { useResetPasswordContext } from '../../../contexts';
 import { AsyncError } from '../../../types';
 
 interface ResetPasswordFormProps {
@@ -19,7 +19,7 @@ const useResetPasswordForm = ({ onError, onSuccess }: ResetPasswordFormProps) =>
 
   const {
     isResetPasswordLoading, resetPasswordError, resetPassword,
-  } = useAuthContext();
+  } = useResetPasswordContext();
 
   const formik = useFormik({
     initialValues: {

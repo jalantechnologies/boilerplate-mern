@@ -1,4 +1,4 @@
-import { AccountService } from "../account";
+import { AccountBadRequestError, AccountService } from "../account";
 import { EmailService } from "../communication";
 import { SendEmailParams } from "../communication/types";
 import { ConfigService } from "../config";
@@ -86,5 +86,37 @@ export default class PasswordResetTokenService {
     return PasswordResetTokenWriter.setPasswordResetTokenAsUsed(
       passwordResetTokenId,
     )
+  }
+
+  public static async verifyPasswordResetToken(
+    accountId: string,
+    token: string,
+  ): Promise<PasswordResetToken> {
+    const passwordResetToken = await PasswordResetTokenService
+      .getPasswordResetTokenByAccountId(accountId);
+
+    if (passwordResetToken.isExpired) {
+      throw new AccountBadRequestError(
+        `Password reset link is expired for accountId ${accountId}. Please retry with new link`,
+      );
+    }
+
+    if (passwordResetToken.isUsed) {
+      throw new AccountBadRequestError(
+        `Password reset is already used for accountId ${accountId}. Please retry with new link`,
+      );
+    }
+
+    const isTokenValid = await PasswordResetTokenUtil.comparePasswordResetToken(
+      token,
+      passwordResetToken.token,
+    );
+    if (!isTokenValid) {
+      throw new AccountBadRequestError(
+        `Password reset link is invalid for accountId ${accountId}. Please retry with new link.`,
+      );
+    }
+
+    return passwordResetToken;
   }
 }

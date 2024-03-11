@@ -1,7 +1,5 @@
-import { PasswordResetTokenService } from '../../password-reset-token';
-import PasswordResetTokenUtil from '../../password-reset-token/internal/password-reset-token-util';
 import {
-  Account, AccountBadRequestError, CreateAccountParams,
+  Account, CreateAccountParams,
 } from '../types';
 
 import AccountReader from './account-reader';
@@ -28,46 +26,17 @@ export default class AccountWriter {
     return AccountUtil.convertAccountDBToAccount(accDb);
   }
 
-  public static async resetPassword(
+  public static async updatePasswordByAccountId(
     accountId: string,
     newPassword: string,
-    token: string,
   ): Promise<Account> {
-    const passwordResetToken = await PasswordResetTokenService.getPasswordResetTokenByAccountId(accountId);
-
-    if (passwordResetToken.isExpired) {
-      throw new AccountBadRequestError(
-        `Password reset link is expired for accountId ${accountId}. Please retry with new link`,
-      );
-    }
-
-    if (passwordResetToken.isUsed) {
-      throw new AccountBadRequestError(
-        `Password reset is already used for accountId ${accountId}. Please retry with new link`,
-      );
-    }
-
-    const isTokenValid = await PasswordResetTokenUtil.comparePasswordResetToken(
-      token,
-      passwordResetToken.token,
-    );
-    if (!isTokenValid) {
-      throw new AccountBadRequestError(
-        `Password reset link is invalid for accountId ${accountId}. Please retry with new link.`,
-      );
-    }
-
-    const hashedPassword = await AccountUtil.hashPassword(newPassword);
-
+    const accHashedPwd = await AccountUtil.hashPassword(newPassword);
     const dbAccount = await AccountRepository.findByIdAndUpdate(
       accountId,
       {
-        hashedPassword,
+        hashedPassword: accHashedPwd,
       },
-    );
-
-    await PasswordResetTokenService.setPasswordResetTokenAsUsedById(
-      passwordResetToken.id,
+      { new: true },
     );
 
     return AccountUtil.convertAccountDBToAccount(dbAccount);

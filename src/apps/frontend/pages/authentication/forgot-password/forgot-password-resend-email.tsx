@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useAuthContext } from '../../../contexts';
+import { useResetPasswordContext } from '../../../contexts';
 import { AsyncError } from '../../../types';
 
 import BackButton from './back-button';
@@ -22,7 +22,7 @@ const ForgotPasswordResendEmail: React.FC<ForgotPasswordResendEmailProps> = ({
   timerRemainingSeconds,
   username,
 }) => {
-  const { isSendForgotPasswordEmailLoading, sendForgotPasswordEmail } = useAuthContext();
+  const { isSendForgotPasswordEmailLoading, sendForgotPasswordEmail } = useResetPasswordContext();
 
   const handleResendPasswordResetEmail = (e: React.FormEvent<EventTarget>) => {
     e.preventDefault();

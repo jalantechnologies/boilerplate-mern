@@ -35,7 +35,7 @@ export class AccountController {
 
   resetPassword = applicationController(
     async (req: Request<ResetPasswordParams>, res: Response) => {
-      const account = await AccountService.resetPassword({
+      const account = await AccountService.resetAccountPassword({
         accountId: req.params.accountId,
         newPassword: req.body.newPassword,
         token: req.body.token,
