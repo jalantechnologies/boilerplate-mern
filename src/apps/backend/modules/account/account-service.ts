@@ -23,7 +23,7 @@ export default class AccountService {
     );
   }
 
-  public static async createAccountByPhoneNumber(
+  public static async getOrCreateAccountByPhoneNumber(
     phoneNumber: PhoneNumber,
   ): Promise<Account> {
     let account = await AccountReader.getAccountByPhoneNumberOptional(phoneNumber);

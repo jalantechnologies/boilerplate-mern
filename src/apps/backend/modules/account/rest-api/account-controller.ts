@@ -34,7 +34,7 @@ export class AccountController {
           username,
         );
       } else if (phoneNumber) {
-        account = await AccountService.createAccountByPhoneNumber(
+        account = await AccountService.getOrCreateAccountByPhoneNumber(
           new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber),
         );
       }
