@@ -11,7 +11,7 @@ import OtpUtil from './otp-util';
 import OtpRepository from './store/otp-repository';
 
 export default class OtpWriter {
-  public static async expirePreviousOtpAndcreateNewOtp(
+  public static async expirePreviousOtpAndCreateNewOtp(
     phoneNumber: PhoneNumber,
   ): Promise<Otp> {
     const previousOtpDb = await OtpRepository.findOne({
