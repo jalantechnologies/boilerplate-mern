@@ -11,7 +11,7 @@ import ForgotPasswordForm from './forgot-password-form';
 import ForgotPasswordResendEmail from './forgot-password-resend-email';
 
 export const ForgotPassword: React.FC = () => {
-  const [isResendEmailPage, setIsResendEmailPage] = useState<boolean>(true);
+  const [isResendEmailPage, setIsResendEmailPage] = useState<boolean>(false);
   const [username, setUsername] = useState<string>('');
 
   const { startTimer, remaininingSecondsStr, isResendEnabled } = useTimer({
