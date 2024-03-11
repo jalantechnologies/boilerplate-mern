@@ -6,7 +6,7 @@ import { useAuthContext } from '../../../contexts';
 import { AsyncError } from '../../../types';
 
 interface OTPFormProps {
-  onError: (err: AsyncError) => void;
+  onError: (error: AsyncError) => void;
   onResendSuccess: () => void;
   onSuccess: () => void;
 }
@@ -34,8 +34,8 @@ const useOTPForm = ({
         .then(() => {
           onSuccess();
         })
-        .catch((err) => {
-          onError(err as AsyncError);
+        .catch((error) => {
+          onError(error as AsyncError);
         });
     },
   });
@@ -43,11 +43,11 @@ const useOTPForm = ({
   const handleResendOTP = () => {
     sendOTP({ countryCode: `+${countryCode}`, phoneNumber })
       .then(() => {
-        formik.setFieldValue('otp', Array(constant.OTP_LENGTH).fill('')).then().catch((err) => { onError(err as AsyncError); });
+        formik.setFieldValue('otp', Array(constant.OTP_LENGTH).fill('')).then().catch((error) => { onError(error as AsyncError); });
         onResendSuccess();
       })
-      .catch((err) => {
-        onError(err as AsyncError);
+      .catch((error) => {
+        onError(error as AsyncError);
       });
   };
 

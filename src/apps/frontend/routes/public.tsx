@@ -20,8 +20,8 @@ const AuthRoute: React.FC<AuthRouteProps> = ({ authPage: AuthPage, otpAuthPage: 
 };
 
 export const publicRoutes = [
-  { path: constants.LOGIN, element: <AuthRoute authPage={Login} otpAuthPage={PhoneLogin} /> },
-  { path: constants.SIGNUP, element: <AuthRoute authPage={Signup} otpAuthPage={OTPPage} /> },
+  { path: constants.LOGIN, element: <AuthRoute authPage={Login} otpAuthPage={OTPPage} /> },
+  { path: constants.SIGNUP, element: <AuthRoute authPage={Signup} otpAuthPage={PhoneLogin} /> },
   { path: constants.ABOUT, element: <About /> },
   { path: '*', element: <Navigate to={constants.LOGIN} /> },
 ];

@@ -32,32 +32,26 @@ const usePhoneLoginForm = ({ onSuccess, onError }: PhoneLoginFormProps) => {
         .required(constant.PHONE_VALIDATION_ERROR),
     }),
     onSubmit: (values) => {
-      const validateAndFormatPhoneNumber = (phoneNumber: string, countryCode: string) => {
-        try {
-          const parsedPhoneNumber = PhoneNumberUtil.getInstance().parse(phoneNumber, countryCode);
-          const isValid = PhoneNumberUtil.getInstance().isValidNumber(parsedPhoneNumber);
-          if (!isValid) {
-            onError({ message: constant.PHONE_VALIDATION_ERROR } as AsyncError);
-            return null;
-          }
-          return parsedPhoneNumber.getNationalNumber().toString();
-        } catch (error) {
-          onError(error as AsyncError);
-          return null;
-        }
-      };
+      const parsedPhoneNumber = PhoneNumberUtil.getInstance().parse(
+        values.phoneNumber, values.country,
+      );
+      const isValidPhoneNumber = PhoneNumberUtil.getInstance().isValidNumber(parsedPhoneNumber);
 
-      const formattedPhoneNumber = validateAndFormatPhoneNumber(values.phoneNumber, values.country);
-      if (formattedPhoneNumber.length > 0) {
-        sendOTP({ countryCode: values.countryCode, phoneNumber: formattedPhoneNumber })
-          .then(() => {
-            onSuccess();
-            navigate(`${constants.OTP}&country_code=${values.countryCode}&phone_number=${formattedPhoneNumber}`);
-          })
-          .catch((err) => {
-            onError(err as AsyncError);
-          });
+      if (!isValidPhoneNumber) {
+        onError({ message: constant.PHONE_VALIDATION_ERROR } as AsyncError);
+        return;
       }
+
+      const formattedPhoneNumber = parsedPhoneNumber.getNationalNumber().toString();
+      const otpPageUrl = `${constants.OTP}&country_code=${values.countryCode}&phone_number=${formattedPhoneNumber}`;
+      sendOTP({ countryCode: values.countryCode, phoneNumber: formattedPhoneNumber })
+        .then(() => {
+          onSuccess();
+          navigate(otpPageUrl);
+        })
+        .catch((err) => {
+          onError(err as AsyncError);
+        });
     },
   });
 

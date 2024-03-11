@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { FormControl } from '../../../components';
+import { FormControl, OTP } from '../../../components';
 import constants from '../../../constants/routes';
-import { AsyncError, KeyboardKeys } from '../../../types';
+import { AsyncError } from '../../../types';
 
 import useOTPForm from './otp-form-hook';
 
@@ -15,8 +15,6 @@ interface OTPFormProps {
   timerRemainingSeconds: string;
 }
 
-let currentOTPIndex:number = 0;
-
 const OTPForm: React.FC<OTPFormProps> = ({
   isResendEnabled, onError, onResendSuccess, onSuccess, timerRemainingSeconds,
 }) => {
@@ -26,10 +24,6 @@ const OTPForm: React.FC<OTPFormProps> = ({
     onError, onResendSuccess, onSuccess,
   });
 
-  const [activeOTPIndex, setActiveOTPIndex] = useState(0);
-
-  const inputRef = useRef<HTMLInputElement>(null);
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -38,31 +32,8 @@ const OTPForm: React.FC<OTPFormProps> = ({
     }
   }, [phoneNumber, countryCode, navigate]);
 
-  const handleChangeOTP = (
-    { target }: React.ChangeEvent<HTMLInputElement>,
-  ): void => {
-    const { value } = target;
-    const newOTP = [...formik.values.otp as string[]];
-    newOTP[currentOTPIndex] = value.substring(value.length - 1);
-    formik.setFieldValue('otp', newOTP).then(() => {
-      if (!value) {
-        setActiveOTPIndex(currentOTPIndex - 1);
-      } else {
-        setActiveOTPIndex(currentOTPIndex + 1);
-      }
-    }).catch((err) => { onError(err as AsyncError); });
-  };
-
-  useEffect(() => {
-    inputRef.current?.focus();
-  }, [activeOTPIndex]);
-
-  const handleOnKeyDown = ({ key }: React.KeyboardEvent<HTMLInputElement>, index: number) => {
-    currentOTPIndex = index;
-
-    if (key === KeyboardKeys.BACKSPACE as string) {
-      setActiveOTPIndex(currentOTPIndex - 1);
-    }
+  const handleChange = (value: string[]) => {
+    formik.setFieldValue('otp', value).then().catch((err) => { onError(err as AsyncError); });
   };
 
   return (
@@ -83,35 +54,22 @@ const OTPForm: React.FC<OTPFormProps> = ({
               label={`Enter the 4 digit code sent to the mobile number +${countryCode} ${phoneNumber}`}
               error={formik.touched.otp && formik.errors.otp as string}
             >
-              <div className="flex items-center justify-center gap-6">
-                {formik.values.otp.map((_, index) => (
-                    <input
-                      disabled={isVerifyOTPLoading}
-                      key={index}
-                      autoComplete="off"
-                      className={`flex w-full rounded-lg border bg-transparent py-4 text-center outline-none [appearance:textfield] focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary [&::-webkit-inner-spin-button]:appearance-none ${formik.touched.otp && formik.errors.otp ? 'border-red-500' : 'border-stroke'}`}
-                      name={'otp'}
-                      onChange={handleChangeOTP}
-                      onBlur={formik.handleBlur}
-                      ref={ index === activeOTPIndex ? inputRef : null}
-                      onKeyDown={(e) => handleOnKeyDown(e, index)}
-                      type={'number'}
-                      value={formik.values.otp[index] as string}
-                    />
-                ))}
-              </div>
+              <OTP
+                error={formik.touched.otp && formik.errors.otp as string}
+                isLoading={isVerifyOTPLoading}
+                onError={onError}
+                onBlur={formik.handleBlur}
+                onChange={handleChange}
+              />
             </FormControl>
           </div>
 
-          <div className="mb-6 flex items-center gap-2">
+          <div className="mb-6 flex flex-col items-center gap-2 md:flex-row">
             <h2 className="text-lg text-black dark:text-white">
               Did not receive a code?
             </h2>
             <h2 className={`${isResendEnabled ? 'cursor-pointer text-primary' : 'cursor-default'} text-center text-lg dark:text-white`} onClick={handleResendOTP}>
-              { isResendEnabled ? 'Resend' : 'Resend OTP in'}
-            </h2>
-            <h2 className="text-lg dark:text-white">
-            { !isResendEnabled && `00: ${timerRemainingSeconds}`}
+              { isResendEnabled ? 'Resend' : `Resend OTP in 00: ${timerRemainingSeconds}`}
             </h2>
           </div>
 
