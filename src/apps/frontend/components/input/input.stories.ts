@@ -32,9 +32,6 @@ const meta: Meta<typeof Input> = {
     value: { control: 'text' },
   },
   component: Input,
-  parameters: {
-    layout: 'centered',
-  },
   tags: ['autodocs'],
   title: 'Components/InputField',
 };
