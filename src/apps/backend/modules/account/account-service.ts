@@ -73,11 +73,11 @@ export default class AccountService {
     username: string,
     passwordResetToken: string,
   ): Promise<void> {
-    const passwordResetTokenEmailEnabled = JSON.parse(ConfigService.getValue<string>(
-      'account.passwordResetTokenEmailEnabled',
+    const passwordResetEmailEnabled = JSON.parse(ConfigService.getValue<string>(
+      'account.passwordResetEmailEnabled',
     )) as boolean;
 
-    if (!passwordResetTokenEmailEnabled) {
+    if (!passwordResetEmailEnabled) {
       throw new PasswordResetTokenEmailNotEnabledForTheEnvironmentError();
     }
 
@@ -86,8 +86,8 @@ export default class AccountService {
     const defaultEmailName = ConfigService.getValue<string>(
       'mailer.defaultEmailName',
     );
-    const forgetPasswordMailTemplate = ConfigService.getValue<string>(
-      'mailer.forgetPasswordMailTemplate',
+    const forgetPasswordMailTemplateId = ConfigService.getValue<string>(
+      'mailer.forgetPasswordMailTemplateId',
     );
 
     const templateData = {
@@ -106,7 +106,7 @@ export default class AccountService {
         name: defaultEmailName,
       },
       templateData,
-      templateId: forgetPasswordMailTemplate,
+      templateId: forgetPasswordMailTemplateId,
     };
 
     return EmailService.sendEmail(passwordResetEmailParams);
