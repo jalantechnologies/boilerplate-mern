@@ -1,6 +1,10 @@
 import { useState } from 'react';
 
-import { PASSWORD_RESEND_DELAY_IN_MILLISECONDS, MILLISECONDS_IN_A_SECOND } from '../constants/timer';
+import { MILLISECONDS_IN_A_SECOND } from '../constants/timer';
+
+type UseTimerProps = {
+  delayInMilliseconds: number;
+};
 
 type UseTimerType = {
   isResendEnabled: boolean;
@@ -9,9 +13,9 @@ type UseTimerType = {
   stopTimer: () => void;
 };
 
-const useTimer = (): UseTimerType => {
-  const [remainingTime, setRemainingTime] = useState(PASSWORD_RESEND_DELAY_IN_MILLISECONDS);
-  const [timerEnd, setTimerEnd] = useState(false);
+const useTimer = ({ delayInMilliseconds }: UseTimerProps): UseTimerType => {
+  const [remainingTime, setRemainingTime] = useState(delayInMilliseconds);
+  const [timerEnd, setTimerEnd] = useState(true);
   let timeoutId: NodeJS.Timeout;
   let intervalId: NodeJS.Timer;
   let started: boolean;
@@ -39,10 +43,10 @@ const useTimer = (): UseTimerType => {
         started = false;
         onEnd();
         stopTimer();
-      }, PASSWORD_RESEND_DELAY_IN_MILLISECONDS);
+      }, delayInMilliseconds);
 
       intervalId = setInterval(onTick, MILLISECONDS_IN_A_SECOND);
-      setRemainingTime(PASSWORD_RESEND_DELAY_IN_MILLISECONDS);
+      setRemainingTime(delayInMilliseconds);
     }
   };
 

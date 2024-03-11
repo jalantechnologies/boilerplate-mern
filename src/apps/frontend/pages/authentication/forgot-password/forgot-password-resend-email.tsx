@@ -46,7 +46,7 @@ const ForgotPasswordResendEmail: React.FC<ForgotPasswordResendEmailProps> = ({
         Please check your inbox and follow the instructions.
       </p>
       <div className="mb-3 flex justify-end">
-        <p>00: {timerRemainingSeconds}</p>
+        <p>Resend email in 00: {timerRemainingSeconds}</p>
       </div>
       <form onSubmit={handleResendPasswordResetEmail}>
         <button

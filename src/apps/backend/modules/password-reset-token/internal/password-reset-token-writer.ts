@@ -12,11 +12,13 @@ export default class PasswordResetTokenWriter {
     const defaultTokenExpireTimeInSeconds = ConfigService.getValue<string>(
       'passwordResetToken.expiresInSeconds',
     );
+
     const tokenHash = await PasswordResetTokenUtil.hashPasswordResetToken(token);
+    const expiresAt = PasswordResetTokenUtil.getTokenExpiresAt(defaultTokenExpireTimeInSeconds);
 
     const passwordResetTokenDB = await PasswordResetTokenRepository.create({
       account: accountId,
-      expiresAt: PasswordResetTokenUtil.getTokenExpiresAt(defaultTokenExpireTimeInSeconds),
+      expiresAt,
       token: tokenHash,
     });
 
@@ -31,8 +33,9 @@ export default class PasswordResetTokenWriter {
     return PasswordResetTokenRepository.findByIdAndUpdate(
       passwordResetTokenId,
       {
-        used: true,
+        isUsed: true,
       },
+      { new: true },
     );
   }
 }

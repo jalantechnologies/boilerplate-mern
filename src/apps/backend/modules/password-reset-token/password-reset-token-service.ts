@@ -14,20 +14,21 @@ export default class PasswordResetTokenService {
   ): Promise<PasswordResetToken> {
     const account = await AccountService.getAccountByUsername(params.username);
 
-    const passwordResetToken = PasswordResetTokenUtil.generatePasswordResetToken();
+    const token = PasswordResetTokenUtil.generatePasswordResetToken();
 
-    const passwordResetTokenDbData = await PasswordResetTokenWriter.createPasswordResetToken(
+    const passwordResetToken = await PasswordResetTokenWriter.createPasswordResetToken(
       account.id,
-      passwordResetToken,
+      token,
     );
 
     await this.sendPasswordResetEmail(
       account.id,
       account.firstName,
       account.username,
-      passwordResetToken,
+      token,
     );
-    return passwordResetTokenDbData;
+
+    return passwordResetToken;
   }
 
   public static async getPasswordResetTokenByAccountId(

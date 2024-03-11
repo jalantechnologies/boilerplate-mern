@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 
+import { PASSWORD_RESEND_DELAY_IN_MILLISECONDS } from '../../../constants/timer';
 import { AsyncError } from '../../../types';
 import useTimer from '../../../utils/use-timer';
 import AuthenticationFormLayout from '../authentication-form-layout';
@@ -10,10 +11,12 @@ import ForgotPasswordForm from './forgot-password-form';
 import ForgotPasswordResendEmail from './forgot-password-resend-email';
 
 export const ForgotPassword: React.FC = () => {
-  const [isResendEmailPage, setIsResendEmailPage] = useState<boolean>(false);
+  const [isResendEmailPage, setIsResendEmailPage] = useState<boolean>(true);
   const [username, setUsername] = useState<string>('');
 
-  const { startTimer, remaininingSecondsStr, isResendEnabled } = useTimer();
+  const { startTimer, remaininingSecondsStr, isResendEnabled } = useTimer({
+    delayInMilliseconds: PASSWORD_RESEND_DELAY_IN_MILLISECONDS,
+  });
 
   const onSendEmailSuccess = (newUsername: string) => {
     startTimer();
@@ -23,7 +26,7 @@ export const ForgotPassword: React.FC = () => {
 
   const onResendEmailSuccess = () => {
     startTimer();
-    toast.success('A password reset link has been sent. Please check your inbox');
+    toast.success('A password reset link has been re-sent. Please check your inbox');
   };
 
   const onError = (error: AsyncError) => {
