@@ -59,17 +59,13 @@ export default class AccountReader {
   public static async getAccountByPhoneNumber(
     phoneNumber: PhoneNumber,
   ): Promise<Account> {
-    const accDb = await AccountRepository.findOne({
-      'phoneNumber.countryCode': phoneNumber.countryCode,
-      'phoneNumber.phoneNumber': phoneNumber.phoneNumber,
-      active: true,
-    });
+    const account = await this.getAccountByPhoneNumberOptional(phoneNumber);
 
-    if (!accDb) {
+    if (!account) {
       throw new AccountNotFoundError(phoneNumber.toString());
     }
 
-    return AccountUtil.convertAccountDBToAccount(accDb);
+    return account;
   }
 
   public static async getAccountByPhoneNumberOptional(

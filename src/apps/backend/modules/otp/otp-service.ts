@@ -4,7 +4,6 @@ import { SMSService } from '../communication';
 import OtpWriter from './internal/otp-writer';
 import {
   Otp,
-  OtpRequestError,
 } from './types';
 
 export default class OtpService {
@@ -12,10 +11,6 @@ export default class OtpService {
     phoneNumber: PhoneNumber,
   ): Promise<Otp> {
     const otp = await OtpWriter.expirePreviousOtpAndCreateNewOtp(phoneNumber);
-
-    if (!otp) {
-      throw new OtpRequestError('Failed to send OTP, please try again.');
-    }
 
     await SMSService.sendSMS({
       messageBody: `${otp.otpCode} is your one time password to login.`,

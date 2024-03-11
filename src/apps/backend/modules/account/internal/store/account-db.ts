@@ -1,6 +1,9 @@
 import { Schema, Types } from 'mongoose';
 
-import { PhoneNumber } from '../../types';
+interface PhoneNumber {
+  countryCode: string;
+  phoneNumber: string;
+}
 
 export interface AccountDB {
   _id: Types.ObjectId;

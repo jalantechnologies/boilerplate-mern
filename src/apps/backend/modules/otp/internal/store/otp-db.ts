@@ -1,7 +1,11 @@
 import { Schema, Types } from 'mongoose';
 
-import { PhoneNumber } from '../../../account/types';
 import { OtpStatus } from '../../types';
+
+interface PhoneNumber {
+  countryCode: string;
+  phoneNumber: string;
+}
 
 export interface OtpDB {
   _id: Types.ObjectId;
