@@ -34,7 +34,7 @@ export class OtpIncorrectError extends ApplicationError {
   code: OtpErrorCode;
 
   constructor() {
-    super('Please enter a valid OTP.');
+    super('Please provide the correct OTP to login.');
     this.code = OtpErrorCode.INCORRECT_OTP;
     this.httpStatusCode = HttpStatusCodes.UNAUTHORIZED;
   }

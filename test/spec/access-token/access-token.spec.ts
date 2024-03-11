@@ -106,7 +106,7 @@ describe('AccessToken API', () => {
         });
 
       expect(res.status).to.be.eq(401);
-      expect(res.body.message).to.be.eq('Incorrect OTP.');
+      expect(res.body.message).to.be.eq('Please provide the correct OTP to login.');
     });
 
     it('should throw an error if OTP has expired', async () => {
