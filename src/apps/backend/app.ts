@@ -10,6 +10,7 @@ import { AccountServer } from './modules/account';
 import { ConfigService } from './modules/config';
 import { Logger, CustomLoggerTransport } from './modules/logger';
 import { TaskServer } from './modules/task';
+import { PasswordResetTokenServer } from './modules/password-reset-token';
 
 const isDevEnv = process.env.NODE_ENV === 'development';
 
@@ -57,6 +58,7 @@ export default class App {
     [
       new AccountServer(),
       new AccessTokenServer(),
+      new PasswordResetTokenServer(),
       new TaskServer(),
     ].forEach((server) => {
       app.use('/', server.server);
