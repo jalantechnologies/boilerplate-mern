@@ -1,9 +1,15 @@
 accounts:
   tokenKey: 'JWT_TOKEN'
+  passwordResetEmailEnabled: 'PASSWORD_RESET_EMAIL_ENABLED'
 
 rollbar:
   env: 'ROLLBAR_ENV'
   accessToken: 'ROLLBAR_ACCESS_TOKEN'
+
+mailer:
+  defaultEmail: 'DEFAULT_EMAIL'
+  defaultEmailName: 'DEFAULT_EMAIL_NAME'
+  forgetPasswordMailTemplateId: 'FORGOT_PASSWORD_MAIL_TEMPLATE_ID'
 
 twilio:
   verify:
