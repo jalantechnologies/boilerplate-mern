@@ -1,4 +1,4 @@
-import { AccessToken, ApiResponse } from '../types';
+import { AccessToken, ApiResponse, PhoneNumber } from '../types';
 
 import APIService from './api.service';
 
@@ -24,19 +24,14 @@ export default class AuthService extends APIService {
   });
 
   sendOTP = async (
-    countryCode: string,
-    phoneNumber: string,
-  ): Promise<ApiResponse<void>> => this.apiClient.post('/accounts', {
-    countryCode,
-    phoneNumber,
-  });
+    phoneNumber: PhoneNumber,
+  ): Promise<ApiResponse<void>> => this.apiClient.post('/accounts', phoneNumber);
 
   verifyOTP = async (
-    countryCode: string,
-    phoneNumber: string,
+    phoneNumber: PhoneNumber,
     otp: string,
   ): Promise<ApiResponse<AccessToken>> => this.apiClient.post('/access-tokens', {
-    contactNumber: { countryCode, phoneNumber },
+    phoneNumber,
     otpCode: otp,
   });
 }

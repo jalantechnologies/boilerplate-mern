@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { OTP_RESEND_DELAY_IN_MILLISECONDS, MILLISECONDS_IN_A_SECOND } from '../constants/timer';
+import { RESEND_DELAY_IN_MILLISECONDS, MILLISECONDS_IN_A_SECOND } from '../constants/timer';
 
 type UseTimerType = {
   isResendEnabled: boolean;
@@ -10,7 +10,7 @@ type UseTimerType = {
 };
 
 const useTimer = (): UseTimerType => {
-  const [remainingTime, setRemainingTime] = useState(OTP_RESEND_DELAY_IN_MILLISECONDS);
+  const [remainingTime, setRemainingTime] = useState(RESEND_DELAY_IN_MILLISECONDS);
   const [timerEnd, setTimerEnd] = useState(true);
   let timeoutId: NodeJS.Timeout;
   let intervalId: NodeJS.Timer;
@@ -39,10 +39,10 @@ const useTimer = (): UseTimerType => {
         started = false;
         onEnd();
         stopTimer();
-      }, OTP_RESEND_DELAY_IN_MILLISECONDS);
+      }, RESEND_DELAY_IN_MILLISECONDS);
 
       intervalId = setInterval(onTick, MILLISECONDS_IN_A_SECOND);
-      setRemainingTime(OTP_RESEND_DELAY_IN_MILLISECONDS);
+      setRemainingTime(RESEND_DELAY_IN_MILLISECONDS);
     }
   };
 

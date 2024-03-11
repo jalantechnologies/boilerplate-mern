@@ -10,6 +10,10 @@ export class AccessToken {
   }
 }
 
+export enum KeyboardKeys {
+  BACKSPACE = 'Backspace',
+}
+
 export type PhoneNumber = {
   countryCode: string;
   phoneNumber: string;

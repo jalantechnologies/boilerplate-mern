@@ -1,6 +1,7 @@
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
+import constant from '../../../constants';
 import { useAuthContext } from '../../../contexts';
 import { AsyncError } from '../../../types';
 
@@ -17,19 +18,19 @@ const useOTPForm = ({
   } = useAuthContext();
 
   const searchParams = new URLSearchParams(window.location.search);
-  const phoneNumber = searchParams.get('ph');
-  const code = searchParams.get('code');
+  const phoneNumber = searchParams.get('phone_number');
+  const countryCode = searchParams.get('country_code');
 
   const formik = useFormik({
     initialValues: {
-      otp: Array(4).fill(''),
+      otp: Array(constant.OTP_LENGTH).fill(''),
     },
     validationSchema: Yup.object({
       otp: Yup.array()
         .of(Yup.string().required('')),
     }),
     onSubmit: (values) => {
-      verifyOTP(`+${code}`, phoneNumber, values.otp.join(''))
+      verifyOTP({ countryCode: `+${countryCode}`, phoneNumber }, values.otp.join(''))
         .then(() => {
           onSuccess();
         })
@@ -40,9 +41,9 @@ const useOTPForm = ({
   });
 
   const handleResendOTP = () => {
-    sendOTP(`+${code}`, phoneNumber)
+    sendOTP({ countryCode: `+${countryCode}`, phoneNumber })
       .then(() => {
-        formik.setFieldValue('otp', Array(4).fill('')).then().catch((err) => { onError(err as AsyncError); });
+        formik.setFieldValue('otp', Array(constant.OTP_LENGTH).fill('')).then().catch((err) => { onError(err as AsyncError); });
         onResendSuccess();
       })
       .catch((err) => {
@@ -51,7 +52,7 @@ const useOTPForm = ({
   };
 
   return {
-    code,
+    countryCode,
     formik,
     handleResendOTP,
     isVerifyOTPLoading,

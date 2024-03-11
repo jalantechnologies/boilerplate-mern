@@ -16,13 +16,12 @@ export const OTPPage: React.FC = () => {
   const navigate = useNavigate();
 
   const onSuccess = () => {
-    toast.success('Logged in success');
     navigate(constants.DASHBOARD);
   };
 
   const onResendSuccess = () => {
     startTimer();
-    toast.success('OTP resent');
+    toast.success('OTP has been successfully re-sent. Please check your messages.');
   };
 
   const onError = (error: AsyncError) => {

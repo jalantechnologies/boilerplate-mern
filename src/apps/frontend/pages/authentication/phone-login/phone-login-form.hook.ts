@@ -29,7 +29,7 @@ const usePhoneLoginForm = ({ onSuccess, onError }: PhoneLoginFormProps) => {
       phoneNumber: Yup.string()
         .min(8, constant.PHONE_VALIDATION_ERROR)
         .max(14, constant.PHONE_VALIDATION_ERROR)
-        .required('Required phone number'),
+        .required(constant.PHONE_VALIDATION_ERROR),
     }),
     onSubmit: (values) => {
       const validateAndFormatPhoneNumber = (phoneNumber: string, countryCode: string) => {
@@ -37,23 +37,22 @@ const usePhoneLoginForm = ({ onSuccess, onError }: PhoneLoginFormProps) => {
           const parsedPhoneNumber = PhoneNumberUtil.getInstance().parse(phoneNumber, countryCode);
           const isValid = PhoneNumberUtil.getInstance().isValidNumber(parsedPhoneNumber);
           if (!isValid) {
-            onError({ message: 'Invalid phone number' } as AsyncError);
+            onError({ message: constant.PHONE_VALIDATION_ERROR } as AsyncError);
             return null;
           }
           return parsedPhoneNumber.getNationalNumber().toString();
         } catch (error) {
-          onError({ message: 'Invalid phone number' } as AsyncError);
+          onError(error as AsyncError);
           return null;
         }
       };
 
       const formattedPhoneNumber = validateAndFormatPhoneNumber(values.phoneNumber, values.country);
-
       if (formattedPhoneNumber.length > 0) {
-        sendOTP(values.countryCode, values.phoneNumber)
+        sendOTP({ countryCode: values.countryCode, phoneNumber: formattedPhoneNumber })
           .then(() => {
             onSuccess();
-            navigate(`${constants.OTP}&code=${values.countryCode}&ph=${formattedPhoneNumber}`);
+            navigate(`${constants.OTP}&country_code=${values.countryCode}&phone_number=${formattedPhoneNumber}`);
           })
           .catch((err) => {
             onError(err as AsyncError);

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { FormControl } from '../../../components';
 import constants from '../../../constants/routes';
-import { AsyncError } from '../../../types';
+import { AsyncError, KeyboardKeys } from '../../../types';
 
 import useOTPForm from './otp-form-hook';
 
@@ -21,7 +21,7 @@ const OTPForm: React.FC<OTPFormProps> = ({
   isResendEnabled, onError, onResendSuccess, onSuccess, timerRemainingSeconds,
 }) => {
   const {
-    code, formik, phoneNumber, isVerifyOTPLoading, handleResendOTP,
+    countryCode, formik, phoneNumber, isVerifyOTPLoading, handleResendOTP,
   } = useOTPForm({
     onError, onResendSuccess, onSuccess,
   });
@@ -33,10 +33,10 @@ const OTPForm: React.FC<OTPFormProps> = ({
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!phoneNumber || !code) {
+    if (!phoneNumber || !countryCode) {
       navigate(constants.PHONE_LOGIN);
     }
-  }, [phoneNumber, code, navigate]);
+  }, [phoneNumber, countryCode, navigate]);
 
   const handleChangeOTP = (
     { target }: React.ChangeEvent<HTMLInputElement>,
@@ -45,8 +45,11 @@ const OTPForm: React.FC<OTPFormProps> = ({
     const newOTP = [...formik.values.otp as string[]];
     newOTP[currentOTPIndex] = value.substring(value.length - 1);
     formik.setFieldValue('otp', newOTP).then(() => {
-      if (!value) setActiveOTPIndex(currentOTPIndex - 1);
-      else setActiveOTPIndex(currentOTPIndex + 1);
+      if (!value) {
+        setActiveOTPIndex(currentOTPIndex - 1);
+      } else {
+        setActiveOTPIndex(currentOTPIndex + 1);
+      }
     }).catch((err) => { onError(err as AsyncError); });
   };
 
@@ -57,7 +60,9 @@ const OTPForm: React.FC<OTPFormProps> = ({
   const handleOnKeyDown = ({ key }: React.KeyboardEvent<HTMLInputElement>, index: number) => {
     currentOTPIndex = index;
 
-    if (key === 'Backspace') setActiveOTPIndex(currentOTPIndex - 1);
+    if (key === KeyboardKeys.BACKSPACE as string) {
+      setActiveOTPIndex(currentOTPIndex - 1);
+    }
   };
 
   return (
@@ -75,7 +80,7 @@ const OTPForm: React.FC<OTPFormProps> = ({
         <form onSubmit={formik.handleSubmit}>
           <div className="mb-6">
             <FormControl
-              label={`Enter the 4 digit code sent to the mobile number +${code} ********${phoneNumber?.slice(-2)}`}
+              label={`Enter the 4 digit code sent to the mobile number +${countryCode} ${phoneNumber}`}
               error={formik.touched.otp && formik.errors.otp as string}
             >
               <div className="flex items-center justify-center gap-6">
@@ -106,7 +111,7 @@ const OTPForm: React.FC<OTPFormProps> = ({
               { isResendEnabled ? 'Resend' : 'Resend OTP in'}
             </h2>
             <h2 className="text-lg dark:text-white">
-            { !isResendEnabled && `${timerRemainingSeconds}`}
+            { !isResendEnabled && `00: ${timerRemainingSeconds}`}
             </h2>
           </div>
 

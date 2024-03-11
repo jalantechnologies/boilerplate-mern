@@ -6,7 +6,7 @@ import React, {
 
 import { AuthService } from '../services';
 import {
-  AccessToken, ApiResponse, AsyncError,
+  AccessToken, ApiResponse, AsyncError, PhoneNumber,
 } from '../types';
 
 import useAsync from './async.hook';
@@ -22,8 +22,7 @@ type AuthContextType = {
   loginResult: AccessToken;
   logout: () => void;
   sendOTP: (
-    countryCode: string,
-    phoneNumber: string,
+    phoneNumber: PhoneNumber,
   ) => Promise<void>;
   sendOTPError: AsyncError;
   signup: (
@@ -34,8 +33,7 @@ type AuthContextType = {
   ) => Promise<void>;
   signupError: AsyncError;
   verifyOTP: (
-    countryCode: string,
-    phoneNumber: string,
+    phoneNumber: PhoneNumber,
     otp: string,
   ) => Promise<AccessToken>;
   verifyOTPError: AsyncError;
@@ -78,19 +76,14 @@ const getAccessToken = (): AccessToken => JSON.parse(localStorage.getItem('acces
 const isUserAuthenticated = () => !!getAccessToken();
 
 const sendOTPFn = async (
-  countryCode: string,
-  phoneNumber: string,
-): Promise<ApiResponse<void>> => authService.sendOTP(
-  countryCode,
-  phoneNumber,
-);
+  phoneNumber: PhoneNumber,
+): Promise<ApiResponse<void>> => authService.sendOTP(phoneNumber);
 
 const verifyOTPFn = async (
-  countryCode: string,
-  phoneNumber: string,
+  phoneNumber: PhoneNumber,
   otp: string,
 ): Promise<ApiResponse<AccessToken>> => {
-  const result = await authService.verifyOTP(countryCode, phoneNumber, otp);
+  const result = await authService.verifyOTP(phoneNumber, otp);
   if (result.data) {
     localStorage.setItem('access-token', JSON.stringify(result.data));
   }

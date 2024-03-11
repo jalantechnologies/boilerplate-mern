@@ -1,4 +1,3 @@
-import { PhoneNumberFormat, PhoneNumberUtil } from 'google-libphonenumber';
 import React from 'react';
 
 import { FormControl, Input } from '../../../components';
@@ -22,22 +21,14 @@ const PhoneLoginForm: React.FC<PhoneLoginFormProps> = ({ onError, onSuccess }) =
 
   const handleChangePhone = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = target;
-    if (!/[a-z]/gi.test(value)) {
-      if (formik.values.phoneNumber.length > 3) {
-        const parsedPhoneNumber = PhoneNumberUtil.getInstance().parse(value, formik.values.country);
-        const formattedPhoneNumber: string = PhoneNumberUtil.getInstance().format(
-          parsedPhoneNumber, PhoneNumberFormat.NATIONAL,
-        );
-        setFormikFieldValue('phoneNumber', formattedPhoneNumber);
-      } else setFormikFieldValue('phoneNumber', value);
-    }
+    setFormikFieldValue('phoneNumber', value);
   };
 
   const handleChangeSelect = ({ target }: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = target;
-    const [code, country] = value.split(',');
+    const [countryCode, country] = value.split(',');
     setFormikFieldValue('country', country);
-    setFormikFieldValue('countryCode', code);
+    setFormikFieldValue('countryCode', countryCode);
     setFormikFieldValue('phoneNumber', '');
   };
 
@@ -67,6 +58,7 @@ const PhoneLoginForm: React.FC<PhoneLoginFormProps> = ({ onError, onSuccess }) =
                   onChange={handleChangePhone}
                   onBlur={formik.handleBlur}
                   placeholder="Enter your phone number"
+                  type='number'
                   value={formik.values.phoneNumber}
                 />
               </div>

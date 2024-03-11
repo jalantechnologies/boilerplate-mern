@@ -4,7 +4,7 @@ import {
   AsyncResult,
   UseAsyncResponse,
 } from './async-operation';
-import { AccessToken, PhoneNumber } from './auth';
+import { AccessToken, KeyboardKeys, PhoneNumber } from './auth';
 import { ApiResponse, ApiError } from './service-response';
 
 export {
@@ -14,6 +14,7 @@ export {
   ApiResponse,
   AsyncError,
   AsyncResult,
+  KeyboardKeys,
   PhoneNumber,
   UseAsyncResponse,
 };
