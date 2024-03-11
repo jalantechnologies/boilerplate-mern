@@ -1,11 +1,12 @@
-import { AccountBadRequestError, AccountService } from "../account";
-import { EmailService } from "../communication";
-import { SendEmailParams } from "../communication/types";
-import { ConfigService } from "../config";
-import PasswordResetTokenReader from "./internal/password-reset-token-reader";
-import PasswordResetTokenUtil from "./internal/password-reset-token-util";
-import PasswordResetTokenWriter from "./internal/password-reset-token-writer";
-import { CreatePasswordResetTokenParams, PasswordResetToken, PasswordResetTokenEmailNotEnabledForTheEnvironmentError } from "./types";
+import { AccountBadRequestError, AccountService } from '../account';
+import { EmailService } from '../communication';
+import { SendEmailParams } from '../communication/types';
+import { ConfigService } from '../config';
+
+import PasswordResetTokenReader from './internal/password-reset-token-reader';
+import PasswordResetTokenUtil from './internal/password-reset-token-util';
+import PasswordResetTokenWriter from './internal/password-reset-token-writer';
+import { CreatePasswordResetTokenParams, PasswordResetToken, PasswordResetTokenEmailNotEnabledForTheEnvironmentError } from './types';
 
 export default class PasswordResetTokenService {
   public static async createPasswordResetToken(
@@ -33,6 +34,46 @@ export default class PasswordResetTokenService {
     accountId: string,
   ): Promise<PasswordResetToken> {
     return PasswordResetTokenReader.getPasswordResetTokenByAccountId(accountId);
+  }
+
+  public static async setPasswordResetTokenAsUsedById(
+    passwordResetTokenId: string,
+  ): Promise<PasswordResetToken> {
+    return PasswordResetTokenWriter.setPasswordResetTokenAsUsed(
+      passwordResetTokenId,
+    );
+  }
+
+  public static async verifyPasswordResetToken(
+    accountId: string,
+    token: string,
+  ): Promise<PasswordResetToken> {
+    const passwordResetToken = await PasswordResetTokenService
+      .getPasswordResetTokenByAccountId(accountId);
+
+    if (passwordResetToken.isExpired) {
+      throw new AccountBadRequestError(
+        `Password reset link is expired for accountId ${accountId}. Please retry with new link`,
+      );
+    }
+
+    if (passwordResetToken.isUsed) {
+      throw new AccountBadRequestError(
+        `Password reset is already used for accountId ${accountId}. Please retry with new link`,
+      );
+    }
+
+    const isTokenValid = await PasswordResetTokenUtil.comparePasswordResetToken(
+      token,
+      passwordResetToken.token,
+    );
+    if (!isTokenValid) {
+      throw new AccountBadRequestError(
+        `Password reset link is invalid for accountId ${accountId}. Please retry with new link.`,
+      );
+    }
+
+    return passwordResetToken;
   }
 
   private static async sendPasswordResetEmail(
@@ -78,45 +119,5 @@ export default class PasswordResetTokenService {
     };
 
     return EmailService.sendEmail(passwordResetEmailParams);
-  }
-
-  public static async setPasswordResetTokenAsUsedById(
-    passwordResetTokenId: string,
-  ): Promise<PasswordResetToken> {
-    return PasswordResetTokenWriter.setPasswordResetTokenAsUsed(
-      passwordResetTokenId,
-    )
-  }
-
-  public static async verifyPasswordResetToken(
-    accountId: string,
-    token: string,
-  ): Promise<PasswordResetToken> {
-    const passwordResetToken = await PasswordResetTokenService
-      .getPasswordResetTokenByAccountId(accountId);
-
-    if (passwordResetToken.isExpired) {
-      throw new AccountBadRequestError(
-        `Password reset link is expired for accountId ${accountId}. Please retry with new link`,
-      );
-    }
-
-    if (passwordResetToken.isUsed) {
-      throw new AccountBadRequestError(
-        `Password reset is already used for accountId ${accountId}. Please retry with new link`,
-      );
-    }
-
-    const isTokenValid = await PasswordResetTokenUtil.comparePasswordResetToken(
-      token,
-      passwordResetToken.token,
-    );
-    if (!isTokenValid) {
-      throw new AccountBadRequestError(
-        `Password reset link is invalid for accountId ${accountId}. Please retry with new link.`,
-      );
-    }
-
-    return passwordResetToken;
   }
 }

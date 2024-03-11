@@ -1,5 +1,5 @@
-import { ApplicationError } from "../application";
-import { HttpStatusCodes } from "../http";
+import { ApplicationError } from '../application';
+import { HttpStatusCodes } from '../http';
 
 export class PasswordResetToken {
   id: string;

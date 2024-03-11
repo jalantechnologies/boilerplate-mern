@@ -38,7 +38,6 @@ export enum AccountErrorCode {
   BAD_REQUEST = 'ACCOUNT_ERR_04',
 }
 
-
 export class AccountWithUserNameExistsError extends ApplicationError {
   code: AccountErrorCode;
 

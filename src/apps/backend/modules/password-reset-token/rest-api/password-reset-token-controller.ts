@@ -1,7 +1,7 @@
 import { applicationController, Request, Response } from '../../application';
 import { HttpStatusCodes } from '../../http';
 import PasswordResetTokenService from '../password-reset-token-service';
-import { CreatePasswordResetTokenParams } from "../types";
+import { CreatePasswordResetTokenParams } from '../types';
 
 export class PasswordResetTokenController {
   createPasswordResetToken = applicationController(

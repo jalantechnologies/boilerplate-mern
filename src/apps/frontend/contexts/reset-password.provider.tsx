@@ -4,12 +4,12 @@ import React, {
   useContext,
 } from 'react';
 
+import { ResetPasswordService } from '../services';
 import {
   ApiResponse, AsyncError,
 } from '../types';
 
 import useAsync from './async.hook';
-import { ResetPasswordService } from '../services';
 
 type ResetPasswordContextType = {
   isResetPasswordLoading: boolean;
@@ -24,7 +24,9 @@ const ResetPasswordContext = createContext<ResetPasswordContextType | null>(null
 
 const resetPasswordService = new ResetPasswordService();
 
-export const useResetPasswordContext = (): ResetPasswordContextType => useContext(ResetPasswordContext);
+export const useResetPasswordContext = (): ResetPasswordContextType => useContext(
+  ResetPasswordContext,
+);
 
 const resetPasswordFn = async (
   accountId: string,

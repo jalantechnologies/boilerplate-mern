@@ -1,4 +1,5 @@
 import { ApplicationServer } from '../../application';
+
 import PasswordResetTokenRouter from './password-reset-token-router';
 
 export default class PasswordResetTokenServer extends ApplicationServer {
