@@ -25,7 +25,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
   return (
     <>
       <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-        Sign In
+        Log In
       </h2>
       <form onSubmit={formik.handleSubmit}>
         <div className="mb-4.5">
@@ -110,7 +110,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
           disabled={isLoginLoading}
           type="submit"
         >
-          Sign In
+          Log In
         </button>
         <div className="mt-6 text-center">
           <p className="font-medium">

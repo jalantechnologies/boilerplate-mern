@@ -1,6 +1,10 @@
 import { useState } from 'react';
 
-import { RESEND_DELAY_IN_MILLISECONDS, MILLISECONDS_IN_A_SECOND } from '../constants/timer';
+import { MILLISECONDS_IN_A_SECOND } from '../constants/timer';
+
+type UseTimerProps = {
+  delayInMilliseconds: number;
+};
 
 type UseTimerType = {
   isResendEnabled: boolean;
@@ -9,8 +13,8 @@ type UseTimerType = {
   stopTimer: () => void;
 };
 
-const useTimer = (): UseTimerType => {
-  const [remainingTime, setRemainingTime] = useState(RESEND_DELAY_IN_MILLISECONDS);
+const useTimer = ({ delayInMilliseconds }: UseTimerProps): UseTimerType => {
+  const [remainingTime, setRemainingTime] = useState(delayInMilliseconds);
   const [timerEnd, setTimerEnd] = useState(true);
   let timeoutId: NodeJS.Timeout;
   let intervalId: NodeJS.Timer;
@@ -39,10 +43,10 @@ const useTimer = (): UseTimerType => {
         started = false;
         onEnd();
         stopTimer();
-      }, RESEND_DELAY_IN_MILLISECONDS);
+      }, delayInMilliseconds);
 
       intervalId = setInterval(onTick, MILLISECONDS_IN_A_SECOND);
-      setRemainingTime(RESEND_DELAY_IN_MILLISECONDS);
+      setRemainingTime(delayInMilliseconds);
     }
   };
 

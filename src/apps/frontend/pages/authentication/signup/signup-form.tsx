@@ -184,7 +184,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
           <p className="font-medium">
             Already have an account?{' '}
             <Link to={constants.LOGIN} className="text-primary">
-              Sign in
+              Log in
             </Link>
           </p>
         </div>
