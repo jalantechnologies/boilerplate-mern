@@ -1,6 +1,6 @@
 import { Schema, Types } from 'mongoose';
 
-import { PhoneNumber } from '../../../account';
+import { PhoneNumber } from '../../../account/types';
 import { OtpStatus } from '../../types';
 
 export interface OtpDB {

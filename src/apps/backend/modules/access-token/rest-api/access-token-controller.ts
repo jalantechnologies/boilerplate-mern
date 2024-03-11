@@ -1,4 +1,4 @@
-import { PhoneNumber } from '../../account';
+import { PhoneNumber } from '../../account/types';
 import { applicationController, Request, Response } from '../../application';
 import AccessTokenService from '../access-token-service';
 import {

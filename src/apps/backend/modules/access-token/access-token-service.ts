@@ -1,7 +1,7 @@
 import jsonwebtoken from 'jsonwebtoken';
 
-import { Account, PhoneNumber } from '../account';
 import AccountService from '../account/account-service';
+import { Account, PhoneNumber } from '../account/types';
 import { ConfigService } from '../config';
 import { OtpIncorrectError, OtpService, OtpStatus } from '../otp';
 

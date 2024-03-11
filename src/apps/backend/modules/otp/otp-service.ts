@@ -1,4 +1,4 @@
-import { PhoneNumber } from '../account';
+import { PhoneNumber } from '../account/types';
 import { SMSService } from '../communication';
 import CommunicationUtil from '../communication/communication-util';
 
