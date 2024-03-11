@@ -3,6 +3,7 @@ import { ApplicationError } from '../application';
 import { HttpStatusCodes } from '../http';
 
 export enum OtpStatus {
+  EXPIRED = 'EXPIRED',
   FAILURE = 'FAILURE',
   PENDING = 'PENDING',
   SUCCESS = 'SUCCESS',

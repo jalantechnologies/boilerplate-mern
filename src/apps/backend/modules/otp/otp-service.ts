@@ -11,7 +11,7 @@ export default class OtpService {
   public static async createOtp(
     phoneNumber: PhoneNumber,
   ): Promise<Otp> {
-    const otp = await OtpWriter.createOtp(phoneNumber);
+    const otp = await OtpWriter.expirePreviousOtpAndcreateNewOtp(phoneNumber);
 
     if (!otp) {
       throw new OtpRequestError('Failed to send OTP, please try again.');

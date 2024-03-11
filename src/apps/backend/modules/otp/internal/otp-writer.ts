@@ -11,9 +11,21 @@ import OtpUtil from './otp-util';
 import OtpRepository from './store/otp-repository';
 
 export default class OtpWriter {
-  public static async createOtp(
+  public static async expirePreviousOtpAndcreateNewOtp(
     phoneNumber: PhoneNumber,
   ): Promise<Otp> {
+    const previousOtpDb = await OtpRepository.findOne({
+      'phoneNumber.countryCode': phoneNumber.countryCode,
+      'phoneNumber.phoneNumber': phoneNumber.phoneNumber,
+      active: true,
+    });
+
+    if (previousOtpDb) {
+      previousOtpDb.status = OtpStatus.EXPIRED;
+      previousOtpDb.active = false;
+      await previousOtpDb.save();
+    }
+
     const otpDb = await OtpRepository.create({
       active: true,
       otpCode: OtpUtil.generateOtp(OTP_LENGTH),
@@ -32,8 +44,6 @@ export default class OtpWriter {
       'phoneNumber.countryCode': phoneNumber.countryCode,
       'phoneNumber.phoneNumber': phoneNumber.phoneNumber,
       otpCode,
-    }).sort({
-      createdAt: -1,
     });
 
     if (!otpDb) {
