@@ -12,12 +12,18 @@ export type AccessTokenPayload = {
   accountId: string;
 };
 
-export type CreateAccessTokenParams = {
-  otpCode?: string;
-  password?: string;
-  phoneNumber?: PhoneNumber;
-  username?: string;
+export type EmailBasedAuthAccessTokenRequestParams = {
+  password: string;
+  username: string;
 };
+
+export type OTPBasedAuthAccessTokenRequestParams = {
+  otpCode: string;
+  phoneNumber: PhoneNumber;
+};
+
+export type CreateAccessTokenParams =
+  EmailBasedAuthAccessTokenRequestParams | OTPBasedAuthAccessTokenRequestParams;
 
 export type VerifyAccessTokenParams = {
   token: string;

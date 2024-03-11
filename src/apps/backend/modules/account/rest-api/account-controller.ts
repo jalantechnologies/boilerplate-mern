@@ -4,7 +4,10 @@ import AccountService from '../account-service';
 import {
   Account,
   CreateAccountParams,
+  CreateAccountParamsByPhoneNumber,
+  CreateAccountParamsByUsernameAndPassword,
   GetAccountParams,
+  PhoneNumber,
 } from '../types';
 
 import { serializeAccountAsJSON } from './account-serializer';
@@ -13,17 +16,26 @@ export class AccountController {
   createAccount = applicationController(
     async (req: Request<CreateAccountParams>, res: Response) => {
       let account: Account;
+      const {
+        firstName,
+        lastName,
+        password,
+        username,
+      } = req.body as CreateAccountParamsByUsernameAndPassword;
+      const {
+        phoneNumber,
+      } = req.body as CreateAccountParamsByPhoneNumber;
 
-      if (req.body.username && req.body.password) {
+      if (username && password) {
         account = await AccountService.createAccountByUsernameAndPassword(
-          req.body.firstName,
-          req.body.lastName,
-          req.body.password,
-          req.body.username,
+          firstName,
+          lastName,
+          password,
+          username,
         );
-      } else if (req.body.phoneNumber) {
+      } else if (phoneNumber) {
         account = await AccountService.createAccountByPhoneNumber(
-          req.body.phoneNumber,
+          new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber),
         );
       }
 

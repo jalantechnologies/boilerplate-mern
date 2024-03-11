@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-import { CreateAccountParams } from '../../src/apps/backend/modules/account';
+import { CreateAccountParamsByUsernameAndPassword } from '../../src/apps/backend/modules/account';
 import AccountService from '../../src/apps/backend/modules/account/account-service';
 import AccountRepository from '../../src/apps/backend/modules/account/internal/store/account-repository';
 
@@ -11,8 +11,8 @@ export default class AccountsFixture {
 
   public static async seedMany(
     numberOfEntries = 10,
-  ): Promise<CreateAccountParams[]> {
-    const data: CreateAccountParams[] = new Array(numberOfEntries)
+  ): Promise<CreateAccountParamsByUsernameAndPassword[]> {
+    const data: CreateAccountParamsByUsernameAndPassword[] = new Array(numberOfEntries)
       .fill('x')
       .map(() => ({
         firstName: faker.name.firstName(),
@@ -32,9 +32,9 @@ export default class AccountsFixture {
   }
 
   public static async seedOne(
-    newAccountData?: CreateAccountParams,
-  ): Promise<CreateAccountParams> {
-    const data: CreateAccountParams = newAccountData || {
+    newAccountData?: CreateAccountParamsByUsernameAndPassword,
+  ): Promise<CreateAccountParamsByUsernameAndPassword> {
+    const data: CreateAccountParamsByUsernameAndPassword = newAccountData || {
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
       username: faker.internet.email(),

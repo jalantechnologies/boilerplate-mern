@@ -1,6 +1,12 @@
 import { applicationController, Request, Response } from '../../application';
 import AccessTokenService from '../access-token-service';
-import { AccessToken, CreateAccessTokenParams } from '../types';
+import {
+  AccessToken,
+  CreateAccessTokenParams,
+  EmailBasedAuthAccessTokenRequestParams,
+  OTPBasedAuthAccessTokenRequestParams,
+} from '../types';
+import { PhoneNumber } from '../../account';
 
 import { serializeAccessTokenAsJSON } from './access-token-serializer';
 
@@ -10,16 +16,18 @@ export class AccessTokenController {
     res: Response,
   ) => {
     let accessToken: AccessToken;
+    const { username, password } = req.body as EmailBasedAuthAccessTokenRequestParams;
+    const { phoneNumber, otpCode } = req.body as OTPBasedAuthAccessTokenRequestParams;
 
-    if (req.body.username && req.body.password) {
+    if (username && password) {
       accessToken = await AccessTokenService.createAccessTokenByUsernameAndPassword(
-        req.body.password,
-        req.body.username,
+        password,
+        username,
       );
-    } else if (req.body.phoneNumber && req.body.otpCode) {
+    } else if (phoneNumber && otpCode) {
       accessToken = await AccessTokenService.createAccessTokenByPhoneNumber(
-        req.body.otpCode,
-        req.body.phoneNumber,
+        otpCode,
+        new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber),
       );
     }
 

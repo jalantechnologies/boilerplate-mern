@@ -7,6 +7,7 @@ import AccountRepository from '../../../src/apps/backend/modules/account/interna
 import { SMSService } from '../../../src/apps/backend/modules/communication';
 import { OtpService } from '../../../src/apps/backend/modules/otp';
 import { app } from '../../helpers/app';
+import { PhoneNumber } from '../../../src/apps/backend/modules/account';
 
 describe('AccessToken API', () => {
   let sinonSandbox: sinon.SinonSandbox;
@@ -60,7 +61,12 @@ describe('AccessToken API', () => {
         phoneNumber: phoneNumber.phoneNumber,
       });
 
-      const otp = await OtpService.createOtp(phoneNumber);
+      const otp = await OtpService.createOtp(
+        new PhoneNumber(
+          phoneNumber.countryCode,
+          phoneNumber.phoneNumber,
+        ),
+      );
 
       const res = await chai
         .request(app)

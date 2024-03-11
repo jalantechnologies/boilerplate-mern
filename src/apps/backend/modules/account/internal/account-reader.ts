@@ -65,10 +65,8 @@ export default class AccountReader {
       active: true,
     });
 
-    const phoneNumberObj = new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber);
-
     if (!accDb) {
-      throw new AccountNotFoundError(phoneNumberObj.toString());
+      throw new AccountNotFoundError(phoneNumber.toString());
     }
 
     return AccountUtil.convertAccountDBToAccount(accDb);
@@ -114,10 +112,8 @@ export default class AccountReader {
       active: true,
     });
 
-    const phoneNumberObj = new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber);
-
     if (accDb) {
-      throw new AccountWithPhoneNumberExistsError(phoneNumberObj.toString());
+      throw new AccountWithPhoneNumberExistsError(phoneNumber.toString());
     }
 
     return false;

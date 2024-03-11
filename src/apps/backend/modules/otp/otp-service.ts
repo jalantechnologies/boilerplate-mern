@@ -12,9 +12,8 @@ export default class OtpService {
   public static async createOtp(
     phoneNumber: PhoneNumber,
   ): Promise<Otp> {
-    const phoneNumberObj = new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber);
     const isValidPhoneNumber = CommunicationUtil.checkPhoneNumberValidation(
-      phoneNumberObj.toString(),
+      phoneNumber.toString(),
     );
 
     if (!isValidPhoneNumber) {

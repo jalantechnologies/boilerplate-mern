@@ -26,19 +26,31 @@ export class Account {
   username: string;
 }
 
-export type CreateAccountParams = {
+export type CreateAccountParamsByPhoneNumber = {
+  phoneNumber: PhoneNumber;
+};
+
+export type CreateAccountParamsByUsernameAndPassword = {
   firstName: string;
   lastName: string;
   password: string;
-  phoneNumber?: PhoneNumber;
   username: string;
 };
 
-export type AccountSearchParams = {
-  password?: string;
-  phoneNumber?: PhoneNumber;
-  username?: string;
+export type CreateAccountParams =
+  CreateAccountParamsByUsernameAndPassword | CreateAccountParamsByPhoneNumber;
+
+export type AccountSearchByUsernameAndPasswordParams = {
+  password: string;
+  username: string;
 };
+
+export type AccountSearchByPhoneNumberParams = {
+  phoneNumber: PhoneNumber;
+};
+
+export type AccountSearchParams =
+  AccountSearchByUsernameAndPasswordParams | AccountSearchByPhoneNumberParams;
 
 export type GetAccountParams = {
   accountId: string;
