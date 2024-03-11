@@ -14,7 +14,11 @@ export default class OtpUtil {
     return otp;
   }
 
-  public static generateOtp(): string {
-    return _.random(1000, 9999).toString(); // 4 digit OTP
+  public static generateOtp(length: number): string {
+    let otp = '';
+    for (let i = 0; i < length; i += 1) {
+      otp += _.random(0, 9);
+    }
+    return otp;
   }
 }

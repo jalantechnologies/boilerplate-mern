@@ -56,10 +56,9 @@ describe('AccessToken API', () => {
         phoneNumber: '9834567890',
       };
 
-      await AccountWriter.createAccountByPhoneNumber({
-        countryCode: phoneNumber.countryCode,
-        phoneNumber: phoneNumber.phoneNumber,
-      });
+      await AccountWriter.createAccountByPhoneNumber(
+        new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber),
+      );
 
       const otp = await OtpService.createOtp(
         new PhoneNumber(
@@ -86,10 +85,9 @@ describe('AccessToken API', () => {
         phoneNumber: '9834567890',
       };
 
-      await AccountWriter.createAccountByPhoneNumber({
-        countryCode: phoneNumber.countryCode,
-        phoneNumber: phoneNumber.phoneNumber,
-      });
+      await AccountWriter.createAccountByPhoneNumber(
+        new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber),
+      );
 
       await OtpService.createOtp(
         new PhoneNumber(
@@ -117,10 +115,9 @@ describe('AccessToken API', () => {
         phoneNumber: '9834567890',
       };
 
-      await AccountWriter.createAccountByPhoneNumber({
-        countryCode: phoneNumber.countryCode,
-        phoneNumber: phoneNumber.phoneNumber,
-      });
+      await AccountWriter.createAccountByPhoneNumber(
+        new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber),
+      );
 
       const otp = await OtpService.createOtp(
         new PhoneNumber(

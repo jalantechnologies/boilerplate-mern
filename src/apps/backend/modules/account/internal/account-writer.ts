@@ -1,3 +1,7 @@
+import { PhoneNumberUtil } from 'google-libphonenumber';
+
+import { PhoneUtilInstance, PhoneUtilInterface } from '../../communication/types';
+import { OtpRequestError } from '../../otp/types';
 import { Account, PhoneNumber } from '../types';
 
 import AccountReader from './account-reader';
@@ -30,6 +34,16 @@ export default class AccountWriter {
   public static async createAccountByPhoneNumber(
     phoneNumber: PhoneNumber,
   ): Promise<Account> {
+    const phoneUtil = <PhoneUtilInterface>(<PhoneUtilInstance>PhoneNumberUtil).getInstance();
+    const isValidPhoneNumber = phoneUtil.isValidNumber(
+      phoneUtil.parse(
+        phoneNumber.toString(),
+      ),
+    );
+
+    if (!isValidPhoneNumber) {
+      throw new OtpRequestError('Invalid phone number');
+    }
     // check if account already exists with the given phone number
     // this will throw an error if it does
     await AccountReader.checkPhoneNumberNotExists(phoneNumber);

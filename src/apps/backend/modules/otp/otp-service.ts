@@ -1,6 +1,5 @@
 import { PhoneNumber } from '../account/types';
 import { SMSService } from '../communication';
-import CommunicationUtil from '../communication/communication-util';
 
 import OtpWriter from './internal/otp-writer';
 import {
@@ -12,22 +11,14 @@ export default class OtpService {
   public static async createOtp(
     phoneNumber: PhoneNumber,
   ): Promise<Otp> {
-    const isValidPhoneNumber = CommunicationUtil.checkPhoneNumberValidation(
-      phoneNumber.toString(),
-    );
-
-    if (!isValidPhoneNumber) {
-      throw new OtpRequestError('Invalid phone number');
-    }
-
     const otp = await OtpWriter.createOtp(phoneNumber);
 
     if (!otp) {
-      throw new OtpRequestError('Failed to create OTP');
+      throw new OtpRequestError('Failed to send OTP, please try again.');
     }
 
     await SMSService.sendSMS({
-      messageBody: `Your OTP is ${otp.otpCode}`,
+      messageBody: `${otp.otpCode} is your one time password to login.`,
       recipientPhone: phoneNumber,
     });
 

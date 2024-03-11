@@ -1,4 +1,5 @@
 import { PhoneNumber } from '../../account/types';
+import { OTP_LENGTH } from '../constants';
 import {
   Otp,
   OtpExpiredError,
@@ -15,7 +16,7 @@ export default class OtpWriter {
   ): Promise<Otp> {
     const otpDb = await OtpRepository.create({
       active: true,
-      otpCode: OtpUtil.generateOtp(),
+      otpCode: OtpUtil.generateOtp(OTP_LENGTH),
       phoneNumber,
       status: OtpStatus.PENDING,
     });
@@ -31,6 +32,8 @@ export default class OtpWriter {
       'phoneNumber.countryCode': phoneNumber.countryCode,
       'phoneNumber.phoneNumber': phoneNumber.phoneNumber,
       otpCode,
+    }).sort({
+      createdAt: -1,
     });
 
     if (!otpDb) {

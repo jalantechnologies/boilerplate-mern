@@ -2,7 +2,7 @@ import faker from '@faker-js/faker';
 import chai, { expect } from 'chai';
 import sinon from 'sinon';
 
-import { AccountWithUserNameExistsError } from '../../../src/apps/backend/modules/account';
+import { AccountWithUserNameExistsError, PhoneNumber } from '../../../src/apps/backend/modules/account';
 import AccountWriter from '../../../src/apps/backend/modules/account/internal/account-writer';
 import { SMSService } from '../../../src/apps/backend/modules/communication';
 import { app } from '../../helpers/app';
@@ -92,7 +92,9 @@ describe('Account API', () => {
         phoneNumber: '7895586769',
       };
 
-      const account = await AccountWriter.createAccountByPhoneNumber(phoneNumber);
+      const account = await AccountWriter.createAccountByPhoneNumber(
+        new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber),
+      );
 
       const createAccountByPhoneNumberStub = sinonSandbox
         .stub(AccountWriter, 'createAccountByPhoneNumber')

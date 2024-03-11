@@ -42,3 +42,5 @@ export const OtpDbSchema: Schema = new Schema<OtpDB>(
     },
   },
 );
+
+OtpDbSchema.index({ phoneNumber: 1, active: 1 });
