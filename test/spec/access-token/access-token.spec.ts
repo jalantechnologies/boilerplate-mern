@@ -2,12 +2,12 @@ import faker from '@faker-js/faker';
 import chai, { expect } from 'chai';
 import sinon from 'sinon';
 
+import { PhoneNumber } from '../../../src/apps/backend/modules/account';
 import AccountWriter from '../../../src/apps/backend/modules/account/internal/account-writer';
 import AccountRepository from '../../../src/apps/backend/modules/account/internal/store/account-repository';
 import { SMSService } from '../../../src/apps/backend/modules/communication';
 import { OtpService } from '../../../src/apps/backend/modules/otp';
 import { app } from '../../helpers/app';
-import { PhoneNumber } from '../../../src/apps/backend/modules/account';
 
 describe('AccessToken API', () => {
   let sinonSandbox: sinon.SinonSandbox;

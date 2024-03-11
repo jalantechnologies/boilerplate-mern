@@ -1,3 +1,4 @@
+import { PhoneNumber } from '../../account';
 import { applicationController, Request, Response } from '../../application';
 import AccessTokenService from '../access-token-service';
 import {
@@ -6,7 +7,6 @@ import {
   EmailBasedAuthAccessTokenRequestParams,
   OTPBasedAuthAccessTokenRequestParams,
 } from '../types';
-import { PhoneNumber } from '../../account';
 
 import { serializeAccessTokenAsJSON } from './access-token-serializer';
 
