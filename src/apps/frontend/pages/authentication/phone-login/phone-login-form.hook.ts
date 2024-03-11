@@ -27,8 +27,6 @@ const usePhoneLoginForm = ({ onSuccess, onError }: PhoneLoginFormProps) => {
     },
     validationSchema: Yup.object({
       phoneNumber: Yup.string()
-        .min(8, constant.PHONE_VALIDATION_ERROR)
-        .max(14, constant.PHONE_VALIDATION_ERROR)
         .required(constant.PHONE_VALIDATION_ERROR),
     }),
     onSubmit: (values) => {

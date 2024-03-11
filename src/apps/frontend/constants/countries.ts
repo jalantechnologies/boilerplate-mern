@@ -1,11 +1,11 @@
-interface CountryCode {
+interface Country {
   code: string;
   dialCode: string;
   flag: string;
   name: string;
 }
 
-const COUNTRIES: CountryCode[] = [
+const COUNTRIES: Country[] = [
   {
     code: 'US',
     dialCode: '+1',
