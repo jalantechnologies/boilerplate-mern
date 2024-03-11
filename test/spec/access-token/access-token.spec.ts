@@ -79,5 +79,75 @@ describe('AccessToken API', () => {
 
       expect(res.body.token).to.be.a('string');
     });
+
+    it('should throw an error if OTP is incorrect', async () => {
+      const phoneNumber = {
+        countryCode: '+91',
+        phoneNumber: '9834567890',
+      };
+
+      await AccountWriter.createAccountByPhoneNumber({
+        countryCode: phoneNumber.countryCode,
+        phoneNumber: phoneNumber.phoneNumber,
+      });
+
+      await OtpService.createOtp(
+        new PhoneNumber(
+          phoneNumber.countryCode,
+          phoneNumber.phoneNumber,
+        ),
+      );
+
+      const res = await chai
+        .request(app)
+        .post('/api/access-tokens')
+        .set('content-type', 'application/json')
+        .send({
+          phoneNumber,
+          otpCode: '123456',
+        });
+
+      expect(res.status).to.be.eq(401);
+      expect(res.body.message).to.be.eq('Incorrect OTP.');
+    });
+
+    it('should throw an error if OTP has expired', async () => {
+      const phoneNumber = {
+        countryCode: '+91',
+        phoneNumber: '9834567890',
+      };
+
+      await AccountWriter.createAccountByPhoneNumber({
+        countryCode: phoneNumber.countryCode,
+        phoneNumber: phoneNumber.phoneNumber,
+      });
+
+      const otp = await OtpService.createOtp(
+        new PhoneNumber(
+          phoneNumber.countryCode,
+          phoneNumber.phoneNumber,
+        ),
+      );
+
+      await OtpService.verifyOTP(
+        otp.otpCode,
+        new PhoneNumber(
+          phoneNumber.countryCode,
+          phoneNumber.phoneNumber,
+        ),
+      );
+
+      const res = await chai
+        .request(app)
+        .post('/api/access-tokens')
+        .set('content-type', 'application/json')
+        .send({
+          phoneNumber,
+          otpCode: otp.otpCode,
+        });
+
+      expect(res.status).to.be.eq(401);
+      expect(res.body.message).to.be.eq('OTP has expired. Please request a new OTP.');
+    });
   });
 });
