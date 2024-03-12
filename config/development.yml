@@ -1,10 +1,8 @@
 accounts:
   tokenKey: 'dev_auth_token'
+  passwordResetEmailEnabled: 'false'
 
 mongoDb:
   uri: 'mongodb://localhost:27017/boilerplate-mern-dev'
 
 webAppHost: 'http://localhost:3000'
-
-account:
-  passwordResetEmailEnabled: 'false'
