@@ -46,7 +46,7 @@ describe('Account Password Reset', () => {
       const stubEmailService = sinonSandbox.stub(EmailService, 'sendEmail');
       sinonSandbox
         .stub(ConfigService, 'getValue')
-        .withArgs('account.passwordResetTokenEmailEnabled')
+        .withArgs('accounts.passwordResetEmailEnabled')
         .returns('true');
 
       const resetToken = faker.random.alphaNumeric();

@@ -84,7 +84,7 @@ export default class PasswordResetTokenService {
     passwordResetToken: string,
   ): Promise<void> {
     const passwordResetEmailEnabled = JSON.parse(ConfigService.getValue<string>(
-      'account.passwordResetEmailEnabled',
+      'accounts.passwordResetEmailEnabled',
     )) as boolean;
 
     if (!passwordResetEmailEnabled) {
