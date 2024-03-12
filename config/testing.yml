@@ -1,3 +1,5 @@
+nodeConfigEnv: 'testing'
+
 accounts:
   tokenKey: 'test_auth_token'
 

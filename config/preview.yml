@@ -1,2 +1,4 @@
 logger:
   transports: [ 'datadog' ]
+
+nodeConfigEnv: 'preview'
