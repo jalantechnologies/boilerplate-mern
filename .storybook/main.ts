@@ -8,6 +8,7 @@ const config: StorybookConfig = {
     '@storybook/addon-onboarding',
     '@storybook/addon-interactions',
     '@storybook/addon-styling-webpack',
+    'storybook-addon-react-router-v6',
     {
       name: '@storybook/addon-styling-webpack',
       options: {
