@@ -10,7 +10,6 @@ const config: StorybookConfig = {
     '@storybook/addon-styling-webpack',
     {
       name: '@storybook/addon-styling-webpack',
-
       options: {
         rules: [
           {
@@ -47,5 +46,6 @@ const config: StorybookConfig = {
   docs: {
     autodocs: 'tag',
   },
+  staticDirs: ['../src'],
 };
 export default config;
