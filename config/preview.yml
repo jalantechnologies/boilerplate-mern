@@ -1,8 +1,7 @@
-appEnv: 'preview'
+defaultOTP: '1111'
 
 enableSMS: false
 
 logger:
   transports: [ 'datadog' ]
 
-otp: '1111'

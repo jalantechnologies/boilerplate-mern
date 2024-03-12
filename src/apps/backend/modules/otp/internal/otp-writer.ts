@@ -27,7 +27,7 @@ export default class OtpWriter {
       await previousOtpDb.save();
     }
 
-    const otp = ConfigService.hasValue('otp') ? ConfigService.getValue<string>('otp') : OtpUtil.generateOtp(OTP_LENGTH);
+    const otp = ConfigService.hasValue('defaultOTP') ? ConfigService.getValue<string>('defaultOTP') : OtpUtil.generateOtp(OTP_LENGTH);
 
     const otpDb = await OtpRepository.create({
       active: true,

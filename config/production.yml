@@ -1,5 +1,3 @@
-appEnv: 'production'
-
 enableSMS: true
 
 logger:
