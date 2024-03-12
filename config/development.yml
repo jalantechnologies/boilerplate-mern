@@ -1,9 +1,9 @@
 accounts:
   tokenKey: 'dev_auth_token'
 
+enableSMS: false
+
 mongoDb:
   uri: 'mongodb://localhost:27017/boilerplate-mern-dev'
 
 webAppHost: 'http://localhost:3000'
-
-nodeConfigEnv: 'development'

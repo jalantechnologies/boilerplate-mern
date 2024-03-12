@@ -1,5 +1,3 @@
-import config from 'config';
-
 import { PhoneNumber } from '../account/types';
 import { SMSService } from '../communication';
 
@@ -14,16 +12,10 @@ export default class OtpService {
   ): Promise<Otp> {
     const otp = await OtpWriter.expirePreviousOtpAndCreateNewOtp(phoneNumber);
 
-    const nodeConfigEnv = config.get('nodeConfigEnv');
-    const isProductionEnv = nodeConfigEnv === 'production';
-    const isTestingEnv = nodeConfigEnv === 'testing';
-
-    if (isProductionEnv || isTestingEnv) {
-      await SMSService.sendSMS({
-        messageBody: `${otp.otpCode} is your one time password to login.`,
-        recipientPhone: phoneNumber,
-      });
-    }
+    await SMSService.sendSMS({
+      messageBody: `${otp.otpCode} is your one time password to login.`,
+      recipientPhone: phoneNumber,
+    });
 
     return otp;
   }

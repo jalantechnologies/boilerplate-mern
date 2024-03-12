@@ -1,4 +1,4 @@
+enableSMS: false
+
 logger:
   transports: [ 'datadog' ]
-
-nodeConfigEnv: 'preview'

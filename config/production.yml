@@ -1,4 +1,4 @@
+enableSMS: true
+
 logger:
   transports: [ 'datadog' ]
-
-nodeConfigEnv: 'production'
