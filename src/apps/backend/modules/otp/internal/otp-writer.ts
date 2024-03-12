@@ -1,4 +1,5 @@
 import { PhoneNumber } from '../../account/types';
+import { ConfigService } from '../../config';
 import { OTP_LENGTH } from '../constants';
 import {
   Otp,
@@ -26,9 +27,11 @@ export default class OtpWriter {
       await previousOtpDb.save();
     }
 
+    const otp = ConfigService.hasValue('otp') ? ConfigService.getValue<string>('otp') : OtpUtil.generateOtp(OTP_LENGTH);
+
     const otpDb = await OtpRepository.create({
       active: true,
-      otpCode: OtpUtil.generateOtp(OTP_LENGTH),
+      otpCode: otp,
       phoneNumber,
       status: OtpStatus.PENDING,
     });
@@ -44,6 +47,8 @@ export default class OtpWriter {
       'phoneNumber.countryCode': phoneNumber.countryCode,
       'phoneNumber.phoneNumber': phoneNumber.phoneNumber,
       otpCode,
+    }).sort({
+      createdAt: -1,
     });
 
     if (!otpDb) {

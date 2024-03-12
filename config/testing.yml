@@ -1,6 +1,8 @@
 accounts:
   tokenKey: 'test_auth_token'
 
+appEnv: 'testing'
+
 enableSMS: true
 
 mongoDb:
