@@ -12,7 +12,7 @@ type UseTimerType = {
 };
 
 const useTimer = ({ delayInMilliseconds }: UseTimerProps): UseTimerType => {
-  const MILLISECONDS_IN_A_SECOND = 1_000;
+  const millisecondsInASecond = 1_000;
 
   const [remainingTime, setRemainingTime] = useState(delayInMilliseconds);
   const [timerEnd, setTimerEnd] = useState(true);
@@ -21,7 +21,7 @@ const useTimer = ({ delayInMilliseconds }: UseTimerProps): UseTimerType => {
   let started: boolean;
 
   const onTick = () => {
-    setRemainingTime((oldTime) => oldTime - MILLISECONDS_IN_A_SECOND);
+    setRemainingTime((oldTime) => oldTime - millisecondsInASecond);
   };
 
   const onEnd = () => {
@@ -45,14 +45,14 @@ const useTimer = ({ delayInMilliseconds }: UseTimerProps): UseTimerType => {
         stopTimer();
       }, delayInMilliseconds);
 
-      intervalId = setInterval(onTick, MILLISECONDS_IN_A_SECOND);
+      intervalId = setInterval(onTick, millisecondsInASecond);
       setRemainingTime(delayInMilliseconds);
     }
   };
 
-  const isResendEnabled = timerEnd || (remainingTime <= MILLISECONDS_IN_A_SECOND && !started);
+  const isResendEnabled = timerEnd || (remainingTime <= millisecondsInASecond && !started);
 
-  const remaininingSeconds = remainingTime / MILLISECONDS_IN_A_SECOND - 1;
+  const remaininingSeconds = remainingTime / millisecondsInASecond - 1;
   const remaininingSecondsStr = remaininingSeconds > 9 ? `${remaininingSeconds}` : `0${remaininingSeconds}`;
 
   return {

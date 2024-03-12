@@ -10,13 +10,13 @@ import ForgotPasswordForm from './forgot-password-form';
 import ForgotPasswordResendEmail from './forgot-password-resend-email';
 
 export const ForgotPassword: React.FC = () => {
-  const PASSWORD_RESEND_DELAY_IN_MILLISECONDS = 60_000;
+  const passwordResendDelayInSeconds = 60_000;
 
   const [isResendEmailPage, setIsResendEmailPage] = useState(false);
   const [username, setUsername] = useState('');
 
   const { startTimer, remaininingSecondsStr, isResendEnabled } = useTimer({
-    delayInMilliseconds: PASSWORD_RESEND_DELAY_IN_MILLISECONDS,
+    delayInMilliseconds: passwordResendDelayInSeconds,
   });
 
   const onSendEmailSuccess = (newUsername: string) => {

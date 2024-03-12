@@ -18,5 +18,5 @@ export default class ResetPasswordService extends APIService {
       newPassword,
       token,
     });
-  }
+  };
 }

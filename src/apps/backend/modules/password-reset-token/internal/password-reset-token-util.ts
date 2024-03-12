@@ -3,6 +3,7 @@ import crypto from 'crypto';
 import * as bcrypt from 'bcrypt';
 import moment, { Moment } from 'moment';
 
+import { ConfigService } from '../../config';
 import { PasswordResetToken } from '../types';
 
 import { PasswordResetTokenDB } from './store/password-reset-token-db';
@@ -40,7 +41,11 @@ export default class PasswordResetTokenUtil {
     return bcrypt.hash(resetToken, 10);
   }
 
-  public static getTokenExpiresAt(defaultExpiresIn: string): Moment {
-    return moment().add(parseInt(defaultExpiresIn, 10), 'seconds');
+  public static getTokenExpiresAt(): Moment {
+    const defaultTokenExpireTimeInSeconds = ConfigService.getValue<string>(
+      'passwordResetToken.expiresInSeconds',
+    );
+
+    return moment().add(parseInt(defaultTokenExpireTimeInSeconds, 10), 'seconds');
   }
 }

@@ -39,6 +39,7 @@ export default class AccountService {
     params: ResetPasswordParams,
   ): Promise<Account> {
     const { accountId, newPassword, token } = params;
+    await AccountReader.getAccountById(accountId);
 
     const passwordResetToken = await PasswordResetTokenService.verifyPasswordResetToken(
       accountId,

@@ -4,13 +4,13 @@ import React, {
   useContext,
 } from 'react';
 
+import { ResetPasswordParams } from '../pages/authentication/reset-password/reset-password-form.hook';
 import { ResetPasswordService } from '../services';
 import {
   ApiResponse, AsyncError,
 } from '../types';
 
 import useAsync from './async.hook';
-import { ResetPasswordParams } from '../pages/authentication/reset-password/reset-password-form.hook';
 
 type ResetPasswordContextType = {
   isResetPasswordLoading: boolean;

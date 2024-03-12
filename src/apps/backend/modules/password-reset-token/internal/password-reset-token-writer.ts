@@ -1,4 +1,3 @@
-import { ConfigService } from '../../config';
 import { PasswordResetToken } from '../types';
 
 import PasswordResetTokenUtil from './password-reset-token-util';
@@ -9,12 +8,8 @@ export default class PasswordResetTokenWriter {
     accountId: string,
     token: string,
   ): Promise<PasswordResetToken> {
-    const defaultTokenExpireTimeInSeconds = ConfigService.getValue<string>(
-      'passwordResetToken.expiresInSeconds',
-    );
-
     const tokenHash = await PasswordResetTokenUtil.hashPasswordResetToken(token);
-    const expiresAt = PasswordResetTokenUtil.getTokenExpiresAt(defaultTokenExpireTimeInSeconds);
+    const expiresAt = PasswordResetTokenUtil.getTokenExpiresAt();
 
     const passwordResetTokenDB = await PasswordResetTokenRepository.create({
       account: accountId,

@@ -3,14 +3,18 @@ import { HttpStatusCodes } from '../../http';
 import PasswordResetTokenService from '../password-reset-token-service';
 import { CreatePasswordResetTokenParams } from '../types';
 
+import { serializePasswordResetTokenAsJSON } from './password-reset-token-serializer';
+
 export class PasswordResetTokenController {
   createPasswordResetToken = applicationController(
     async (req: Request<CreatePasswordResetTokenParams>, res: Response) => {
-      await PasswordResetTokenService.createPasswordResetToken({
+      const passwordResetToken = await PasswordResetTokenService.createPasswordResetToken({
         username: req.body.username,
       });
 
-      res.status(HttpStatusCodes.CREATED).send();
+      const passwordResetTokenJSON = serializePasswordResetTokenAsJSON(passwordResetToken);
+
+      res.status(HttpStatusCodes.CREATED).send(passwordResetTokenJSON);
     },
   );
 }
