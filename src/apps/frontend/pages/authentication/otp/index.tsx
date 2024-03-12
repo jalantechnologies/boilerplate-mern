@@ -3,7 +3,6 @@ import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
 import constants from '../../../constants/routes';
-import { OTP_RESEND_DELAY_IN_MILLISECONDS } from '../../../constants/timer';
 import { AsyncError } from '../../../types';
 import useTimer from '../../../utils/use-timer.hook';
 import AuthenticationFormLayout from '../authentication-form-layout';
@@ -12,9 +11,11 @@ import AuthenticationPageLayout from '../authentication-page-layout';
 import OTPForm from './otp-form';
 
 export const OTPPage: React.FC = () => {
-  const { startTimer, remaininingSecondsStr, isResendEnabled } = useTimer(
-    { delayInMilliseconds: OTP_RESEND_DELAY_IN_MILLISECONDS },
-  );
+  const sendOTPDelayInMilliseconds = 60_000;
+
+  const { startTimer, remaininingSecondsStr, isResendEnabled } = useTimer({
+    delayInMilliseconds: sendOTPDelayInMilliseconds,
+  });
 
   const navigate = useNavigate();
 

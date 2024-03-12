@@ -25,10 +25,12 @@ const useOTPForm = ({
     initialValues: {
       otp: Array(constant.OTP_LENGTH).fill(''),
     },
+
     validationSchema: Yup.object({
       otp: Yup.array()
         .of(Yup.string().required('')),
     }),
+
     onSubmit: (values) => {
       verifyOTP({ countryCode: `+${countryCode}`, phoneNumber }, values.otp.join(''))
         .then(() => {

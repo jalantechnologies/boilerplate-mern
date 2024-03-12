@@ -12,10 +12,9 @@ interface PhoneLoginFormProps {
   onSuccess: () => void;
   onError: (err: AsyncError) => void;
 }
+
 const usePhoneLoginForm = ({ onSuccess, onError }: PhoneLoginFormProps) => {
-  const {
-    isSendOTPLoading, sendOTPError, sendOTP,
-  } = useAuthContext();
+  const { isSendOTPLoading, sendOTPError, sendOTP } = useAuthContext();
 
   const navigate = useNavigate();
 
@@ -25,13 +24,16 @@ const usePhoneLoginForm = ({ onSuccess, onError }: PhoneLoginFormProps) => {
       country: 'US',
       phoneNumber: '',
     },
+
     validationSchema: Yup.object({
       phoneNumber: Yup.string()
         .required(constant.PHONE_VALIDATION_ERROR),
     }),
+
     onSubmit: (values) => {
       const parsedPhoneNumber = PhoneNumberUtil.getInstance().parse(
-        values.phoneNumber, values.country,
+        values.phoneNumber,
+        values.country,
       );
       const isValidPhoneNumber = PhoneNumberUtil.getInstance().isValidNumber(parsedPhoneNumber);
 
@@ -42,7 +44,11 @@ const usePhoneLoginForm = ({ onSuccess, onError }: PhoneLoginFormProps) => {
 
       const formattedPhoneNumber = parsedPhoneNumber.getNationalNumber().toString();
       const otpPageUrl = `${constants.OTP}&country_code=${values.countryCode}&phone_number=${formattedPhoneNumber}`;
-      sendOTP({ countryCode: values.countryCode, phoneNumber: formattedPhoneNumber })
+
+      sendOTP({
+        countryCode: values.countryCode,
+        phoneNumber: formattedPhoneNumber,
+      })
         .then(() => {
           onSuccess();
           navigate(otpPageUrl);

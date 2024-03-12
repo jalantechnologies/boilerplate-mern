@@ -28,7 +28,7 @@ const Input: React.FC<InputProps> = ({
 }) => (
   <input
     autoComplete="off"
-    className={`w-full rounded-lg border bg-transparent py-4 pl-6 pr-10 outline-none [appearance:textfield] focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary [&::-webkit-inner-spin-button]:appearance-none ${
+    className={`w-full rounded-lg border bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary ${
       error ? 'border-red-500' : 'border-stroke'
     }`}
     data-testid={testId}

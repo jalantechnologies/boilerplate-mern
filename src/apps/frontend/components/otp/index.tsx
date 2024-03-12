@@ -5,6 +5,8 @@ import React, {
 import constant from '../../constants';
 import { AsyncError, KeyboardKeys } from '../../types';
 
+import OTPInput from './otp-input';
+
 interface OTPProps {
   error: string;
   isLoading: boolean;
@@ -13,15 +15,12 @@ interface OTPProps {
   onError: (error: AsyncError) => void;
 }
 
-let currentOTPIndex: number = 0;
+let currentOTPInputIndex: number = 0;
 
 const OTP: React.FC<OTPProps> = ({
-  error,
-  isLoading,
-  onBlur,
-  onChange,
+  error, isLoading, onBlur, onChange,
 }) => {
-  const [activeOTPIndex, setActiveOTPIndex] = useState(0);
+  const [activeOTPInputIndex, setActiveOTPInputIndex] = useState(0);
   const [otpField, setOtpField] = useState<string[]>(Array(constant.OTP_LENGTH).fill(''));
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -30,48 +29,53 @@ const OTP: React.FC<OTPProps> = ({
     target,
   }: React.ChangeEvent<HTMLInputElement>): void => {
     const { value } = target;
-    const newOTP = [...otpField];
-    newOTP[currentOTPIndex] = value.substring(value.length - 1);
-    setOtpField(newOTP);
-    if (!value) {
-      setActiveOTPIndex(currentOTPIndex - 1);
+
+    // Create a copy of the OTP inputs array
+    const otpInputs = [...otpField];
+
+    // Update the OTP input value at the current index Ex. -> value: '123' --> ['1', '2', '3', '']
+    otpInputs[currentOTPInputIndex] = value.substring(value.length - 1);
+    setOtpField(otpInputs);
+
+    if (!otpInputs[currentOTPInputIndex]) {
+      // If the input value is empty, move to the previous input
+      setActiveOTPInputIndex(currentOTPInputIndex - 1);
     } else {
-      setActiveOTPIndex(currentOTPIndex + 1);
+      // Otherwise, move to the next input
+      setActiveOTPInputIndex(currentOTPInputIndex + 1);
     }
-    onChange(newOTP);
+
+    onChange(otpInputs);
   };
 
   useEffect(() => {
     inputRef.current?.focus();
-  }, [activeOTPIndex]);
+  }, [activeOTPInputIndex]);
 
   const handleOnKeyDown = (
     { key }: React.KeyboardEvent<HTMLInputElement>,
     index: number,
   ) => {
-    currentOTPIndex = index;
+    currentOTPInputIndex = index;
 
-    if (key === (KeyboardKeys.BACKSPACE as string)) {
-      setActiveOTPIndex(currentOTPIndex - 1);
+    if (key === KeyboardKeys.BACKSPACE.toString()) {
+      setActiveOTPInputIndex(currentOTPInputIndex - 1);
     }
   };
 
   return (
     <div className="flex items-center justify-center gap-6">
       {otpField.map((_, index) => (
-        <input
+        <OTPInput
           key={index}
-          className={`flex w-full rounded-lg border bg-transparent py-4 text-center outline-none [appearance:textfield] focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary [&::-webkit-inner-spin-button]:appearance-none ${
-            error ? 'border-red-500' : 'border-stroke'
-          }`}
           disabled={isLoading}
           name={'otp'}
+          error={error}
           onChange={handleChangeOTP}
           onBlur={onBlur}
-          onKeyDown={(e) => handleOnKeyDown(e, index)}
-          ref={index === activeOTPIndex ? inputRef : null}
+          onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => handleOnKeyDown(e, index)}
+          inputRef={index === activeOTPInputIndex ? inputRef : null}
           value={otpField[index]}
-          type={'number'}
         />
       ))}
     </div>
