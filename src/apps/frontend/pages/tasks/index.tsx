@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import TaskList from '../../components/task/task-list';
+import { TaskList } from '../../components';
 
 const Tasks: React.FC = () => (
   <div>

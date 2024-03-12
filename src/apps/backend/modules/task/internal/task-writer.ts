@@ -2,7 +2,7 @@ import {
   CreateTaskParams,
   DeleteTaskParams,
   Task,
-  TaskWithTitleExistsError,
+  UpdateTaskParams,
 } from '../types';
 
 import TaskRepository from './store/task-repository';
@@ -11,15 +11,6 @@ import TaskUtil from './task-util';
 
 export default class TaskWriter {
   public static async createTask(params: CreateTaskParams): Promise<Task> {
-    const existingTask = await TaskRepository.findOne({
-      account: params.accountId,
-      title: params.title,
-      active: true,
-    });
-    if (existingTask) {
-      throw new TaskWithTitleExistsError(params.title);
-    }
-
     const createdTask = await TaskRepository.create({
       account: params.accountId,
       description: params.description,
@@ -27,6 +18,29 @@ export default class TaskWriter {
       active: true,
     });
     return TaskUtil.convertTaskDBToTask(createdTask);
+  }
+
+  public static async updateTask(params: UpdateTaskParams): Promise<Task> {
+    const task = await TaskRepository.findOneAndUpdate(
+      {
+        account: params.accountId,
+        _id: params.taskId,
+        active: true,
+      },
+      {
+        $set: {
+          description: params.description,
+          title: params.title,
+        },
+      },
+      { new: true },
+    );
+
+    if (!task) {
+      throw new Error('Task not found');
+    }
+
+    return TaskUtil.convertTaskDBToTask(task);
   }
 
   public static async deleteTask(params: DeleteTaskParams): Promise<void> {

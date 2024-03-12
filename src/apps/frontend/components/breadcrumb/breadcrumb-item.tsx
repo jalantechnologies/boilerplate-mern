@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-interface BreadcrumbProps {
+interface BreadcrumbItemProps {
   pageName: string;
 }
-const Breadcrumb: React.FC<BreadcrumbProps> = ({ pageName }) => (
+
+const BreadcrumbItem: React.FC<BreadcrumbItemProps> = ({ pageName }) => (
   <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
     <div className="text-title-md2 font-semibold text-black dark:text-white">
       {pageName}
@@ -22,4 +23,4 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ pageName }) => (
   </div>
 );
 
-export default Breadcrumb;
+export default BreadcrumbItem;

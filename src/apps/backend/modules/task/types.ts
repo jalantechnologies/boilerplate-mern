@@ -20,13 +20,20 @@ export type GetTaskParams = {
 };
 
 export type GetTaskByTitleParams = {
-  accountId: string,
+  accountId: string;
   title: string;
 };
 
 export type CreateTaskParams = {
   accountId: string;
   description: string;
+  title: string;
+};
+
+export type UpdateTaskParams = {
+  accountId: string;
+  description: string;
+  taskId: string;
   title: string;
 };
 
