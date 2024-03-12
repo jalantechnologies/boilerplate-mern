@@ -129,7 +129,7 @@ describe('Account API', () => {
           phoneNumber,
         });
 
-      expect(res.status).to.be.eq(500);
+      expect(res.status).to.be.eq(400);
       expect(res.body.message).to.eq('Please provide a valid phone number.');
       expect(sendSMSStub.calledOnce).to.be.false;
     });
