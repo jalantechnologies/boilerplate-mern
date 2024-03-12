@@ -36,7 +36,7 @@ export class OtpIncorrectError extends ApplicationError {
   constructor() {
     super('Please provide the correct OTP to login.');
     this.code = OtpErrorCode.INCORRECT_OTP;
-    this.httpStatusCode = HttpStatusCodes.UNAUTHORIZED;
+    this.httpStatusCode = HttpStatusCodes.BAD_REQUEST;
   }
 }
 
@@ -46,7 +46,7 @@ export class OtpExpiredError extends ApplicationError {
   constructor() {
     super('OTP has expired. Please request a new OTP.');
     this.code = OtpErrorCode.OTP_EXPIRED;
-    this.httpStatusCode = HttpStatusCodes.UNAUTHORIZED;
+    this.httpStatusCode = HttpStatusCodes.BAD_REQUEST;
   }
 }
 

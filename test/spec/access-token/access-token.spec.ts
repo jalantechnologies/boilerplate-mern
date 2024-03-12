@@ -105,7 +105,7 @@ describe('AccessToken API', () => {
           otpCode: '123456',
         });
 
-      expect(res.status).to.be.eq(401);
+      expect(res.status).to.be.eq(400);
       expect(res.body.message).to.be.eq('Please provide the correct OTP to login.');
     });
 
@@ -143,7 +143,7 @@ describe('AccessToken API', () => {
           otpCode: otp.otpCode,
         });
 
-      expect(res.status).to.be.eq(401);
+      expect(res.status).to.be.eq(400);
       expect(res.body.message).to.be.eq('OTP has expired. Please request a new OTP.');
     });
   });

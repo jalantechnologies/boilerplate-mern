@@ -109,6 +109,6 @@ export class InvalidCredentialsError extends ApplicationError {
   constructor(username: string) {
     super(`Invalid credentials for ${username}. Please try again.`);
     this.code = AccountErrorCode.INVALID_CREDENTIALS;
-    this.httpStatusCode = HttpStatusCodes.UNAUTHORIZED;
+    this.httpStatusCode = HttpStatusCodes.BAD_REQUEST;
   }
 }
