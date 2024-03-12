@@ -20,7 +20,7 @@ export default class AccountWriter {
     await AccountReader.checkUsernameNotExists(username);
 
     const accHashedPwd = await AccountUtil.hashPassword(password);
-    const accDb = await AccountRepository.create({
+    const accountDb = await AccountRepository.create({
       firstName,
       lastName,
       username,
@@ -28,7 +28,7 @@ export default class AccountWriter {
       active: true,
     });
 
-    return AccountUtil.convertAccountDBToAccount(accDb);
+    return AccountUtil.convertAccountDBToAccount(accountDb);
   }
 
   public static async createAccountByPhoneNumber(
@@ -48,11 +48,11 @@ export default class AccountWriter {
     // this will throw an error if it does
     await AccountReader.checkPhoneNumberNotExists(phoneNumber);
 
-    const accDb = await AccountRepository.create({
+    const accountDb = await AccountRepository.create({
       phoneNumber,
       active: true,
     });
 
-    return AccountUtil.convertAccountDBToAccount(accDb);
+    return AccountUtil.convertAccountDBToAccount(accountDb);
   }
 }

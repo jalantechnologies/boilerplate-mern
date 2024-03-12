@@ -18,7 +18,7 @@ export class Otp {
 export enum OtpErrorCode {
   INCORRECT_OTP = 'OTP_ERR_01',
   OTP_EXPIRED = 'OTP_ERR_02',
-  FAILED_TO_CREATE_OTP = 'OTP_ERR_03',
+  REQUEST_FAILED = 'OTP_ERR_03',
 }
 
 export type CreateOTPParams = {
@@ -55,7 +55,7 @@ export class OtpRequestError extends ApplicationError {
 
   constructor(message: string) {
     super(message);
-    this.code = OtpErrorCode.FAILED_TO_CREATE_OTP;
-    this.httpStatusCode = HttpStatusCodes.SERVER_ERROR;
+    this.code = OtpErrorCode.REQUEST_FAILED;
+    this.httpStatusCode = HttpStatusCodes.BAD_REQUEST;
   }
 }
