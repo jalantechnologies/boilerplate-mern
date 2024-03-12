@@ -2,7 +2,6 @@ import faker from '@faker-js/faker';
 import chai, { expect } from 'chai';
 import sinon from 'sinon';
 
-import { ConfigService } from '../../../dist/modules/config';
 import {
   Account, AccountBadRequestError, AccountNotFoundError, ResetPasswordParams,
 } from '../../../src/apps/backend/modules/account';
@@ -32,7 +31,7 @@ describe('Account Password Reset', () => {
   });
 
   describe('POST /password-reset-token', () => {
-    it('should create a new password reset token and send an email with password reset link', async () => {
+    it('should create a new password reset token and send an email with password reset link, if enabled for the env', async () => {
       expect(
         await PasswordResetTokenRepository.findOne({
           account: account.id,
@@ -44,10 +43,6 @@ describe('Account Password Reset', () => {
       };
 
       const stubEmailService = sinonSandbox.stub(EmailService, 'sendEmail');
-      sinonSandbox
-        .stub(ConfigService, 'getValue')
-        .withArgs('accounts.passwordResetEmailEnabled')
-        .returns('true');
 
       const resetToken = faker.random.alphaNumeric();
       sinonSandbox.stub(PasswordResetTokenUtil, 'generatePasswordResetToken').returns(resetToken);

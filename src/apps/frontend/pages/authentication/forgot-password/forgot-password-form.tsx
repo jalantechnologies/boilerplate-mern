@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { FormControl, Input } from '../../../components';
+import ButtonPrimary, { ButtonType } from '../../../components/button/button-primary';
 import constants from '../../../constants/routes';
 import { AsyncError } from '../../../types';
 
@@ -59,15 +60,11 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
           </FormControl>
         </div>
 
-        <button
-          className={`w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 font-medium text-white transition hover:bg-primary/90 active:bg-primary/80
-            ${isLoginLoading && 'cursor-not-allowed bg-primary/80 hover:bg-primary/80'}`
-          }
+        <ButtonPrimary
+          label="Receive Reset Link"
           disabled={isLoginLoading}
-          type="submit"
-        >
-          Receive Reset Link
-        </button>
+          type={ButtonType.Submit}
+        />
       </form>
     </>
   );

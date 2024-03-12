@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { FormControl, Input } from '../../../components';
+import ButtonPrimary, { ButtonType } from '../../../components/button/button-primary';
 import constants from '../../../constants/routes';
 import { AsyncError } from '../../../types';
 
@@ -171,15 +172,12 @@ const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
           </FormControl>
         </div>
 
-        <button
-          className={`w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 font-medium text-white transition hover:bg-primary/90 active:bg-primary/80
-            ${isSignupLoading && 'cursor-not-allowed bg-primary/80 hover:bg-primary/80'}`
-          }
+        <ButtonPrimary
           disabled={isSignupLoading}
-          type="submit"
-        >
-          Sign Up
-        </button>
+          label="Sign Up"
+          type={ButtonType.Submit}
+        />
+
         <div className="mt-6 text-center">
           <p className="font-medium">
             Already have an account?{' '}

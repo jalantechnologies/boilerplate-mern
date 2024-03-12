@@ -1,5 +1,6 @@
 import React from 'react';
 
+import ButtonPrimary, { ButtonType } from '../../../components/button/button-primary';
 import { useResetPasswordContext } from '../../../contexts';
 import { AsyncError } from '../../../types';
 
@@ -49,15 +50,11 @@ const ForgotPasswordResendEmail: React.FC<ForgotPasswordResendEmailProps> = ({
         <p>Resend email in 00: {timerRemainingSeconds}</p>
       </div>
       <form onSubmit={handleResendPasswordResetEmail}>
-        <button
-          className={`w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 font-medium text-white transition hover:bg-primary/80 active:bg-primary/80
-            ${(isSendForgotPasswordEmailLoading || !isResendEnabled) && 'cursor-not-allowed bg-primary/80 hover:bg-primary/80'}`
-          }
+        <ButtonPrimary
           disabled={isSendForgotPasswordEmailLoading || !isResendEnabled}
-          type="submit"
-        >
-          Resend Link
-        </button>
+          label="Resend Link"
+          type={ButtonType.Submit}
+        />
       </form>
     </>
   );
