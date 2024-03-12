@@ -1,3 +1,4 @@
+import { ResetPasswordParams } from '../pages/authentication/reset-password/reset-password-form.hook';
 import { ApiResponse } from '../types';
 
 import APIService from './api.service';
@@ -10,11 +11,12 @@ export default class ResetPasswordService extends APIService {
   });
 
   resetPassword = async (
-    accountId: string,
-    newPassword: string,
-    token: string,
-  ): Promise<ApiResponse<void>> => this.apiClient.patch(`/accounts/${accountId}/reset-password`, {
-    newPassword,
-    token,
-  });
+    params: ResetPasswordParams,
+  ): Promise<ApiResponse<void>> => {
+    const { accountId, newPassword, token } = params;
+    return this.apiClient.patch(`/accounts/${accountId}/reset-password`, {
+      newPassword,
+      token,
+    });
+  }
 }

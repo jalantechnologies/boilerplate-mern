@@ -78,18 +78,18 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
         </div>
         <div className="mb-6">
           <FormControl
-            error={formik.touched.retypePassword && formik.errors.retypePassword}
+            error={formik.touched.confirmPassword && formik.errors.confirmPassword}
             label={'Re-type Password'}
           >
             <Input
-              data-testid="retypePassword"
+              data-testid="confirmPassword"
               disabled={isResetPasswordLoading}
-              error={formik.touched.retypePassword && formik.errors.retypePassword}
-              name="retypePassword"
+              error={formik.touched.confirmPassword && formik.errors.confirmPassword}
+              name="confirmPassword"
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
               type={isRetypePasswordVisible ? 'text' : 'password'}
-              value={formik.values.retypePassword}
+              value={formik.values.confirmPassword}
               placeholder="Re-enter the password"
             />
             <button

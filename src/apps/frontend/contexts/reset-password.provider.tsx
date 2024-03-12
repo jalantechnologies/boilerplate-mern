@@ -10,11 +10,12 @@ import {
 } from '../types';
 
 import useAsync from './async.hook';
+import { ResetPasswordParams } from '../pages/authentication/reset-password/reset-password-form.hook';
 
 type ResetPasswordContextType = {
   isResetPasswordLoading: boolean;
   isSendForgotPasswordEmailLoading: boolean;
-  resetPassword: (accountId: string, newPassword: string, token: string) => Promise<void>;
+  resetPassword: (params: ResetPasswordParams) => Promise<void>;
   resetPasswordError: AsyncError;
   sendForgotPasswordEmail: (username: string) => Promise<void>;
   sendForgotPasswordEmailError: AsyncError;
@@ -29,10 +30,8 @@ export const useResetPasswordContext = (): ResetPasswordContextType => useContex
 );
 
 const resetPasswordFn = async (
-  accountId: string,
-  newPassword: string,
-  token: string,
-): Promise<ApiResponse<void>> => resetPasswordService.resetPassword(accountId, newPassword, token);
+  params: ResetPasswordParams,
+): Promise<ApiResponse<void>> => resetPasswordService.resetPassword(params);
 
 const sendForgotPasswordEmailFn = async (
   username: string,

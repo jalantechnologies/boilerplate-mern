@@ -6,6 +6,12 @@ import constant from '../../../constants';
 import { useResetPasswordContext } from '../../../contexts';
 import { AsyncError } from '../../../types';
 
+export type ResetPasswordParams = {
+  accountId: string;
+  newPassword: string;
+  token: string;
+};
+
 interface ResetPasswordFormProps {
   onSuccess: () => void;
   onError: (err: AsyncError) => void;
@@ -24,22 +30,22 @@ const useResetPasswordForm = ({ onError, onSuccess }: ResetPasswordFormProps) =>
   const formik = useFormik({
     initialValues: {
       password: '',
-      retypePassword: '',
+      confirmPassword: '',
     },
     validationSchema: Yup.object({
       password: Yup.string()
         .min(constant.PASSWORD_MIN_LENGTH, constant.PASSWORD_VALIDATION_ERROR)
         .required(constant.PASSWORD_VALIDATION_ERROR),
-      retypePassword: Yup.string()
+      confirmPassword: Yup.string()
         .oneOf([Yup.ref('password')], constant.PASSWORD_MATCH_VALIDATION_ERROR)
         .required(constant.PASSWORD_MATCH_VALIDATION_ERROR),
     }),
     onSubmit: (values) => {
-      resetPassword(
+      resetPassword({
         accountId,
-        values.password,
+        newPassword: values.password,
         token,
-      )
+      })
         .then(() => {
           onSuccess();
         })

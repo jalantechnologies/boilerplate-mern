@@ -1,7 +1,5 @@
 import { useState } from 'react';
 
-import { MILLISECONDS_IN_A_SECOND } from '../constants/timer';
-
 type UseTimerProps = {
   delayInMilliseconds: number;
 };
@@ -14,6 +12,8 @@ type UseTimerType = {
 };
 
 const useTimer = ({ delayInMilliseconds }: UseTimerProps): UseTimerType => {
+  const MILLISECONDS_IN_A_SECOND = 1_000;
+
   const [remainingTime, setRemainingTime] = useState(delayInMilliseconds);
   const [timerEnd, setTimerEnd] = useState(true);
   let timeoutId: NodeJS.Timeout;
