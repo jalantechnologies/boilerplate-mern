@@ -56,6 +56,6 @@ const styles = {
     80: 'gap-80',
     96: 'gap-96',
   },
-}
+};
 
 export default styles;

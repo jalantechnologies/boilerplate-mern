@@ -1,9 +1,9 @@
-import React from 'react';
 import clsx from 'clsx';
+import React, { PropsWithChildren } from 'react';
+
 import styles from './flex.styles';
 
 interface FlexProps {
-  children: React.ReactNode;
   direction?: string;
   justifyContent?: string;
   alignItems?: string;
@@ -11,15 +11,14 @@ interface FlexProps {
   gap?: number;
 }
 
-const Flex: React.FC<FlexProps> = ({
+const Flex: React.FC<PropsWithChildren<FlexProps>> = ({
   alignItems = 'start',
   children,
   direction = 'row',
   flexWrap = 'nowrap',
   gap = '0',
   justifyContent = 'start',
-}) => {
-  return (
+}) => (
     <div
       className={clsx([
         styles.flex,
@@ -32,7 +31,6 @@ const Flex: React.FC<FlexProps> = ({
     >
       {children}
     </div>
-  );
-}
+);
 
 export default Flex;

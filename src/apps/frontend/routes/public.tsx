@@ -9,6 +9,7 @@ import {
   PhoneLogin,
   Signup,
 } from '../pages';
+
 import AuthRoute from './auth-route';
 
 export const publicRoutes = [

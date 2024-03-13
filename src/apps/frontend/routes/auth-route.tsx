@@ -8,7 +8,7 @@ interface AuthRouteProps {
 
 const AuthRoute: React.FC<AuthRouteProps> = ({
   authPage: AuthPage,
-  otpAuthPage: OTPAuthPage
+  otpAuthPage: OTPAuthPage,
 }) => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);

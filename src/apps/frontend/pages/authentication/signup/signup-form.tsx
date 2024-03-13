@@ -74,22 +74,22 @@ const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
             error={formik.touched.username && formik.errors.username}
           >
             <Input
-              error={formik.touched.username && formik.errors.username}
               data-testid="username"
               disabled={isSignupLoading}
+              endEnhancer={
+                <img
+                  alt="email icon"
+                  className="fill-current opacity-50"
+                  src="/assets/img/icon/email.svg"
+                />
+              }
+              error={formik.touched.username && formik.errors.username}
               name="username"
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
               placeholder="Enter your email"
               value={formik.values.username}
             />
-            <span className="absolute right-4 top-4.5">
-              <img
-                alt="email icon"
-                className="fill-current opacity-50"
-                src="/assets/img/icon/email.svg"
-              />
-            </span>
           </FormControl>
         </div>
         <div className="mb-4.5">
@@ -98,9 +98,32 @@ const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
             error={formik.touched.password && formik.errors.password}
           >
             <Input
-              error={formik.touched.password && formik.errors.password}
               data-testid="password"
               disabled={isSignupLoading}
+              endEnhancer={
+                <button
+                  className="inset-y-0 flex items-center"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    togglePasswordVisibility();
+                  }}
+                >
+                  {isPasswordVisible ? (
+                    <img
+                      alt="hide password icon"
+                      src="/assets/img/icon/eye-closed.svg"
+                      className="size-6.5 opacity-65"
+                    />
+                  ) : (
+                    <img
+                      alt="show password icon"
+                      src="/assets/img/icon/eye-open.svg"
+                      className="size-6.5 opacity-65"
+                    />
+                  )}
+                </button>
+              }
+              error={formik.touched.password && formik.errors.password}
               name="password"
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
@@ -108,27 +131,6 @@ const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
               type={isPasswordVisible ? 'text' : 'password'}
               value={formik.values.password}
             />
-            <button
-              className="absolute inset-y-0 right-0 flex items-center px-4"
-              onClick={(e) => {
-                e.preventDefault();
-                togglePasswordVisibility();
-              }}
-            >
-              {isPasswordVisible ? (
-                <img
-                  alt="hide password icon"
-                  src="/assets/img/icon/eye-closed.svg"
-                  className="size-6.5 opacity-65"
-                />
-              ) : (
-                <img
-                  alt="show password icon"
-                  src="/assets/img/icon/eye-open.svg"
-                  className="size-6.5 opacity-65"
-                />
-              )}
-            </button>
           </FormControl>
         </div>
         <div className="mb-6">
@@ -137,9 +139,32 @@ const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
             error={formik.touched.retypePassword && formik.errors.retypePassword}
           >
             <Input
-              error={formik.touched.retypePassword && formik.errors.retypePassword}
               data-testid="retypePassword"
               disabled={isSignupLoading}
+              endEnhancer={
+                <button
+                  className="inset-y-0 flex items-center"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    toggleRetypePasswordVisibility();
+                  }}
+                >
+                  {isRetypePasswordVisible ? (
+                    <img
+                      alt="hide password icon"
+                      src="/assets/img/icon/eye-closed.svg"
+                      className="size-6.5 opacity-65"
+                    />
+                  ) : (
+                    <img
+                      alt="show password icon"
+                      src="/assets/img/icon/eye-open.svg"
+                      className="size-6.5 opacity-65"
+                    />
+                  )}
+                </button>
+              }
+              error={formik.touched.retypePassword && formik.errors.retypePassword}
               name="retypePassword"
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
@@ -147,27 +172,6 @@ const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
               type={isRetypePasswordVisible ? 'text' : 'password'}
               value={formik.values.retypePassword}
             />
-            <button
-              className="absolute inset-y-0 right-0 flex items-center px-4"
-              onClick={(e) => {
-                e.preventDefault();
-                toggleRetypePasswordVisibility();
-              }}
-            >
-              {isRetypePasswordVisible ? (
-                <img
-                  alt="hide password icon"
-                  src="/assets/img/icon/eye-closed.svg"
-                  className="size-6.5 opacity-65"
-                />
-              ) : (
-                <img
-                  alt="show password icon"
-                  src="/assets/img/icon/eye-open.svg"
-                  className="size-6.5 opacity-65"
-                />
-              )}
-            </button>
           </FormControl>
         </div>
 

@@ -36,20 +36,20 @@ const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
             <Input
               data-testid="username"
               disabled={isLoginLoading}
+              endEnhancer={
+                <img
+                  className="fill-current opacity-50"
+                  src="/assets/img/icon/email.svg"
+                  alt="email icon"
+                />
+              }
               error={formik.touched.username && formik.errors.username}
               name="username"
-              onChange={formik.handleChange}
               onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
               placeholder="Enter your email"
               value={formik.values.username}
             />
-            <span className="absolute right-4 top-4.5">
-              <img
-                className="fill-current opacity-50"
-                src="/assets/img/icon/email.svg"
-                alt="email icon"
-              />
-            </span>
           </FormControl>
         </div>
 
@@ -61,6 +61,29 @@ const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
             <Input
               data-testid="password"
               disabled={isLoginLoading}
+              endEnhancer={
+                <button
+                  className="inset-y-0 flex items-center"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    togglePasswordVisibility();
+                  }}
+                >
+                  {isPasswordVisible ? (
+                    <img
+                      className="size-6.5 opacity-65"
+                      src="/assets/img/icon/eye-closed.svg"
+                      alt="hide password icon"
+                    />
+                  ) : (
+                    <img
+                      className="size-6.5 opacity-65"
+                      src="/assets/img/icon/eye-open.svg"
+                      alt="show password icon"
+                    />
+                  )}
+                </button>
+              }
               error={formik.touched.password && formik.errors.password}
               name="password"
               onChange={formik.handleChange}
@@ -69,28 +92,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
               type={isPasswordVisible ? 'text' : 'password'}
               value={formik.values.password}
             />
-
-            <button
-              className="absolute inset-y-0 right-0 flex items-center px-4"
-              onClick={(e) => {
-                e.preventDefault();
-                togglePasswordVisibility();
-              }}
-            >
-              {isPasswordVisible ? (
-                <img
-                  className="size-6.5 opacity-65"
-                  src="/assets/img/icon/eye-closed.svg"
-                  alt="hide password icon"
-                />
-              ) : (
-                <img
-                  className="size-6.5 opacity-65"
-                  src="/assets/img/icon/eye-open.svg"
-                  alt="show password icon"
-                />
-              )}
-            </button>
           </FormControl>
         </div>
 

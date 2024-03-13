@@ -6,10 +6,10 @@ import React, {
 
 import constant from '../../constants';
 import { AsyncError, KeyboardKeys } from '../../types';
+import FlexItem from '../flex/flex-item.component';
+import Flex from '../flex/flex.component';
 
 import OTPInput from './otp-input';
-import Flex from '../flex/flex.component';
-import FlexItem from '../flex/flex-item.component';
 
 interface OTPProps {
   error: string;
@@ -40,7 +40,7 @@ const OTP: React.FC<OTPProps> = ({
     if (inputValue.length === 1 && index < constant.OTP_LENGTH - 1) {
       inputRef.current[index + 1]?.focus();
     }
-    
+
     if (inputValue.length === 0 && index > 0) {
       inputRef.current[index - 1]?.focus();
     }

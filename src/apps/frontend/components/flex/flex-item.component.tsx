@@ -1,19 +1,16 @@
-import React, { ReactNode } from "react";
+import React, { PropsWithChildren } from 'react';
 
 interface FlexItemProps {
-  children: ReactNode;
   className?: string;
 }
 
-const FlexItem: React.FC<FlexItemProps> = ({
+const FlexItem: React.FC<PropsWithChildren<FlexItemProps>> = ({
   children,
   className,
-}) => {
-  return (
+}) => (
     <div className={className}>
       {children}
     </div>
-  );
-};
+);
 
 export default FlexItem;

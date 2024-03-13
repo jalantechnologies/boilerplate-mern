@@ -47,9 +47,9 @@ const useOTPForm = ({
       ).then(() => {
         onVerifyOTPSuccess();
       })
-      .catch((error) => {
-        onError(error as AsyncError);
-      });
+        .catch((error) => {
+          onError(error as AsyncError);
+        });
     },
   });
 
@@ -58,12 +58,12 @@ const useOTPForm = ({
       countryCode,
       phoneNumber,
     })
-    .then(() => {
-      onResendOTPSuccess();
-    })
-    .catch((error) => {
-      onError(error as AsyncError);
-    });
+      .then(() => {
+        onResendOTPSuccess();
+      })
+      .catch((error) => {
+        onError(error as AsyncError);
+      });
   };
 
   return {

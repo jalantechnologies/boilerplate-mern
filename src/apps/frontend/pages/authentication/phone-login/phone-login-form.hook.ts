@@ -50,13 +50,13 @@ const usePhoneLoginForm = ({ onSendOTPSuccess, onError }: PhoneLoginFormProps) =
         countryCode: values.countryCode,
         phoneNumber: formattedPhoneNumber,
       })
-      .then(() => {
-        onSendOTPSuccess();
-        navigate(otpPageUrl);
-      })
-      .catch((err) => {
-        onError(err as AsyncError);
-      });
+        .then(() => {
+          onSendOTPSuccess();
+          navigate(otpPageUrl);
+        })
+        .catch((err) => {
+          onError(err as AsyncError);
+        });
     },
   });
 
