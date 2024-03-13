@@ -13,7 +13,9 @@ describe('SMSService', () => {
       .withArgs('twilio.verify.accountSid')
       .returns('AC-random-id')
       .withArgs('twilio.verify.authToken')
-      .returns('random-token');
+      .returns('random-token')
+      .withArgs('enableSMS')
+      .returns(true);
 
     // TODO: This needs to be fixed
     twilioCreateMessage = sinon.stub();

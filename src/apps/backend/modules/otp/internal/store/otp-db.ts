@@ -1,50 +1,42 @@
 import { Schema, Types } from 'mongoose';
 
+import { OtpStatus } from '../../types';
+
 interface PhoneNumber {
   countryCode: string;
   phoneNumber: string;
 }
 
-export interface AccountDB {
+export interface OtpDB {
   _id: Types.ObjectId;
   active: boolean;
-  firstName: string;
-  hashedPassword: string;
-  lastName: string;
+  otpCode: string;
   phoneNumber: PhoneNumber;
-  username: string;
+  status: OtpStatus;
 }
 
-export const AccountDbSchema: Schema = new Schema<AccountDB>(
+export const OtpDbSchema: Schema = new Schema<OtpDB>(
   {
     active: {
-      type: Boolean,
       required: true,
+      type: Boolean,
     },
-    firstName: {
-      default: '',
-      type: String,
-    },
-    hashedPassword: {
-      default: '',
-      type: String,
-    },
-    lastName: {
-      default: '',
+    otpCode: {
+      required: true,
       type: String,
     },
     phoneNumber: {
-      default: null,
+      index: true,
+      required: true,
       type: {
         countryCode: String,
         phoneNumber: String,
       },
-      index: true,
     },
-    username: {
-      default: '',
+    status: {
+      enum: Object.values(OtpStatus),
+      required: true,
       type: String,
-      index: true,
     },
   },
   {
@@ -54,3 +46,5 @@ export const AccountDbSchema: Schema = new Schema<AccountDB>(
     },
   },
 );
+
+OtpDbSchema.index({ phoneNumber: 1, active: 1 });

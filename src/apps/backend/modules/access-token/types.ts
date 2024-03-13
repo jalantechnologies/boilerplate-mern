@@ -1,3 +1,4 @@
+import { PhoneNumber } from '../account/types';
 import { ApplicationError } from '../application';
 import { HttpStatusCodes } from '../http';
 
@@ -11,10 +12,18 @@ export type AccessTokenPayload = {
   accountId: string;
 };
 
-export type CreateAccessTokenParams = {
+export type EmailBasedAuthAccessTokenRequestParams = {
   password: string;
   username: string;
 };
+
+export type OTPBasedAuthAccessTokenRequestParams = {
+  otpCode: string;
+  phoneNumber: PhoneNumber;
+};
+
+export type CreateAccessTokenParams =
+  EmailBasedAuthAccessTokenRequestParams | OTPBasedAuthAccessTokenRequestParams;
 
 export type VerifyAccessTokenParams = {
   token: string;
