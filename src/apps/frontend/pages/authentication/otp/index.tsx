@@ -19,11 +19,11 @@ export const OTPPage: React.FC = () => {
 
   const navigate = useNavigate();
 
-  const onSuccess = () => {
+  const onVerifyOTPSuccess = () => {
     navigate(constants.DASHBOARD);
   };
 
-  const onResendSuccess = () => {
+  const onResendOTPSuccess = () => {
     startTimer();
     toast.success('OTP has been successfully re-sent. Please check your messages.');
   };
@@ -38,8 +38,8 @@ export const OTPPage: React.FC = () => {
         <OTPForm
           isResendEnabled={isResendEnabled}
           onError={onError}
-          onResendSuccess={onResendSuccess}
-          onSuccess={onSuccess}
+          onResendOTPSuccess={onResendOTPSuccess}
+          onVerifyOTPSuccess={onVerifyOTPSuccess}
           timerRemainingSeconds={remaininingSecondsStr}
         ></OTPForm>
       </AuthenticationFormLayout>

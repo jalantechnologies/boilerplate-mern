@@ -8,7 +8,7 @@ import AuthenticationPageLayout from '../authentication-page-layout';
 import PhoneLoginForm from './phone-login-form';
 
 export const PhoneLogin: React.FC = () => {
-  const onSuccess = () => {
+  const onSendOTPSuccess = () => {
     toast.success('OTP has been sent successfully. Please check your messages.');
   };
 
@@ -19,7 +19,7 @@ export const PhoneLogin: React.FC = () => {
   return (
     <AuthenticationPageLayout>
       <AuthenticationFormLayout>
-        <PhoneLoginForm onSuccess={onSuccess} onError={onError}></PhoneLoginForm>
+        <PhoneLoginForm onSendOTPSuccess={onSendOTPSuccess} onError={onError}></PhoneLoginForm>
       </AuthenticationFormLayout>
     </AuthenticationPageLayout>
   );

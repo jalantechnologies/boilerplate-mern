@@ -10,18 +10,24 @@ import useOTPForm from './otp-form-hook';
 interface OTPFormProps {
   isResendEnabled: boolean;
   onError: (error: AsyncError) => void;
-  onResendSuccess: () => void;
-  onSuccess: () => void;
+  onResendOTPSuccess: () => void;
+  onVerifyOTPSuccess: () => void;
   timerRemainingSeconds: string;
 }
 
 const OTPForm: React.FC<OTPFormProps> = ({
-  isResendEnabled, onError, onResendSuccess, onSuccess, timerRemainingSeconds,
+  isResendEnabled,
+  onError,
+  onResendOTPSuccess,
+  onVerifyOTPSuccess,
+  timerRemainingSeconds,
 }) => {
   const {
     countryCode, formik, phoneNumber, isVerifyOTPLoading, handleResendOTP,
   } = useOTPForm({
-    onError, onResendSuccess, onSuccess,
+    onError,
+    onResendOTPSuccess,
+    onVerifyOTPSuccess,
   });
 
   const navigate = useNavigate();
@@ -44,14 +50,14 @@ const OTPForm: React.FC<OTPFormProps> = ({
       >
         Back
       </button>
-      <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
+      <h2 className="mb-9 text-2xl font-bold text-black sm:text-title-xl2">
         Verify Your Account
       </h2>
 
       <form onSubmit={formik.handleSubmit}>
         <div className="mb-6">
           <FormControl
-            label={`Enter the 4 digit code sent to the mobile number +${countryCode} ${phoneNumber}`}
+            label={`Enter the 4 digit code sent to the mobile number ${countryCode} ${phoneNumber}`}
             error={formik.touched.otp && formik.errors.otp as string}
           >
             <OTP
@@ -65,11 +71,17 @@ const OTPForm: React.FC<OTPFormProps> = ({
         </div>
 
         <div className="mb-6 flex flex-col items-center gap-2 md:flex-row">
-          <h2 className="text-lg text-black dark:text-white">
+          <h2 className="text-lg text-black">
             Did not receive a code?
           </h2>
-          <h2 className={`${isResendEnabled ? 'cursor-pointer text-primary' : 'cursor-default'} text-center text-lg dark:text-white`} onClick={handleResendOTP}>
-            { isResendEnabled ? 'Resend' : `Resend OTP in 00: ${timerRemainingSeconds}`}
+          <h2
+            className={`
+              ${isResendEnabled ? 'cursor-pointer text-primary' : 'cursor-default'}
+              text-center text-lg`
+            }
+            onClick={handleResendOTP}
+          >
+            { isResendEnabled ? 'Resend' : `Resend OTP in 00: ${timerRemainingSeconds}` }
           </h2>
         </div>
 

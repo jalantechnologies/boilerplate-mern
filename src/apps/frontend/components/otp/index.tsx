@@ -1,11 +1,15 @@
 import React, {
-  useEffect, useRef, useState, FocusEventHandler,
+  useRef,
+  useState,
+  FocusEventHandler,
 } from 'react';
 
 import constant from '../../constants';
 import { AsyncError, KeyboardKeys } from '../../types';
 
 import OTPInput from './otp-input';
+import Flex from '../flex/flex.component';
+import FlexItem from '../flex/flex-item.component';
 
 interface OTPProps {
   error: string;
@@ -15,70 +19,62 @@ interface OTPProps {
   onError: (error: AsyncError) => void;
 }
 
-let currentOTPInputIndex: number = 0;
-
 const OTP: React.FC<OTPProps> = ({
   error, isLoading, onBlur, onChange,
 }) => {
-  const [activeOTPInputIndex, setActiveOTPInputIndex] = useState(0);
-  const [otpField, setOtpField] = useState<string[]>(Array(constant.OTP_LENGTH).fill(''));
+  const [otp, setOtp] = useState<string[]>(Array(constant.OTP_LENGTH).fill(''));
 
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLInputElement[]>([]);
 
-  const handleChangeOTP = ({
-    target,
-  }: React.ChangeEvent<HTMLInputElement>): void => {
-    const { value } = target;
+  const handleOTPChange = (
+    inputValue: string,
+    index: number,
+  ): void => {
+    const otpInputs = [...otp];
 
-    // Create a copy of the OTP inputs array
-    const otpInputs = [...otpField];
+    if (inputValue.length >= 2) return;
 
-    // Update the OTP input value at the current index Ex. -> value: '123' --> ['1', '2', '3', '']
-    otpInputs[currentOTPInputIndex] = value.substring(value.length - 1);
-    setOtpField(otpInputs);
+    otpInputs[index] = inputValue;
+    setOtp(otpInputs);
 
-    if (!otpInputs[currentOTPInputIndex]) {
-      // If the input value is empty, move to the previous input
-      setActiveOTPInputIndex(currentOTPInputIndex - 1);
-    } else {
-      // Otherwise, move to the next input
-      setActiveOTPInputIndex(currentOTPInputIndex + 1);
+    if (inputValue.length === 1 && index < constant.OTP_LENGTH - 1) {
+      inputRef.current[index + 1]?.focus();
+    }
+    
+    if (inputValue.length === 0 && index > 0) {
+      inputRef.current[index - 1]?.focus();
     }
 
     onChange(otpInputs);
   };
 
-  useEffect(() => {
-    inputRef.current?.focus();
-  }, [activeOTPInputIndex]);
-
   const handleOnKeyDown = (
     { key }: React.KeyboardEvent<HTMLInputElement>,
     index: number,
   ) => {
-    currentOTPInputIndex = index;
-
     if (key === KeyboardKeys.BACKSPACE.toString()) {
-      setActiveOTPInputIndex(currentOTPInputIndex - 1);
+      inputRef.current[index - 1]?.focus();
     }
   };
 
   return (
-    <div className="flex items-center justify-center gap-6">
-      {otpField.map((_, index) => (
-        <OTPInput
-          key={index}
-          disabled={isLoading}
-          name={'otp'}
-          error={error}
-          onChange={handleChangeOTP}
-          onBlur={onBlur}
-          onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => handleOnKeyDown(e, index)}
-          inputRef={index === activeOTPInputIndex ? inputRef : null}
-          value={otpField[index]}
-        />
+    <Flex gap={6}>
+      {otp.map((_, index) => (
+        <FlexItem className='flex-1' key={index}>
+          <OTPInput
+            disabled={isLoading}
+            index={index}
+            name={'otp'}
+            error={error}
+            onChange={(e) => handleOTPChange(e.target.value, index)}
+            onBlur={onBlur}
+            onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => handleOnKeyDown(e, index + 1)}
+            inputRef={inputRef}
+            value={otp[index]}
+          />
+        </FlexItem>
       ))}
-    </div>
+    </Flex>
   );
 };
 

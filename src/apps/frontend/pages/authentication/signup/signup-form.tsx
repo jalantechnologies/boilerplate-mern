@@ -28,7 +28,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
 
   return (
     <>
-      <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
+      <h2 className="mb-9 text-2xl font-bold text-black sm:text-title-xl2">
         Sign Up
       </h2>
       <form onSubmit={formik.handleSubmit}>
