@@ -9,6 +9,7 @@ import AuthenticationFormLayout from '../authentication-form-layout';
 import AuthenticationPageLayout from '../authentication-page-layout';
 
 import OTPForm from './otp-form';
+import { FormContainer } from '../../../components';
 
 export const OTPPage: React.FC = () => {
   const sendOTPDelayInMilliseconds = 60_000;
@@ -35,13 +36,19 @@ export const OTPPage: React.FC = () => {
   return (
     <AuthenticationPageLayout>
       <AuthenticationFormLayout>
-        <OTPForm
-          isResendEnabled={isResendEnabled}
-          onError={onError}
-          onResendOTPSuccess={onResendOTPSuccess}
-          onVerifyOTPSuccess={onVerifyOTPSuccess}
-          timerRemainingSeconds={remaininingSecondsStr}
-        ></OTPForm>
+        <FormContainer
+          body={
+            <OTPForm
+              isResendEnabled={isResendEnabled}
+              onError={onError}
+              onResendOTPSuccess={onResendOTPSuccess}
+              onVerifyOTPSuccess={onVerifyOTPSuccess}
+              timerRemainingSeconds={remaininingSecondsStr}
+            />
+          }
+          navigateBackwardURL={routes.PHONE_LOGIN}
+          title="Verify Your Account"
+        />
       </AuthenticationFormLayout>
     </AuthenticationPageLayout>
   );

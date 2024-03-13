@@ -44,16 +44,6 @@ const OTPForm: React.FC<OTPFormProps> = ({
 
   return (
     <>
-      <button
-        onClick={() => navigate(routes.PHONE_LOGIN)}
-        className="mb-5 cursor-pointer text-lg transition active:text-primary/80"
-      >
-        Back
-      </button>
-      <h2 className="mb-9 text-2xl font-bold text-black sm:text-title-xl2">
-        Verify Your Account
-      </h2>
-
       <form onSubmit={formik.handleSubmit}>
         <div className="mb-6">
           <FormControl
@@ -100,4 +90,5 @@ const OTPForm: React.FC<OTPFormProps> = ({
     </>
   );
 };
+
 export default OTPForm;

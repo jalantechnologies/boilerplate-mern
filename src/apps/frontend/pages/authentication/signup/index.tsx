@@ -8,6 +8,7 @@ import AuthenticationFormLayout from '../authentication-form-layout';
 import AuthenticationPageLayout from '../authentication-page-layout';
 
 import SignupForm from './signup-form';
+import { FormContainer } from '../../../components';
 
 export const Signup: React.FC = () => {
   const navigate = useNavigate();
@@ -23,7 +24,15 @@ export const Signup: React.FC = () => {
   return (
     <AuthenticationPageLayout>
       <AuthenticationFormLayout>
-        <SignupForm onSuccess={onSuccess} onError={onError}></SignupForm>
+        <FormContainer
+          body={
+            <SignupForm
+              onSuccess={onSuccess}
+              onError={onError}
+            />
+          }
+          title="Sign Up"
+        />
       </AuthenticationFormLayout>
     </AuthenticationPageLayout>
   );

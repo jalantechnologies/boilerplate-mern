@@ -23,10 +23,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
   }
 
   return (
-    <>
-      <h2 className="mb-9 text-2xl font-bold text-black sm:text-title-xl2">
-        Log In
-      </h2>
+    <> 
       <form onSubmit={formik.handleSubmit}>
         <div className="mb-4.5">
           <FormControl
@@ -125,4 +122,5 @@ const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
     </>
   );
 };
+
 export default LoginForm;

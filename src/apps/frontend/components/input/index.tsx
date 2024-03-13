@@ -36,6 +36,7 @@ const Input: React.FC<InputProps> = ({
     </span>}
     <input
       {...props}
+      autoComplete='off'
       className={clsx([
         styles.input,
         textAlign ? styles.textAlign[textAlign] : '',

@@ -28,9 +28,6 @@ const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
 
   return (
     <>
-      <h2 className="mb-9 text-2xl font-bold text-black sm:text-title-xl2">
-        Sign Up
-      </h2>
       <form onSubmit={formik.handleSubmit}>
         <div className="mb-4.5 flex flex-col gap-6 2sm:flex-row">
           <div className="w-full 2sm:w-1/2">
@@ -196,4 +193,5 @@ const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
     </>
   );
 };
+
 export default SignupForm;

@@ -6,6 +6,7 @@ import AuthenticationFormLayout from '../authentication-form-layout';
 import AuthenticationPageLayout from '../authentication-page-layout';
 
 import PhoneLoginForm from './phone-login-form';
+import { FormContainer } from '../../../components';
 
 export const PhoneLogin: React.FC = () => {
   const onSendOTPSuccess = () => {
@@ -19,7 +20,15 @@ export const PhoneLogin: React.FC = () => {
   return (
     <AuthenticationPageLayout>
       <AuthenticationFormLayout>
-        <PhoneLoginForm onSendOTPSuccess={onSendOTPSuccess} onError={onError}></PhoneLoginForm>
+        <FormContainer
+          title="Log In"
+          body={
+            <PhoneLoginForm
+              onError={onError}
+              onSendOTPSuccess={onSendOTPSuccess}
+            />
+          }
+        />
       </AuthenticationFormLayout>
     </AuthenticationPageLayout>
   );
