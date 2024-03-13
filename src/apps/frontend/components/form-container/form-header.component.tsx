@@ -1,5 +1,5 @@
-import React, { PropsWithChildren } from "react";
-import { useNavigate } from "react-router";
+import React, { PropsWithChildren } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface FormHeaderProps {
   navigateBackwardURL?: string;
@@ -26,6 +26,6 @@ const FormHeader: React.FC<PropsWithChildren<FormHeaderProps>> = ({
       </h2>
     </>
   );
-}
+};
 
 export default FormHeader;

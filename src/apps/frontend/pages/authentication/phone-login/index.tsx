@@ -1,12 +1,12 @@
 import React from 'react';
 import toast from 'react-hot-toast';
 
+import { FormContainer } from '../../../components';
 import { AsyncError } from '../../../types';
 import AuthenticationFormLayout from '../authentication-form-layout';
 import AuthenticationPageLayout from '../authentication-page-layout';
 
 import PhoneLoginForm from './phone-login-form';
-import { FormContainer } from '../../../components';
 
 export const PhoneLogin: React.FC = () => {
   const onSendOTPSuccess = () => {

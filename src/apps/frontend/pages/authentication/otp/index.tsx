@@ -2,6 +2,7 @@ import React from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
+import { FormContainer } from '../../../components';
 import routes from '../../../constants/routes';
 import { AsyncError } from '../../../types';
 import useTimer from '../../../utils/use-timer.hook';
@@ -9,7 +10,6 @@ import AuthenticationFormLayout from '../authentication-form-layout';
 import AuthenticationPageLayout from '../authentication-page-layout';
 
 import OTPForm from './otp-form';
-import { FormContainer } from '../../../components';
 
 export const OTPPage: React.FC = () => {
   const sendOTPDelayInMilliseconds = 60_000;

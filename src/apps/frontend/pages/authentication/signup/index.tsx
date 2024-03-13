@@ -2,13 +2,13 @@ import React from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
+import { FormContainer } from '../../../components';
 import routes from '../../../constants/routes';
 import { AsyncError } from '../../../types';
 import AuthenticationFormLayout from '../authentication-form-layout';
 import AuthenticationPageLayout from '../authentication-page-layout';
 
 import SignupForm from './signup-form';
-import { FormContainer } from '../../../components';
 
 export const Signup: React.FC = () => {
   const navigate = useNavigate();

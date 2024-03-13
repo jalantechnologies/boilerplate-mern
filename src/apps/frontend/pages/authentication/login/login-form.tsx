@@ -23,7 +23,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
   }
 
   return (
-    <> 
+    <>
       <form onSubmit={formik.handleSubmit}>
         <div className="mb-4.5">
           <FormControl
