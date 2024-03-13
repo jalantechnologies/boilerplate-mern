@@ -30,7 +30,7 @@ describe('Account Password Reset', () => {
     });
   });
 
-  describe('POST /password-reset-token', () => {
+  describe('POST /password-reset-tokens', () => {
     it('should create a new password reset token and send an email with password reset link, if enabled for the env', async () => {
       expect(
         await PasswordResetTokenRepository.findOne({
@@ -49,7 +49,7 @@ describe('Account Password Reset', () => {
 
       const res = await chai
         .request(app)
-        .post('/api/password-reset-token')
+        .post('/api/password-reset-tokens')
         .set('content-type', 'application/json')
         .send(passwordResetTokenparams);
 
@@ -81,7 +81,7 @@ describe('Account Password Reset', () => {
 
       const res = await chai
         .request(app)
-        .post('/api/password-reset-token')
+        .post('/api/password-reset-tokens')
         .set('content-type', 'application/json')
         .send(passwordResetTokenparams);
 

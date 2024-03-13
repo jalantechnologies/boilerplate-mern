@@ -1,6 +1,6 @@
 accounts:
   tokenKey: 'dev_auth_token'
-  passwordResetEmailEnabled: 'false'
+  passwordResetEmailEnabled: false
 
 defaultOTP: '1111'
 

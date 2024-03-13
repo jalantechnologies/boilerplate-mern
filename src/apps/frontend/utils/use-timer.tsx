@@ -12,8 +12,7 @@ type UseTimerType = {
 };
 
 const useTimer = ({ delayInMilliseconds }: UseTimerProps): UseTimerType => {
-  const millisecondsInASecond = 1_000;
-
+  const millisecondsInSecond = 1_000;
   const [remainingTime, setRemainingTime] = useState(delayInMilliseconds);
   const [timerEnd, setTimerEnd] = useState(true);
   let timeoutId: NodeJS.Timeout;
@@ -21,7 +20,7 @@ const useTimer = ({ delayInMilliseconds }: UseTimerProps): UseTimerType => {
   let started: boolean;
 
   const onTick = () => {
-    setRemainingTime((oldTime) => oldTime - millisecondsInASecond);
+    setRemainingTime((oldTime) => oldTime - millisecondsInSecond);
   };
 
   const onEnd = () => {
@@ -45,14 +44,14 @@ const useTimer = ({ delayInMilliseconds }: UseTimerProps): UseTimerType => {
         stopTimer();
       }, delayInMilliseconds);
 
-      intervalId = setInterval(onTick, millisecondsInASecond);
+      intervalId = setInterval(onTick, millisecondsInSecond);
       setRemainingTime(delayInMilliseconds);
     }
   };
 
-  const isResendEnabled = timerEnd || (remainingTime <= millisecondsInASecond && !started);
+  const isResendEnabled = timerEnd || (remainingTime <= millisecondsInSecond && !started);
 
-  const remaininingSeconds = remainingTime / millisecondsInASecond - 1;
+  const remaininingSeconds = remainingTime / millisecondsInSecond - 1;
   const remaininingSecondsStr = remaininingSeconds > 9 ? `${remaininingSeconds}` : `0${remaininingSeconds}`;
 
   return {

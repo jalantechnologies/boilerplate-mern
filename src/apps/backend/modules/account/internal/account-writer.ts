@@ -19,12 +19,12 @@ export default class AccountWriter {
     // this will throw an error if it does
     await AccountReader.checkUsernameNotExists(username);
 
-    const accHashedPwd = await AccountUtil.hashPassword(password);
+    const accountHashedPassword = await AccountUtil.hashPassword(password);
     const accountDb = await AccountRepository.create({
       firstName,
       lastName,
       username,
-      hashedPassword: accHashedPwd,
+      hashedPassword: accountHashedPassword,
       active: true,
     });
 
@@ -60,11 +60,11 @@ export default class AccountWriter {
     accountId: string,
     newPassword: string,
   ): Promise<Account> {
-    const accHashedPwd = await AccountUtil.hashPassword(newPassword);
+    const accountHashedPassword = await AccountUtil.hashPassword(newPassword);
     const dbAccount = await AccountRepository.findByIdAndUpdate(
       accountId,
       {
-        hashedPassword: accHashedPwd,
+        hashedPassword: accountHashedPassword,
       },
       { new: true },
     );

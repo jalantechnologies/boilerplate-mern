@@ -7,6 +7,6 @@ export default class PasswordResetTokenRouter extends ApplicationRouter {
     const { router } = this;
     const ctrl = new PasswordResetTokenController();
 
-    router.post('/password-reset-token', ctrl.createPasswordResetToken);
+    router.post('/password-reset-tokens', ctrl.createPasswordResetToken);
   }
 }

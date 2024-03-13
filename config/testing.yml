@@ -1,6 +1,6 @@
 accounts:
   tokenKey: 'test_auth_token'
-  passwordResetEmailEnabled: 'PASSWORD_RESET_EMAIL_ENABLED'
+  passwordResetEmailEnabled: true
 
 mailer:
   defaultEmail: 'DEFAULT_EMAIL'
