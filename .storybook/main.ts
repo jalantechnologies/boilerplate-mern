@@ -8,7 +8,7 @@ const config: StorybookConfig = {
     '@storybook/addon-onboarding',
     '@storybook/addon-interactions',
     '@storybook/addon-styling-webpack',
-    'storybook-addon-react-router-v6',
+    'storybook-addon-remix-react-router',
     {
       name: '@storybook/addon-styling-webpack',
       options: {
@@ -35,13 +35,12 @@ const config: StorybookConfig = {
         ],
       },
     },
+    '@storybook/addon-webpack5-compiler-swc'
   ],
   framework: {
     name: '@storybook/react-webpack5',
     options: {
-      builder: {
-        useSWC: true,
-      },
+      builder: {},
     },
   },
   docs: {

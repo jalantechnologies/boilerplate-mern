@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import {
   withRouter,
   reactRouterParameters,
-} from 'storybook-addon-react-router-v6';
+} from 'storybook-addon-remix-react-router';
 
 import Sidebar from './index';
 
