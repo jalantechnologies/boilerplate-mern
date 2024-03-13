@@ -2,6 +2,7 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 
 import constants from '../constants/routes';
+import { ResetPasswordProvider } from '../contexts';
 import {
   About, ForgotPassword, Login, ResetPassword, Signup,
 } from '../pages';
@@ -9,8 +10,14 @@ import {
 export const publicRoutes = [
   { path: constants.LOGIN, element: <Login /> },
   { path: constants.SIGNUP, element: <Signup /> },
-  { path: constants.FORGOT_PASSWORD, element: <ForgotPassword /> },
-  { path: constants.RESET_PASSWORD, element: <ResetPassword /> },
+  {
+    path: constants.FORGOT_PASSWORD,
+    element: <ResetPasswordProvider><ForgotPassword /></ResetPasswordProvider>,
+  },
+  {
+    path: constants.RESET_PASSWORD,
+    element: <ResetPasswordProvider><ResetPassword /></ResetPasswordProvider>,
+  },
   { path: constants.ABOUT, element: <About /> },
   { path: '*', element: <Navigate to={constants.LOGIN} /> },
 ];
