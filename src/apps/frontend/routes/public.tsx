@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 
-import constants from '../constants/routes';
+import routes from '../constants/routes';
 import {
   About,
   Login,
@@ -12,8 +12,8 @@ import {
 import AuthRoute from './auth-route';
 
 export const publicRoutes = [
-  { path: constants.LOGIN, element: <AuthRoute authPage={Login} otpAuthPage={OTPPage} /> },
-  { path: constants.SIGNUP, element: <AuthRoute authPage={Signup} otpAuthPage={PhoneLogin} /> },
-  { path: constants.ABOUT, element: <About /> },
-  { path: '*', element: <Navigate to={constants.LOGIN} /> },
+  { path: routes.LOGIN, element: <AuthRoute authPage={Login} otpAuthPage={OTPPage} /> },
+  { path: routes.SIGNUP, element: <AuthRoute authPage={Signup} otpAuthPage={PhoneLogin} /> },
+  { path: routes.ABOUT, element: <About /> },
+  { path: '*', element: <Navigate to={routes.LOGIN} /> },
 ];

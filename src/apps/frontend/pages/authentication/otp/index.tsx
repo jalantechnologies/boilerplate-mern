@@ -2,7 +2,7 @@ import React from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
-import constants from '../../../constants/routes';
+import routes from '../../../constants/routes';
 import { AsyncError } from '../../../types';
 import useTimer from '../../../utils/use-timer.hook';
 import AuthenticationFormLayout from '../authentication-form-layout';
@@ -20,7 +20,7 @@ export const OTPPage: React.FC = () => {
   const navigate = useNavigate();
 
   const onVerifyOTPSuccess = () => {
-    navigate(constants.DASHBOARD);
+    navigate(routes.DASHBOARD);
   };
 
   const onResendOTPSuccess = () => {

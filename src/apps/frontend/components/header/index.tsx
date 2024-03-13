@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import constants from '../../constants/routes';
+import routes from '../../constants/routes';
 import { useAccountContext, useAuthContext } from '../../contexts';
 
 import HamburgerToggleButton from './hamburger-toggle-button';
@@ -32,7 +32,7 @@ const Header: React.FC<HeaderProps> = ({
 
   const handleSignOut = () => {
     logout();
-    navigate(constants.LOGIN);
+    navigate(routes.LOGIN);
   };
 
   const userMenuDropdownItems: UserMenuDropdownItem[] = [

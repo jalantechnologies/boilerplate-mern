@@ -1,4 +1,4 @@
-const constants = {
+const routes = {
   ABOUT: '/about',
   DASHBOARD: '/',
   LOGIN: '/login',
@@ -8,4 +8,4 @@ const constants = {
   TASKS: '/tasks',
 };
 
-export default constants;
+export default routes;

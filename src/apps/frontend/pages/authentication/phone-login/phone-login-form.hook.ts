@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 
 import constant from '../../../constants';
-import constants from '../../../constants/routes';
+import routes from '../../../constants/routes';
 import { useAuthContext } from '../../../contexts';
 import { AsyncError } from '../../../types';
 
@@ -44,7 +44,7 @@ const usePhoneLoginForm = ({ onSendOTPSuccess, onError }: PhoneLoginFormProps) =
 
       const formattedPhoneNumber = parsedPhoneNumber.getNationalNumber().toString();
       const encodedCountryCode = encodeURIComponent(values.countryCode);
-      const otpPageUrl = `${constants.OTP}&country_code=${encodedCountryCode}&phone_number=${formattedPhoneNumber}`;
+      const otpPageUrl = `${routes.OTP}&country_code=${encodedCountryCode}&phone_number=${formattedPhoneNumber}`;
 
       sendOTP({
         countryCode: values.countryCode,

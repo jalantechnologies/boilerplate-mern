@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { FormControl, OTP } from '../../../components';
-import constants from '../../../constants/routes';
+import routes from '../../../constants/routes';
 import { AsyncError } from '../../../types';
 
 import useOTPForm from './otp-form-hook';
@@ -34,7 +34,7 @@ const OTPForm: React.FC<OTPFormProps> = ({
 
   useEffect(() => {
     if (!phoneNumber || !countryCode) {
-      navigate(constants.PHONE_LOGIN);
+      navigate(routes.PHONE_LOGIN);
     }
   }, [phoneNumber, countryCode, navigate]);
 
@@ -45,7 +45,7 @@ const OTPForm: React.FC<OTPFormProps> = ({
   return (
     <>
       <button
-        onClick={() => navigate(constants.PHONE_LOGIN)}
+        onClick={() => navigate(routes.PHONE_LOGIN)}
         className="mb-5 cursor-pointer text-lg transition active:text-primary/80"
       >
         Back

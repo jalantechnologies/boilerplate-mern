@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { FormControl, Input } from '../../../components';
-import constants from '../../../constants/routes';
+import routes from '../../../constants/routes';
 import { AsyncError } from '../../../types';
 
 import LoginFormCheckbox from './login-form-checkbox';
@@ -115,7 +115,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
         <div className="mt-6 text-center">
           <p className="font-medium">
             Don’t have any account?{' '}
-            <Link to={constants.SIGNUP} className="text-primary">
+            <Link to={routes.SIGNUP} className="text-primary">
               Sign Up
             </Link>
           </p>
