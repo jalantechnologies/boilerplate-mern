@@ -1,2 +1,4 @@
+enableSMS: true
+
 logger:
   transports: [ 'datadog' ]
