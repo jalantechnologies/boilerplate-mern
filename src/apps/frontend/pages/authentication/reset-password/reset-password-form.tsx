@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { FormControl, Input } from '../../../components';
-import ButtonPrimary, { ButtonType } from '../../../components/button/button-primary';
+import Button, { ButtonType } from '../../../components/button/button-primary';
 import { AsyncError } from '../../../types';
 
 import useResetPasswordForm from './reset-password-form.hook';
@@ -117,8 +117,8 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
           </FormControl>
         </div>
 
-        <ButtonPrimary
-          disabled={isResetPasswordLoading}
+        <Button
+          isLoading={isResetPasswordLoading}
           label="Reset Password"
           type={ButtonType.Submit}
         />

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { FormControl, Input } from '../../../components';
-import ButtonPrimary, { ButtonType } from '../../../components/button/button-primary';
+import Button, { ButtonType } from '../../../components/button/button-primary';
 import constants from '../../../constants/routes';
 import { AsyncError } from '../../../types';
 
@@ -106,8 +106,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
           </Link>
         </div>
 
-        <ButtonPrimary
-          disabled={isLoginLoading}
+        <Button
+          isLoading={isLoginLoading}
           label="Sign In"
           type={ButtonType.Submit}
         />
