@@ -1,46 +1,53 @@
+import clsx from 'clsx';
 import * as React from 'react';
-import { ChangeEventHandler, FocusEventHandler, FormEventHandler } from 'react';
 
-interface InputProps {
-  disabled: boolean;
+import styles from './input.styles';
+
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  endEnhancer?: React.ReactElement | string;
   error: string;
-  name: string;
-  onChange?: ChangeEventHandler<HTMLInputElement>;
-  onBlur?: FocusEventHandler<HTMLInputElement>;
-  onSubmit?: FormEventHandler<HTMLInputElement>;
-  placeholder: string;
+  index?: number;
+  inputRef?: React.RefObject<HTMLInputElement[]> | null;
+  startEnhancer?: React.ReactElement | string;
   testId?: string;
+  textAlign?: 'left' | 'center' | 'right';
   type?: string;
-  value: string;
 }
 
 const Input: React.FC<InputProps> = ({
-  disabled,
+  endEnhancer,
   error,
-  name,
-  onChange,
-  onBlur,
-  onSubmit,
-  placeholder,
+  index,
+  inputRef,
+  startEnhancer,
   testId,
+  textAlign = 'left',
   type,
-  value,
+  ...props
 }) => (
-  <input
-    autoComplete="off"
-    className={`w-full rounded-lg border bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary ${
-      error ? 'border-red-500' : 'border-stroke'
-    }`}
-    data-testid={testId}
-    disabled={disabled}
-    name={name}
-    onChange={onChange}
-    onSubmit={onSubmit}
-    onBlur={onBlur}
-    placeholder={placeholder}
-    value={value}
-    type={type || 'text'}
-  />
+  <div
+    className={clsx([
+      styles.inputContainer,
+      error ? styles.border.errorState : styles.border.normalState,
+    ])}
+  >
+    {startEnhancer && <span className="mr-2 flex h-full min-w-6 items-center justify-center">
+      {startEnhancer}
+    </span>}
+    <input
+      {...props}
+      className={clsx([
+        styles.input,
+        textAlign ? styles.textAlign[textAlign] : '',
+      ])}
+      data-testid={testId}
+      type={type || 'text'}
+      ref={inputRef ? (ref) => (inputRef.current[index] = ref) : null}
+    />
+    {endEnhancer && <span className="ml-2 flex h-full min-w-6 items-center justify-center">
+      {endEnhancer}
+    </span>}
+  </div>
 );
 
 export default Input;

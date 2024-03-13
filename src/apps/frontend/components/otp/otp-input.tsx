@@ -1,5 +1,7 @@
 import React, { FocusEventHandler } from 'react';
 
+import Input from '../input';
+
 type OTPInputProps = {
   disabled: boolean;
   error: string;
@@ -23,28 +25,16 @@ const OTPInput: React.FC<OTPInputProps> = ({
   onKeyDown,
   value,
 }) => (
-  <input
-    className={`
-      flex
-      w-full
-      rounded-lg
-      border
-      bg-transparent
-      py-4
-      text-center
-      outline-none
-      [appearance:textfield]
-      focus:border-primary
-      focus-visible:shadow-none
-      [&::-webkit-inner-spin-button]:appearance-none
-      ${error ? 'border-red-500' : 'border-stroke'}
-    `}
+  <Input
     disabled={disabled}
+    error={error}
+    index={index}
+    inputRef={inputRef}
     name={name}
     onBlur={onBlur}
     onChange={onChange}
     onKeyDown={onKeyDown}
-    ref={(ref) => (inputRef.current[index] = ref as HTMLInputElement)}
+    textAlign='center'
     type={'number'}
     value={value}
   />
