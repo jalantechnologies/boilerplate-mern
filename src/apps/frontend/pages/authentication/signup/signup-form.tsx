@@ -175,7 +175,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
         <Button
           isLoading={isSignupLoading}
           label="Sign Up"
-          type={ButtonType.Submit}
+          type={ButtonType.SUBMIT}
         />
 
         <div className="mt-6 text-center">

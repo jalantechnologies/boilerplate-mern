@@ -3,9 +3,9 @@ import React from 'react';
 import Spinner from '../spinner/spinner';
 
 export enum ButtonType {
-  Button = 'button',
-  Reset = 'reset',
-  Submit = 'submit',
+  BUTTON = 'button',
+  RESET = 'reset',
+  SUBMIT = 'submit',
 }
 
 interface ButtonProps {

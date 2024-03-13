@@ -63,7 +63,7 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
         <Button
           label="Receive Reset Link"
           isLoading={isLoginLoading}
-          type={ButtonType.Submit}
+          type={ButtonType.SUBMIT}
         />
       </form>
     </>

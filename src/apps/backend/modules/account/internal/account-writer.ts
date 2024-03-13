@@ -2,7 +2,7 @@ import { PhoneNumberUtil } from 'google-libphonenumber';
 
 import { PhoneUtilInstance, PhoneUtilInterface } from '../../communication/types';
 import { OtpRequestError } from '../../otp/types';
-import { Account, CreateAccountParams, PhoneNumber } from '../types';
+import { Account, PhoneNumber } from '../types';
 
 import AccountReader from './account-reader';
 import AccountUtil from './account-util';

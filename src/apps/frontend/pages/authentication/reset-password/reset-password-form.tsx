@@ -120,7 +120,7 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
         <Button
           isLoading={isResetPasswordLoading}
           label="Reset Password"
-          type={ButtonType.Submit}
+          type={ButtonType.SUBMIT}
         />
       </form>
     </div>

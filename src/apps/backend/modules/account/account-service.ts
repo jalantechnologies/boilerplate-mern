@@ -1,13 +1,10 @@
-import { PasswordResetTokenService } from '../password-reset-token';
 import { OtpService } from '../otp';
+import { PasswordResetTokenService } from '../password-reset-token';
 
 import AccountReader from './internal/account-reader';
 import AccountWriter from './internal/account-writer';
 import {
   Account,
-  AccountSearchParams,
-  CreateAccountParams,
-  GetAccountParams,
   ResetPasswordParams,
   GetAccountParams,
   PhoneNumber,

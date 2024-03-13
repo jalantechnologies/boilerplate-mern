@@ -109,7 +109,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
         <Button
           isLoading={isLoginLoading}
           label="Sign In"
-          type={ButtonType.Submit}
+          type={ButtonType.SUBMIT}
         />
 
         <div className="mt-6 text-center">
