@@ -7,19 +7,26 @@ import { AsyncError } from '../../../types';
 
 interface OTPFormProps {
   onError: (error: AsyncError) => void;
-  onResendSuccess: () => void;
-  onSuccess: () => void;
+  onResendOTPSuccess: () => void;
+  onVerifyOTPSuccess: () => void;
 }
+
 const useOTPForm = ({
-  onError, onResendSuccess, onSuccess,
+  onError,
+  onResendOTPSuccess,
+  onVerifyOTPSuccess,
 }: OTPFormProps) => {
   const {
-    isVerifyOTPLoading, verifyOTPError, verifyOTPResult, sendOTP, verifyOTP,
+    isVerifyOTPLoading,
+    sendOTP,
+    verifyOTP,
+    verifyOTPError,
+    verifyOTPResult,
   } = useAuthContext();
 
   const searchParams = new URLSearchParams(window.location.search);
   const phoneNumber = searchParams.get('phone_number');
-  const countryCode = searchParams.get('country_code');
+  const countryCode = decodeURIComponent(searchParams.get('country_code'));
 
   const formik = useFormik({
     initialValues: {
@@ -32,25 +39,31 @@ const useOTPForm = ({
     }),
 
     onSubmit: (values) => {
-      verifyOTP({ countryCode: `+${countryCode}`, phoneNumber }, values.otp.join(''))
-        .then(() => {
-          onSuccess();
-        })
-        .catch((error) => {
-          onError(error as AsyncError);
-        });
-    },
-  });
+      const otp = values.otp.join('');
 
-  const handleResendOTP = () => {
-    sendOTP({ countryCode: `+${countryCode}`, phoneNumber })
-      .then(() => {
-        formik.setFieldValue('otp', Array(constant.OTP_LENGTH).fill('')).then().catch((error) => { onError(error as AsyncError); });
-        onResendSuccess();
+      verifyOTP(
+        { countryCode, phoneNumber },
+        otp,
+      ).then(() => {
+        onVerifyOTPSuccess();
       })
       .catch((error) => {
         onError(error as AsyncError);
       });
+    },
+  });
+
+  const handleResendOTP = () => {
+    sendOTP({
+      countryCode,
+      phoneNumber,
+    })
+    .then(() => {
+      onResendOTPSuccess();
+    })
+    .catch((error) => {
+      onError(error as AsyncError);
+    });
   };
 
   return {

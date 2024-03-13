@@ -7,12 +7,12 @@ import CountryCodeSelect from './country-code-select';
 import usePhoneLoginForm from './phone-login-form.hook';
 
 interface PhoneLoginFormProps {
-  onSuccess: () => void;
+  onSendOTPSuccess: () => void;
   onError: (error: AsyncError) => void;
 }
 
-const PhoneLoginForm: React.FC<PhoneLoginFormProps> = ({ onError, onSuccess }) => {
-  const { formik, isSendOTPLoading } = usePhoneLoginForm({ onSuccess, onError });
+const PhoneLoginForm: React.FC<PhoneLoginFormProps> = ({ onError, onSendOTPSuccess }) => {
+  const { formik, isSendOTPLoading } = usePhoneLoginForm({ onSendOTPSuccess, onError });
 
   const setFormikFieldValue = (fieldName: string, data: string) => {
     formik.setFieldValue(fieldName, data)

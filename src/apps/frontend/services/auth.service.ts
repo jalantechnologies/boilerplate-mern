@@ -25,7 +25,9 @@ export default class AuthService extends APIService {
 
   sendOTP = async (
     phoneNumber: PhoneNumber,
-  ): Promise<ApiResponse<void>> => this.apiClient.post('/accounts', phoneNumber);
+  ): Promise<ApiResponse<void>> => this.apiClient.post('/accounts', {
+    phoneNumber,
+  });
 
   verifyOTP = async (
     phoneNumber: PhoneNumber,
