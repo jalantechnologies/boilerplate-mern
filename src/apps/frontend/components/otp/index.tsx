@@ -60,7 +60,7 @@ const OTP: React.FC<OTPProps> = ({
   return (
     <Flex gap={6}>
       {otp.map((_, index) => (
-        <FlexItem className='flex-1' key={index}>
+        <FlexItem flex='flex1' key={index}>
           <OTPInput
             disabled={isLoading}
             index={index}
