@@ -1,11 +1,13 @@
 import React from 'react';
 
-import { Button, FormControl, Input, VerticalStackLayout } from '../../../components';
+import {
+  Button, FormControl, Input, VerticalStackLayout,
+} from '../../../components';
 import ParagraphMedium from '../../../components/typography/paragraph-medium';
 import { AsyncError } from '../../../types';
+import { ButtonType } from '../../../types/button';
 
 import useForgotPasswordForm from './forgot-password-form.hook';
-import { ButtonType } from '../../../types/button';
 
 interface ForgotPasswordFormProps {
   onError: (error: AsyncError) => void;
@@ -50,10 +52,13 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
               placeholder="Enter your email"
             />
           </FormControl>
+
           <Button
             isLoading={isSendForgotPasswordEmailLoading}
             type={ButtonType.SUBMIT}
-          >Receive Reset Link</Button>
+          >
+            Receive Reset Link
+          </Button>
         </VerticalStackLayout>
       </form>
     </VerticalStackLayout>

@@ -55,7 +55,9 @@ export const ForgotPassword: React.FC = () => {
           <Button
             kind={ButtonKind.SECONDARY}
             onClick={handleBackButtonClick}
-          >Back</Button>
+          >
+            Back
+          </Button>
           <H2>Forgot Password?</H2>
         {
           isResendEmailPage

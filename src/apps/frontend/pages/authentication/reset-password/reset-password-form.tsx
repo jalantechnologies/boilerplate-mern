@@ -1,10 +1,12 @@
 import React from 'react';
 
-import { Button, FormControl, PasswordInput, VerticalStackLayout } from '../../../components';
+import {
+  Button, FormControl, PasswordInput, VerticalStackLayout,
+} from '../../../components';
 import { AsyncError } from '../../../types';
+import { ButtonType } from '../../../types/button';
 
 import useResetPasswordForm from './reset-password-form.hook';
-import { ButtonType } from '../../../types/button';
 
 interface ResetPasswordFormProps {
   onSuccess: () => void;
@@ -35,6 +37,7 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
             placeholder="Enter your new password"
           />
         </FormControl>
+
         <FormControl
           error={formik.touched.confirmPassword && formik.errors.confirmPassword}
           label={'Re-type Password'}
@@ -54,7 +57,9 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
         <Button
           isLoading={isResetPasswordLoading}
           type={ButtonType.SUBMIT}
-        >Reset Password</Button>
+        >
+          Reset Password
+        </Button>
       </VerticalStackLayout>
     </form>
   );

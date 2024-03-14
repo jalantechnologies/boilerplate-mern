@@ -13,6 +13,7 @@ import ResetPasswordForm from './reset-password-form';
 
 export const ResetPassword: React.FC = () => {
   const navigate = useNavigate();
+
   const onSuccess = () => {
     toast.success('Your password has been successfully updated. Please login to continue.');
     navigate(routes.LOGIN);
@@ -30,7 +31,6 @@ export const ResetPassword: React.FC = () => {
           <ParagraphMedium>Setup your new password here</ParagraphMedium>
           <ResetPasswordForm onSuccess={onSuccess} onError={onError} />
         </VerticalStackLayout>
-        {/* <ResetPasswordForm onSuccess={onSuccess} onError={onError} /> */}
       </AuthenticationFormLayout>
     </AuthenticationPageLayout>
   );

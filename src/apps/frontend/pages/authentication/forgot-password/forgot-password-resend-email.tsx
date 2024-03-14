@@ -48,7 +48,9 @@ const ForgotPasswordResendEmail: React.FC<ForgotPasswordResendEmailProps> = ({
           disabled={!isResendEnabled}
           isLoading={isSendForgotPasswordEmailLoading}
           type={ButtonType.SUBMIT}
-        >Resend Link</Button>
+        >
+          Resend Link
+        </Button>
       </form>
     </VerticalStackLayout>
   );
