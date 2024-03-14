@@ -5,6 +5,7 @@ import FormContainer from './form-container';
 import FormControl from './form-control';
 import Header from './header';
 import Input from './input';
+import PasswordInput from './input/password-input';
 import OTP from './otp';
 
 export {
@@ -16,4 +17,5 @@ export {
   Header,
   Input,
   OTP,
+  PasswordInput,
 };
