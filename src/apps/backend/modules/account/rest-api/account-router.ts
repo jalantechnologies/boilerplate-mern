@@ -10,6 +10,8 @@ export default class AccountRouter extends ApplicationRouter {
 
     router.post('/', ctrl.createAccount);
 
+    router.patch('/:accountId', ctrl.resetPassword);
+
     router.use(accessAuthMiddleware);
 
     router.get('/:accountId', ctrl.getAccountById);

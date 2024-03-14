@@ -56,11 +56,18 @@ export type GetAccountParams = {
   accountId: string;
 };
 
+export type ResetPasswordParams = {
+  accountId: string;
+  newPassword: string;
+  token: string;
+};
+
 export enum AccountErrorCode {
   USERNAME_ALREADY_EXISTS = 'ACCOUNT_ERR_01',
   NOT_FOUND = 'ACCOUNT_ERR_02',
   INVALID_CREDENTIALS = 'ACCOUNT_ERR_03',
   PHONE_NUMBER_ALREADY_EXISTS = 'ACCOUNT_ERR_04',
+  BAD_REQUEST = 'ACCOUNT_ERR_05',
 }
 
 export class AccountWithUserNameExistsError extends ApplicationError {
@@ -109,6 +116,16 @@ export class InvalidCredentialsError extends ApplicationError {
   constructor(username: string) {
     super(`Invalid credentials for ${username}. Please try again.`);
     this.code = AccountErrorCode.INVALID_CREDENTIALS;
+    this.httpStatusCode = HttpStatusCodes.BAD_REQUEST;
+  }
+}
+
+export class AccountBadRequestError extends ApplicationError {
+  code: AccountErrorCode;
+
+  constructor(msg: string) {
+    super(msg);
+    this.code = AccountErrorCode.BAD_REQUEST;
     this.httpStatusCode = HttpStatusCodes.BAD_REQUEST;
   }
 }
