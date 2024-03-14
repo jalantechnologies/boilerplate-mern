@@ -1,6 +1,9 @@
 import React from 'react';
 
-import { Button, FormControl, Input } from '../../../components';
+import {
+  Button, Flex, FormControl, Input,
+} from '../../../components';
+import VerticalStackLayout from '../../../components/layouts/vertical-stack-layout';
 import { AsyncError } from '../../../types';
 import { ButtonKind, ButtonType } from '../../../types/button';
 
@@ -36,7 +39,8 @@ const PhoneLoginForm: React.FC<PhoneLoginFormProps> = ({ onError, onSendOTPSucce
   return (
     <>
       <form onSubmit={formik.handleSubmit}>
-        <div className="flex gap-4 pb-6">
+        <VerticalStackLayout gap={5}>
+          <Flex gap={4}>
           <FormControl
             label={'Phone'}
             error={formik.touched.countryCode && formik.errors.countryCode}
@@ -65,10 +69,11 @@ const PhoneLoginForm: React.FC<PhoneLoginFormProps> = ({ onError, onSendOTPSucce
               />
             </FormControl>
           </div>
-        </div>
+          </Flex>
         <Button type={ButtonType.SUBMIT} isLoading={isSendOTPLoading} kind={ButtonKind.PRIMARY}>
           Get OTP
         </Button>
+        </VerticalStackLayout>
       </form>
     </>
   );

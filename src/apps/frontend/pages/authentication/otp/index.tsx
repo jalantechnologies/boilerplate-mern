@@ -2,9 +2,12 @@ import React from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
-import { FormContainer } from '../../../components';
+import { Button } from '../../../components';
+import VerticalStackLayout from '../../../components/layouts/vertical-stack-layout';
+import H2 from '../../../components/typography/h2';
 import routes from '../../../constants/routes';
 import { AsyncError } from '../../../types';
+import { ButtonKind } from '../../../types/button';
 import useTimer from '../../../utils/use-timer.hook';
 import AuthenticationFormLayout from '../authentication-form-layout';
 import AuthenticationPageLayout from '../authentication-page-layout';
@@ -33,22 +36,24 @@ export const OTPPage: React.FC = () => {
     toast.error(error.message);
   };
 
+  const handleBackButtonClick = () => {
+    navigate(routes.PHONE_LOGIN);
+  };
+
   return (
     <AuthenticationPageLayout>
       <AuthenticationFormLayout>
-        <FormContainer
-          body={
-            <OTPForm
-              isResendEnabled={isResendEnabled}
-              onError={onError}
-              onResendOTPSuccess={onResendOTPSuccess}
-              onVerifyOTPSuccess={onVerifyOTPSuccess}
-              timerRemainingSeconds={remaininingSecondsStr}
-            />
-          }
-          navigateBackwardURL={routes.PHONE_LOGIN}
-          title="Verify Your Account"
-        />
+        <VerticalStackLayout gap={8}>
+          <Button kind={ButtonKind.SECONDARY} onClick={handleBackButtonClick}>Back</Button>
+          <H2>Verify Your Account</H2>
+          <OTPForm
+            isResendEnabled={isResendEnabled}
+            onError={onError}
+            onResendOTPSuccess={onResendOTPSuccess}
+            onVerifyOTPSuccess={onVerifyOTPSuccess}
+            timerRemainingSeconds={remaininingSecondsStr}
+          />
+        </VerticalStackLayout>
       </AuthenticationFormLayout>
     </AuthenticationPageLayout>
   );

@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom';
 
 import {
   Button,
+  Flex,
   FormControl,
   Input,
   PasswordInput,
 } from '../../../components';
+import VerticalStackLayout from '../../../components/layouts/vertical-stack-layout';
 import routes from '../../../constants/routes';
 import { AsyncError } from '../../../types';
 import { ButtonKind, ButtonType } from '../../../types/button';
@@ -24,7 +26,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <div className="mb-4.5">
+      <VerticalStackLayout gap={5}>
         <FormControl
           label={'Email'}
           error={formik.touched.username && formik.errors.username}
@@ -47,9 +49,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
             value={formik.values.username}
           />
         </FormControl>
-      </div>
-
-      <div>
         <FormControl
           label={'Password'}
           error={formik.touched.password && formik.errors.password}
@@ -63,35 +62,32 @@ const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
             value={formik.values.password}
           />
         </FormControl>
-      </div>
 
-      <div className="mb-5.5 mt-5 flex items-center justify-between">
-        <label htmlFor="formCheckbox" className="flex cursor-pointer">
-          <LoginFormCheckbox />
-          <p>Remember me</p>
-        </label>
+        <Flex alignItems='center' justifyContent='between'>
+          <label htmlFor="formCheckbox" className="flex cursor-pointer">
+            <LoginFormCheckbox />
+            <p>Remember me</p>
+          </label>
 
-        <a href="#" className="text-sm text-primary hover:underline">
-          Forget password?
-        </a>
-      </div>
+          <a href="#" className="text-sm text-primary hover:underline">
+            Forget password?
+          </a>
+        </Flex>
 
-      <Button
-        type={ButtonType.SUBMIT}
-        kind={ButtonKind.PRIMARY}
-        isLoading={isLoginLoading}
-      >
-        Log In
-      </Button>
-
-      <div className="mt-6 text-center">
-        <p className="font-medium">
+        <Button
+          type={ButtonType.SUBMIT}
+          kind={ButtonKind.PRIMARY}
+          isLoading={isLoginLoading}
+        >
+          Log In
+        </Button>
+        <p className="self-center font-medium">
           Don’t have any account?{' '}
           <Link to={routes.SIGNUP} className="text-primary">
             Sign Up
           </Link>
         </p>
-      </div>
+      </VerticalStackLayout>
     </form>
   );
 };

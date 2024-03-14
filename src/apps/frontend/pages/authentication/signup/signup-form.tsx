@@ -2,13 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import {
-  Button, FormControl, Input, PasswordInput,
+  Button, Flex, FormControl, Input, PasswordInput,
 } from '../../../components';
 import routes from '../../../constants/routes';
 import { AsyncError } from '../../../types';
 import { ButtonKind, ButtonType } from '../../../types/button';
 
 import useSignupForm from './signup-form.hook';
+import VerticalStackLayout from '../../../components/layouts/vertical-stack-layout';
 
 interface SignupFormProps {
   onSuccess: () => void;
@@ -20,8 +21,9 @@ const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <div className="mb-4.5 flex flex-col gap-6 2sm:flex-row">
-        <div className="w-full 2sm:w-1/2">
+      <VerticalStackLayout gap={5}>
+        <Flex gap={6}>
+          <div className="w-full">
           <FormControl
             label={'First name'}
             error={formik.touched.firstName && formik.errors.firstName}
@@ -38,7 +40,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
             />
           </FormControl>
         </div>
-        <div className="w-full 2sm:w-1/2">
+        <div className="w-full">
           <FormControl
             label={'Last name'}
             error={formik.touched.lastName && formik.errors.lastName}
@@ -55,8 +57,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
             />
           </FormControl>
         </div>
-      </div>
-      <div className="mb-4.5">
+        </Flex>
         <FormControl
           label={'Email'}
           error={formik.touched.username && formik.errors.username}
@@ -79,8 +80,6 @@ const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
             value={formik.values.username}
           />
         </FormControl>
-      </div>
-      <div className="mb-4.5">
         <FormControl
           label={'Password'}
           error={formik.touched.password && formik.errors.password}
@@ -94,8 +93,6 @@ const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
             value={formik.values.password}
           />
         </FormControl>
-      </div>
-      <div className="mb-6">
         <FormControl
           label={'Re-type Password'}
           error={formik.touched.retypePassword && formik.errors.retypePassword}
@@ -111,24 +108,21 @@ const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
             value={formik.values.retypePassword}
           />
         </FormControl>
-      </div>
 
-      <Button
-        type={ButtonType.SUBMIT}
-        kind={ButtonKind.PRIMARY}
-        isLoading={isSignupLoading}
-      >
-        Sign Up
-      </Button>
-
-      <div className="mt-6 text-center">
-        <p className="font-medium">
+        <Button
+          type={ButtonType.SUBMIT}
+          kind={ButtonKind.PRIMARY}
+          isLoading={isSignupLoading}
+        >
+          Sign Up
+        </Button>
+        <p className="font-medium self-center">
           Already have an account?{' '}
           <Link to={routes.LOGIN} className="text-primary">
             Log in
           </Link>
         </p>
-      </div>
+      </VerticalStackLayout>
     </form>
   );
 };

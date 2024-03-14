@@ -1,7 +1,10 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { Button, FormControl, OTP } from '../../../components';
+import {
+  Button, Flex, FormControl, OTP,
+} from '../../../components';
+import VerticalStackLayout from '../../../components/layouts/vertical-stack-layout';
 import routes from '../../../constants/routes';
 import { AsyncError } from '../../../types';
 import { ButtonKind, ButtonType } from '../../../types/button';
@@ -44,28 +47,26 @@ const OTPForm: React.FC<OTPFormProps> = ({
   };
 
   return (
-    <>
-      <form onSubmit={formik.handleSubmit}>
-        <div className="mb-6">
-          <FormControl
-            label={`Enter the 4 digit code sent to the mobile number ${countryCode} ${phoneNumber}`}
+    <form onSubmit={formik.handleSubmit}>
+      <VerticalStackLayout gap={5}>
+        <FormControl
+          label={`Enter the 4 digit code sent to the mobile number ${countryCode} ${phoneNumber}`}
+          error={formik.touched.otp && formik.errors.otp as string}
+        >
+          <OTP
             error={formik.touched.otp && formik.errors.otp as string}
-          >
-            <OTP
-              error={formik.touched.otp && formik.errors.otp as string}
-              isLoading={isVerifyOTPLoading}
-              onError={onError}
-              onBlur={formik.handleBlur}
-              onChange={handleChange}
-            />
-          </FormControl>
-        </div>
+            isLoading={isVerifyOTPLoading}
+            onError={onError}
+            onBlur={formik.handleBlur}
+            onChange={handleChange}
+          />
+        </FormControl>
 
-        <div className="mb-6 flex flex-col items-center gap-2 md:flex-row">
-          <h2 className="text-lg text-black">
+        <Flex gap={2}>
+          <p className="text-lg text-black">
             Did not receive a code?
-          </h2>
-          <h2
+          </p>
+          <p
             className={`
               ${isResendEnabled ? 'cursor-pointer text-primary' : 'cursor-default'}
               text-center text-lg`
@@ -73,14 +74,14 @@ const OTPForm: React.FC<OTPFormProps> = ({
             onClick={handleResendOTP}
           >
             { isResendEnabled ? 'Resend' : `Resend OTP in 00: ${timerRemainingSeconds}` }
-          </h2>
-        </div>
+          </p>
+        </Flex>
 
         <Button type={ButtonType.SUBMIT} isLoading={isVerifyOTPLoading} kind={ButtonKind.PRIMARY}>
           Verify
         </Button>
-      </form>
-    </>
+      </VerticalStackLayout>
+    </form>
   );
 };
 

@@ -1,7 +1,8 @@
 import React from 'react';
 import toast from 'react-hot-toast';
 
-import { FormContainer } from '../../../components';
+import VerticalStackLayout from '../../../components/layouts/vertical-stack-layout';
+import H2 from '../../../components/typography/h2';
 import { AsyncError } from '../../../types';
 import AuthenticationFormLayout from '../authentication-form-layout';
 import AuthenticationPageLayout from '../authentication-page-layout';
@@ -20,15 +21,10 @@ export const PhoneLogin: React.FC = () => {
   return (
     <AuthenticationPageLayout>
       <AuthenticationFormLayout>
-        <FormContainer
-          title="Log In"
-          body={
-            <PhoneLoginForm
-              onError={onError}
-              onSendOTPSuccess={onSendOTPSuccess}
-            />
-          }
-        />
+        <VerticalStackLayout gap={8}>
+          <H2>Log In</H2>
+          <PhoneLoginForm onError={onError} onSendOTPSuccess={onSendOTPSuccess} />
+        </VerticalStackLayout>
       </AuthenticationFormLayout>
     </AuthenticationPageLayout>
   );
