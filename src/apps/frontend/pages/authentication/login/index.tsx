@@ -2,7 +2,8 @@ import React from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
-import constants from '../../../constants/routes';
+import { H2, VerticalStackLayout } from '../../../components';
+import routes from '../../../constants/routes';
 import { AsyncError } from '../../../types';
 import AuthenticationFormLayout from '../authentication-form-layout';
 import AuthenticationPageLayout from '../authentication-page-layout';
@@ -12,7 +13,7 @@ import LoginForm from './login-form';
 export const Login: React.FC = () => {
   const navigate = useNavigate();
   const onSuccess = () => {
-    navigate(constants.DASHBOARD);
+    navigate(routes.DASHBOARD);
   };
 
   const onError = (error: AsyncError) => {
@@ -22,7 +23,10 @@ export const Login: React.FC = () => {
   return (
     <AuthenticationPageLayout>
       <AuthenticationFormLayout>
-        <LoginForm onSuccess={onSuccess} onError={onError}></LoginForm>
+       <VerticalStackLayout gap={8}>
+        <H2>Log In</H2>
+        <LoginForm onSuccess={onSuccess} onError={onError} />
+       </VerticalStackLayout>
       </AuthenticationFormLayout>
     </AuthenticationPageLayout>
   );

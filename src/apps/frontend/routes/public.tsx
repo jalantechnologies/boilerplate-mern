@@ -1,15 +1,23 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 
-import constants from '../constants/routes';
-import { ResetPasswordProvider } from '../contexts';
+import routes from '../constants/routes';
 import {
-  About, ForgotPassword, Login, ResetPassword, Signup,
+  About,
+  ForgotPassword,
+  Login,
+  OTPPage,
+  PhoneLogin,
+  ResetPassword,
+  Signup,
 } from '../pages';
+import { ResetPasswordProvider } from '../contexts';
+
+import AuthRoute from './auth-route';
 
 export const publicRoutes = [
-  { path: constants.LOGIN, element: <Login /> },
-  { path: constants.SIGNUP, element: <Signup /> },
+  { path: routes.LOGIN, element: <AuthRoute authPage={Login} otpAuthPage={OTPPage} /> },
+  { path: routes.SIGNUP, element: <AuthRoute authPage={Signup} otpAuthPage={PhoneLogin} /> },
   {
     path: constants.FORGOT_PASSWORD,
     element: <ResetPasswordProvider><ForgotPassword /></ResetPasswordProvider>,

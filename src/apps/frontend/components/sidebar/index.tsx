@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 
-import constants from '../../constants/routes';
+import routes from '../../constants/routes';
 
 import SidebarMenuItem from './sidebar-menu-item';
 
@@ -45,13 +45,13 @@ const Sidebar: React.FC<SidebarProps> = ({
           <ul className="mb-6 flex flex-col gap-1.5">
             <SidebarMenuItem
               iconPath='/assets/img/icon/dashboard-sidebar-icon.svg'
-              path={constants.DASHBOARD}
+              path={routes.DASHBOARD}
               setIsSidebarOpen={setIsSidebarOpen}
               title='Dashboard'
             />
             <SidebarMenuItem
               iconPath='/assets/img/icon/tasks-sidebar-icon.svg'
-              path={constants.TASKS}
+              path={routes.TASKS}
               setIsSidebarOpen={setIsSidebarOpen}
               title='Tasks'
             />
