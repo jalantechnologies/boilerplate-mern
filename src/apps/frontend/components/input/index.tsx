@@ -26,33 +26,42 @@ const Input: React.FC<InputProps> = ({
   textAlign = 'left',
   type,
   ...props
-}) => (
-  <div
-    className={clsx([
-      styles.inputContainer,
-      error ? styles.border.errorState : styles.border.normalState,
-    ])}
-  >
-    <HorizontalStackLayout gap={2}>
-      {startEnhancer && <span className="flex h-full min-w-6 items-center justify-center">
-        {startEnhancer}
-      </span>}
-      <input
-        {...props}
-        autoComplete='off'
-        className={clsx([
-          styles.input,
-          textAlign ? styles.textAlign[textAlign] : '',
-        ])}
-        data-testid={testId}
-        type={type || 'text'}
-        ref={inputRef ? (ref) => (inputRef.current[index] = ref) : null}
-      />
-      {endEnhancer && <span className="flex h-full min-w-6 items-center justify-center">
-        {endEnhancer}
-      </span>}
-    </HorizontalStackLayout>
-  </div>
-);
+}) => {
+  const handleRef = (ref: HTMLInputElement) => {
+    if (inputRef) {
+      /* eslint-disable no-param-reassign */
+      inputRef.current[index]. = ref;
+    }
+  };
+
+  return (
+    <div
+      className={clsx([
+        styles.inputContainer,
+        error ? styles.border.errorState : styles.border.normalState,
+      ])}
+    >
+      <HorizontalStackLayout gap={2}>
+        {startEnhancer && <span className="flex h-full min-w-6 items-center justify-center">
+          {startEnhancer}
+        </span>}
+        <input
+          {...props}
+          autoComplete='off'
+          className={clsx([
+            styles.input,
+            textAlign ? styles.textAlign[textAlign] : '',
+          ])}
+          data-testid={testId}
+          type={type || 'text'}
+          ref={inputRef ? handleRef : null}
+        />
+        {endEnhancer && <span className="flex h-full min-w-6 items-center justify-center">
+          {endEnhancer}
+        </span>}
+      </HorizontalStackLayout>
+    </div>
+  );
+};
 
 export default Input;
