@@ -70,8 +70,8 @@ const OTPForm: React.FC<OTPFormProps> = ({
             Did not receive a code?
           </p>
           <Button
-            kind={ButtonKind.TERTIARY}
             disabled={!isResendEnabled}
+            kind={ButtonKind.TERTIARY}
             onClick={handleResendOTP}
           >
             { isResendEnabled ? 'Resend' : `Resend OTP in 00: ${timerRemainingSeconds}` }

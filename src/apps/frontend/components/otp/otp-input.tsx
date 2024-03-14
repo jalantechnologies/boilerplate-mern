@@ -5,8 +5,10 @@ import Input from '../input';
 type OTPInputProps = {
   disabled: boolean;
   error: string;
+  handleInputRef: (
+    ref: HTMLInputElement,
+  ) => void;
   index: number;
-  inputRef: React.RefObject<HTMLInputElement[]> | null;
   name: string;
   onBlur?: FocusEventHandler<HTMLInputElement>;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -17,8 +19,8 @@ type OTPInputProps = {
 const OTPInput: React.FC<OTPInputProps> = ({
   disabled,
   error,
+  handleInputRef,
   index,
-  inputRef,
   name,
   onBlur,
   onChange,
@@ -28,8 +30,8 @@ const OTPInput: React.FC<OTPInputProps> = ({
   <Input
     disabled={disabled}
     error={error}
+    handleInputRef={handleInputRef}
     index={index}
-    inputRef={inputRef}
     name={name}
     onBlur={onBlur}
     onChange={onChange}

@@ -11,7 +11,7 @@ interface ButtonProps {
   isLoading?: boolean;
   onClick?: (e) => void;
   type?: ButtonType;
-  kind: ButtonKind;
+  kind?: ButtonKind;
 }
 
 const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
@@ -19,8 +19,8 @@ const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
   disabled,
   isLoading,
   onClick,
-  type,
-  kind,
+  type = ButtonType.BUTTON,
+  kind = ButtonKind.PRIMARY,
 }) => {
   const content = isLoading && kind === ButtonKind.PRIMARY ? <Spinner /> : children;
 

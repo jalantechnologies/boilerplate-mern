@@ -5,7 +5,10 @@ const styles = {
         active:bg-primary/80
         bg-primary
         border
+        flex
         font-medium
+        items-center
+        justify-center
         p-4
         rounded-lg
         text-white

@@ -26,6 +26,12 @@ const OTP: React.FC<OTPProps> = ({
 
   const inputRef = useRef<HTMLInputElement[]>([]);
 
+  const handleInputRef = (
+    ref: HTMLInputElement,
+  ) => {
+    inputRef.current.push(ref);
+  };
+
   const handleOTPChange = (
     inputValue: string,
     index: number,
@@ -69,7 +75,7 @@ const OTP: React.FC<OTPProps> = ({
             onChange={(e) => handleOTPChange(e.target.value, index)}
             onBlur={onBlur}
             onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => handleOnKeyDown(e, index + 1)}
-            inputRef={inputRef}
+            handleInputRef={handleInputRef}
             value={otp[index]}
           />
         </FlexItem>
