@@ -91,7 +91,7 @@ describe('Account Password Reset', () => {
     });
   });
 
-  describe('PATCH /account/:accountId/reset-password', () => {
+  describe('PATCH /account/:accountId', () => {
     it('should reset the account password to the new password', async () => {
       sinonSandbox.stub(EmailService, 'sendEmail').returns(Promise.resolve());
 
@@ -111,7 +111,7 @@ describe('Account Password Reset', () => {
 
       const res = await chai
         .request(app)
-        .patch(`/api/accounts/${account.id}/reset-password`)
+        .patch(`/api/accounts/${account.id}`)
         .set('content-type', 'application/json')
         .send(passwordResetTokenParams);
 
@@ -158,7 +158,7 @@ describe('Account Password Reset', () => {
 
       const res = await chai
         .request(app)
-        .patch(`/api/accounts/${accountId}/reset-password`)
+        .patch(`/api/accounts/${accountId}`)
         .set('content-type', 'application/json')
         .send(passwordResetTokenParams);
 
@@ -207,7 +207,7 @@ describe('Account Password Reset', () => {
 
       const res = await chai
         .request(app)
-        .patch(`/api/accounts/${account.id}/reset-password`)
+        .patch(`/api/accounts/${account.id}`)
         .set('content-type', 'application/json')
         .send(passwordResetTokenParams);
 
@@ -239,7 +239,7 @@ describe('Account Password Reset', () => {
 
       const res = await chai
         .request(app)
-        .patch(`/api/accounts/${account.id}/reset-password`)
+        .patch(`/api/accounts/${account.id}`)
         .set('content-type', 'application/json')
         .send(passwordResetTokenParams);
 
@@ -271,7 +271,7 @@ describe('Account Password Reset', () => {
 
       const res = await chai
         .request(app)
-        .patch(`/api/accounts/${account.id}/reset-password`)
+        .patch(`/api/accounts/${account.id}`)
         .set('content-type', 'application/json')
         .send(passwordResetTokenParams);
 
@@ -310,7 +310,7 @@ describe('Account Password Reset', () => {
 
       const res = await chai
         .request(app)
-        .patch(`/api/accounts/${account.id}/reset-password`)
+        .patch(`/api/accounts/${account.id}`)
         .set('content-type', 'application/json')
         .send(passwordResetTokenParams);
 

@@ -10,6 +10,7 @@ import VerticalStackLayout from './layouts/vertical-stack-layout';
 import OTP from './otp';
 import Select from './select';
 import H2 from './typography/h2';
+import ParagraphMedium from './typography/paragraph-medium';
 
 export {
   Button,
@@ -21,6 +22,7 @@ export {
   HorizontalStackLayout,
   Input,
   OTP,
+  ParagraphMedium,
   PasswordInput,
   Select,
   VerticalStackLayout,

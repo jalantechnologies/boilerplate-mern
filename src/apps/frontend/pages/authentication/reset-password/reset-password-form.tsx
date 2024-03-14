@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import { FormControl, Input } from '../../../components';
+import { FormControl, PasswordInput, VerticalStackLayout } from '../../../components';
 import Button, { ButtonType } from '../../../components/button/button-primary';
 import { AsyncError } from '../../../types';
 
@@ -17,113 +17,47 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
 }) => {
   const { formik, isResetPasswordLoading } = useResetPasswordForm({ onSuccess, onError });
 
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [isRetypePasswordVisible, setIsRetypePasswordVisible] = useState(false);
-
-  function togglePasswordVisibility() {
-    setIsPasswordVisible((previousState) => !previousState);
-  }
-
-  function toggleRetypePasswordVisibility() {
-    setIsRetypePasswordVisible((previousState) => !previousState);
-  }
-
   return (
-    <div>
-      <h2 className="mb-5 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-        Reset Password
-      </h2>
-      <h3 className="mb-4 text-xl font-medium">
-        Setup your new password here
-      </h3>
-
-      <form onSubmit={formik.handleSubmit}>
-        <div className="mb-4.5">
-          <FormControl
+    <form onSubmit={formik.handleSubmit}>
+      <VerticalStackLayout gap={5}>
+        <FormControl
+          error={formik.touched.password && formik.errors.password}
+          label={'Password'}
+        >
+          <PasswordInput
+            data-testid="password"
+            disabled={isResetPasswordLoading}
             error={formik.touched.password && formik.errors.password}
-            label={'Password'}
-          >
-            <Input
-              data-testid="password"
-              disabled={isResetPasswordLoading}
-              error={formik.touched.password && formik.errors.password}
-              name="password"
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
-              type={isPasswordVisible ? 'text' : 'password'}
-              value={formik.values.password}
-              placeholder="Enter your new password"
-            />
-            <button
-              className="absolute inset-y-0 right-0 flex items-center px-4"
-              onClick={(e) => {
-                e.preventDefault();
-                togglePasswordVisibility();
-              }}
-            >
-              {isPasswordVisible ? (
-                <img
-                  className="size-6.5 opacity-65"
-                  src="/assets/img/icon/eye-closed.svg"
-                  alt="hide password icon"
-                />
-              ) : (
-                <img
-                  className="size-6.5 opacity-65"
-                  src="/assets/img/icon/eye-open.svg"
-                  alt="show password icon"
-                />
-              )}
-            </button>
-          </FormControl>
-        </div>
-        <div className="mb-6">
-          <FormControl
+            name="password"
+            onBlur={formik.handleBlur}
+            onChange={formik.handleChange}
+            value={formik.values.password}
+            placeholder="Enter your new password"
+          />
+        </FormControl>
+        <FormControl
+          error={formik.touched.confirmPassword && formik.errors.confirmPassword}
+          label={'Re-type Password'}
+        >
+          <PasswordInput
+            data-testid="confirmPassword"
+            disabled={isResetPasswordLoading}
             error={formik.touched.confirmPassword && formik.errors.confirmPassword}
-            label={'Re-type Password'}
-          >
-            <Input
-              data-testid="confirmPassword"
-              disabled={isResetPasswordLoading}
-              error={formik.touched.confirmPassword && formik.errors.confirmPassword}
-              name="confirmPassword"
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
-              type={isRetypePasswordVisible ? 'text' : 'password'}
-              value={formik.values.confirmPassword}
-              placeholder="Re-enter the password"
-            />
-            <button
-              className="absolute inset-y-0 right-0 flex items-center px-4"
-              onClick={(e) => {
-                e.preventDefault();
-                toggleRetypePasswordVisibility();
-              }}
-            >
-              {isRetypePasswordVisible ? (
-                <img
-                  className="size-6.5 opacity-65"
-                  src="/assets/img/icon/eye-closed.svg"
-                  alt="hide password icon"
-                />
-              ) : (
-                <img
-                  className="size-6.5 opacity-65"
-                  src="/assets/img/icon/eye-open.svg"
-                  alt="show password icon"
-                />
-              )}
-            </button>
-          </FormControl>
-        </div>
+            name="confirmPassword"
+            onBlur={formik.handleBlur}
+            onChange={formik.handleChange}
+            value={formik.values.confirmPassword}
+            placeholder="Re-enter the password"
+          />
+        </FormControl>
 
-        <Button
-          isLoading={isResetPasswordLoading}
-          label="Reset Password"
-          type={ButtonType.SUBMIT}
-        />
-      </form>
-    </div>
+      <Button
+        isLoading={isResetPasswordLoading}
+        label="Reset Password"
+        type={ButtonType.SUBMIT}
+      />
+      </VerticalStackLayout>
+    </form>
   );
 };
 

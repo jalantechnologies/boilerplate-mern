@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
+import { Button, H2, VerticalStackLayout } from '../../../components';
+import routes from '../../../constants/routes';
 import { AsyncError } from '../../../types';
-import useTimer from '../../../utils/use-timer';
+import { ButtonKind } from '../../../types/button';
+import useTimer from '../../../utils/use-timer.hook';
 import AuthenticationFormLayout from '../authentication-form-layout';
 import AuthenticationPageLayout from '../authentication-page-layout';
 
@@ -11,6 +15,8 @@ import ForgotPasswordResendEmail from './forgot-password-resend-email';
 
 export const ForgotPassword: React.FC = () => {
   const passwordResendDelayInSeconds = 60_000;
+
+  const navigate = useNavigate();
 
   const [isResendEmailPage, setIsResendEmailPage] = useState(false);
   const [username, setUsername] = useState('');
@@ -34,16 +40,29 @@ export const ForgotPassword: React.FC = () => {
     toast.error(error.message);
   };
 
+  const handleBackButtonClick = () => {
+    if (isResendEmailPage) {
+      setIsResendEmailPage(false);
+    } else {
+      navigate(routes.LOGIN);
+    }
+  };
+
   return (
     <AuthenticationPageLayout>
       <AuthenticationFormLayout>
+        <VerticalStackLayout gap={6}>
+          <Button
+            kind={ButtonKind.SECONDARY}
+            onClick={handleBackButtonClick}
+          >Back</Button>
+          <H2>Forgot Password?</H2>
         {
           isResendEmailPage
             ? <ForgotPasswordResendEmail
               isResendEnabled={isResendEnabled}
               onSuccess={onResendEmailSuccess}
               onError={onError}
-              setIsResendEmailPage={setIsResendEmailPage}
               username={username}
               timerRemainingSeconds={remaininingSecondsStr}
             /> : <ForgotPasswordForm
@@ -51,6 +70,7 @@ export const ForgotPassword: React.FC = () => {
               onError={onError}
             />
         }
+        </VerticalStackLayout>
       </AuthenticationFormLayout>
     </AuthenticationPageLayout>
   );
