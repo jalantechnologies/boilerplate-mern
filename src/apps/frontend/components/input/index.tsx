@@ -30,7 +30,7 @@ const Input: React.FC<InputProps> = ({
   const handleRef = (ref: HTMLInputElement) => {
     if (inputRef) {
       /* eslint-disable no-param-reassign */
-      inputRef.current[index]. = ref;
+      inputRef.current[index] = ref;
     }
   };
 
