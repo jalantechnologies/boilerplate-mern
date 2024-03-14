@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { FormControl, OTP } from '../../../components';
-import Button from '../../../components/button/button-primary';
+import { Button, FormControl, OTP } from '../../../components';
 import routes from '../../../constants/routes';
 import { AsyncError } from '../../../types';
 import { ButtonKind, ButtonType } from '../../../types/button';

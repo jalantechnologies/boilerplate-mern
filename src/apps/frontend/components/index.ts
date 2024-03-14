@@ -1,4 +1,4 @@
-import Button from './button/button-primary';
+import Button from './button';
 import FlexItem from './flex/flex-item.component';
 import Flex from './flex/flex.component';
 import FormContainer from './form-container';
