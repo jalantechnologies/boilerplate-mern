@@ -1,7 +1,10 @@
+import clsx from 'clsx';
 import React, { PropsWithChildren } from 'react';
 
 import { ButtonKind, ButtonType } from '../../types/button';
 import Spinner from '../spinner/spinner';
+
+import styles from './button.styles';
 
 interface ButtonProps {
   disabled?: boolean;
@@ -19,18 +22,14 @@ const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
   type,
   kind,
 }) => {
-  let buttonClass = 'inset-y-0 flex items-center';
-
-  if (kind === ButtonKind.PRIMARY) {
-    buttonClass = `w-full cursor-pointer rounded-lg border bg-primary p-4 font-medium text-white transition active:bg-primary/80
-      ${disabled || isLoading ? 'cursor-not-allowed bg-primary/80' : 'hover:bg-primary/90'}`;
-  }
-
   const content = isLoading && kind === ButtonKind.PRIMARY ? <Spinner /> : children;
 
   return (
     <button
-      className={buttonClass}
+      className={clsx([
+        styles.kind[kind].base,
+        (disabled || isLoading) ? styles.kind[kind].disableState : styles.kind[kind].enableState,
+      ])}
       disabled={disabled || isLoading}
       type={type}
       onClick={onClick}

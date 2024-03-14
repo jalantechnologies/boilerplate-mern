@@ -1,6 +1,8 @@
 import clsx from 'clsx';
 import * as React from 'react';
 
+import HorizontalStackLayout from '../layouts/horizontal-stack-layout';
+
 import styles from './input.styles';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -31,23 +33,25 @@ const Input: React.FC<InputProps> = ({
       error ? styles.border.errorState : styles.border.normalState,
     ])}
   >
-    {startEnhancer && <span className="mr-2 flex h-full min-w-6 items-center justify-center">
-      {startEnhancer}
-    </span>}
-    <input
-      {...props}
-      autoComplete='off'
-      className={clsx([
-        styles.input,
-        textAlign ? styles.textAlign[textAlign] : '',
-      ])}
-      data-testid={testId}
-      type={type || 'text'}
-      ref={inputRef ? (ref) => (inputRef.current[index] = ref) : null}
-    />
-    {endEnhancer && <span className="ml-2 flex h-full min-w-6 items-center justify-center">
-      {endEnhancer}
-    </span>}
+    <HorizontalStackLayout gap={2}>
+      {startEnhancer && <span className="flex h-full min-w-6 items-center justify-center">
+        {startEnhancer}
+      </span>}
+      <input
+        {...props}
+        autoComplete='off'
+        className={clsx([
+          styles.input,
+          textAlign ? styles.textAlign[textAlign] : '',
+        ])}
+        data-testid={testId}
+        type={type || 'text'}
+        ref={inputRef ? (ref) => (inputRef.current[index] = ref) : null}
+      />
+      {endEnhancer && <span className="flex h-full min-w-6 items-center justify-center">
+        {endEnhancer}
+      </span>}
+    </HorizontalStackLayout>
   </div>
 );
 

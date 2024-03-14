@@ -2,7 +2,11 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import {
-  Button, Flex, FormControl, OTP, VerticalStackLayout,
+  Button,
+  Flex,
+  FormControl,
+  OTP,
+  VerticalStackLayout,
 } from '../../../components';
 import routes from '../../../constants/routes';
 import { AsyncError } from '../../../types';
@@ -65,15 +69,13 @@ const OTPForm: React.FC<OTPFormProps> = ({
           <p className="text-lg text-black">
             Did not receive a code?
           </p>
-          <p
-            className={`
-              ${isResendEnabled ? 'cursor-pointer text-primary' : 'cursor-default'}
-              text-center text-lg`
-            }
+          <Button
+            kind={ButtonKind.TERTIARY}
+            disabled={!isResendEnabled}
             onClick={handleResendOTP}
           >
             { isResendEnabled ? 'Resend' : `Resend OTP in 00: ${timerRemainingSeconds}` }
-          </p>
+          </Button>
         </Flex>
 
         <Button type={ButtonType.SUBMIT} isLoading={isVerifyOTPLoading} kind={ButtonKind.PRIMARY}>

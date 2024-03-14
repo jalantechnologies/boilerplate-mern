@@ -1,8 +1,6 @@
 const styles = {
   inputContainer: `
     w-full
-    flex
-    items-center
     rounded-lg
     border
     bg-white
