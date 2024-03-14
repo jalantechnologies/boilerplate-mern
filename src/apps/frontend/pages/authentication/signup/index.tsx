@@ -2,8 +2,7 @@ import React from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
-import VerticalStackLayout from '../../../components/layouts/vertical-stack-layout';
-import H2 from '../../../components/typography/h2';
+import { H2, VerticalStackLayout } from '../../../components';
 import routes from '../../../constants/routes';
 import { AsyncError } from '../../../types';
 import AuthenticationFormLayout from '../authentication-form-layout';

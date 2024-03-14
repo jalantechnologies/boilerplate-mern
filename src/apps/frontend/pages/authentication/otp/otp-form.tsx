@@ -2,9 +2,8 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import {
-  Button, Flex, FormControl, OTP,
+  Button, Flex, FormControl, OTP, VerticalStackLayout,
 } from '../../../components';
-import VerticalStackLayout from '../../../components/layouts/vertical-stack-layout';
 import routes from '../../../constants/routes';
 import { AsyncError } from '../../../types';
 import { ButtonKind, ButtonType } from '../../../types/button';

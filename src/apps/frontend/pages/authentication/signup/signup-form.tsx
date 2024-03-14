@@ -2,14 +2,18 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import {
-  Button, Flex, FormControl, Input, PasswordInput,
+  Button,
+  Flex,
+  FormControl,
+  Input,
+  PasswordInput,
+  VerticalStackLayout,
 } from '../../../components';
 import routes from '../../../constants/routes';
 import { AsyncError } from '../../../types';
 import { ButtonKind, ButtonType } from '../../../types/button';
 
 import useSignupForm from './signup-form.hook';
-import VerticalStackLayout from '../../../components/layouts/vertical-stack-layout';
 
 interface SignupFormProps {
   onSuccess: () => void;
@@ -116,7 +120,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
         >
           Sign Up
         </Button>
-        <p className="font-medium self-center">
+        <p className="self-center font-medium">
           Already have an account?{' '}
           <Link to={routes.LOGIN} className="text-primary">
             Log in

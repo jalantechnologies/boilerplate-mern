@@ -7,8 +7,8 @@ import {
   FormControl,
   Input,
   PasswordInput,
+  VerticalStackLayout,
 } from '../../../components';
-import VerticalStackLayout from '../../../components/layouts/vertical-stack-layout';
 import routes from '../../../constants/routes';
 import { AsyncError } from '../../../types';
 import { ButtonKind, ButtonType } from '../../../types/button';

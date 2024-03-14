@@ -1,13 +1,17 @@
 import React from 'react';
 
 import {
-  Button, Flex, FormControl, Input,
+  Button,
+  Flex,
+  FormControl,
+  Input,
+  Select,
+  VerticalStackLayout,
 } from '../../../components';
-import VerticalStackLayout from '../../../components/layouts/vertical-stack-layout';
+import COUNTRY_SELECT_OPTIONS from '../../../constants/countries';
 import { AsyncError } from '../../../types';
 import { ButtonKind, ButtonType } from '../../../types/button';
 
-import CountryCodeSelect from './country-code-select';
 import usePhoneLoginForm from './phone-login-form.hook';
 
 interface PhoneLoginFormProps {
@@ -30,7 +34,7 @@ const PhoneLoginForm: React.FC<PhoneLoginFormProps> = ({ onError, onSendOTPSucce
 
   const handleChangeSelect = ({ target }: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = target;
-    const [countryCode, country] = value.split(',');
+    const [countryCode, country] = value.split(', ');
     setFormikFieldValue('country', country);
     setFormikFieldValue('countryCode', countryCode);
     setFormikFieldValue('phoneNumber', '');
@@ -41,38 +45,39 @@ const PhoneLoginForm: React.FC<PhoneLoginFormProps> = ({ onError, onSendOTPSucce
       <form onSubmit={formik.handleSubmit}>
         <VerticalStackLayout gap={5}>
           <Flex gap={4}>
-          <FormControl
-            label={'Phone'}
-            error={formik.touched.countryCode && formik.errors.countryCode}
-          >
-            <CountryCodeSelect
-              isLoading={isSendOTPLoading}
-              value={[formik.values.countryCode, formik.values.country]}
-              handleChange={handleChangeSelect}
-            />
-          </FormControl>
-          <div className="w-full">
             <FormControl
-              label={''}
-              error={formik.touched.phoneNumber && formik.errors.phoneNumber}
+              label={'Phone'}
+              error={formik.touched.countryCode && formik.errors.countryCode}
             >
-              <Input
-                data-testid="phoneNumber"
-                disabled={isSendOTPLoading}
-                error={formik.touched.phoneNumber && formik.errors.phoneNumber}
-                name="phoneNumber"
-                onChange={handleChangePhone}
-                onBlur={formik.handleBlur}
-                placeholder="Enter your phone number"
-                type='number'
-                value={formik.values.phoneNumber}
+              <Select
+                handleChange={handleChangeSelect}
+                isLoading={isSendOTPLoading}
+                options={COUNTRY_SELECT_OPTIONS}
+                value={`${formik.values.countryCode}, ${formik.values.country}`}
               />
             </FormControl>
-          </div>
+            <div className="w-full">
+              <FormControl
+                label={''}
+                error={formik.touched.phoneNumber && formik.errors.phoneNumber}
+              >
+                <Input
+                  data-testid="phoneNumber"
+                  disabled={isSendOTPLoading}
+                  error={formik.touched.phoneNumber && formik.errors.phoneNumber}
+                  name="phoneNumber"
+                  onChange={handleChangePhone}
+                  onBlur={formik.handleBlur}
+                  placeholder="Enter your phone number"
+                  type='number'
+                  value={formik.values.phoneNumber}
+                />
+              </FormControl>
+            </div>
           </Flex>
-        <Button type={ButtonType.SUBMIT} isLoading={isSendOTPLoading} kind={ButtonKind.PRIMARY}>
-          Get OTP
-        </Button>
+          <Button type={ButtonType.SUBMIT} isLoading={isSendOTPLoading} kind={ButtonKind.PRIMARY}>
+            Get OTP
+          </Button>
         </VerticalStackLayout>
       </form>
     </>
