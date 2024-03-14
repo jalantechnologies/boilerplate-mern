@@ -32,7 +32,7 @@ const OTP: React.FC<OTPProps> = ({
   ): void => {
     const otpInputs = [...otp];
 
-    if (inputValue.length >= 2) return;
+    if (inputValue.length >= constant.OTP_INPUT_MAX_LENGTH) return;
 
     otpInputs[index] = inputValue;
     setOtp(otpInputs);

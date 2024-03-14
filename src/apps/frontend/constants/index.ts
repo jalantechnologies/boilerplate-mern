@@ -5,6 +5,7 @@ const constant = {
   FIRST_NAME_VALIDATION_ERROR: 'Please specify your first name',
   LAST_NAME_MIN_LENGTH: 1,
   LAST_NAME_VALIDATION_ERROR: 'Please specify your last name',
+  OTP_INPUT_MAX_LENGTH: 2,
   OTP_LENGTH: 4,
   PASSWORD_MATCH_VALIDATION_ERROR: 'The confirmed password doesn\'t match the chosen password.',
   PASSWORD_MIN_LENGTH: 8,
