@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { Flex, VerticalStackLayout } from '../../../components';
-import Button, { ButtonType } from '../../../components/button/button-primary';
+import { Button, Flex, VerticalStackLayout } from '../../../components';
 import ParagraphMedium from '../../../components/typography/paragraph-medium';
 import { useResetPasswordContext } from '../../../contexts';
 import { AsyncError } from '../../../types';
+import { ButtonType } from '../../../types/button';
 
 interface ForgotPasswordResendEmailProps {
   isResendEnabled: boolean;
@@ -47,9 +47,8 @@ const ForgotPasswordResendEmail: React.FC<ForgotPasswordResendEmailProps> = ({
         <Button
           disabled={!isResendEnabled}
           isLoading={isSendForgotPasswordEmailLoading}
-          label="Resend Link"
           type={ButtonType.SUBMIT}
-        />
+        >Resend Link</Button>
       </form>
     </VerticalStackLayout>
   );

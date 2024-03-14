@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { FormControl, Input, VerticalStackLayout } from '../../../components';
-import Button, { ButtonType } from '../../../components/button/button-primary';
+import { Button, FormControl, Input, VerticalStackLayout } from '../../../components';
 import ParagraphMedium from '../../../components/typography/paragraph-medium';
 import { AsyncError } from '../../../types';
 
 import useForgotPasswordForm from './forgot-password-form.hook';
+import { ButtonType } from '../../../types/button';
 
 interface ForgotPasswordFormProps {
   onError: (error: AsyncError) => void;
@@ -51,10 +51,9 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
             />
           </FormControl>
           <Button
-            label="Receive Reset Link"
             isLoading={isSendForgotPasswordEmailLoading}
             type={ButtonType.SUBMIT}
-          />
+          >Receive Reset Link</Button>
         </VerticalStackLayout>
       </form>
     </VerticalStackLayout>
