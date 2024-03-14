@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { FormControl, Input } from '../../../components';
+import { Button, FormControl, Input } from '../../../components';
 import routes from '../../../constants/routes';
 import { AsyncError } from '../../../types';
+import { ButtonKind, ButtonType } from '../../../types/button';
 
 import LoginFormCheckbox from './login-form-checkbox';
 import useLoginForm from './login-form.hook';
@@ -21,6 +22,11 @@ const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
   function togglePasswordVisibility() {
     setIsPasswordVisible((prevState) => !prevState);
   }
+
+  const togglePasswordOnClick = (e: { preventDefault: () => void; }) => {
+    e.preventDefault();
+    togglePasswordVisibility();
+  };
 
   return (
     <>
@@ -59,12 +65,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
               data-testid="password"
               disabled={isLoginLoading}
               endEnhancer={
-                <button
-                  className="inset-y-0 flex items-center"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    togglePasswordVisibility();
-                  }}
+                <Button
+                  onClick={togglePasswordOnClick}
+                  kind={ButtonKind.SECONDARY}
                 >
                   {isPasswordVisible ? (
                     <img
@@ -73,13 +76,13 @@ const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
                       alt="hide password icon"
                     />
                   ) : (
-                    <img
-                      className="size-6.5 opacity-65"
-                      src="/assets/img/icon/eye-open.svg"
-                      alt="show password icon"
-                    />
+                      <img
+                        className="size-6.5 opacity-65"
+                        src="/assets/img/icon/eye-open.svg"
+                        alt="show password icon"
+                      />
                   )}
-                </button>
+                </Button>
               }
               error={formik.touched.password && formik.errors.password}
               name="password"
@@ -101,15 +104,10 @@ const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
           <a href="#" className="text-sm text-primary hover:underline">Forget password?</a>
         </div>
 
-        <button
-          className={`w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 font-medium text-white transition hover:bg-primary/90 active:bg-primary/80
-            ${isLoginLoading && 'cursor-not-allowed bg-primary/80 hover:bg-primary/80'}`
-          }
-          disabled={isLoginLoading}
-          type="submit"
-        >
-          Log In
-        </button>
+        <Button type={ButtonType.SUBMIT} kind={ButtonKind.PRIMARY} isLoading={isLoginLoading}>
+        Log In
+        </Button>
+
         <div className="mt-6 text-center">
           <p className="font-medium">
             Don’t have any account?{' '}

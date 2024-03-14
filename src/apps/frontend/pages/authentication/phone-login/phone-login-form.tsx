@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { FormControl, Input } from '../../../components';
+import { Button, FormControl, Input } from '../../../components';
 import { AsyncError } from '../../../types';
+import { ButtonKind, ButtonType } from '../../../types/button';
 
 import CountryCodeSelect from './country-code-select';
 import usePhoneLoginForm from './phone-login-form.hook';
@@ -35,17 +36,22 @@ const PhoneLoginForm: React.FC<PhoneLoginFormProps> = ({ onError, onSendOTPSucce
   return (
     <>
       <form onSubmit={formik.handleSubmit}>
-        <div className="mb-6">
+        <div className="flex gap-4 pb-6">
           <FormControl
             label={'Phone'}
-            error={formik.touched.phoneNumber && formik.errors.phoneNumber}
+            error={formik.touched.countryCode && formik.errors.countryCode}
           >
-            <div className="flex gap-5">
-              <CountryCodeSelect
-                isLoading={isSendOTPLoading}
-                value={[formik.values.countryCode, formik.values.country]}
-                handleChange={handleChangeSelect}
-              />
+            <CountryCodeSelect
+              isLoading={isSendOTPLoading}
+              value={[formik.values.countryCode, formik.values.country]}
+              handleChange={handleChangeSelect}
+            />
+          </FormControl>
+          <div className="w-full">
+            <FormControl
+              label={''}
+              error={formik.touched.phoneNumber && formik.errors.phoneNumber}
+            >
               <Input
                 data-testid="phoneNumber"
                 disabled={isSendOTPLoading}
@@ -57,17 +63,12 @@ const PhoneLoginForm: React.FC<PhoneLoginFormProps> = ({ onError, onSendOTPSucce
                 type='number'
                 value={formik.values.phoneNumber}
               />
-            </div>
-          </FormControl>
+            </FormControl>
+          </div>
         </div>
-        <button
-          className={`w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 font-medium text-white transition hover:bg-primary/90
-            ${isSendOTPLoading && 'cursor-not-allowed bg-primary/90'}`}
-          disabled={isSendOTPLoading}
-          type="submit"
-        >
+        <Button type={ButtonType.SUBMIT} isLoading={isSendOTPLoading} kind={ButtonKind.PRIMARY}>
           Get OTP
-        </button>
+        </Button>
       </form>
     </>
   );

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { FormControl, Input } from '../../../components';
+import { Button, FormControl, Input } from '../../../components';
 import routes from '../../../constants/routes';
 import { AsyncError } from '../../../types';
+import { ButtonKind, ButtonType } from '../../../types/button';
 
 import useSignupForm from './signup-form.hook';
 
@@ -98,12 +99,12 @@ const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
               data-testid="password"
               disabled={isSignupLoading}
               endEnhancer={
-                <button
-                  className="inset-y-0 flex items-center"
-                  onClick={(e) => {
+                <Button
+                  onClick={(e: { preventDefault: () => void }) => {
                     e.preventDefault();
                     togglePasswordVisibility();
                   }}
+                  kind={ButtonKind.SECONDARY}
                 >
                   {isPasswordVisible ? (
                     <img
@@ -118,7 +119,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
                       className="size-6.5 opacity-65"
                     />
                   )}
-                </button>
+                </Button>
               }
               error={formik.touched.password && formik.errors.password}
               name="password"
@@ -133,18 +134,20 @@ const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
         <div className="mb-6">
           <FormControl
             label={'Re-type Password'}
-            error={formik.touched.retypePassword && formik.errors.retypePassword}
+            error={
+              formik.touched.retypePassword && formik.errors.retypePassword
+            }
           >
             <Input
               data-testid="retypePassword"
               disabled={isSignupLoading}
               endEnhancer={
-                <button
-                  className="inset-y-0 flex items-center"
-                  onClick={(e) => {
+                <Button
+                  onClick={(e: { preventDefault: () => void }) => {
                     e.preventDefault();
                     toggleRetypePasswordVisibility();
                   }}
+                  kind={ButtonKind.SECONDARY}
                 >
                   {isRetypePasswordVisible ? (
                     <img
@@ -159,9 +162,11 @@ const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
                       className="size-6.5 opacity-65"
                     />
                   )}
-                </button>
+                </Button>
               }
-              error={formik.touched.retypePassword && formik.errors.retypePassword}
+              error={
+                formik.touched.retypePassword && formik.errors.retypePassword
+              }
               name="retypePassword"
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
@@ -172,15 +177,14 @@ const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
           </FormControl>
         </div>
 
-        <button
-          className={`w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 font-medium text-white transition hover:bg-primary/90 active:bg-primary/80
-            ${isSignupLoading && 'cursor-not-allowed bg-primary/80 hover:bg-primary/80'}`
-          }
-          disabled={isSignupLoading}
-          type="submit"
+        <Button
+          type={ButtonType.SUBMIT}
+          kind={ButtonKind.PRIMARY}
+          isLoading={isSignupLoading}
         >
           Sign Up
-        </button>
+        </Button>
+
         <div className="mt-6 text-center">
           <p className="font-medium">
             Already have an account?{' '}

@@ -2,8 +2,10 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { FormControl, OTP } from '../../../components';
+import Button from '../../../components/button/button-primary';
 import routes from '../../../constants/routes';
 import { AsyncError } from '../../../types';
+import { ButtonKind, ButtonType } from '../../../types/button';
 
 import useOTPForm from './otp-form-hook';
 
@@ -75,17 +77,9 @@ const OTPForm: React.FC<OTPFormProps> = ({
           </h2>
         </div>
 
-        <button
-          className={`w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 font-medium text-white transition hover:bg-primary/90
-              ${isVerifyOTPLoading && 'cursor-not-allowed bg-primary/90'}`}
-          disabled={isVerifyOTPLoading}
-          type="submit"
-        >
+        <Button type={ButtonType.SUBMIT} isLoading={isVerifyOTPLoading} kind={ButtonKind.PRIMARY}>
           Verify
-        </button>
-        <h2 className="mt-6 text-lg font-medium text-red-500">
-          Don’t share the verification code with anyone!
-        </h2>
+        </Button>
       </form>
     </>
   );

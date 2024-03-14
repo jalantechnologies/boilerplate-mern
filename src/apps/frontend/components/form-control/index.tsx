@@ -10,8 +10,8 @@ const FormControl: React.FC<PropsWithChildren<FormControlProps>> = ({
   error,
   label,
 }) => (
-  <>
-    <label className="mb-2.5 block font-medium text-black dark:text-white">
+  <div>
+    <label className="mb-2.5 block min-h-6 font-medium text-black dark:text-white">
       {label}
     </label>
     <div className="relative">{children}</div>
@@ -20,7 +20,7 @@ const FormControl: React.FC<PropsWithChildren<FormControlProps>> = ({
         {error}
       </div>
     )}
-  </>
+  </div>
 );
 
 export default FormControl;
