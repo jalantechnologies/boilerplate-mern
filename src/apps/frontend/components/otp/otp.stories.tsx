@@ -3,8 +3,6 @@ import { StoryObj, Meta } from '@storybook/react';
 import OTP from '.';
 
 export default {
-  title: 'Components/Otp',
-  component: OTP,
   argTypes: {
     isLoading: { control: 'boolean' },
     onBlur: {
@@ -23,6 +21,9 @@ export default {
       },
     },
   },
+  component: OTP,
+  tags: ['autodocs'],
+  title: 'Components/Otp',
 } as Meta;
 
 type Story = StoryObj<typeof OTP>;

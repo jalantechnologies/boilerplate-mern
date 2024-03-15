@@ -5,8 +5,6 @@ import { ButtonKind } from '../../types/button';
 import Button from './index';
 
 export default {
-  title: 'Components/Button',
-  component: Button,
   argTypes: {
     kind: {
       control: {
@@ -18,6 +16,9 @@ export default {
       action: 'clicked',
     },
   },
+  component: Button,
+  tags: ['autodocs'],
+  title: 'Components/Button',
 } as Meta;
 
 type Story = StoryObj<typeof Button>;
