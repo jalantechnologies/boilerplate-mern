@@ -1,30 +1,44 @@
 import React, { useState } from 'react';
+import toast from 'react-hot-toast';
+
+import useTaskForm from '../../pages/tasks/tasks-form.hook';
+import Button from '../button/button.component';
+import TaskItemLayout from '../layouts/task-item.layout';
 
 import TaskModal from './task-modal';
 
 const TaskHeader: React.FC = () => {
-  const [modalOpen, setModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const onSuccess = () => {
+    toast.success('Task has been added successfully');
+    setIsModalOpen(false);
+  };
+  const { addTaskFormik, setFormikFieldValue } = useTaskForm({
+    onSuccess,
+  });
 
   return (
-    <div className="flex flex-col gap-y-4 rounded-sm border border-stroke bg-white p-3 shadow-default dark:border-strokedark dark:bg-boxdark sm:flex-row sm:items-center sm:justify-between">
-      <div>
-        <div className="pl-2 text-title-lg font-semibold text-black dark:text-white">
-          Tasks
-        </div>
+    <TaskItemLayout>
+      <div className="pl-2 text-title-lg font-semibold text-black">
+        Tasks
       </div>
+
       <div className="flex flex-col gap-4 2xsm:flex-row 2xsm:items-center">
-        <div>
-          <button
-            onClick={() => setModalOpen(!modalOpen)}
-            className="flex items-center gap-2 rounded bg-primary px-4.5 py-2 font-medium text-white hover:bg-opacity-90"
-          >
-            <img src='assets/svg/plus-icon.svg' />
+          <Button onClick={() => setIsModalOpen(!isModalOpen)}>
+            <img src="assets/svg/plus-icon.svg" />
             Add task
-          </button>
-          <TaskModal modalOpen={modalOpen} setModalOpen={setModalOpen} btnText={'Add Task'} />
-        </div>
+          </Button>
+          <TaskModal
+            formik={addTaskFormik}
+            setFieldValue={setFormikFieldValue}
+            isModalOpen={isModalOpen}
+            setIsModalOpen={setIsModalOpen}
+            btnText={'Add Task'}
+            taskOperationType="add"
+          />
       </div>
-    </div>
+    </TaskItemLayout>
   );
 };
 

@@ -23,12 +23,10 @@ export const TaskDbSchema: Schema = new Schema<TaskDB>(
     },
     description: {
       type: String,
-      index: true,
       required: true,
     },
     title: {
       type: String,
-      index: true,
       required: true,
     },
   },

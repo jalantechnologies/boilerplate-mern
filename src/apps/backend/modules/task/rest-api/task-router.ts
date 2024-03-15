@@ -13,7 +13,7 @@ export default class TaskRouter extends ApplicationRouter {
     router.post('/', ctrl.createTask);
     router.get('/', ctrl.getTasks);
     router.get('/:id', ctrl.getTask);
-    router.put('/:id', ctrl.updateTask);
+    router.patch('/:id', ctrl.updateTask);
     router.delete('/:id', ctrl.deleteTask);
   }
 }

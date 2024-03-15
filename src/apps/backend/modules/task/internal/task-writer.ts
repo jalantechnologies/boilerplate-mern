@@ -2,6 +2,7 @@ import {
   CreateTaskParams,
   DeleteTaskParams,
   Task,
+  TaskNotFoundError,
   UpdateTaskParams,
 } from '../types';
 
@@ -37,7 +38,7 @@ export default class TaskWriter {
     );
 
     if (!task) {
-      throw new Error('Task not found');
+      throw new TaskNotFoundError(params.taskId);
     }
 
     return TaskUtil.convertTaskDBToTask(task);

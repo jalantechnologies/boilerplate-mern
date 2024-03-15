@@ -1,67 +1,104 @@
-import React, { useState } from 'react';
+import { FormikProps } from 'formik';
+import React, { useEffect } from 'react';
+
+import { FormControl, Input } from '..';
+import { Task } from '../../types/task';
+import Button from '../button/button.component';
+import TextArea from '../input/text-area';
+import Modal from '../modal';
 
 interface TaskModalProps {
-  modalOpen: boolean;
-  setModalOpen: (open: boolean) => void;
+  isModalOpen: boolean;
+  setIsModalOpen: (open: boolean) => void;
   btnText: string;
+  taskOperationType: string;
+  task?: Task;
+  formik: FormikProps<Task>;
+  setFieldValue: (
+    formik: FormikProps<Task>,
+    field: string,
+    value: string,
+  ) => void;
 }
 
 const TaskModal: React.FC<TaskModalProps> = ({
-  modalOpen,
-  setModalOpen,
+  isModalOpen,
+  setIsModalOpen,
   btnText,
+  formik,
+  taskOperationType,
+  task,
+  setFieldValue,
 }) => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
+  useEffect(() => {
+    if (taskOperationType === 'edit' && task) {
+      setFieldValue(formik, 'title', task.title);
+      setFieldValue(formik, 'id', task.id);
+      setFieldValue(formik, 'description', task.description);
+    }
+  }, [taskOperationType, task]);
+
+  const handleClick = () => {
+    setIsModalOpen(false);
+  };
 
   return (
-    <div
-      className={`fixed left-0 top-0 z-99999 flex h-screen w-full justify-center overflow-y-scroll bg-black/80 px-4 py-5 ${
-        modalOpen ? 'block' : 'hidden'
-      }`}
-    >
-      <div className="relative m-auto w-full max-w-180 rounded-sm border border-stroke bg-gray p-4 shadow-default dark:border-strokedark dark:bg-meta-4 sm:p-8 xl:p-10">
-        <button
-          onClick={() => setModalOpen(false)}
-          className="absolute right-1 top-1 sm:right-5 sm:top-5"
+    <Modal isModalOpen={isModalOpen}>
+      <div className="absolute right-1 top-1 sm:right-5 sm:top-5">
+        <Button
+          onClick={() => setIsModalOpen(false)}
+          kind="tertiary"
+          shape="circle"
         >
           <img src="assets/svg/close-icon.svg" className="fill-current" />
-        </button>
+        </Button>
+      </div>
 
-        <div className="my-5">
-          <div className="mb-2.5 block font-medium text-black dark:text-white">
-            {title}
-          </div>
-          <input
-            type="text"
-            placeholder="Enter task title"
-            className="w-full rounded-sm border border-stroke bg-white px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-boxdark dark:text-white dark:focus:border-primary"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              setTitle(e.target.value);
-            }}
-          />
+      <form onSubmit={formik.handleSubmit}>
+        <div className="py-5">
+          <FormControl
+            error={formik.touched.title && formik.errors.title}
+            label={'Task Title'}
+          >
+            <Input
+              data-testid="title"
+              type="text"
+              disabled={false}
+              name="title"
+              error={formik.touched.title && formik.errors.title}
+              placeholder="Enter task title"
+              onChange={formik.handleChange}
+              value={formik.values.title}
+              onBlur={formik.handleBlur}
+            />
+          </FormControl>
         </div>
 
         <div className="mb-5">
-          <div className="mb-2.5 block font-medium text-black dark:text-white">
-            {description}
-          </div>
-          <textarea
-            cols={30}
-            rows={7}
-            placeholder="Enter task description"
-            className="w-full rounded-sm border border-stroke bg-white px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-boxdark dark:text-white dark:focus:border-primary"
-            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-              setDescription(e.target.value);
-            }}
-          ></textarea>
+          <FormControl
+            error={formik.touched.description && formik.errors.description}
+            label={'Task description'}
+          >
+            <TextArea
+              cols={30}
+              rows={7}
+              value={formik.values.description}
+              placeholder="Enter task description"
+              onChange={formik.handleChange}
+              disabled={false}
+              error={formik.touched.description && formik.errors.description}
+              name={'description'}
+              onBlur={formik.handleBlur}
+            />
+          </FormControl>
         </div>
-        <button className="flex w-full items-center justify-center gap-2 rounded bg-primary px-4.5 py-2.5 font-medium text-white hover:bg-opacity-90">
+
+        <Button type="submit" onClick={handleClick}>
           <img src="assets/svg/plus-icon.svg" />
           {btnText}
-        </button>
-      </div>
-    </div>
+        </Button>
+      </form>
+    </Modal>
   );
 };
 

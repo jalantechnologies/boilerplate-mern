@@ -19,11 +19,6 @@ export type GetTaskParams = {
   taskId: string;
 };
 
-export type GetTaskByTitleParams = {
-  accountId: string;
-  title: string;
-};
-
 export type CreateTaskParams = {
   accountId: string;
   description: string;
@@ -49,17 +44,6 @@ export type PaginationParams = {
 
 export enum TaskErrorCode {
   NOT_FOUND = 'TASK_ERR_01',
-  TASK_ALREADY_EXISTS = 'TASK_ERR_02',
-}
-
-export class TaskWithTitleExistsError extends ApplicationError {
-  code: TaskErrorCode;
-
-  constructor(title: string) {
-    super(`Task with Title ${title} already exists.`);
-    this.code = TaskErrorCode.TASK_ALREADY_EXISTS;
-    this.httpStatusCode = HttpStatusCodes.CONFLICT;
-  }
 }
 
 export class TaskNotFoundError extends ApplicationError {

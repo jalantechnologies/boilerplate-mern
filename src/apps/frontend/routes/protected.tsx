@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 
-import { useAccountContext } from '../contexts';
+import { TaskProvider, useAccountContext } from '../contexts';
 import { Dashboard, NotFound, Tasks } from '../pages';
 import AppLayout from '../pages/app-layout/app-layout';
 
@@ -15,7 +15,9 @@ const App = () => {
 
   return (
     <AppLayout>
-      <Outlet />
+      <TaskProvider>
+        <Outlet />
+      </TaskProvider>
     </AppLayout>
   );
 };

@@ -1,16 +1,5 @@
 import { JsonObject } from './common-types';
 
-export interface UpdateTaskParams {
-  accountId: string;
-  description: string;
-  taskId: string;
-  title: string;
-}
-export interface DeleteTaskParams {
-  accountId: string;
-  taskId: string;
-}
-
 export class Task {
   id: string;
   description: string;
