@@ -18,6 +18,9 @@ export default {
     value: { control: 'text' },
   },
   component: Select,
+  parameters: {
+    layout: 'centered',
+  },
   tags: ['autodocs'],
   title: 'Components/Select',
 } as Meta;
