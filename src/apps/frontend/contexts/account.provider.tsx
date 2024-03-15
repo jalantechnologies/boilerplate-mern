@@ -38,7 +38,8 @@ export const AccountProvider: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <AccountContext.Provider
       value={{
-        accountDetails,
+        accountDetails:
+          new Account({ ...accountDetails }), // creating an instance to access its methods
         accountError,
         getAccountDetails,
         isAccountLoading,

@@ -7,7 +7,7 @@ import { AsyncError } from '../../../types';
 
 interface LoginFormProps {
   onSuccess: () => void;
-  onError: (err: AsyncError) => void;
+  onError: (error: AsyncError) => void;
 }
 const useLoginForm = ({ onError, onSuccess }: LoginFormProps) => {
   const {
@@ -22,18 +22,18 @@ const useLoginForm = ({ onError, onSuccess }: LoginFormProps) => {
     validationSchema: Yup.object({
       username: Yup.string()
         .email(constant.EMAIL_VALIDATION_ERROR)
-        .required('Required'),
+        .required(constant.EMAIL_VALIDATION_ERROR),
       password: Yup.string()
         .min(constant.PASSWORD_MIN_LENGTH, constant.PASSWORD_VALIDATION_ERROR)
-        .required('Required'),
+        .required(constant.PASSWORD_VALIDATION_ERROR),
     }),
     onSubmit: (values) => {
       login(values.username, values.password)
         .then(() => {
           onSuccess();
         })
-        .catch((err) => {
-          onError(err as AsyncError);
+        .catch((error) => {
+          onError(error as AsyncError);
         });
     },
   });

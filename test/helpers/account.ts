@@ -10,25 +10,30 @@ export const createAccount = async (params?: {
   accessToken: AccessToken,
   account: Account,
 }> => {
-  const fName = faker.name.firstName();
-  const lName = faker.name.lastName();
-  const username = faker.internet.email(fName, lName);
+  const firstName = faker.name.firstName();
+  const lastName = faker.name.lastName();
+  const username = faker.internet.email(firstName, lastName);
   const password = faker.internet.password(8);
 
   const accountCreateParams = {
     username,
     password,
-    firstName: fName,
-    lastName: lName,
+    firstName,
+    lastName,
     ...params?.accountParams && params.accountParams,
   };
 
-  const account = await AccountService.createAccount(accountCreateParams);
+  const account = await AccountService.createAccountByUsernameAndPassword(
+    accountCreateParams.firstName,
+    accountCreateParams.lastName,
+    accountCreateParams.password,
+    accountCreateParams.username,
+  );
 
-  const accessToken = await AccessTokenService.createAccessToken({
-    username: accountCreateParams.username,
-    password: accountCreateParams.password,
-  });
+  const accessToken = await AccessTokenService.createAccessTokenByUsernameAndPassword(
+    accountCreateParams.password,
+    accountCreateParams.username,
+  );
 
   return {
     account,

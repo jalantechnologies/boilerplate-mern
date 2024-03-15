@@ -11,6 +11,9 @@ logger:
 mongoDb:
   connCaching: true
 
+passwordResetToken:
+  expiresInSeconds: '3600'
+
 server:
   port: '8080'
 

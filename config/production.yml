@@ -1,2 +1,7 @@
+accounts:
+  passwordResetEmailEnabled: true
+
+enableSMS: true
+
 logger:
   transports: [ 'datadog' ]

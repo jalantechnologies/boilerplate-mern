@@ -22,8 +22,6 @@ const UserProfileSnippet: React.FC<DropdownUserProps> = ({
   const trigger = useRef<HTMLAnchorElement>(null);
   const dropdown = useRef<HTMLDivElement>(null);
 
-  const username = account?.name || account?.username || 'Guest';
-
   // close on click outside
   useEffect(() => {
     const clickHandler = (event: MouseEvent) => {
@@ -60,7 +58,7 @@ const UserProfileSnippet: React.FC<DropdownUserProps> = ({
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            {username}
+            {account.displayName()}
           </span>
           <span className="block text-xs">User</span>
         </span>

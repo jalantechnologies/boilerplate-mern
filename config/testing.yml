@@ -1,5 +1,13 @@
 accounts:
   tokenKey: 'test_auth_token'
+  passwordResetEmailEnabled: true
+
+mailer:
+  defaultEmail: 'DEFAULT_EMAIL'
+  defaultEmailName: 'DEFAULT_EMAIL_NAME'
+  forgetPasswordMailTemplateId: 'FORGOT_PASSWORD_MAIL_TEMPLATE_ID'
+
+enableSMS: true
 
 mongoDb:
   uri: 'mongodb://localhost:27017/boilerplate-mern-test'
