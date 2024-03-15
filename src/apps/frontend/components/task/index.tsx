@@ -5,8 +5,8 @@ import { AsyncError } from '../../types';
 import VerticalStackLayout from '../layouts/vertical-stack-layout';
 import HeadingLarge from '../typography/heading-large';
 
-import TaskBlockSection from './task-block-section';
 import TaskHeader from './task-header';
+import TaskSection from './task-section';
 
 interface TaskContainerProps {
   onError: (error: AsyncError) => void;
@@ -14,7 +14,7 @@ interface TaskContainerProps {
 
 const TaskContainer: React.FC<TaskContainerProps> = ({ onError }) => {
   const {
-    getTasks, tasksList, deleteTask, setTasksList,
+    getTasks, tasksList, deleteTask, setTasksList, isGetTasksLoading,
   } = useTaskContext();
 
   const fetchTasks = async () => {
@@ -39,7 +39,11 @@ const TaskContainer: React.FC<TaskContainerProps> = ({ onError }) => {
     <VerticalStackLayout gap={5}>
       <HeadingLarge>TaskList</HeadingLarge>
       <TaskHeader />
-      <TaskBlockSection tasks={tasksList} handleDeleteTask={handleDeleteTask} />
+      <TaskSection
+        tasks={tasksList}
+        isGetTasksLoading={isGetTasksLoading}
+        handleDeleteTask={handleDeleteTask}
+      />
     </VerticalStackLayout>
   );
 };

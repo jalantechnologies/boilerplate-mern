@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 
 import useTaskForm from '../../pages/tasks/tasks-form.hook';
-import { Task } from '../../types/task';
-import Button from '../button/button.component';
+import { ButtonKind, ButtonSize } from '../../types/button';
+import { Task, TaskOperationType } from '../../types/task';
+import Button from '../button';
 import MenuItem from '../menu';
+import Spinner from '../spinner/spinner';
 import HeadingSmall from '../typography/heading-small';
 import LabelLarge from '../typography/label-large';
 import LabelMedium from '../typography/label-medium';
@@ -14,11 +16,13 @@ import TaskModal from './task-modal';
 interface TaskBlockSectionProps {
   tasks: Task[];
   handleDeleteTask: (taskId: string) => void;
+  isGetTasksLoading: boolean;
 }
 
-const TaskBlockSection: React.FC<TaskBlockSectionProps> = ({
+const TaskSection: React.FC<TaskBlockSectionProps> = ({
   tasks,
   handleDeleteTask,
+  isGetTasksLoading,
 }) => {
   const [updateTaskModal, setUpdateTaskModal] = useState(false);
   const [currentTask, setCurrentTask] = useState<Task>();
@@ -36,16 +40,26 @@ const TaskBlockSection: React.FC<TaskBlockSectionProps> = ({
     onSuccess,
   });
 
+  if (isGetTasksLoading) {
+    return (
+      <div className='flex h-96 w-full items-center justify-center'>
+        <Spinner />
+      </div>
+    );
+  }
+
   return (
     <div className="pt-5">
       {tasks.length > 0 && (
-        <HeadingSmall>To Do's ({tasks.length})</HeadingSmall>
+        <div className="pb-5">
+          <HeadingSmall>To Do's ({tasks.length})</HeadingSmall>
+        </div>
       )}
 
       {tasks.map((task) => (
         <div
           key={task.id}
-          className="relative mt-3 flex cursor-move justify-between rounded-sm border border-stroke bg-white p-7 shadow-default"
+          className="relative mt-5 flex cursor-move justify-between rounded-sm border border-stroke bg-white p-7 shadow-default"
         >
           <div>
             <LabelLarge>{task.title}</LabelLarge>
@@ -54,18 +68,20 @@ const TaskBlockSection: React.FC<TaskBlockSectionProps> = ({
                 htmlFor={`taskCheckbox${task.id}`}
                 className="cursor-pointer"
               >
-                <div className="relative mt-4 flex items-center">
+                <div className="relative flex items-center pt-4">
                   <input
                     type="checkbox"
                     id={`taskCheckbox${task.id}`}
                     className="taskCheckbox sr-only"
                   />
-                  <div className="box mr-3 flex size-5 items-center justify-center rounded border border-stroke">
+                  <div className="box flex size-5 items-center justify-center rounded border border-stroke">
                     <span className="text-white opacity-0">
                       <img src="assets/svg/checkbox-icon.svg" />
                     </span>
                   </div>
-                  <LabelMedium>{task.description}</LabelMedium>
+                  <div className="pl-2">
+                    <LabelMedium>{task.description}</LabelMedium>
+                  </div>
                 </div>
               </label>
             </div>
@@ -74,14 +90,16 @@ const TaskBlockSection: React.FC<TaskBlockSectionProps> = ({
             <MenuItem>
               <Button
                 onClick={() => handleTaskOperation(task)}
-                kind="secondary"
+                kind={ButtonKind.SECONDARY}
+                size={ButtonSize.DEFAULT}
               >
                 <img src="assets/svg/edit-icon.svg" alt="Edit task" />
                 Edit
               </Button>
               <Button
                 onClick={() => handleDeleteTask(task.id)}
-                kind="secondary"
+                kind={ButtonKind.SECONDARY}
+                size={ButtonSize.DEFAULT}
               >
                 <img src="assets/svg/delete-icon.svg" alt="Delete task" />
                 Delete
@@ -96,11 +114,11 @@ const TaskBlockSection: React.FC<TaskBlockSectionProps> = ({
         isModalOpen={updateTaskModal}
         setIsModalOpen={setUpdateTaskModal}
         btnText={'Update Task'}
-        taskOperationType={'edit'}
+        taskOperationType={TaskOperationType.EDIT}
         task={currentTask}
       />
     </div>
   );
 };
 
-export default TaskBlockSection;
+export default TaskSection;

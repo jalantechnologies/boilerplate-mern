@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 
 import useTaskForm from '../../pages/tasks/tasks-form.hook';
-import Button from '../button/button.component';
+import { TaskOperationType } from '../../types/task';
+import Button from '../button';
 import TaskItemLayout from '../layouts/task-item.layout';
 
 import TaskModal from './task-modal';
@@ -35,7 +36,7 @@ const TaskHeader: React.FC = () => {
             isModalOpen={isModalOpen}
             setIsModalOpen={setIsModalOpen}
             btnText={'Add Task'}
-            taskOperationType="add"
+            taskOperationType={TaskOperationType.ADD}
           />
       </div>
     </TaskItemLayout>

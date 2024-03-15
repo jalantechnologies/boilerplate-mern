@@ -10,9 +10,9 @@ const Tasks: React.FC = () => {
   };
 
   return (
-    <div className="mb-10 h-screen overflow-y-auto p-5 sm:p-10">
-      <TaskContainer onError={onError} />
-    </div>
+      <div className='h-screen overflow-y-auto p-5'>
+        <TaskContainer onError={onError} />
+      </div>
   );
 };
 

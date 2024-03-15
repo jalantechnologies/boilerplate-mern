@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React, { PropsWithChildren } from 'react';
 
-import { ButtonKind, ButtonType } from '../../types/button';
+import { ButtonKind, ButtonSize, ButtonType } from '../../types/button';
 import Spinner from '../spinner/spinner';
 
 import styles from './button.styles';
@@ -12,6 +12,7 @@ interface ButtonProps {
   onClick?: (e) => void;
   type?: ButtonType;
   kind?: ButtonKind;
+  size?: ButtonSize;
 }
 
 const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
@@ -21,6 +22,7 @@ const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
   onClick,
   type = ButtonType.BUTTON,
   kind = ButtonKind.PRIMARY,
+  size,
 }) => {
   const content = isLoading && kind === ButtonKind.PRIMARY ? <Spinner /> : children;
 
@@ -29,6 +31,7 @@ const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
       className={clsx([
         styles.kind[kind].base,
         (disabled || isLoading) ? styles.kind[kind].disableState : styles.kind[kind].enableState,
+        styles.size[size],
       ])}
       disabled={disabled || isLoading}
       type={type}

@@ -7,12 +7,12 @@ import Input from './input';
 import PasswordInput from './input/password-input';
 import HorizontalStackLayout from './layouts/horizontal-stack-layout';
 import VerticalStackLayout from './layouts/vertical-stack-layout';
+import MenuItem from './menu';
 import OTP from './otp';
 import Select from './select';
+import TaskContainer from './task';
 import H2 from './typography/h2';
 import ParagraphMedium from './typography/paragraph-medium';
-import MenuItem from './menu';
-import TaskContainer from './task';
 
 export {
   Button,

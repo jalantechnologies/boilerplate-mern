@@ -1,5 +1,9 @@
 import { JsonObject } from './common-types';
 
+export enum TaskOperationType {
+  ADD = 'add',
+  EDIT = 'edit',
+}
 export class Task {
   id: string;
   description: string;

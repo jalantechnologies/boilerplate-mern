@@ -14,15 +14,22 @@ const styles = {
         text-white
         transition
         w-full
+        gap-2
       `,
       disableState: 'cursor-not-allowed bg-primary/80',
       enableState: 'hover:bg-primary/90 cursor-pointer',
     },
     secondary: {
       base: `
-        inset-y-0
         flex
+        gap-2 
         items-center
+        justify-start
+        rounded
+        text-black
+        text-left
+        text-sm
+        w-full
       `,
       disableState: 'cursor-not-allowed',
       enableState: 'cursor-pointer',
@@ -38,6 +45,12 @@ const styles = {
       disableState: 'cursor-not-allowed text-slate-500',
       enableState: 'cursor-pointer',
     },
+  },
+  size: {
+    mini: 'p-1.5',
+    compact: 'p-2',
+    default: 'p-2.5',
+    large: 'p-3.5',
   },
 };
 

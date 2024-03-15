@@ -1,9 +1,9 @@
 import { FormikProps } from 'formik';
 import React, { useEffect } from 'react';
 
-import { FormControl, Input } from '..';
-import { Task } from '../../types/task';
-import Button from '../button/button.component';
+import { Button, FormControl, Input } from '..';
+import { ButtonKind, ButtonType } from '../../types/button';
+import { Task, TaskOperationType } from '../../types/task';
 import TextArea from '../input/text-area';
 import Modal from '../modal';
 
@@ -31,7 +31,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
   setFieldValue,
 }) => {
   useEffect(() => {
-    if (taskOperationType === 'edit' && task) {
+    if (taskOperationType === TaskOperationType.EDIT.toString() && task) {
       setFieldValue(formik, 'title', task.title);
       setFieldValue(formik, 'id', task.id);
       setFieldValue(formik, 'description', task.description);
@@ -47,10 +47,9 @@ const TaskModal: React.FC<TaskModalProps> = ({
       <div className="absolute right-1 top-1 sm:right-5 sm:top-5">
         <Button
           onClick={() => setIsModalOpen(false)}
-          kind="tertiary"
-          shape="circle"
+          kind={ButtonKind.TERTIARY}
         >
-          <img src="assets/svg/close-icon.svg" className="fill-current" />
+          <img src="assets/svg/close-icon.svg" alt='close-icon' className="fill-current" />
         </Button>
       </div>
 
@@ -74,7 +73,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
           </FormControl>
         </div>
 
-        <div className="mb-5">
+        <div>
           <FormControl
             error={formik.touched.description && formik.errors.description}
             label={'Task description'}
@@ -93,10 +92,13 @@ const TaskModal: React.FC<TaskModalProps> = ({
           </FormControl>
         </div>
 
-        <Button type="submit" onClick={handleClick}>
-          <img src="assets/svg/plus-icon.svg" />
+        <div className='pt-5'>
+
+        <Button type={ButtonType.SUBMIT} onClick={handleClick}>
+          <img src="assets/svg/plus-icon.svg" alt='plus-icon' />
           {btnText}
         </Button>
+        </div>
       </form>
     </Modal>
   );

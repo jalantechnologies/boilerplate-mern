@@ -1,6 +1,7 @@
 import React, { PropsWithChildren, useState } from 'react';
 
-import Button from '../button/button.component';
+import { ButtonKind } from '../../types/button';
+import Button from '../button';
 
 const MenuItem: React.FC<PropsWithChildren> = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -8,8 +9,7 @@ const MenuItem: React.FC<PropsWithChildren> = ({ children }) => {
     <div className="relative flex">
       <Button
         onClick={() => setIsOpen(!isOpen)}
-        kind="tertiary"
-        shape="circle"
+        kind={ButtonKind.TERTIARY}
       >
         <img src="assets/svg/more-alt.svg" />
       </Button>
