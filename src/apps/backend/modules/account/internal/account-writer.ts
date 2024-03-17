@@ -19,12 +19,12 @@ export default class AccountWriter {
     // this will throw an error if it does
     await AccountReader.checkUsernameNotExists(username);
 
-    const accountHashedPassword = await AccountUtil.hashPassword(password);
+    const accHashedPwd = await AccountUtil.hashPassword(password);
     const accountDb = await AccountRepository.create({
       firstName,
       lastName,
       username,
-      hashedPassword: accountHashedPassword,
+      hashedPassword: accHashedPwd,
       active: true,
     });
 
@@ -54,21 +54,5 @@ export default class AccountWriter {
     });
 
     return AccountUtil.convertAccountDBToAccount(accountDb);
-  }
-
-  public static async updatePasswordByAccountId(
-    accountId: string,
-    newPassword: string,
-  ): Promise<Account> {
-    const accountHashedPassword = await AccountUtil.hashPassword(newPassword);
-    const dbAccount = await AccountRepository.findByIdAndUpdate(
-      accountId,
-      {
-        hashedPassword: accountHashedPassword,
-      },
-      { new: true },
-    );
-
-    return AccountUtil.convertAccountDBToAccount(dbAccount);
   }
 }

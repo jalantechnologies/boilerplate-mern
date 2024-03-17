@@ -69,9 +69,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
             <p>Remember me</p>
           </label>
 
-          <Link to={routes.FORGOT_PASSWORD} className="text-sm text-primary hover:underline">
+          <a href="#" className="text-sm text-primary hover:underline">
             Forget password?
-          </Link>
+          </a>
         </Flex>
 
         <Button
