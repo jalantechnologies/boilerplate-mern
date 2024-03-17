@@ -3,15 +3,11 @@ import { HttpStatusCodes } from '../http';
 
 export class Account {
   id: string;
-  firstName: string;
-  lastName: string;
   username: string;
   hashedPassword: string;
 }
 
 export type CreateAccountParams = {
-  firstName: string;
-  lastName: string;
   password: string;
   username: string;
 };

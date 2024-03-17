@@ -8,8 +8,6 @@ describe('AccessToken API', () => {
   describe('POST /access-tokens', () => {
     it('should return access token for given username password', async () => {
       const params = {
-        firstName: faker.name.firstName(),
-        lastName: faker.name.lastName(),
         username: faker.internet.email(),
         password: 'password',
       };

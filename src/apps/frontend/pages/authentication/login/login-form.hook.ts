@@ -22,10 +22,10 @@ const useLoginForm = ({ onError, onSuccess }: LoginFormProps) => {
     validationSchema: Yup.object({
       username: Yup.string()
         .email(constant.EMAIL_VALIDATION_ERROR)
-        .required(constant.EMAIL_VALIDATION_ERROR),
+        .required('Required'),
       password: Yup.string()
         .min(constant.PASSWORD_MIN_LENGTH, constant.PASSWORD_VALIDATION_ERROR)
-        .required(constant.PASSWORD_VALIDATION_ERROR),
+        .required('Required'),
     }),
     onSubmit: (values) => {
       login(values.username, values.password)

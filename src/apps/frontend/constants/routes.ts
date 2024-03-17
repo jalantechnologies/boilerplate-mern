@@ -2,7 +2,6 @@ const constants = {
   ABOUT: '/about',
   DASHBOARD: '/',
   LOGIN: '/login',
-  SIGNUP: '/signup',
   TASKS: '/tasks',
 };
 

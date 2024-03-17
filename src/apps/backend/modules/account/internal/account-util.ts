@@ -8,8 +8,6 @@ export default class AccountUtil {
   public static convertAccountDBToAccount(accountDb: AccountDB): Account {
     const account = new Account();
     account.id = accountDb._id.toString();
-    account.firstName = accountDb.firstName;
-    account.lastName = accountDb.lastName;
     account.username = accountDb.username;
     account.hashedPassword = accountDb.hashedPassword;
     return account;

@@ -15,8 +15,6 @@ export default class AccountsFixture {
     const data: CreateAccountParams[] = new Array(numberOfEntries)
       .fill('x')
       .map(() => ({
-        firstName: faker.name.firstName(),
-        lastName: faker.name.lastName(),
         username: faker.internet.email(),
         password: faker.internet.password(),
       }));
@@ -30,8 +28,6 @@ export default class AccountsFixture {
     newAccountData?: CreateAccountParams,
   ): Promise<CreateAccountParams> {
     const data: CreateAccountParams = newAccountData || {
-      firstName: faker.name.firstName(),
-      lastName: faker.name.lastName(),
       username: faker.internet.email(),
       password: faker.internet.password(),
     };
