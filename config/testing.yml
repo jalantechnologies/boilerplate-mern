@@ -1,8 +1,6 @@
 accounts:
   tokenKey: 'test_auth_token'
 
-enableSMS: true
-
 mongoDb:
   uri: 'mongodb://localhost:27017/boilerplate-mern-test'
 

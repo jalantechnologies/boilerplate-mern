@@ -75,10 +75,10 @@ describe('accessAuthMiddleware', () => {
       .withArgs('accounts.tokenExpiry')
       .returns('-1h');
 
-    const expiredToken = await AccessTokenService.createAccessTokenByUsernameAndPassword(
+    const expiredToken = await AccessTokenService.createAccessToken({
+      username: account.username,
       password,
-      account.username,
-    );
+    });
 
     assert.throws(
       () => accessAuthMiddleware({

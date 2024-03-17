@@ -1,8 +1,8 @@
-import { CreateAccountParamsByUsernameAndPassword } from '../../src/apps/backend/modules/account';
+import { CreateAccountParams } from '../../src/apps/backend/modules/account';
 import { setupScenario } from '../helpers/scenario';
 
 describe('Login', () => {
-  const credentials: CreateAccountParamsByUsernameAndPassword = setupScenario('login');
+  const credentials: CreateAccountParams = setupScenario('login');
 
   beforeEach(() => {
     cy.visit('/login');

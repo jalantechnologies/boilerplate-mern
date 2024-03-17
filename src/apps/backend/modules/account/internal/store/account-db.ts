@@ -1,18 +1,12 @@
 import { Schema, Types } from 'mongoose';
 
-interface PhoneNumber {
-  countryCode: string;
-  phoneNumber: string;
-}
-
 export interface AccountDB {
   _id: Types.ObjectId;
   active: boolean;
   firstName: string;
-  hashedPassword: string;
   lastName: string;
-  phoneNumber: PhoneNumber;
   username: string;
+  hashedPassword: string;
 }
 
 export const AccountDbSchema: Schema = new Schema<AccountDB>(
@@ -22,29 +16,22 @@ export const AccountDbSchema: Schema = new Schema<AccountDB>(
       required: true,
     },
     firstName: {
-      default: '',
       type: String,
-    },
-    hashedPassword: {
-      default: '',
-      type: String,
+      required: true,
     },
     lastName: {
-      default: '',
       type: String,
+      required: true,
     },
-    phoneNumber: {
-      default: null,
-      type: {
-        countryCode: String,
-        phoneNumber: String,
-      },
-      index: true,
+    hashedPassword: {
+      type: String,
+      required: true,
     },
     username: {
-      default: '',
       type: String,
       index: true,
+      required: true,
+      unique: true,
     },
   },
   {

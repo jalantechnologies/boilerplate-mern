@@ -1,53 +1,20 @@
-import { OtpService } from '../otp';
-
 import AccountReader from './internal/account-reader';
 import AccountWriter from './internal/account-writer';
 import {
-  Account,
-  GetAccountParams,
-  PhoneNumber,
+  Account, AccountSearchParams, CreateAccountParams, GetAccountParams,
 } from './types';
 
 export default class AccountService {
-  public static async createAccountByUsernameAndPassword(
-    firstName: string,
-    lastName: string,
-    password: string,
-    username: string,
+  public static async createAccount(
+    params: CreateAccountParams,
   ): Promise<Account> {
-    return AccountWriter.createAccountByUsernameAndPassword(
-      firstName,
-      lastName,
-      password,
-      username,
-    );
+    return AccountWriter.createAccount(params);
   }
 
-  public static async getOrCreateAccountByPhoneNumber(
-    phoneNumber: PhoneNumber,
+  public static async getAccountByUsernamePassword(
+    params: AccountSearchParams,
   ): Promise<Account> {
-    let account = await AccountReader.getAccountByPhoneNumberOptional(phoneNumber);
-
-    if (!account) {
-      account = await AccountWriter.createAccountByPhoneNumber(phoneNumber);
-    }
-
-    await OtpService.createOtp(phoneNumber);
-
-    return account;
-  }
-
-  public static async getAccountByUsernameAndPassword(
-    password: string,
-    username: string,
-  ): Promise<Account> {
-    return AccountReader.getAccountByUsernameAndPassword(password, username);
-  }
-
-  public static async getAccountByPhoneNumber(
-    phoneNumber: PhoneNumber,
-  ): Promise<Account> {
-    return AccountReader.getAccountByPhoneNumber(phoneNumber);
+    return AccountReader.getAccountByUsernamePassword(params);
   }
 
   public static async getAccountById(
