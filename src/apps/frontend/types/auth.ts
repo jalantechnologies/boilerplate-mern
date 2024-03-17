@@ -1,6 +1,6 @@
 import { JsonObject } from './common-types';
 
-export class AccessToken {
+export default class AccessToken {
   accountId: string;
   token: string;
 
@@ -9,12 +9,3 @@ export class AccessToken {
     this.token = json.token as string;
   }
 }
-
-export enum KeyboardKeys {
-  BACKSPACE = 'Backspace',
-}
-
-export type PhoneNumber = {
-  countryCode: string;
-  phoneNumber: string;
-};

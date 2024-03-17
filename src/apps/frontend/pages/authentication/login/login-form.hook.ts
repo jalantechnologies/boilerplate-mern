@@ -7,7 +7,7 @@ import { AsyncError } from '../../../types';
 
 interface LoginFormProps {
   onSuccess: () => void;
-  onError: (error: AsyncError) => void;
+  onError: (err: AsyncError) => void;
 }
 const useLoginForm = ({ onError, onSuccess }: LoginFormProps) => {
   const {
@@ -32,8 +32,8 @@ const useLoginForm = ({ onError, onSuccess }: LoginFormProps) => {
         .then(() => {
           onSuccess();
         })
-        .catch((error) => {
-          onError(error as AsyncError);
+        .catch((err) => {
+          onError(err as AsyncError);
         });
     },
   });
