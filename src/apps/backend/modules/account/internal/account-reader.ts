@@ -1,9 +1,11 @@
 import {
   Account,
   AccountNotFoundError,
-  AccountSearchParams,
+  AccountWithPhoneNumberExistsError,
   AccountWithUserNameExistsError,
   InvalidCredentialsError,
+  Nullable,
+  PhoneNumber,
 } from '../types';
 
 import AccountUtil from './account-util';
@@ -13,27 +15,28 @@ export default class AccountReader {
   public static async getAccountByUsername(
     username: string,
   ): Promise<Account> {
-    const accDb = await AccountRepository.findOne({
+    const accountDb = await AccountRepository.findOne({
       username,
       active: true,
     });
 
-    if (!accDb) {
+    if (!accountDb) {
       throw new AccountNotFoundError(username);
     }
-    return AccountUtil.convertAccountDBToAccount(accDb);
+    return AccountUtil.convertAccountDBToAccount(accountDb);
   }
 
-  public static async getAccountByUsernamePassword(
-    params: AccountSearchParams,
+  public static async getAccountByUsernameAndPassword(
+    password: string,
+    username: string,
   ): Promise<Account> {
-    const account = await AccountReader.getAccountByUsername(params.username);
+    const account = await AccountReader.getAccountByUsername(username);
     const isPasswordValid = await AccountUtil.comparePassword(
-      params.password,
+      password,
       account.hashedPassword,
     );
     if (!isPasswordValid) {
-      throw new InvalidCredentialsError(params.username);
+      throw new InvalidCredentialsError(username);
     }
 
     return account;
@@ -42,26 +45,71 @@ export default class AccountReader {
   public static async getAccountById(
     accountId: string,
   ): Promise<Account> {
-    const accDb = await AccountRepository.findOne({
+    const accountDb = await AccountRepository.findOne({
       _id: accountId,
       active: true,
     });
 
-    if (!accDb) {
+    if (!accountDb) {
       throw new AccountNotFoundError(accountId);
     }
-    return AccountUtil.convertAccountDBToAccount(accDb);
+    return AccountUtil.convertAccountDBToAccount(accountDb);
+  }
+
+  public static async getAccountByPhoneNumber(
+    phoneNumber: PhoneNumber,
+  ): Promise<Account> {
+    const account = await this.getAccountByPhoneNumberOptional(phoneNumber);
+
+    if (!account) {
+      throw new AccountNotFoundError(phoneNumber.toString());
+    }
+
+    return account;
+  }
+
+  public static async getAccountByPhoneNumberOptional(
+    phoneNumber: PhoneNumber,
+  ): Promise<Nullable<Account>> {
+    const accountDb = await AccountRepository.findOne({
+      'phoneNumber.countryCode': phoneNumber.countryCode,
+      'phoneNumber.phoneNumber': phoneNumber.phoneNumber,
+      active: true,
+    });
+
+    if (!accountDb) {
+      return null;
+    }
+
+    return AccountUtil.convertAccountDBToAccount(accountDb);
   }
 
   public static async checkUsernameNotExists(
-    params: AccountSearchParams,
+    username: string,
   ): Promise<boolean> {
-    const accDb = await AccountRepository.findOne({
-      username: params.username,
+    const accountDb = await AccountRepository.findOne({
+      username,
       active: true,
     });
-    if (accDb) {
-      throw new AccountWithUserNameExistsError(params.username);
+
+    if (accountDb) {
+      throw new AccountWithUserNameExistsError(username);
+    }
+
+    return false;
+  }
+
+  public static async checkPhoneNumberNotExists(
+    phoneNumber: PhoneNumber,
+  ): Promise<boolean> {
+    const accountDb = await AccountRepository.findOne({
+      'phoneNumber.countryCode': phoneNumber.countryCode,
+      'phoneNumber.phoneNumber': phoneNumber.phoneNumber,
+      active: true,
+    });
+
+    if (accountDb) {
+      throw new AccountWithPhoneNumberExistsError(phoneNumber.toString());
     }
 
     return false;

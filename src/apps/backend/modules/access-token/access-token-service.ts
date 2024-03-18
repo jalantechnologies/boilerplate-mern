@@ -1,43 +1,44 @@
 import jsonwebtoken from 'jsonwebtoken';
 
 import AccountService from '../account/account-service';
+import { Account, PhoneNumber } from '../account/types';
 import { ConfigService } from '../config';
+import { OtpIncorrectError, OtpService, OtpStatus } from '../otp';
 
 import {
   AccessToken,
   AccessTokenExpiredError,
   AccessTokenInvalidError,
   AccessTokenPayload,
-  CreateAccessTokenParams,
   VerifyAccessTokenParams,
 } from './types';
 
 export default class AccessTokenService {
-  public static async createAccessToken(
-    params: CreateAccessTokenParams,
+  public static async createAccessTokenByUsernameAndPassword(
+    password: string,
+    username: string,
   ): Promise<AccessToken> {
-    const account = await AccountService.getAccountByUsernamePassword({
-      password: params.password,
-      username: params.username,
-    });
+    const account = await AccountService.getAccountByUsernameAndPassword(password, username);
 
-    const jwtSigningKey = ConfigService.getValue<string>('accounts.tokenKey');
-    const jwtExpiry = ConfigService.getValue<string>('accounts.tokenExpiry');
+    return AccessTokenService.generateAccessToken(account);
+  }
 
-    const jwtToken = jsonwebtoken.sign(
-      { accountId: account.id },
-      jwtSigningKey,
-      { expiresIn: jwtExpiry },
+  public static async createAccessTokenByPhoneNumber(
+    otpCode: string,
+    phoneNumber: PhoneNumber,
+  ): Promise<AccessToken> {
+    const account = await AccountService.getAccountByPhoneNumber(phoneNumber);
+
+    const otp = await OtpService.verifyOTP(
+      otpCode,
+      phoneNumber,
     );
 
-    const accessToken = new AccessToken();
-    accessToken.accountId = account.id;
-    accessToken.token = jwtToken;
+    if (otp.status !== OtpStatus.SUCCESS) {
+      throw new OtpIncorrectError();
+    }
 
-    const jwtTokenDecoded = jsonwebtoken.decode(jwtToken) as jsonwebtoken.JwtPayload;
-    accessToken.expiresAt = new Date(jwtTokenDecoded.exp * 1000);
-
-    return accessToken;
+    return AccessTokenService.generateAccessToken(account);
   }
 
   public static verifyAccessToken(
@@ -65,5 +66,27 @@ export default class AccessTokenService {
     return {
       accountId: verifiedToken.accountId as string,
     };
+  }
+
+  private static generateAccessToken(
+    account: Account,
+  ): AccessToken {
+    const jwtSigningKey = ConfigService.getValue<string>('accounts.tokenKey');
+    const jwtExpiry = ConfigService.getValue<string>('accounts.tokenExpiry');
+
+    const jwtToken = jsonwebtoken.sign(
+      { accountId: account.id },
+      jwtSigningKey,
+      { expiresIn: jwtExpiry },
+    );
+
+    const accessToken = new AccessToken();
+    accessToken.accountId = account.id;
+    accessToken.token = jwtToken;
+
+    const jwtTokenDecoded = jsonwebtoken.decode(jwtToken) as jsonwebtoken.JwtPayload;
+    accessToken.expiresAt = new Date(jwtTokenDecoded.exp * 1000);
+
+    return accessToken;
   }
 }

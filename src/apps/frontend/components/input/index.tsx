@@ -1,46 +1,60 @@
+import clsx from 'clsx';
 import * as React from 'react';
-import { ChangeEventHandler, FocusEventHandler, FormEventHandler } from 'react';
 
-interface InputProps {
-  disabled: boolean;
+import HorizontalStackLayout from '../layouts/horizontal-stack-layout';
+
+import styles from './input.styles';
+
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  endEnhancer?: React.ReactElement | string;
   error: string;
-  name: string;
-  onChange?: ChangeEventHandler<HTMLInputElement>;
-  onBlur?: FocusEventHandler<HTMLInputElement>;
-  onSubmit?: FormEventHandler<HTMLInputElement>;
-  placeholder: string;
+  handleInputRef?: (
+    ref: HTMLInputElement,
+  ) => void;
+  index?: number;
+  startEnhancer?: React.ReactElement | string;
   testId?: string;
+  textAlign?: 'left' | 'center' | 'right';
   type?: string;
-  value: string;
 }
 
 const Input: React.FC<InputProps> = ({
-  disabled,
+  endEnhancer,
   error,
-  name,
-  onChange,
-  onBlur,
-  onSubmit,
-  placeholder,
+  handleInputRef,
+  index,
+  startEnhancer,
   testId,
+  textAlign = 'left',
   type,
-  value,
+  ...props
 }) => (
-  <input
-    autoComplete="off"
-    className={`w-full rounded-lg border bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary ${
-      error ? 'border-red-500' : 'border-stroke'
-    }`}
-    data-testid={testId}
-    disabled={disabled}
-    name={name}
-    onChange={onChange}
-    onSubmit={onSubmit}
-    onBlur={onBlur}
-    placeholder={placeholder}
-    value={value}
-    type={type || 'text'}
-  />
+  <div
+    className={clsx([
+      styles.inputContainer,
+      error ? styles.border.errorState : styles.border.normalState,
+    ])}
+  >
+    <HorizontalStackLayout gap={2}>
+      {startEnhancer && <span className="flex h-full min-w-6 items-center justify-center">
+        {startEnhancer}
+      </span>}
+      <input
+        {...props}
+        autoComplete='off'
+        className={clsx([
+          styles.input,
+          textAlign ? styles.textAlign[textAlign] : '',
+        ])}
+        data-testid={testId}
+        type={type || 'text'}
+        ref={handleInputRef ? (ref) => handleInputRef(ref) : null}
+      />
+      {endEnhancer && <span className="flex h-full min-w-6 items-center justify-center">
+        {endEnhancer}
+      </span>}
+    </HorizontalStackLayout>
+  </div>
 );
 
 export default Input;

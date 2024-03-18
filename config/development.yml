@@ -1,7 +1,13 @@
 accounts:
   tokenKey: 'dev_auth_token'
+  passwordResetEmailEnabled: false
+
+defaultOTP: '1111'
+
+enableSMS: false
 
 mongoDb:
   uri: 'mongodb://localhost:27017/boilerplate-mern-dev'
+
 
 webAppHost: 'http://localhost:3000'
