@@ -3,9 +3,9 @@ import React, { PropsWithChildren } from 'react';
 const HeadingLarge: React.FC<PropsWithChildren> = ({
   children,
 }) => (
-  <p className="text-3xl font-semibold text-black">
+  <h2 className="text-3xl font-semibold text-black">
     {children}
-  </p>
+  </h2>
 );
 
 export default HeadingLarge;

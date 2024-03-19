@@ -3,9 +3,9 @@ import React, { PropsWithChildren } from 'react';
 const LabelMedium: React.FC<PropsWithChildren> = ({
   children,
 }) => (
-  <p className="text-base font-medium text-black">
+  <label className="text-base font-medium text-black">
     {children}
-  </p>
+  </label>
 );
 
 export default LabelMedium;

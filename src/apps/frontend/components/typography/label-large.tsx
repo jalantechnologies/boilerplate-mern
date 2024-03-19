@@ -3,9 +3,9 @@ import React, { PropsWithChildren } from 'react';
 const LabelLarge: React.FC<PropsWithChildren> = ({
   children,
 }) => (
-  <p className="text-lg font-medium text-black">
+  <label className="text-lg font-medium text-black">
     {children}
-  </p>
+  </label>
 );
 
 export default LabelLarge;
