@@ -19,10 +19,10 @@ export default function App(): React.ReactElement {
   return (
     <AuthProvider>
       <AccountProvider>
-          <Toaster />
-          <Router>
-            <AppRoutes />
-          </Router>
+        <Toaster />
+        <Router>
+          <AppRoutes />
+        </Router>
       </AccountProvider>
     </AuthProvider>
   );
