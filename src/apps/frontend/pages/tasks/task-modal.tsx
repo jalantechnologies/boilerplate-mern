@@ -1,11 +1,11 @@
 import { FormikProps } from 'formik';
 import React, { useEffect } from 'react';
 
-import { Button, FormControl, Input } from '..';
+import { Button, FormControl, Input } from '../../components';
+import TextArea from '../../components/input/text-area';
+import Modal from '../../components/modal';
 import { ButtonKind, ButtonType } from '../../types/button';
 import { Task, TaskOperationType } from '../../types/task';
-import TextArea from '../input/text-area';
-import Modal from '../modal';
 
 interface TaskModalProps {
   isModalOpen: boolean;

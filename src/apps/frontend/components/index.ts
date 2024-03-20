@@ -10,7 +10,6 @@ import VerticalStackLayout from './layouts/vertical-stack-layout';
 import MenuItem from './menu';
 import OTP from './otp';
 import Select from './select';
-import TaskContainer from './task';
 import H2 from './typography/h2';
 import ParagraphMedium from './typography/paragraph-medium';
 
@@ -28,6 +27,5 @@ export {
   ParagraphMedium,
   PasswordInput,
   Select,
-  TaskContainer,
   VerticalStackLayout,
 };

@@ -1,25 +1,25 @@
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 
-import useTaskForm from '../../pages/tasks/tasks-form.hook';
+import Button from '../../components/button';
+import MenuItem from '../../components/menu';
+import Spinner from '../../components/spinner/spinner';
+import HeadingSmall from '../../components/typography/heading-small';
+import LabelLarge from '../../components/typography/label-large';
+import ParagraphSmall from '../../components/typography/paragraph-small';
 import { ButtonKind, ButtonSize } from '../../types/button';
 import { Task, TaskOperationType } from '../../types/task';
-import Button from '../button';
-import MenuItem from '../menu';
-import Spinner from '../spinner/spinner';
-import HeadingSmall from '../typography/heading-small';
-import LabelLarge from '../typography/label-large';
-import LabelMedium from '../typography/label-medium';
 
 import TaskModal from './task-modal';
+import useTaskForm from './tasks-form.hook';
 
-interface TaskBlockSectionProps {
+interface TaskSectionProps {
   tasks: Task[];
   handleDeleteTask: (taskId: string) => void;
   isGetTasksLoading: boolean;
 }
 
-const TaskSection: React.FC<TaskBlockSectionProps> = ({
+const TaskSection: React.FC<TaskSectionProps> = ({
   tasks,
   handleDeleteTask,
   isGetTasksLoading,
@@ -42,7 +42,7 @@ const TaskSection: React.FC<TaskBlockSectionProps> = ({
 
   if (isGetTasksLoading) {
     return (
-      <div className='flex h-96 w-full items-center justify-center'>
+      <div className="flex h-96 w-full items-center justify-center">
         <Spinner />
       </div>
     );
@@ -68,7 +68,7 @@ const TaskSection: React.FC<TaskBlockSectionProps> = ({
                 htmlFor={`taskCheckbox${task.id}`}
                 className="cursor-pointer"
               >
-                <div className="relative flex items-center pt-4">
+                <div className="relative flex items-center gap-2 pt-4">
                   <input
                     type="checkbox"
                     id={`taskCheckbox${task.id}`}
@@ -79,9 +79,7 @@ const TaskSection: React.FC<TaskBlockSectionProps> = ({
                       <img src="assets/svg/checkbox-icon.svg" />
                     </span>
                   </div>
-                  <div className="pl-2">
-                    <LabelMedium>{task.description}</LabelMedium>
-                  </div>
+                  <ParagraphSmall>{task.description}</ParagraphSmall>
                 </div>
               </label>
             </div>

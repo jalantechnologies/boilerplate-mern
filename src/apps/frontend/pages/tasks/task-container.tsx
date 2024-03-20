@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 
+import VerticalStackLayout from '../../components/layouts/vertical-stack-layout';
+import HeadingLarge from '../../components/typography/heading-large';
 import { useTaskContext } from '../../contexts';
 import { AsyncError } from '../../types';
-import VerticalStackLayout from '../layouts/vertical-stack-layout';
-import HeadingLarge from '../typography/heading-large';
 
 import TaskHeader from './task-header';
 import TaskSection from './task-section';
