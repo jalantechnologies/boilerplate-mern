@@ -6,8 +6,8 @@ import APIService from './api.service';
 
 export default class TaskService extends APIService {
   addTask = async (
-    title: string,
     description: string,
+    title: string,
   ): Promise<ApiResponse<Task>> => {
     try {
       const userAccessToken = JSON.parse(

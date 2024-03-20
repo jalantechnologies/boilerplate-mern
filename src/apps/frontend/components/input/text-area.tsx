@@ -1,31 +1,31 @@
 import React, { ChangeEventHandler, FocusEventHandler, FormEventHandler } from 'react';
 
 interface TextAreaProps {
-  value: string;
-  onChange: ChangeEventHandler<HTMLTextAreaElement>;
-  rows: number;
   cols: number;
-  placeholder: string;
   disabled: boolean;
   error: string;
   name: string;
-  testId?: string;
   onBlur?: FocusEventHandler<HTMLTextAreaElement>;
+  onChange: ChangeEventHandler<HTMLTextAreaElement>;
   onSubmit?: FormEventHandler<HTMLTextAreaElement>;
+  placeholder: string;
+  rows: number;
+  testId?: string;
+  value: string;
 }
 
 const TextArea: React.FC<TextAreaProps> = ({
-  value,
-  onChange,
-  rows,
   cols,
-  placeholder,
   disabled,
   error,
   name,
-  testId,
   onBlur,
+  onChange,
   onSubmit,
+  placeholder,
+  rows,
+  testId,
+  value,
 }) => (
   <textarea
     cols={cols}

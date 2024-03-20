@@ -13,7 +13,7 @@ interface TaskContainerProps {
 
 const TaskContainer: React.FC<TaskContainerProps> = ({ onError }) => {
   const {
-    getTasks, tasksList, deleteTask, setTasksList, isGetTasksLoading,
+    deleteTask, getTasks, isGetTasksLoading, setTasksList, tasksList,
   } = useTaskContext();
 
   const fetchTasks = async () => {

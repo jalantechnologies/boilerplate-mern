@@ -70,14 +70,14 @@ const TaskModal: React.FC<TaskModalProps> = ({
           >
             <Input
               data-testid="title"
-              type="text"
               disabled={false}
-              name="title"
               error={formik.touched.title && formik.errors.title}
-              placeholder="Enter task title"
-              onChange={formik.handleChange}
-              value={formik.values.title}
+              name="title"
               onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              placeholder="Enter task title"
+              type="text"
+              value={formik.values.title}
             />
           </FormControl>
           <FormControl
@@ -86,14 +86,14 @@ const TaskModal: React.FC<TaskModalProps> = ({
           >
             <TextArea
               cols={30}
-              rows={7}
-              value={formik.values.description}
-              placeholder="Enter task description"
-              onChange={formik.handleChange}
               disabled={false}
               error={formik.touched.description && formik.errors.description}
               name={'description'}
               onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              placeholder="Enter task description"
+              rows={7}
+              value={formik.values.description}
             />
           </FormControl>
           <Button type={ButtonType.SUBMIT} onClick={handleClick}>
