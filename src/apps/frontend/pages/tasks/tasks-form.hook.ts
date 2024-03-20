@@ -17,9 +17,9 @@ const useTaskForm = ({
 TaskFormProps) => {
   const {
     addTask,
-    updateTask,
-    tasksList,
     setTasksList,
+    tasksList,
+    updateTask,
   } = useTaskContext();
 
   const setFormikFieldValue = (
@@ -37,8 +37,8 @@ TaskFormProps) => {
 
   const updateFormik = useFormik({
     initialValues: {
-      description: '',
       id: '',
+      description: '',
       title: '',
     },
     validationSchema: Yup.object({
@@ -76,8 +76,8 @@ TaskFormProps) => {
 
   const addTaskFormik = useFormik({
     initialValues: {
-      description: '',
       id: '',
+      description: '',
       title: '',
     },
     validationSchema: Yup.object({
@@ -107,9 +107,9 @@ TaskFormProps) => {
   });
 
   return {
-    updateFormik,
     addTaskFormik,
     setFormikFieldValue,
+    updateFormik,
   };
 };
 

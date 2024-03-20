@@ -7,6 +7,7 @@ const styles = {
         border
         flex
         font-medium
+        gap-2
         items-center
         justify-center
         p-4
@@ -14,7 +15,6 @@ const styles = {
         text-white
         transition
         w-full
-        gap-2
       `,
       disableState: 'cursor-not-allowed bg-primary/80',
       enableState: 'hover:bg-primary/90 cursor-pointer',
@@ -38,19 +38,19 @@ const styles = {
       base: `
         active:bg-transparent
         bg-transparent
-        text-primary
-        text-lg
         text-center
+        text-lg
+        text-primary
       `,
       disableState: 'cursor-not-allowed text-slate-500',
       enableState: 'cursor-pointer',
     },
   },
   size: {
-    mini: 'p-1.5',
     compact: 'p-2',
     default: 'p-2.5',
     large: 'p-3.5',
+    mini: 'p-1.5',
   },
 };
 

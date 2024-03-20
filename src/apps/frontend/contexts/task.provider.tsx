@@ -87,9 +87,6 @@ export const TaskProvider: React.FC<PropsWithChildren> = ({ children }) => {
     <TaskContext.Provider
       value={{
         addTask,
-        tasks,
-        tasksList,
-        task,
         addTaskError,
         deleteTask,
         deleteTaskError,
@@ -100,9 +97,12 @@ export const TaskProvider: React.FC<PropsWithChildren> = ({ children }) => {
         isGetTasksLoading,
         isUpdateTaskLoading,
         setTasksList,
+        task,
+        tasks,
+        tasksList,
         updateTask,
-        updatedTask,
         updateTaskError,
+        updatedTask,
       }}
     >
       {children}

@@ -9,20 +9,20 @@ import styles from './button.styles';
 interface ButtonProps {
   disabled?: boolean;
   isLoading?: boolean;
-  onClick?: (e) => void;
-  type?: ButtonType;
   kind?: ButtonKind;
+  onClick?: (e) => void;
   size?: ButtonSize;
+  type?: ButtonType;
 }
 
 const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
   children,
   disabled,
   isLoading,
-  onClick,
-  type = ButtonType.BUTTON,
   kind = ButtonKind.PRIMARY,
+  onClick,
   size,
+  type = ButtonType.BUTTON,
 }) => {
   const content = isLoading && kind === ButtonKind.PRIMARY ? <Spinner /> : children;
 

@@ -55,13 +55,3 @@ export class TaskNotFoundError extends ApplicationError {
     this.httpStatusCode = HttpStatusCodes.NOT_FOUND;
   }
 }
-
-export class TaskWithTitleNotFoundError extends ApplicationError {
-  code: TaskErrorCode;
-
-  constructor(taskTitle: string) {
-    super(`Task with title ${taskTitle} not found.`);
-    this.code = TaskErrorCode.NOT_FOUND;
-    this.httpStatusCode = HttpStatusCodes.NOT_FOUND;
-  }
-}

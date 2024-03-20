@@ -1,4 +1,6 @@
 const constant = {
+  DESCRIPTION_MIN_LENGTH: 10,
+  DESCRIPTION_VALIDATION_ERROR: 'Description should be at least 10 characters long',
   EMAIL_VALIDATION_ERROR: 'Please enter a valid email',
   FIRST_NAME_MIN_LENGTH: 1,
   FIRST_NAME_VALIDATION_ERROR: 'Please specify your first name',
@@ -10,11 +12,9 @@ const constant = {
   PASSWORD_MIN_LENGTH: 8,
   PASSWORD_VALIDATION_ERROR: 'Please enter at least 8 characters long password',
   PHONE_VALIDATION_ERROR: 'Please enter a valid phone number',
-  TOASTER_AUTO_HIDE_DURATION: 3000,
   TITLE_MIN_LENGTH: 3,
-  DESCRIPTION_MIN_LENGTH: 10,
   TITLE_VALIDATION_ERROR: 'Title should be at least 3 characters long',
-  DESCRIPTION_VALIDATION_ERROR: 'Description should be at least 10 characters long',
+  TOASTER_AUTO_HIDE_DURATION: 3000,
 };
 
 export default constant;

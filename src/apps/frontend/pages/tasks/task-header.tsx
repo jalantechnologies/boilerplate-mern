@@ -1,15 +1,21 @@
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 
-import Button from '../../components/button';
-import HeadingLarge from '../../components/typography/heading-large';
+import {
+  Button, Flex, FlexItem, HeadingLarge,
+} from '../../components';
+import { AsyncError } from '../../types';
 import { TaskOperationType } from '../../types/task';
 
-import TaskItemLayout from './task-item.layout';
+import TaskItemCard from './task-item-card';
 import TaskModal from './task-modal';
 import useTaskForm from './tasks-form.hook';
 
-const TaskHeader: React.FC = () => {
+interface TaskHeaderProps {
+  onError?: (error: AsyncError) => void;
+}
+
+const TaskHeader: React.FC<TaskHeaderProps> = ({ onError }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const onSuccess = () => {
@@ -18,18 +24,21 @@ const TaskHeader: React.FC = () => {
   };
 
   const { addTaskFormik, setFormikFieldValue } = useTaskForm({
+    onError,
     onSuccess,
   });
 
   return (
-    <TaskItemLayout>
-      <HeadingLarge>Tasks</HeadingLarge>
-
-      <div className="flex flex-col gap-4 2xsm:flex-row 2xsm:items-center">
-        <Button onClick={() => setIsModalOpen(!isModalOpen)}>
-          <img src="assets/svg/plus-icon.svg" alt="Plus Icon" />
-          Add task
-        </Button>
+    <TaskItemCard>
+      <Flex alignItems='center' justifyContent='between'>
+        <FlexItem >
+          <HeadingLarge>Tasks</HeadingLarge>
+        </FlexItem>
+        <FlexItem >
+          <Button onClick={() => setIsModalOpen(!isModalOpen)}>
+            <img src="assets/svg/plus-icon.svg" alt="Plus Icon" />
+            Add task
+          </Button>
         <TaskModal
           formik={addTaskFormik}
           setFieldValue={setFormikFieldValue}
@@ -38,8 +47,9 @@ const TaskHeader: React.FC = () => {
           btnText={'Add Task'}
           taskOperationType={TaskOperationType.ADD}
         />
-      </div>
-    </TaskItemLayout>
+        </FlexItem>
+      </Flex>
+    </TaskItemCard>
   );
 };
 

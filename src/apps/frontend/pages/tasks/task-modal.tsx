@@ -1,34 +1,39 @@
 import { FormikProps } from 'formik';
 import React, { useEffect } from 'react';
 
-import { Button, FormControl, Input } from '../../components';
+import {
+  Button,
+  FormControl,
+  Input,
+  VerticalStackLayout,
+} from '../../components';
 import TextArea from '../../components/input/text-area';
 import Modal from '../../components/modal';
 import { ButtonKind, ButtonType } from '../../types/button';
 import { Task, TaskOperationType } from '../../types/task';
 
 interface TaskModalProps {
+  btnText: string;
+  formik: FormikProps<Task>;
   isModalOpen: boolean;
   setIsModalOpen: (open: boolean) => void;
-  btnText: string;
-  taskOperationType: string;
-  task?: Task;
-  formik: FormikProps<Task>;
   setFieldValue: (
     formik: FormikProps<Task>,
     field: string,
     value: string,
   ) => void;
+  task?: Task;
+  taskOperationType: string;
 }
 
 const TaskModal: React.FC<TaskModalProps> = ({
-  isModalOpen,
-  setIsModalOpen,
   btnText,
   formik,
-  taskOperationType,
-  task,
+  isModalOpen,
   setFieldValue,
+  setIsModalOpen,
+  task,
+  taskOperationType,
 }) => {
   useEffect(() => {
     if (taskOperationType === TaskOperationType.EDIT.toString() && task) {
@@ -49,12 +54,16 @@ const TaskModal: React.FC<TaskModalProps> = ({
           onClick={() => setIsModalOpen(false)}
           kind={ButtonKind.TERTIARY}
         >
-          <img src="assets/svg/close-icon.svg" alt='close-icon' className="fill-current" />
+          <img
+            src="assets/svg/close-icon.svg"
+            alt="close-icon"
+            className="fill-current"
+          />
         </Button>
       </div>
 
       <form onSubmit={formik.handleSubmit}>
-        <div className="py-5">
+        <VerticalStackLayout gap={5}>
           <FormControl
             error={formik.touched.title && formik.errors.title}
             label={'Task Title'}
@@ -71,9 +80,6 @@ const TaskModal: React.FC<TaskModalProps> = ({
               onBlur={formik.handleBlur}
             />
           </FormControl>
-        </div>
-
-        <div>
           <FormControl
             error={formik.touched.description && formik.errors.description}
             label={'Task description'}
@@ -90,15 +96,11 @@ const TaskModal: React.FC<TaskModalProps> = ({
               onBlur={formik.handleBlur}
             />
           </FormControl>
-        </div>
-
-        <div className='pt-5'>
-
-        <Button type={ButtonType.SUBMIT} onClick={handleClick}>
-          <img src="assets/svg/plus-icon.svg" alt='plus-icon' />
-          {btnText}
-        </Button>
-        </div>
+          <Button type={ButtonType.SUBMIT} onClick={handleClick}>
+            <img src="assets/svg/plus-icon.svg" alt="Plus Icon" />
+            {btnText}
+          </Button>
+        </VerticalStackLayout>
       </form>
     </Modal>
   );

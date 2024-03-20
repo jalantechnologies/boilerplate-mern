@@ -1,28 +1,37 @@
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 
-import Button from '../../components/button';
-import MenuItem from '../../components/menu';
-import Spinner from '../../components/spinner/spinner';
-import HeadingSmall from '../../components/typography/heading-small';
-import LabelLarge from '../../components/typography/label-large';
-import ParagraphSmall from '../../components/typography/paragraph-small';
+import {
+  Button,
+  HeadingSmall,
+  HorizontalStackLayout,
+  LabelLarge,
+  MenuItem,
+  ParagraphSmall,
+  Spinner,
+  VerticalStackLayout,
+} from '../../components';
+import { AsyncError } from '../../types';
 import { ButtonKind, ButtonSize } from '../../types/button';
 import { Task, TaskOperationType } from '../../types/task';
 
+import TaskFormCheckbox from './task-form-checkbox';
+import TaskItemCard from './task-item-card';
 import TaskModal from './task-modal';
 import useTaskForm from './tasks-form.hook';
 
 interface TaskSectionProps {
-  tasks: Task[];
   handleDeleteTask: (taskId: string) => void;
   isGetTasksLoading: boolean;
+  onError?: (error: AsyncError) => void;
+  tasks: Task[];
 }
 
 const TaskSection: React.FC<TaskSectionProps> = ({
-  tasks,
   handleDeleteTask,
   isGetTasksLoading,
+  onError,
+  tasks,
 }) => {
   const [updateTaskModal, setUpdateTaskModal] = useState(false);
   const [currentTask, setCurrentTask] = useState<Task>();
@@ -37,6 +46,7 @@ const TaskSection: React.FC<TaskSectionProps> = ({
   };
 
   const { updateFormik, setFormikFieldValue } = useTaskForm({
+    onError,
     onSuccess,
   });
 
@@ -49,41 +59,26 @@ const TaskSection: React.FC<TaskSectionProps> = ({
   }
 
   return (
-    <div className="pt-5">
+    <VerticalStackLayout gap={2}>
       {tasks.length > 0 && (
-        <div className="pb-5">
-          <HeadingSmall>To Do's ({tasks.length})</HeadingSmall>
-        </div>
+        <HeadingSmall>To Do's ({tasks.length})</HeadingSmall>
       )}
 
       {tasks.map((task) => (
-        <div
-          key={task.id}
-          className="relative mt-5 flex cursor-move justify-between rounded-sm border border-stroke bg-white p-7 shadow-default"
-        >
-          <div>
+        <TaskItemCard>
+          <VerticalStackLayout gap={3}>
             <LabelLarge>{task.title}</LabelLarge>
-            <div className="flex flex-col gap-2">
-              <label
+
+            <label
                 htmlFor={`taskCheckbox${task.id}`}
                 className="cursor-pointer"
               >
-                <div className="relative flex items-center gap-2 pt-4">
-                  <input
-                    type="checkbox"
-                    id={`taskCheckbox${task.id}`}
-                    className="taskCheckbox sr-only"
-                  />
-                  <div className="box flex size-5 items-center justify-center rounded border border-stroke">
-                    <span className="text-white opacity-0">
-                      <img src="assets/svg/checkbox-icon.svg" />
-                    </span>
-                  </div>
-                  <ParagraphSmall>{task.description}</ParagraphSmall>
-                </div>
-              </label>
-            </div>
-          </div>
+              <HorizontalStackLayout gap={2}>
+                <TaskFormCheckbox id={`taskCheckbox${task.id}`} className={'taskCheckbox sr-only'} />
+                <ParagraphSmall>{task.description}</ParagraphSmall>
+              </HorizontalStackLayout>
+            </label>
+          </VerticalStackLayout>
           <div className="absolute right-4 top-4">
             <MenuItem>
               <Button
@@ -104,7 +99,7 @@ const TaskSection: React.FC<TaskSectionProps> = ({
               </Button>
             </MenuItem>
           </div>
-        </div>
+        </TaskItemCard>
       ))}
       <TaskModal
         formik={updateFormik}
@@ -115,7 +110,7 @@ const TaskSection: React.FC<TaskSectionProps> = ({
         taskOperationType={TaskOperationType.EDIT}
         task={currentTask}
       />
-    </div>
+    </VerticalStackLayout>
   );
 };
 

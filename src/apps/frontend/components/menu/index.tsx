@@ -11,7 +11,7 @@ const MenuItem: React.FC<PropsWithChildren> = ({ children }) => {
         onClick={() => setIsOpen(!isOpen)}
         kind={ButtonKind.TERTIARY}
       >
-        <img src="assets/svg/more-alt.svg" />
+        <img src="assets/svg/ellipsis-icon.svg" alt='Ellipsis Icon'/>
       </Button>
       <div
         onFocus={() => setIsOpen(true)}

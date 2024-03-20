@@ -10,8 +10,13 @@ import VerticalStackLayout from './layouts/vertical-stack-layout';
 import MenuItem from './menu';
 import OTP from './otp';
 import Select from './select';
+import Spinner from './spinner/spinner';
 import H2 from './typography/h2';
+import HeadingLarge from './typography/heading-large';
+import HeadingSmall from './typography/heading-small';
+import LabelLarge from './typography/label-large';
 import ParagraphMedium from './typography/paragraph-medium';
+import ParagraphSmall from './typography/paragraph-small';
 
 export {
   Button,
@@ -20,12 +25,17 @@ export {
   FormControl,
   H2,
   Header,
+  HeadingLarge,
+  HeadingSmall,
   HorizontalStackLayout,
   Input,
+  LabelLarge,
   MenuItem,
   OTP,
   ParagraphMedium,
+  ParagraphSmall,
   PasswordInput,
   Select,
+  Spinner,
   VerticalStackLayout,
 };
