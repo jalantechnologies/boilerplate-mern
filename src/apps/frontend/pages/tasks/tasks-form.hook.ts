@@ -10,16 +10,9 @@ interface TaskFormProps {
   onError?: (error: AsyncError) => void;
   onSuccess?: () => void;
 }
-const useTaskForm = ({
-  onError,
-  onSuccess,
-}:
-TaskFormProps) => {
+const useTaskForm = ({ onError, onSuccess }: TaskFormProps) => {
   const {
-    addTask,
-    setTasksList,
-    tasksList,
-    updateTask,
+    addTask, setTasksList, tasksList, updateTask,
   } = useTaskContext();
 
   const setFormikFieldValue = (

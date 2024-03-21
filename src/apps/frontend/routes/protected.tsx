@@ -15,9 +15,7 @@ const App = () => {
 
   return (
     <AppLayout>
-      <TaskProvider>
-        <Outlet />
-      </TaskProvider>
+      <Outlet />
     </AppLayout>
   );
 };
@@ -28,7 +26,14 @@ export const protectedRoutes = [
     element: <App />,
     children: [
       { path: '', element: <Dashboard /> },
-      { path: 'tasks', element: <Tasks /> },
+      {
+        path: 'tasks',
+        element: (
+          <TaskProvider>
+            <Tasks />
+          </TaskProvider>
+        ),
+      },
       { path: '*', element: <NotFound /> },
     ],
   },

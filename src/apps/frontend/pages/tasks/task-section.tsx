@@ -4,7 +4,6 @@ import toast from 'react-hot-toast';
 import {
   Button,
   HeadingSmall,
-  HorizontalStackLayout,
   LabelLarge,
   MenuItem,
   ParagraphSmall,
@@ -15,8 +14,7 @@ import { AsyncError } from '../../types';
 import { ButtonKind, ButtonSize } from '../../types/button';
 import { Task, TaskOperationType } from '../../types/task';
 
-import TaskFormCheckbox from './task-form-checkbox';
-import TaskItemCard from './task-item-card';
+import TaskCard from './task-card';
 import TaskModal from './task-modal';
 import useTaskForm from './tasks-form.hook';
 
@@ -65,20 +63,12 @@ const TaskSection: React.FC<TaskSectionProps> = ({
       )}
 
       {tasks.map((task) => (
-        <TaskItemCard>
+        <TaskCard key={task.id}>
           <VerticalStackLayout gap={3}>
             <LabelLarge>{task.title}</LabelLarge>
-
-            <label
-                htmlFor={`taskCheckbox${task.id}`}
-                className="cursor-pointer"
-              >
-              <HorizontalStackLayout gap={2}>
-                <TaskFormCheckbox id={`taskCheckbox${task.id}`} className={'taskCheckbox sr-only'} />
-                <ParagraphSmall>{task.description}</ParagraphSmall>
-              </HorizontalStackLayout>
-            </label>
+            <ParagraphSmall>{task.description}</ParagraphSmall>
           </VerticalStackLayout>
+
           <div className="absolute right-4 top-4">
             <MenuItem>
               <Button
@@ -99,8 +89,9 @@ const TaskSection: React.FC<TaskSectionProps> = ({
               </Button>
             </MenuItem>
           </div>
-        </TaskItemCard>
+        </TaskCard>
       ))}
+
       <TaskModal
         formik={updateFormik}
         setFieldValue={setFormikFieldValue}
