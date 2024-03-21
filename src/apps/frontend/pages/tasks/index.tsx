@@ -18,7 +18,11 @@ const Tasks: React.FC = () => {
   } = useTaskContext();
 
   const fetchTasks = async () => {
-    await getTasks();
+    try {
+      await getTasks();
+    } catch (error) {
+      onError(error as AsyncError);
+    }
   };
 
   useEffect(() => {

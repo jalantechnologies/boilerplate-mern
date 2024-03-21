@@ -14,7 +14,6 @@ import { AsyncError } from '../../types';
 import { ButtonKind, ButtonSize } from '../../types/button';
 import { Task, TaskOperationType } from '../../types/task';
 
-import TaskCard from './task-card';
 import TaskModal from './task-modal';
 import useTaskForm from './tasks-form.hook';
 
@@ -63,7 +62,7 @@ const TaskSection: React.FC<TaskSectionProps> = ({
       )}
 
       {tasks.map((task) => (
-        <TaskCard key={task.id}>
+        <div className="relative rounded-sm border border-stroke bg-white p-6 shadow-default" key={task.id}>
           <VerticalStackLayout gap={3}>
             <LabelLarge>{task.title}</LabelLarge>
             <ParagraphSmall>{task.description}</ParagraphSmall>
@@ -89,7 +88,7 @@ const TaskSection: React.FC<TaskSectionProps> = ({
               </Button>
             </MenuItem>
           </div>
-        </TaskCard>
+        </div>
       ))}
 
       <TaskModal

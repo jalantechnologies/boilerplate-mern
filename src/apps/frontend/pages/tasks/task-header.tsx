@@ -7,7 +7,6 @@ import {
 import { AsyncError } from '../../types';
 import { TaskOperationType } from '../../types/task';
 
-import TaskCard from './task-card';
 import TaskModal from './task-modal';
 import useTaskForm from './tasks-form.hook';
 
@@ -29,7 +28,7 @@ const TaskHeader: React.FC<TaskHeaderProps> = ({ onError }) => {
   });
 
   return (
-    <TaskCard>
+    <div className="rounded-sm  border border-stroke bg-white p-6 shadow-default">
       <Flex alignItems="center" justifyContent="between">
         <FlexItem>
           <HeadingLarge>Tasks</HeadingLarge>
@@ -49,7 +48,7 @@ const TaskHeader: React.FC<TaskHeaderProps> = ({ onError }) => {
           />
         </FlexItem>
       </Flex>
-    </TaskCard>
+    </div>
   );
 };
 
