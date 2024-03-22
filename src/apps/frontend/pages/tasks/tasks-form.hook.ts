@@ -12,7 +12,7 @@ interface TaskFormProps {
 }
 const useTaskForm = ({ onError, onSuccess }: TaskFormProps) => {
   const {
-    addTask, setTasksList, tasksList, updateTask,
+    addTask, setTasksList, tasksList, updateTask, isAddTaskLoading,
   } = useTaskContext();
 
   const setFormikFieldValue = (
@@ -101,6 +101,7 @@ const useTaskForm = ({ onError, onSuccess }: TaskFormProps) => {
 
   return {
     addTaskFormik,
+    isAddTaskLoading,
     setFormikFieldValue,
     updateFormik,
   };

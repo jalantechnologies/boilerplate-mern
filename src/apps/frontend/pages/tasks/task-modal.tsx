@@ -9,13 +9,18 @@ import {
 } from '../../components';
 import TextArea from '../../components/input/text-area';
 import Modal from '../../components/modal';
+import { AsyncError } from '../../types';
 import { ButtonKind, ButtonType } from '../../types/button';
 import { Task, TaskOperationType } from '../../types/task';
+
+import useTaskForm from './tasks-form.hook';
 
 interface TaskModalProps {
   btnText: string;
   formik: FormikProps<Task>;
   isModalOpen: boolean;
+  onError?: (error: AsyncError) => void;
+  onSuccess?: () => void;
   setIsModalOpen: (open: boolean) => void;
   setFieldValue: (
     formik: FormikProps<Task>,
@@ -30,11 +35,15 @@ const TaskModal: React.FC<TaskModalProps> = ({
   btnText,
   formik,
   isModalOpen,
+  onError,
+  onSuccess,
   setFieldValue,
   setIsModalOpen,
   task,
   taskOperationType,
 }) => {
+  const { isAddTaskLoading } = useTaskForm({ onSuccess, onError });
+
   useEffect(() => {
     if (taskOperationType === TaskOperationType.EDIT.toString() && task) {
       setFieldValue(formik, 'title', task.title);
@@ -44,7 +53,9 @@ const TaskModal: React.FC<TaskModalProps> = ({
   }, [taskOperationType, task]);
 
   const handleClick = () => {
-    setIsModalOpen(false);
+    if (isAddTaskLoading) {
+      setIsModalOpen(false);
+    }
   };
 
   return (
@@ -66,11 +77,11 @@ const TaskModal: React.FC<TaskModalProps> = ({
         <VerticalStackLayout gap={5}>
           <FormControl
             error={formik.touched.title && formik.errors.title}
-            label={'Task Title'}
+            label={'Task title'}
           >
             <Input
               data-testid="title"
-              disabled={false}
+              disabled={isAddTaskLoading}
               error={formik.touched.title && formik.errors.title}
               name="title"
               onBlur={formik.handleBlur}
@@ -96,7 +107,11 @@ const TaskModal: React.FC<TaskModalProps> = ({
               value={formik.values.description}
             />
           </FormControl>
-          <Button type={ButtonType.SUBMIT} onClick={handleClick}>
+          <Button
+            type={ButtonType.SUBMIT}
+            onClick={handleClick}
+            isLoading={isAddTaskLoading}
+          >
             <img src="assets/svg/plus-icon.svg" alt="Plus Icon" />
             {btnText}
           </Button>

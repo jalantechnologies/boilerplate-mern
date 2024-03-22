@@ -10,8 +10,9 @@ const styles = {
         gap-2
         items-center
         justify-center
-        p-4
-        rounded-lg
+        px-4
+        py-2
+        rounded
         text-white
         transition
         w-full

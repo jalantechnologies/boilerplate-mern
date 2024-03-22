@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import toast from 'react-hot-toast';
 
-import { HeadingLarge, VerticalStackLayout } from '../../components';
+import { HeadingMedium, VerticalStackLayout } from '../../components';
 import { useTaskContext } from '../../contexts';
 import { AsyncError } from '../../types';
 
@@ -40,16 +40,18 @@ const Tasks: React.FC = () => {
   };
 
   return (
-    <div className="h-screen overflow-y-auto p-5">
-      <VerticalStackLayout gap={5}>
-        <HeadingLarge>TaskList</HeadingLarge>
-        <TaskHeader />
-        <TaskSection
-          tasks={tasksList}
-          isGetTasksLoading={isGetTasksLoading}
-          handleDeleteTask={handleDeleteTask}
-        />
-      </VerticalStackLayout>
+    <div className="mx-auto h-screen max-w-screen-2xl overflow-y-auto p-4 md:p-6 2xl:p-10">
+      <div className="mx-auto max-w-5xl">
+        <VerticalStackLayout gap={7}>
+          <HeadingMedium>TaskList</HeadingMedium>
+          <TaskHeader />
+          <TaskSection
+            tasks={tasksList}
+            isGetTasksLoading={isGetTasksLoading}
+            handleDeleteTask={handleDeleteTask}
+          />
+        </VerticalStackLayout>
+      </div>
     </div>
   );
 };

@@ -56,13 +56,19 @@ const TaskSection: React.FC<TaskSectionProps> = ({
   }
 
   return (
-    <VerticalStackLayout gap={2}>
+    <VerticalStackLayout gap={7}>
       {tasks.length > 0 && (
-        <HeadingSmall>To Do's ({tasks.length})</HeadingSmall>
+        <HeadingSmall>
+          To Do's ({tasks.length >= 10 ? Math.floor(tasks.length / 10) : ''}
+          {tasks.length % 10})
+        </HeadingSmall>
       )}
 
       {tasks.map((task) => (
-        <div className="relative rounded-sm border border-stroke bg-white p-6 shadow-default" key={task.id}>
+        <div
+          className="relative rounded-sm border border-stroke bg-white p-9 shadow-default"
+          key={task.id}
+        >
           <VerticalStackLayout gap={3}>
             <LabelLarge>{task.title}</LabelLarge>
             <ParagraphSmall>{task.description}</ParagraphSmall>

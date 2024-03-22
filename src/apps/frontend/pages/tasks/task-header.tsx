@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 
-import {
-  Button, Flex, FlexItem, HeadingLarge,
-} from '../../components';
+import { Button, Flex, HeadingLarge } from '../../components';
 import { AsyncError } from '../../types';
+import { ButtonSize } from '../../types/button';
 import { TaskOperationType } from '../../types/task';
 
 import TaskModal from './task-modal';
@@ -28,13 +27,18 @@ const TaskHeader: React.FC<TaskHeaderProps> = ({ onError }) => {
   });
 
   return (
-    <div className="rounded-sm  border border-stroke bg-white p-6 shadow-default">
-      <Flex alignItems="center" justifyContent="between">
-        <FlexItem>
-          <HeadingLarge>Tasks</HeadingLarge>
-        </FlexItem>
-        <FlexItem>
-          <Button onClick={() => setIsModalOpen(!isModalOpen)}>
+    <div className="rounded-sm  border border-stroke bg-white p-3 shadow-default">
+      <div className="flex flex-col items-start justify-between gap-5 sm:flex-row sm:items-center ">
+        <Flex>
+          <div className="pl-2">
+            <HeadingLarge>Tasks</HeadingLarge>
+          </div>
+        </Flex>
+        <Flex>
+          <Button
+            onClick={() => setIsModalOpen(!isModalOpen)}
+            size={ButtonSize.MINI}
+          >
             <img src="assets/svg/plus-icon.svg" alt="Plus Icon" />
             Add task
           </Button>
@@ -46,8 +50,8 @@ const TaskHeader: React.FC<TaskHeaderProps> = ({ onError }) => {
             btnText={'Add Task'}
             taskOperationType={TaskOperationType.ADD}
           />
-        </FlexItem>
-      </Flex>
+        </Flex>
+      </div>
     </div>
   );
 };
