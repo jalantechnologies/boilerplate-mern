@@ -59,7 +59,7 @@ const TaskSection: React.FC<TaskSectionProps> = ({
     <VerticalStackLayout gap={7}>
       {tasks.length > 0 && (
         <HeadingSmall>
-          To Do's ({tasks.length >= 10 ? Math.floor(tasks.length / 10) : ''}
+          To Do's ({tasks.length >= 10 ? Math.floor(tasks.length / 10) : '0'}
           {tasks.length % 10})
         </HeadingSmall>
       )}
