@@ -21,7 +21,7 @@ const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
   isLoading,
   kind = ButtonKind.PRIMARY,
   onClick,
-  size,
+  size = ButtonSize.DEFAULT,
   type = ButtonType.BUTTON,
 }) => {
   const content = isLoading && kind === ButtonKind.PRIMARY ? <Spinner /> : children;
@@ -31,7 +31,7 @@ const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
       className={clsx([
         styles.kind[kind].base,
         (disabled || isLoading) ? styles.kind[kind].disableState : styles.kind[kind].enableState,
-        styles.size[size],
+        size && styles.size[size],
       ])}
       disabled={disabled || isLoading}
       type={type}

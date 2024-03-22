@@ -37,7 +37,7 @@ const TaskHeader: React.FC<TaskHeaderProps> = ({ onError }) => {
         <Flex>
           <Button
             onClick={() => setIsModalOpen(!isModalOpen)}
-            size={ButtonSize.MINI}
+            size={ButtonSize.COMPACT}
           >
             <img src="assets/svg/plus-icon.svg" alt="Plus Icon" />
             Add task

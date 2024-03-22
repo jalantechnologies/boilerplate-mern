@@ -11,8 +11,7 @@ const styles = {
         items-center
         justify-center
         px-4
-        py-2
-        rounded
+        rounded-md
         text-white
         transition
         w-full
