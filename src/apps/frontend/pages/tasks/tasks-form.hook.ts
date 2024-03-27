@@ -28,7 +28,7 @@ const useTaskForm = ({ onError, onSuccess }: TaskFormProps) => {
       });
   };
 
-  const updateFormik = useFormik({
+  const updateTaskFormik = useFormik({
     initialValues: {
       id: '',
       description: '',
@@ -59,9 +59,7 @@ const useTaskForm = ({ onError, onSuccess }: TaskFormProps) => {
           });
           setTasksList(newUpdatedTasks);
           onSuccess();
-          setFormikFieldValue(updateFormik, 'title', '');
-          setFormikFieldValue(updateFormik, 'id', '');
-          setFormikFieldValue(updateFormik, 'description', '');
+          updateTaskFormik.resetForm();
         })
         .catch((error) => onError(error as AsyncError));
     },
@@ -89,9 +87,7 @@ const useTaskForm = ({ onError, onSuccess }: TaskFormProps) => {
         .then((newTask) => {
           setTasksList([...tasksList, newTask]);
           onSuccess();
-          setFormikFieldValue(addTaskFormik, 'title', '');
-          setFormikFieldValue(addTaskFormik, 'id', '');
-          setFormikFieldValue(addTaskFormik, 'description', '');
+          addTaskFormik.resetForm();
         })
         .catch((error) => {
           onError(error as AsyncError);
@@ -103,7 +99,7 @@ const useTaskForm = ({ onError, onSuccess }: TaskFormProps) => {
     addTaskFormik,
     isAddTaskLoading,
     setFormikFieldValue,
-    updateFormik,
+    updateTaskFormik,
   };
 };
 

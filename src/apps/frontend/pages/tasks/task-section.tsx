@@ -42,7 +42,7 @@ const TaskSection: React.FC<TaskSectionProps> = ({
     setUpdateTaskModal(false);
   };
 
-  const { updateFormik, setFormikFieldValue } = useTaskForm({
+  const { updateTaskFormik, setFormikFieldValue } = useTaskForm({
     onError,
     onSuccess,
   });
@@ -80,16 +80,20 @@ const TaskSection: React.FC<TaskSectionProps> = ({
                 onClick={() => handleTaskOperation(task)}
                 kind={ButtonKind.SECONDARY}
                 size={ButtonSize.DEFAULT}
+                startEnhancer={
+                  <img src="assets/svg/edit-icon.svg" alt="Edit task" />
+                }
               >
-                <img src="assets/svg/edit-icon.svg" alt="Edit task" />
                 Edit
               </Button>
               <Button
                 onClick={() => handleDeleteTask(task.id)}
                 kind={ButtonKind.SECONDARY}
                 size={ButtonSize.DEFAULT}
+                startEnhancer={
+                  <img src="assets/svg/delete-icon.svg" alt="Delete task" />
+                }
               >
-                <img src="assets/svg/delete-icon.svg" alt="Delete task" />
                 Delete
               </Button>
             </MenuItem>
@@ -98,7 +102,7 @@ const TaskSection: React.FC<TaskSectionProps> = ({
       ))}
 
       <TaskModal
-        formik={updateFormik}
+        formik={updateTaskFormik}
         setFieldValue={setFormikFieldValue}
         isModalOpen={updateTaskModal}
         setIsModalOpen={setUpdateTaskModal}

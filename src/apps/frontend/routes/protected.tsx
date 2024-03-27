@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 
+import routes from '../constants/routes';
 import { TaskProvider, useAccountContext } from '../contexts';
 import { Dashboard, NotFound, Tasks } from '../pages';
 import AppLayout from '../pages/app-layout/app-layout';
@@ -27,7 +28,7 @@ export const protectedRoutes = [
     children: [
       { path: '', element: <Dashboard /> },
       {
-        path: 'tasks',
+        path: routes.TASKS,
         element: (
           <TaskProvider>
             <Tasks />

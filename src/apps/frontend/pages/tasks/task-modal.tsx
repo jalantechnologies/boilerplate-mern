@@ -64,13 +64,14 @@ const TaskModal: React.FC<TaskModalProps> = ({
         <Button
           onClick={() => setIsModalOpen(false)}
           kind={ButtonKind.TERTIARY}
-        >
-          <img
-            src="assets/svg/close-icon.svg"
-            alt="close-icon"
-            className="fill-current"
-          />
-        </Button>
+          startEnhancer={
+            <img
+              src="assets/svg/close-icon.svg"
+              alt="close-icon"
+              className="fill-current"
+            />
+          }
+        ></Button>
       </div>
 
       <form onSubmit={formik.handleSubmit}>
@@ -111,8 +112,10 @@ const TaskModal: React.FC<TaskModalProps> = ({
             type={ButtonType.SUBMIT}
             onClick={handleClick}
             isLoading={isAddTaskLoading}
+            startEnhancer={
+              <img src="assets/svg/plus-icon.svg" alt="Plus Icon" />
+            }
           >
-            <img src="assets/svg/plus-icon.svg" alt="Plus Icon" />
             {btnText}
           </Button>
         </VerticalStackLayout>

@@ -38,8 +38,10 @@ const TaskHeader: React.FC<TaskHeaderProps> = ({ onError }) => {
           <Button
             onClick={() => setIsModalOpen(!isModalOpen)}
             size={ButtonSize.COMPACT}
+            startEnhancer={
+              <img src="assets/svg/plus-icon.svg" alt="Plus Icon" />
+            }
           >
-            <img src="assets/svg/plus-icon.svg" alt="Plus Icon" />
             Add task
           </Button>
           <TaskModal
