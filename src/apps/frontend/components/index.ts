@@ -7,7 +7,7 @@ import Input from './input';
 import PasswordInput from './input/password-input';
 import HorizontalStackLayout from './layouts/horizontal-stack-layout';
 import VerticalStackLayout from './layouts/vertical-stack-layout';
-import MenuItem from './menu';
+import MenuItem from './menu-item';
 import OTP from './otp';
 import Select from './select';
 import Spinner from './spinner/spinner';
