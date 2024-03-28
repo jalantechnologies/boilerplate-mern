@@ -11,7 +11,7 @@ import {
 } from '../../../components';
 import routes from '../../../constants/routes';
 import { AsyncError } from '../../../types';
-import { ButtonKind, ButtonType } from '../../../types/button';
+import { ButtonKind, ButtonSize, ButtonType } from '../../../types/button';
 
 import useSignupForm from './signup-form.hook';
 
@@ -117,6 +117,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
           type={ButtonType.SUBMIT}
           kind={ButtonKind.PRIMARY}
           isLoading={isSignupLoading}
+          size={ButtonSize.LARGE}
         >
           Sign Up
         </Button>

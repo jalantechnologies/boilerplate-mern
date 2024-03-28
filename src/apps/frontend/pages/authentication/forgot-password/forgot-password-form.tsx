@@ -5,7 +5,7 @@ import {
 } from '../../../components';
 import ParagraphMedium from '../../../components/typography/paragraph-medium';
 import { AsyncError } from '../../../types';
-import { ButtonType } from '../../../types/button';
+import { ButtonSize, ButtonType } from '../../../types/button';
 
 import useForgotPasswordForm from './forgot-password-form.hook';
 
@@ -56,6 +56,7 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
           <Button
             isLoading={isSendForgotPasswordEmailLoading}
             type={ButtonType.SUBMIT}
+            size={ButtonSize.LARGE}
           >
             Receive Reset Link
           </Button>

@@ -7,10 +7,11 @@ const styles = {
         border
         flex
         font-medium
+        gap-2
         items-center
         justify-center
-        p-4
-        rounded-lg
+        px-4
+        rounded-md
         text-white
         transition
         w-full
@@ -20,9 +21,15 @@ const styles = {
     },
     secondary: {
       base: `
-        inset-y-0
         flex
+        gap-2 
         items-center
+        justify-start
+        rounded
+        text-black
+        text-left
+        text-sm
+        w-full
       `,
       disableState: 'cursor-not-allowed',
       enableState: 'cursor-pointer',
@@ -31,13 +38,19 @@ const styles = {
       base: `
         active:bg-transparent
         bg-transparent
-        text-primary
-        text-lg
         text-center
+        text-lg
+        text-primary
       `,
       disableState: 'cursor-not-allowed text-slate-500',
       enableState: 'cursor-pointer',
     },
+  },
+  size: {
+    compact: 'p-2',
+    default: 'p-2.5',
+    large: 'p-3.5',
+    mini: 'p-1.5',
   },
 };
 

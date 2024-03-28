@@ -2,7 +2,8 @@ import {
   CreateTaskParams,
   DeleteTaskParams,
   Task,
-  TaskWithNameExistsError,
+  TaskNotFoundError,
+  UpdateTaskParams,
 } from '../types';
 
 import TaskRepository from './store/task-repository';
@@ -11,21 +12,36 @@ import TaskUtil from './task-util';
 
 export default class TaskWriter {
   public static async createTask(params: CreateTaskParams): Promise<Task> {
-    const existingTask = await TaskRepository.findOne({
-      account: params.accountId,
-      name: params.name,
-      active: true,
-    });
-    if (existingTask) {
-      throw new TaskWithNameExistsError(params.name);
-    }
-
     const createdTask = await TaskRepository.create({
       account: params.accountId,
-      name: params.name,
+      description: params.description,
+      title: params.title,
       active: true,
     });
     return TaskUtil.convertTaskDBToTask(createdTask);
+  }
+
+  public static async updateTask(params: UpdateTaskParams): Promise<Task> {
+    const task = await TaskRepository.findOneAndUpdate(
+      {
+        account: params.accountId,
+        _id: params.taskId,
+        active: true,
+      },
+      {
+        $set: {
+          description: params.description,
+          title: params.title,
+        },
+      },
+      { new: true },
+    );
+
+    if (!task) {
+      throw new TaskNotFoundError(params.taskId);
+    }
+
+    return TaskUtil.convertTaskDBToTask(task);
   }
 
   public static async deleteTask(params: DeleteTaskParams): Promise<void> {
