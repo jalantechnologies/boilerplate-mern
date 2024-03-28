@@ -26,7 +26,7 @@ export const protectedRoutes = [
     path: '',
     element: <App />,
     children: [
-      { path: '', element: <Dashboard /> },
+      { path: routes.DASHBOARD, element: <Dashboard /> },
       {
         path: routes.TASKS,
         element: (

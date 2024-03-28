@@ -12,7 +12,7 @@ import {
 } from '../../components';
 import { AsyncError } from '../../types';
 import { ButtonKind, ButtonSize } from '../../types/button';
-import { Task, TaskOperationType } from '../../types/task';
+import { Task } from '../../types/task';
 
 import TaskModal from './task-modal';
 import useTaskForm from './tasks-form.hook';
@@ -31,11 +31,6 @@ const TaskSection: React.FC<TaskSectionProps> = ({
   tasks,
 }) => {
   const [updateTaskModal, setUpdateTaskModal] = useState(false);
-  const [currentTask, setCurrentTask] = useState<Task>();
-  const handleTaskOperation = (task: Task) => {
-    setUpdateTaskModal(!updateTaskModal);
-    setCurrentTask(task);
-  };
 
   const onSuccess = () => {
     toast.success('Task has been updated successfully');
@@ -46,6 +41,13 @@ const TaskSection: React.FC<TaskSectionProps> = ({
     onError,
     onSuccess,
   });
+
+  const handleTaskOperation = (task: Task) => {
+    setUpdateTaskModal(!updateTaskModal);
+    setFormikFieldValue(updateTaskFormik, 'title', task.title);
+    setFormikFieldValue(updateTaskFormik, 'id', task.id);
+    setFormikFieldValue(updateTaskFormik, 'description', task.description);
+  };
 
   if (isGetTasksLoading) {
     return (
@@ -103,12 +105,9 @@ const TaskSection: React.FC<TaskSectionProps> = ({
 
       <TaskModal
         formik={updateTaskFormik}
-        setFieldValue={setFormikFieldValue}
         isModalOpen={updateTaskModal}
         setIsModalOpen={setUpdateTaskModal}
         btnText={'Update Task'}
-        taskOperationType={TaskOperationType.EDIT}
-        task={currentTask}
       />
     </VerticalStackLayout>
   );

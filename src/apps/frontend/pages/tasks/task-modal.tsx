@@ -1,5 +1,5 @@
 import { FormikProps } from 'formik';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import {
   Button,
@@ -11,7 +11,7 @@ import TextArea from '../../components/input/text-area';
 import Modal from '../../components/modal';
 import { AsyncError } from '../../types';
 import { ButtonKind, ButtonType } from '../../types/button';
-import { Task, TaskOperationType } from '../../types/task';
+import { Task } from '../../types/task';
 
 import useTaskForm from './tasks-form.hook';
 
@@ -22,13 +22,6 @@ interface TaskModalProps {
   onError?: (error: AsyncError) => void;
   onSuccess?: () => void;
   setIsModalOpen: (open: boolean) => void;
-  setFieldValue: (
-    formik: FormikProps<Task>,
-    field: string,
-    value: string,
-  ) => void;
-  task?: Task;
-  taskOperationType: string;
 }
 
 const TaskModal: React.FC<TaskModalProps> = ({
@@ -37,20 +30,9 @@ const TaskModal: React.FC<TaskModalProps> = ({
   isModalOpen,
   onError,
   onSuccess,
-  setFieldValue,
   setIsModalOpen,
-  task,
-  taskOperationType,
 }) => {
   const { isAddTaskLoading } = useTaskForm({ onSuccess, onError });
-
-  useEffect(() => {
-    if (taskOperationType === TaskOperationType.EDIT.toString() && task) {
-      setFieldValue(formik, 'title', task.title);
-      setFieldValue(formik, 'id', task.id);
-      setFieldValue(formik, 'description', task.description);
-    }
-  }, [taskOperationType, task]);
 
   const handleClick = () => {
     if (isAddTaskLoading) {

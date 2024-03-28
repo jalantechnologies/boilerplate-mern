@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 
-import { Button, Flex, HeadingLarge } from '../../components';
+import { Button, HeadingLarge } from '../../components';
 import { AsyncError } from '../../types';
 import { ButtonSize } from '../../types/button';
-import { TaskOperationType } from '../../types/task';
 
 import TaskModal from './task-modal';
 import useTaskForm from './tasks-form.hook';
@@ -21,7 +20,7 @@ const TaskHeader: React.FC<TaskHeaderProps> = ({ onError }) => {
     setIsModalOpen(false);
   };
 
-  const { addTaskFormik, setFormikFieldValue } = useTaskForm({
+  const { addTaskFormik } = useTaskForm({
     onError,
     onSuccess,
   });
@@ -29,12 +28,10 @@ const TaskHeader: React.FC<TaskHeaderProps> = ({ onError }) => {
   return (
     <div className="rounded-sm  border border-stroke bg-white p-3 shadow-default">
       <div className="flex flex-col items-start justify-between gap-5 sm:flex-row sm:items-center ">
-        <Flex>
-          <div className="pl-2">
-            <HeadingLarge>Tasks</HeadingLarge>
-          </div>
-        </Flex>
-        <Flex>
+        <div className="pl-2">
+          <HeadingLarge>Tasks</HeadingLarge>
+        </div>
+        <div>
           <Button
             onClick={() => setIsModalOpen(!isModalOpen)}
             size={ButtonSize.COMPACT}
@@ -44,15 +41,13 @@ const TaskHeader: React.FC<TaskHeaderProps> = ({ onError }) => {
           >
             Add task
           </Button>
-          <TaskModal
-            formik={addTaskFormik}
-            setFieldValue={setFormikFieldValue}
-            isModalOpen={isModalOpen}
-            setIsModalOpen={setIsModalOpen}
-            btnText={'Add Task'}
-            taskOperationType={TaskOperationType.ADD}
-          />
-        </Flex>
+        </div>
+        <TaskModal
+          formik={addTaskFormik}
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+          btnText={'Add Task'}
+        />
       </div>
     </div>
   );
