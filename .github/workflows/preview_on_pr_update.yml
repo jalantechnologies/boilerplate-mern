@@ -24,7 +24,7 @@ jobs:
       pull_request_number: ${{ github.event.number }}
       sonar_host_url: ${{ vars.SONAR_HOST_URL }}
       aws_cluster_name: ${{ vars.AWS_CLUSTER_NAME }}
-      aws_region: $${{ vars.AWS_REGION }}
+      aws_region: ${{ vars.AWS_REGION }}
       aws_use_ecr: true
     secrets:
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
