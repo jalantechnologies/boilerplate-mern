@@ -24,6 +24,8 @@ spec:
             readOnly: true
             volumeAttributes:
               secretProviderClass: "boilerplate-mern-secrets"
+          secret:
+            secretName: boilerplate-mern-secrets
       containers:
         - name: $KUBE_APP
           image: $KUBE_DEPLOYMENT_IMAGE
@@ -44,6 +46,9 @@ spec:
               value: $KUBE_INGRESS_HOSTNAME
             - name: PAPERTRAIL_PROGRAM
               value: $KUBE_APP
+          envFrom:
+            - secretRef:
+                name: boilerplate-mern-secrets
           volumeMounts:
             - name: secrets-store-inline
               mountPath: "/mnt/secrets-store"
