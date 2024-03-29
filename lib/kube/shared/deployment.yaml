@@ -6,8 +6,6 @@ metadata:
   labels:
     app: $KUBE_APP
     version: $GITHUB_SHA
-  annotations:
-    secrets.doppler.com/reload: 'true'
 spec:
   replicas: 1
   selector:
@@ -18,8 +16,13 @@ spec:
       labels:
         app: $KUBE_APP
     spec:
-      imagePullSecrets:
-        - name: regcred
+      volumes:
+        - name: secrets-store-inline
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "boilerplate-mern-secrets"
       containers:
         - name: $KUBE_APP
           image: $KUBE_DEPLOYMENT_IMAGE
