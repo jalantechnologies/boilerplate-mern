@@ -16,6 +16,7 @@ spec:
       labels:
         app: $KUBE_APP
     spec:
+      serviceAccountName: boilerplate-preview-deployment
       volumes:
         - name: secrets-store-inline
           csi:
