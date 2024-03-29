@@ -44,7 +44,7 @@ spec:
             - name: PAPERTRAIL_PROGRAM
               value: $KUBE_APP
           volumeMounts:
-            - name: boilerplate-mern-secrets
+            - name: secrets-store-inline
               mountPath: "/mnt/secrets-store"
               readOnly: true
           startupProbe:
