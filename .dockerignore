@@ -67,3 +67,6 @@ dev
 
 # GitHub files
 .github
+
+# Kubernetes
+lib/kube
