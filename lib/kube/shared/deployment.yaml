@@ -43,6 +43,10 @@ spec:
               value: $KUBE_INGRESS_HOSTNAME
             - name: PAPERTRAIL_PROGRAM
               value: $KUBE_APP
+          volumeMounts:
+            - name: boilerplate-mern-secrets
+              mountPath: "/mnt/secrets-store"
+              readOnly: true
           startupProbe:
             httpGet:
               path: /
