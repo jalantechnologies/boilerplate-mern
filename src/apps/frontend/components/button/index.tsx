@@ -25,7 +25,7 @@ const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
   isLoading,
   kind = ButtonKind.PRIMARY,
   onClick,
-  size = ButtonSize.DEFAULT,
+  size,
   startEnhancer,
   type = ButtonType.BUTTON,
 }) => {

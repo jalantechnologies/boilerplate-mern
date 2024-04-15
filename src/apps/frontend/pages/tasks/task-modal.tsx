@@ -10,7 +10,7 @@ import {
 import TextArea from '../../components/input/text-area';
 import Modal from '../../components/modal';
 import { AsyncError } from '../../types';
-import { ButtonKind, ButtonType } from '../../types/button';
+import { ButtonKind, ButtonSize, ButtonType } from '../../types/button';
 import { Task } from '../../types/task';
 
 import useTaskForm from './tasks-form.hook';
@@ -32,10 +32,10 @@ const TaskModal: React.FC<TaskModalProps> = ({
   onSuccess,
   setIsModalOpen,
 }) => {
-  const { isAddTaskLoading } = useTaskForm({ onSuccess, onError });
+  const { isAddTaskLoading, isUpdateTaskLoading } = useTaskForm({ onSuccess, onError });
 
   const handleClick = () => {
-    if (isAddTaskLoading) {
+    if (isAddTaskLoading || isUpdateTaskLoading) {
       setIsModalOpen(false);
     }
   };
@@ -93,9 +93,12 @@ const TaskModal: React.FC<TaskModalProps> = ({
           <Button
             type={ButtonType.SUBMIT}
             onClick={handleClick}
-            isLoading={isAddTaskLoading}
+            isLoading={btnText === 'Add Task' ? isAddTaskLoading : isUpdateTaskLoading}
+            size={ButtonSize.DEFAULT}
             startEnhancer={
-              <img src="assets/svg/plus-icon.svg" alt="Plus Icon" />
+              !isAddTaskLoading && !isUpdateTaskLoading && (
+                <img src="assets/svg/plus-icon.svg" alt="Plus Icon" />
+              )
             }
           >
             {btnText}
