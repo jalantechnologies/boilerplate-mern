@@ -27,6 +27,8 @@ export default function ApplicationRepository<T>(
 ): mongoose.Model<T> {
   const connection = getDatabaseConnection();
 
+  connection.syncIndexes();
+
   // TODO: Typings for repositories is not working as expected, this needs
   //  to be fixed.
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
