@@ -7,6 +7,7 @@ import {
   GetAllTaskParams,
   DeleteTaskParams,
   GetTaskParams,
+  UpdateTaskParams,
 } from '../types';
 
 import { serializeTaskAsJSON } from './task-serializer';
@@ -18,7 +19,8 @@ export class TaskController {
   ) => {
     const task: Task = await TaskService.createTask({
       accountId: req.accountId,
-      name: req.body.name,
+      description: req.body.description,
+      title: req.body.title,
     });
     const taskJSON = serializeTaskAsJSON(task);
 
@@ -74,5 +76,22 @@ export class TaskController {
     res
       .status(HttpStatusCodes.OK)
       .send(tasksJSON);
+  });
+
+  updateTask = applicationController(async (
+    req: Request<UpdateTaskParams>,
+    res: Response,
+  ) => {
+    const updatedTask: Task = await TaskService.updateTask({
+      accountId: req.accountId,
+      taskId: req.params.id,
+      description: req.body.description,
+      title: req.body.title,
+    });
+    const taskJSON = serializeTaskAsJSON(updatedTask);
+
+    res
+      .status(HttpStatusCodes.OK)
+      .send(taskJSON);
   });
 }

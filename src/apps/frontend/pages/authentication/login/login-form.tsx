@@ -11,7 +11,7 @@ import {
 } from '../../../components';
 import routes from '../../../constants/routes';
 import { AsyncError } from '../../../types';
-import { ButtonKind, ButtonType } from '../../../types/button';
+import { ButtonKind, ButtonSize, ButtonType } from '../../../types/button';
 
 import LoginFormCheckbox from './login-form-checkbox';
 import useLoginForm from './login-form.hook';
@@ -78,6 +78,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
           type={ButtonType.SUBMIT}
           kind={ButtonKind.PRIMARY}
           isLoading={isLoginLoading}
+          size={ButtonSize.LARGE}
         >
           Log In
         </Button>
