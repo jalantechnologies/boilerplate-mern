@@ -2,7 +2,7 @@ import faker from '@faker-js/faker';
 import chai, { expect } from 'chai';
 import sinon from 'sinon';
 
-import { AccountWithUserNameExistsError, PhoneNumber } from '../../../src/apps/backend/modules/account';
+import { AccountNotFoundError, AccountWithUserNameExistsError, PhoneNumber } from '../../../src/apps/backend/modules/account';
 import AccountWriter from '../../../src/apps/backend/modules/account/internal/account-writer';
 import { SMSService } from '../../../src/apps/backend/modules/communication';
 import { app } from '../../helpers/app';
@@ -132,6 +132,53 @@ describe('Account API', () => {
       expect(res.status).to.be.eq(400);
       expect(res.body.message).to.eq('Please provide a valid phone number.');
       expect(sendSMSStub.calledOnce).to.be.false;
+    });
+  });
+
+  describe('PATCH /accounts/:accountId', () => {
+    it('should update account details', async () => {
+      const account = await AccountWriter.createAccountByUsernameAndPassword(
+        faker.name.firstName(),
+        faker.name.lastName(),
+        'password',
+        faker.internet.userName(),
+      );
+
+      const updateAccountDetailsParams = {
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
+      };
+
+      const res = await chai
+        .request(app)
+        .patch(`/api/accounts/${account.id}`)
+        .set('content-type', 'application/json')
+        .send(updateAccountDetailsParams);
+
+      expect(res.status).to.be.eq(200);
+      expect(res.body.firstName).to.eq(updateAccountDetailsParams.firstName);
+      expect(res.body.lastName).to.eq(updateAccountDetailsParams.lastName);
+      expect(res.body.firstName).to.not.eq(account.firstName);
+      expect(res.body.lastName).to.not.eq(account.lastName);
+    });
+
+    it('should throw an error when updating account details with an account ID that does not exist', async () => {
+      const accountId = faker.database.mongodbObjectId();
+      const updateAccountDetailsParams = {
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
+      };
+
+      const res = await chai
+        .request(app)
+        .patch(`/api/accounts/${accountId}`)
+        .set('content-type', 'application/json')
+        .send(updateAccountDetailsParams);
+
+      expect(res.status).to.be.eq(404);
+      expect(res.body.message).to.eq(
+        new AccountNotFoundError(accountId).message,
+      );
     });
   });
 });
