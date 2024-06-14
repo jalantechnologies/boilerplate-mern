@@ -71,4 +71,21 @@ export default class AccountWriter {
 
     return AccountUtil.convertAccountDBToAccount(dbAccount);
   }
+
+  public static async updateAccountDetails(
+    accountId: string,
+    firstName: string,
+    lastName: string,
+  ): Promise<Account> {
+    const dbAccount = await AccountRepository.findByIdAndUpdate(
+      accountId,
+      {
+        firstName,
+        lastName,
+      },
+      { new: true },
+    );
+
+    return AccountUtil.convertAccountDBToAccount(dbAccount);
+  }
 }
