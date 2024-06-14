@@ -9,6 +9,8 @@ import {
   GetAccountParams,
   PhoneNumber,
   ResetPasswordParams,
+  UpdateAccountDetailsParams,
+  UpdateAccountParams,
 } from '../types';
 
 import { serializeAccountAsJSON } from './account-serializer';
@@ -57,13 +59,33 @@ export class AccountController {
     },
   );
 
-  resetPassword = applicationController(
-    async (req: Request<ResetPasswordParams>, res: Response) => {
-      const account = await AccountService.resetAccountPassword({
-        accountId: req.params.accountId,
-        newPassword: req.body.newPassword,
-        token: req.body.token,
-      });
+  updateAccount = applicationController(
+    async (req: Request<UpdateAccountParams>, res: Response) => {
+      const { accountId } = req.params;
+      let account: Account;
+      const {
+        firstName,
+        lastName,
+      } = req.body as UpdateAccountDetailsParams;
+
+      const {
+        newPassword,
+        token,
+      } = req.body as ResetPasswordParams;
+
+      if (newPassword && token) {
+        account = await AccountService.resetAccountPassword({
+          accountId,
+          newPassword,
+          token,
+        });
+      } else {
+        account = await AccountService.updateAccountDetails({
+          accountId,
+          firstName,
+          lastName,
+        });
+      }
 
       const accountJSON = serializeAccountAsJSON(account);
 

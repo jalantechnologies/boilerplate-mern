@@ -8,6 +8,7 @@ import {
   ResetPasswordParams,
   GetAccountParams,
   PhoneNumber,
+  UpdateAccountDetailsParams,
 } from './types';
 
 export default class AccountService {
@@ -83,5 +84,18 @@ export default class AccountService {
     await PasswordResetTokenService.setPasswordResetTokenAsUsedById(passwordResetToken.id);
 
     return updatedAccount;
+  }
+
+  public static async updateAccountDetails(
+    params: UpdateAccountDetailsParams,
+  ): Promise<Account> {
+    const { accountId, firstName, lastName } = params;
+    await AccountReader.getAccountById(accountId);
+
+    return AccountWriter.updateAccountDetails(
+      accountId,
+      firstName,
+      lastName,
+    );
   }
 }
