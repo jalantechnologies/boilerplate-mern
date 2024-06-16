@@ -55,3 +55,9 @@ export class TaskNotFoundError extends ApplicationError {
     this.httpStatusCode = HttpStatusCodes.NOT_FOUND;
   }
 }
+
+export type ShareTaskParams = {
+  accountId: string;
+  taskId: string;
+  userIds: string[];
+};
