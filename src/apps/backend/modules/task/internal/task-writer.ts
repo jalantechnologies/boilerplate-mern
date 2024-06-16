@@ -1,3 +1,4 @@
+import { Types } from 'mongoose';
 import {
   CreateTaskParams,
   DeleteTaskParams,
@@ -6,6 +7,8 @@ import {
   UpdateTaskParams,
   ShareTaskParams,
 } from '../types';
+import { TaskDB } from './store/task-db';
+
 
 import TaskRepository from './store/task-repository';
 import TaskReader from './task-reader';
@@ -64,6 +67,8 @@ export default class TaskWriter {
   }
 
   public static async shareTask(params: ShareTaskParams): Promise<Task> {
+    const userIds = params.userIds.map((id) => new Types.ObjectId(id));
+
     const task = await TaskRepository.findOneAndUpdate(
       {
         account: params.accountId,
@@ -72,16 +77,16 @@ export default class TaskWriter {
       },
       {
         $addToSet: {
-          sharedWith: { $each: params.userIds },
+          sharedWith: { $each: userIds },
         },
       },
       { new: true },
-    );
+    ).lean().exec();
 
     if (!task) {
       throw new TaskNotFoundError(params.taskId);
     }
 
-    return TaskUtil.convertTaskDBToTask(task);
+    return TaskUtil.convertTaskDBToTask(task as TaskDB);
   }
 }
