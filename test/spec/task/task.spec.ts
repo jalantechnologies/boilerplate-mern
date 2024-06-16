@@ -196,4 +196,28 @@ describe('Task API', () => {
       expect(updatedToken.active).to.be.false;
     });
   });
+  
+  describe('POST /tasks/share', () => {
+    it('should share a task with specified users', async () => {
+      const task = await TaskService.createTask({
+        accountId: account.id,
+        title: 'my-task',
+        description: 'This is a test description.',
+      });
+
+      const res = await chai
+        .request(app)
+        .post('/api/tasks/share')
+        .set('content-type', 'application/json')
+        .set('Authorization', `Bearer ${accessToken.token}`)
+        .send({
+          taskId: task.id,
+          userIds: [ObjectIdUtils.createNew()],
+        });
+
+      expect(res.status).to.eq(200);
+      expect(res.body).to.have.property('sharedWith');
+      expect(res.body.sharedWith).to.be.an('array').that.is.not.empty;
+    });
+  });
 });
