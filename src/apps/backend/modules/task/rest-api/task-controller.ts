@@ -8,6 +8,7 @@ import {
   DeleteTaskParams,
   GetTaskParams,
   UpdateTaskParams,
+  ShareTaskParams,
 } from '../types';
 
 import { serializeTaskAsJSON } from './task-serializer';
@@ -89,6 +90,22 @@ export class TaskController {
       title: req.body.title,
     });
     const taskJSON = serializeTaskAsJSON(updatedTask);
+
+    res
+      .status(HttpStatusCodes.OK)
+      .send(taskJSON);
+  });
+
+  shareTask = applicationController(async (
+    req: Request<ShareTaskParams>,
+    res: Response,
+  ) => {
+    const task: Task = await TaskService.shareTask({
+      accountId: req.accountId,
+      taskId: req.body.taskId,
+      userIds: req.body.userIds,
+    });
+    const taskJSON = serializeTaskAsJSON(task);
 
     res
       .status(HttpStatusCodes.OK)
