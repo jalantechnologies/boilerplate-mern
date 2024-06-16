@@ -4,6 +4,7 @@ import {
   Task,
   TaskNotFoundError,
   UpdateTaskParams,
+  ShareTaskParams,
 } from '../types';
 
 import TaskRepository from './store/task-repository';
@@ -60,5 +61,27 @@ export default class TaskWriter {
         },
       },
     );
+  }
+
+  public static async shareTask(params: ShareTaskParams): Promise<Task> {
+    const task = await TaskRepository.findOneAndUpdate(
+      {
+        account: params.accountId,
+        _id: params.taskId,
+        active: true,
+      },
+      {
+        $addToSet: {
+          sharedWith: { $each: params.userIds },
+        },
+      },
+      { new: true },
+    );
+
+    if (!task) {
+      throw new TaskNotFoundError(params.taskId);
+    }
+
+    return TaskUtil.convertTaskDBToTask(task);
   }
 }
