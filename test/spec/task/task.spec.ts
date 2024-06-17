@@ -196,8 +196,8 @@ describe('Task API', () => {
       expect(updatedToken.active).to.be.false;
     });
   });
-  
-  describe('POST /tasks/share', () => {
+
+  describe('PATCH /tasks/:id', () => {
     it('should share a task with specified users', async () => {
       const task = await TaskService.createTask({
         accountId: account.id,
@@ -205,19 +205,20 @@ describe('Task API', () => {
         description: 'This is a test description.',
       });
 
+      const userIds = [ObjectIdUtils.createNew()];
+
       const res = await chai
         .request(app)
-        .post('/api/tasks/share')
+        .patch(`/api/tasks/${task.id}/share`)
         .set('content-type', 'application/json')
         .set('Authorization', `Bearer ${accessToken.token}`)
         .send({
-          taskId: task.id,
-          userIds: [ObjectIdUtils.createNew()],
+          userIds,
         });
 
       expect(res.status).to.eq(200);
       expect(res.body).to.have.property('sharedWith');
-      expect(res.body.sharedWith).to.be.an('array').that.is.not.empty;
+      expect(res.body.sharedWith).to.include.members(userIds.map(String));
     });
   });
 });
