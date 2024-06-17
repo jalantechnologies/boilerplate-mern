@@ -31,6 +31,7 @@ export type UpdateTaskParams = {
   description: string;
   taskId: string;
   title: string;
+  userIds?: string[];
 };
 
 export type DeleteTaskParams = {
