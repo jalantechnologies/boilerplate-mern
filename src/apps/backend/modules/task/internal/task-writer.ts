@@ -8,8 +8,6 @@ import {
   ShareTaskParams,
 } from '../types';
 import { TaskDB } from './store/task-db';
-
-
 import TaskRepository from './store/task-repository';
 import TaskReader from './task-reader';
 import TaskUtil from './task-util';
@@ -81,7 +79,9 @@ export default class TaskWriter {
         },
       },
       { new: true },
-    ).lean().exec();
+    )
+      .lean()
+      .exec();
 
     if (!task) {
       throw new TaskNotFoundError(params.taskId);
