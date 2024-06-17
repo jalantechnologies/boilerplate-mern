@@ -30,7 +30,7 @@ export const TaskDbSchema: Schema = new Schema<TaskDB>(
       type: String,
       required: true,
     },
-    sharedWith: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    sharedWith: { type: [Types.ObjectId], default: [] },
   },
   {
     collection: 'tasks',
