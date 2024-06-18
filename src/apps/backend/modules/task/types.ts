@@ -46,6 +46,13 @@ export enum TaskErrorCode {
   NOT_FOUND = 'TASK_ERR_01',
 }
 
+export type UpdateSharedWithParams = {
+  accountId: string;
+  taskId: string;
+  sharedAccountId: string;
+};
+
+
 export class TaskNotFoundError extends ApplicationError {
   code: TaskErrorCode;
 
