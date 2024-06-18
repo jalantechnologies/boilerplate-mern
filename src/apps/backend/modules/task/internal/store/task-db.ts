@@ -6,6 +6,7 @@ export interface TaskDB {
   active: boolean;
   description: string;
   title: string;
+  sharedWith: Types.ObjectId[];
 }
 
 export const TaskDbSchema: Schema = new Schema<TaskDB>(
@@ -29,6 +30,11 @@ export const TaskDbSchema: Schema = new Schema<TaskDB>(
       type: String,
       required: true,
     },
+    sharedWith: [{
+      type: Schema.Types.ObjectId,
+      ref: 'Account',
+      index: true,
+    }],
   },
   {
     collection: 'tasks',
