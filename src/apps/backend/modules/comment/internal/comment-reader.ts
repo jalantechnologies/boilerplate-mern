@@ -8,6 +8,8 @@ import {
 
 import CommentRepository from './store/comment-repository';
 import CommentUtil from './comment-util';
+import TaskRepository from '../../task/internal/store/task-repository';
+import { TaskNotFoundError } from '../../task';
 
 export default class CommentReader {
 
@@ -24,6 +26,14 @@ export default class CommentReader {
   }
 
   public static async getCommentsForTask(params: GetTaskCommentsParams): Promise<Comment []> {
+
+    const taskDb = await TaskRepository.findOne({
+      _id: params.taskId,
+      active: true,
+    });
+    if (!taskDb) {
+      throw new TaskNotFoundError(params.taskId);
+    }
 
     const commentsDb = await CommentRepository
       .find({ task: params.taskId, active: true });

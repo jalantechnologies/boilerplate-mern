@@ -7,6 +7,7 @@ import {
   GetTaskCommentsParams,
   DeleteCommentParams,
   UpdateCommentParams,
+  GetCommentParams,
 } from '../types';
 
 import { serializeCommentAsJSON } from './comment-serializer';
@@ -51,6 +52,22 @@ export class CommentController {
 
     const comments = await CommentService.getCommentsForTask(params);
     const commentsJSON = comments.map((comment) => serializeCommentAsJSON(comment));
+
+    res
+      .status(HttpStatusCodes.OK)
+      .send(commentsJSON);
+  });
+
+  getComment = applicationController(async (
+    req: Request,
+    res: Response,
+  ) => {
+    const params: GetCommentParams = {
+      commentId: req.params.commentId
+    };
+
+    const comment = await CommentService.getComment(params);
+    const commentsJSON = serializeCommentAsJSON(comment);
 
     res
       .status(HttpStatusCodes.OK)

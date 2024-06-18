@@ -6,6 +6,7 @@ import {
   GetTaskCommentsParams,
   Comment,
   UpdateCommentParams,
+  GetCommentParams,
 } from './types';
 
 export default class CommentService {
@@ -23,5 +24,9 @@ export default class CommentService {
 
   public static async getCommentsForTask(params: GetTaskCommentsParams): Promise<Comment[]> {
     return CommentReader.getCommentsForTask(params);
+  }
+
+  public static async getComment(params: GetCommentParams): Promise<Comment> {
+    return CommentReader.getComment(params);
   }
 }
