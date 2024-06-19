@@ -1,3 +1,4 @@
+// task-service.ts
 import TaskReader from './internal/task-reader';
 import TaskWriter from './internal/task-writer';
 import {
@@ -7,6 +8,7 @@ import {
   GetTaskParams,
   Task,
   UpdateTaskParams,
+  ShareTaskParams, // Add this import
 } from './types';
 
 export default class TaskService {
@@ -28,5 +30,9 @@ export default class TaskService {
 
   public static async getTasksForAccount(params: GetAllTaskParams): Promise<Task[]> {
     return TaskReader.getTasksForAccount(params);
+  }
+
+  public static async shareTask(params: ShareTaskParams): Promise<Task> {
+    return TaskWriter.shareTask(params);
   }
 }

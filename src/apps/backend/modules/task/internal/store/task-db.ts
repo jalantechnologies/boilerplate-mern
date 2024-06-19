@@ -6,6 +6,7 @@ export interface TaskDB {
   active: boolean;
   description: string;
   title: string;
+  shared_with: Types.ObjectId[]; // new field to store IDs of users with whom the task is shared
 }
 
 export const TaskDbSchema: Schema = new Schema<TaskDB>(
@@ -29,6 +30,7 @@ export const TaskDbSchema: Schema = new Schema<TaskDB>(
       type: String,
       required: true,
     },
+    shared_with: [{ type: Schema.Types.ObjectId, ref: 'Account' }], // new field
   },
   {
     collection: 'tasks',

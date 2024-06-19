@@ -1,3 +1,4 @@
+// task-router.ts
 import { accessAuthMiddleware } from '../../access-token';
 import { ApplicationRouter } from '../../application';
 
@@ -15,5 +16,6 @@ export default class TaskRouter extends ApplicationRouter {
     router.get('/:id', ctrl.getTask);
     router.patch('/:id', ctrl.updateTask);
     router.delete('/:id', ctrl.deleteTask);
+    router.post('/:id/share', ctrl.shareTask); // Define POST /tasks/:id/share endpoint
   }
 }

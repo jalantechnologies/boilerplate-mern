@@ -196,4 +196,64 @@ describe('Task API', () => {
       expect(updatedToken.active).to.be.false;
     });
   });
+  describe('POST /tasks/:taskId/share', () => {
+    it('should be able to share a task with other users', async () => {
+      const task = await TaskService.createTask({
+        accountId: account.id,
+        title: 'my-task',
+        description: 'This is a test description.',
+      });
+  
+      const { account: anotherAccount } = await createAccount();
+  
+      const res = await chai
+        .request(app)
+        .post(`/api/tasks/${task.id}/share`)
+        .set('content-type', 'application/json')
+        .set('Authorization', `Bearer ${accessToken.token}`)
+        .send({
+          userIds: [anotherAccount.id],
+        });
+  
+      expect(res.status).to.eq(200);
+      expect(res.body).to.have.property('id');
+      expect(res.body.id).to.eq(task.id);
+      expect(res.body.shared_with).to.be.an('array').that.includes(anotherAccount.id);
+    });
+  
+    it('should return error if task to share does not exist', async () => {
+      const res = await chai
+        .request(app)
+        .post(`/api/tasks/${ObjectIdUtils.createNew()}/share`)
+        .set('content-type', 'application/json')
+        .set('Authorization', `Bearer ${accessToken.token}`)
+        .send({
+          userIds: ['some-user-id'],
+        });
+  
+      expect(res.status).to.eq(404);
+    });
+  
+    it('should return error if user does not have permission to share the task', async () => {
+      const { account: anotherAccount } = await createAccount();
+      const task = await TaskService.createTask({
+        accountId: anotherAccount.id, // Creating task with another account
+        title: 'another-task',
+        description: 'This is another test description.',
+      });
+  
+      const res = await chai
+        .request(app)
+        .post(`/api/tasks/${task.id}/share`)
+        .set('content-type', 'application/json')
+        .set('Authorization', `Bearer ${accessToken.token}`)
+        .send({
+          userIds: ['some-user-id'],
+        });
+  
+      expect(res.status).to.eq(403);
+    });
+  });
+  
+
 });
