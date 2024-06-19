@@ -1,5 +1,4 @@
 import chai, { expect } from 'chai';
-
 import { AccessToken } from '../../../src/apps/backend/modules/access-token';
 import { Account } from '../../../src/apps/backend/modules/account';
 import { ObjectIdUtils } from '../../../src/apps/backend/modules/database';
@@ -143,7 +142,7 @@ describe('Task API', () => {
       expect(res.body.description).to.eq('This is a test description.');
     });
 
-    it('should return error if requested task does not exists', async () => {
+    it('should return error if requested task does not exist', async () => {
       const res = await chai
         .request(app)
         .get(`/api/tasks/${ObjectIdUtils.createNew()}`)
@@ -194,6 +193,61 @@ describe('Task API', () => {
 
       const updatedToken = await TaskRepository.findById(task.id);
       expect(updatedToken.active).to.be.false;
+    });
+  });
+
+  describe('POST /tasks/:id/share', () => {
+    it('should be able to share a task with multiple users', async () => {
+      const task = await TaskService.createTask({
+        accountId: account.id,
+        title: 'my-task',
+        description: 'This is a test description.',
+      });
+
+      const { account: user1 } = await createAccount({
+        accountParams: {
+          username: 'user1',
+          password: 'password123', // Add password if required
+        },
+      });
+      const { account: user2 } = await createAccount({
+        accountParams: {
+          username: 'user2',
+          password: 'password123', // Add password if required
+        },
+      });
+
+      const res = await chai
+        .request(app)
+        .post(`/api/tasks/${task.id}/share`)
+        .set('content-type', 'application/json')
+        .set('Authorization', `Bearer ${accessToken.token}`)
+        .send({
+          userIds: [user1.id, user2.id],
+        });
+
+      expect(res.status).to.eq(200);
+      expect(res.body.message).to.eq('Task shared successfully');
+    });
+
+    it('should return error if task does not exist', async () => {
+      const { account: user1 } = await createAccount({
+        accountParams: {
+          username: 'user1',
+          password: 'password123', // Add password if required
+        },
+      });
+
+      const res = await chai
+        .request(app)
+        .post(`/api/tasks/${ObjectIdUtils.createNew()}/share`)
+        .set('content-type', 'application/json')
+        .set('Authorization', `Bearer ${accessToken.token}`)
+        .send({
+          userIds: [user1.id],
+        });
+
+      expect(res.status).to.eq(404);
     });
   });
 });

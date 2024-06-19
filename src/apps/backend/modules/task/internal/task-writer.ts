@@ -7,8 +7,10 @@ import {
 } from '../types';
 
 import TaskRepository from './store/task-repository';
+import SharedTaskRepository from './store/shared-task-repository';
 import TaskReader from './task-reader';
 import TaskUtil from './task-util';
+import { Types } from 'mongoose';
 
 export default class TaskWriter {
   public static async createTask(params: CreateTaskParams): Promise<Task> {
@@ -60,5 +62,17 @@ export default class TaskWriter {
         },
       },
     );
+  }
+
+  public static async shareTask(
+    taskId: Types.ObjectId,
+    userIds: Types.ObjectId[],
+  ): Promise<void> {
+    const sharedTasks = userIds.map((userId) => ({
+      taskId,
+      userId,
+    }));
+
+    await SharedTaskRepository.insertMany(sharedTasks);
   }
 }
