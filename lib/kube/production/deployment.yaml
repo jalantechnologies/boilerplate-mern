@@ -1,21 +1,3 @@
-apiVersion: scheduling.k8s.io/v1
-kind: PriorityClass
-metadata:
-  name: high-priority
-value: 1000000
-globalDefault: false
-description: "This priority class is for production deployments"
----
-apiVersion: policy/v1
-kind: PodDisruptionBudget
-metadata:
-  name: $KUBE_APP-pdb
-spec:
-  minAvailable: 1
-  selector:
-    matchLabels:
-      app: $KUBE_APP
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -36,7 +18,15 @@ spec:
       labels:
         app: $KUBE_APP
     spec:
-      priorityClassName: high-priority
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: doks.digitalocean.com/node-pool
+                    operator: In
+                    values:
+                      - platform-cluster-01-production-pool
       imagePullSecrets:
         - name: regcred
       containers:
