@@ -1,3 +1,12 @@
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: $KUBE_APP-$KUBE_DEPLOY_ID-priority
+  namespace: $KUBE_NS
+value: $KUBE_DEPLOY_ID
+globalDefault: false
+description: "This priority class is used for preview pods."
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -18,6 +27,16 @@ spec:
       labels:
         app: $KUBE_APP
     spec:
+      priorityClassName: $KUBE_APP-$KUBE_DEPLOY_ID-priority
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: doks.digitalocean.com/node-pool
+                    operator: In
+                    values:
+                      - platform-cluster-01-staging-pool
       imagePullSecrets:
         - name: regcred
       containers:
