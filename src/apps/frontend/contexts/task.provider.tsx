@@ -1,11 +1,12 @@
 import React, {
-  createContext, PropsWithChildren, useContext, useState,
+  createContext,
+  PropsWithChildren,
+  useContext,
+  useState,
 } from 'react';
-
 import TaskService from '../services/task.service';
 import { ApiResponse, AsyncError } from '../types';
-import { Task } from '../types/task';
-
+import { Task, User } from '../types/task';
 import useAsync from './async.hook';
 
 type TaskContextType = {
@@ -26,6 +27,12 @@ type TaskContextType = {
   updateTask: (taskId: string, taskData: Partial<Task>) => Promise<Task>;
   updateTaskError: AsyncError;
   updatedTask: Task;
+  getUsers: (page: number, search: string) => Promise<User[]>;
+  getUsersError: AsyncError;
+  isGetUsersLoading: boolean;
+  users: User[];
+  shareTask: (taskId: string, userIds: string[]) => Promise<void>;
+  shareTaskError: AsyncError;
 };
 
 const TaskContext = createContext<TaskContextType | null>(null);
@@ -44,11 +51,22 @@ const updateTaskFn = async (
   taskData: Task,
 ): Promise<ApiResponse<Task>> => taskService.updateTask(taskId, taskData);
 
-const deleteTaskFn = async (taskId: string):
-Promise<ApiResponse<void>> => taskService.deleteTask(taskId);
+const deleteTaskFn = async (taskId: string): Promise<ApiResponse<void>> =>
+  taskService.deleteTask(taskId);
+
+const getUsersFn = async (
+  page: number,
+  search: string,
+): Promise<ApiResponse<User[]>> => taskService.getUsers(page, search);
+
+const shareTaskFn = async (
+  taskId: string,
+  userIds: string[],
+): Promise<ApiResponse<void>> => taskService.shareTask(taskId, userIds);
 
 export const TaskProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [tasksList, setTasksList] = useState<Task[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
 
   const getTasksFn = async (): Promise<ApiResponse<Task[]>> => {
     const response = await taskService.getTasks();
@@ -83,6 +101,15 @@ export const TaskProvider: React.FC<PropsWithChildren> = ({ children }) => {
     isLoading: isDeleteTaskLoading,
   } = useAsync(deleteTaskFn);
 
+  const {
+    asyncCallback: getUsers,
+    error: getUsersError,
+    isLoading: isGetUsersLoading,
+  } = useAsync(getUsersFn);
+
+  const { asyncCallback: shareTask, error: shareTaskError } =
+    useAsync(shareTaskFn);
+
   return (
     <TaskContext.Provider
       value={{
@@ -103,6 +130,18 @@ export const TaskProvider: React.FC<PropsWithChildren> = ({ children }) => {
         updateTask,
         updateTaskError,
         updatedTask,
+        getUsers: async (page: number, search: string) => {
+          const response = await getUsers(page, search);
+          setUsers(response);
+          return response;
+        },
+        getUsersError,
+        isGetUsersLoading,
+        users,
+        shareTask: async (taskId: string, userIds: string[]) => {
+          await shareTask(taskId, userIds);
+        },
+        shareTaskError,
       }}
     >
       {children}

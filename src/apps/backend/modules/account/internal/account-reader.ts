@@ -12,9 +12,7 @@ import AccountUtil from './account-util';
 import AccountRepository from './store/account-repository';
 
 export default class AccountReader {
-  public static async getAccountByUsername(
-    username: string,
-  ): Promise<Account> {
+  public static async getAccountByUsername(username: string): Promise<Account> {
     const accountDb = await AccountRepository.findOne({
       username,
       active: true,
@@ -42,9 +40,7 @@ export default class AccountReader {
     return account;
   }
 
-  public static async getAccountById(
-    accountId: string,
-  ): Promise<Account> {
+  public static async getAccountById(accountId: string): Promise<Account> {
     const accountDb = await AccountRepository.findOne({
       _id: accountId,
       active: true,
@@ -113,5 +109,26 @@ export default class AccountReader {
     }
 
     return false;
+  }
+
+  public static async getActiveUsers(
+    page = 1,
+    search = '',
+  ): Promise<Account[]> {
+    const perPage = 10;
+    const query = {
+      active: true,
+      $or: [
+        { firstName: { $regex: search, $options: 'i' } },
+        { lastName: { $regex: search, $options: 'i' } },
+        { username: { $regex: search, $options: 'i' } },
+      ],
+    };
+    const accountDbs = await AccountRepository.find(query)
+      .skip((page - 1) * perPage)
+      .limit(perPage)
+      .exec();
+
+    return accountDbs.map(AccountUtil.convertAccountDBToAccount);
   }
 }

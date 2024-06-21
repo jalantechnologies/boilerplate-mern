@@ -15,6 +15,7 @@ import { ButtonKind, ButtonSize } from '../../types/button';
 import { Task } from '../../types/task';
 
 import TaskModal from './task-modal';
+import ShareTaskModal from './task-share-modal';
 import useTaskForm from './tasks-form.hook';
 
 interface TaskSectionProps {
@@ -31,6 +32,8 @@ const TaskSection: React.FC<TaskSectionProps> = ({
   tasks,
 }) => {
   const [updateTaskModal, setUpdateTaskModal] = useState(false);
+  const [shareTaskModal, setShareTaskModal] = useState(false);
+  const [currentTask, setCurrentTask] = useState<Task | null>(null);
 
   const onSuccess = () => {
     toast.success('Task has been updated successfully');
@@ -43,10 +46,16 @@ const TaskSection: React.FC<TaskSectionProps> = ({
   });
 
   const handleTaskOperation = (task: Task) => {
-    setUpdateTaskModal(!updateTaskModal);
+    setCurrentTask(task);
+    setUpdateTaskModal(true);
     setFormikFieldValue(updateTaskFormik, 'title', task.title);
     setFormikFieldValue(updateTaskFormik, 'id', task.id);
     setFormikFieldValue(updateTaskFormik, 'description', task.description);
+  };
+
+  const handleShareTask = (task: Task) => {
+    setCurrentTask(task);
+    setShareTaskModal(true);
   };
 
   if (isGetTasksLoading) {
@@ -98,6 +107,16 @@ const TaskSection: React.FC<TaskSectionProps> = ({
               >
                 Delete
               </Button>
+              <Button
+                onClick={() => handleShareTask(task)}
+                kind={ButtonKind.SECONDARY}
+                size={ButtonSize.DEFAULT}
+                startEnhancer={
+                  <img src="assets/svg/share-icon.svg" alt="Share task" />
+                }
+              >
+                Share
+              </Button>
             </MenuItem>
           </div>
         </div>
@@ -109,6 +128,14 @@ const TaskSection: React.FC<TaskSectionProps> = ({
         setIsModalOpen={setUpdateTaskModal}
         btnText={'Update Task'}
       />
+
+      {currentTask && (
+        <ShareTaskModal
+          isModalOpen={shareTaskModal}
+          setIsModalOpen={setShareTaskModal}
+          taskId={currentTask.id}
+        />
+      )}
     </VerticalStackLayout>
   );
 };

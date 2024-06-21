@@ -19,15 +19,9 @@ export class AccountController {
   createAccount = applicationController(
     async (req: Request<CreateAccountParams>, res: Response) => {
       let account: Account;
-      const {
-        firstName,
-        lastName,
-        password,
-        username,
-      } = req.body as CreateAccountParamsByUsernameAndPassword;
-      const {
-        phoneNumber,
-      } = req.body as CreateAccountParamsByPhoneNumber;
+      const { firstName, lastName, password, username } =
+        req.body as CreateAccountParamsByUsernameAndPassword;
+      const { phoneNumber } = req.body as CreateAccountParamsByPhoneNumber;
 
       if (username && password) {
         account = await AccountService.createAccountByUsernameAndPassword(
@@ -63,15 +57,9 @@ export class AccountController {
     async (req: Request<UpdateAccountParams>, res: Response) => {
       const { accountId } = req.params;
       let account: Account;
-      const {
-        firstName,
-        lastName,
-      } = req.body as UpdateAccountDetailsParams;
+      const { firstName, lastName } = req.body as UpdateAccountDetailsParams;
 
-      const {
-        newPassword,
-        token,
-      } = req.body as ResetPasswordParams;
+      const { newPassword, token } = req.body as ResetPasswordParams;
 
       if (newPassword && token) {
         account = await AccountService.resetAccountPassword({
@@ -90,6 +78,17 @@ export class AccountController {
       const accountJSON = serializeAccountAsJSON(account);
 
       res.status(HttpStatusCodes.OK).send(accountJSON);
+    },
+  );
+
+  getActiveUsers = applicationController(
+    async (req: Request, res: Response) => {
+      const page = parseInt(req.query.page as string, 10);
+      const search = (req.query.search as string) || '';
+      const activeUsers = await AccountService.getActiveUsers(page, search);
+      res
+        .status(HttpStatusCodes.OK)
+        .send(activeUsers.map(serializeAccountAsJSON));
     },
   );
 }
