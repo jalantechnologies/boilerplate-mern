@@ -98,6 +98,16 @@ const TaskSection: React.FC<TaskSectionProps> = ({
               >
                 Delete
               </Button>
+
+
+              <Button
+               
+                kind={ButtonKind.SECONDARY}
+                size={ButtonSize.DEFAULT}
+               
+              >
+                Share Task
+              </Button>
             </MenuItem>
           </div>
         </div>
