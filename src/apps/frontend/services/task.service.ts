@@ -84,4 +84,18 @@ export default class TaskService extends APIService {
       return new ApiResponse(undefined, new ApiError(e.response.data as JsonObject));
     }
   };
+
+  shareTask = async (taskId: string, userIds: string[], sharedBy: string) =>{
+   
+    const task = await Task.findById(taskId);
+    if (!task) throw new Error("Task not found");
+
+    task.sharedWith = userIds;
+    task.sharedBy = sharedBy;
+    await task.save();
+
+
+    return task;
+}
+
 }

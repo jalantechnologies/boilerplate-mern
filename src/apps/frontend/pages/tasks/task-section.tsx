@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
+import { TbShare3 } from 'react-icons/tb';
 
 import {
   Button,
@@ -16,6 +17,7 @@ import { Task } from '../../types/task';
 
 import TaskModal from './task-modal';
 import useTaskForm from './tasks-form.hook';
+import TaskSharingModal from '../../modal/share-task-modal'
 
 interface TaskSectionProps {
   handleDeleteTask: (taskId: string) => void;
@@ -56,6 +58,19 @@ const TaskSection: React.FC<TaskSectionProps> = ({
       </div>
     );
   }
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedTaskId, setSelectedTaskId] = useState(null);
+
+  const showModal = (taskId) => {
+    setSelectedTaskId(taskId);
+    setIsModalVisible(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+    setSelectedTaskId(null);
+  };
 
   return (
     <VerticalStackLayout gap={7}>
@@ -99,14 +114,13 @@ const TaskSection: React.FC<TaskSectionProps> = ({
                 Delete
               </Button>
 
-
               <Button
-               
                 kind={ButtonKind.SECONDARY}
                 size={ButtonSize.DEFAULT}
-               
+                startEnhancer={<TbShare3 />}
+                onClick={() => showModal(task.id)}
               >
-                Share Task
+                Share
               </Button>
             </MenuItem>
           </div>
@@ -119,6 +133,11 @@ const TaskSection: React.FC<TaskSectionProps> = ({
         setIsModalOpen={setUpdateTaskModal}
         btnText={'Update Task'}
       />
+      <TaskSharingModal
+                visible={isModalVisible}
+                onCancel={handleCancel}
+                taskId={selectedTaskId}
+            />
     </VerticalStackLayout>
   );
 };

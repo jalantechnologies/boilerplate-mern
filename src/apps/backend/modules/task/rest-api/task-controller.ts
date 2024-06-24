@@ -1,6 +1,6 @@
 import { applicationController, Request, Response } from '../../application';
 import { HttpStatusCodes } from '../../http';
-import TaskService from '../task-service';
+import TaskService, { shareTask } from '../task-service'; 
 import {
   Task,
   CreateTaskParams,
@@ -8,6 +8,7 @@ import {
   DeleteTaskParams,
   GetTaskParams,
   UpdateTaskParams,
+  ShareTaskParams,  
 } from '../types';
 
 import { serializeTaskAsJSON } from './task-serializer';
@@ -93,5 +94,20 @@ export class TaskController {
     res
       .status(HttpStatusCodes.OK)
       .send(taskJSON);
+  });
+
+  shareTask = applicationController(async (
+    req: Request<ShareTaskParams>,
+    res: Response,
+  ) => {
+    const { taskId, userIds } = req.body;
+    const sharedBy = req.user.id; 
+    
+    try {
+      const task = await TaskService.shareTask(taskId, userIds, sharedBy);
+      res.status(HttpStatusCodes.OK).json(task);
+    } catch (error) {
+      res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).json({ message: error.message });
+    }
   });
 }
