@@ -6,7 +6,7 @@ export interface TaskDB {
   active: boolean;
   description: string;
   title: string;
-}
+  }
 
 export const TaskDbSchema: Schema = new Schema<TaskDB>(
   {
@@ -29,6 +29,7 @@ export const TaskDbSchema: Schema = new Schema<TaskDB>(
       type: String,
       required: true,
     },
+    
   },
   {
     collection: 'tasks',

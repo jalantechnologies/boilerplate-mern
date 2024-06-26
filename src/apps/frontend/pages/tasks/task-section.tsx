@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
-import { TbShare3 } from 'react-icons/tb';
 
 import {
   Button,
@@ -17,10 +16,10 @@ import { Task } from '../../types/task';
 
 import TaskModal from './task-modal';
 import useTaskForm from './tasks-form.hook';
-import TaskSharingModal from '../../modal/share-task-modal'
 
 interface TaskSectionProps {
   handleDeleteTask: (taskId: string) => void;
+  handleShareTask: (taskId: string) => void;
   isGetTasksLoading: boolean;
   onError?: (error: AsyncError) => void;
   tasks: Task[];
@@ -28,6 +27,7 @@ interface TaskSectionProps {
 
 const TaskSection: React.FC<TaskSectionProps> = ({
   handleDeleteTask,
+  handleShareTask,
   isGetTasksLoading,
   onError,
   tasks,
@@ -58,19 +58,6 @@ const TaskSection: React.FC<TaskSectionProps> = ({
       </div>
     );
   }
-
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [selectedTaskId, setSelectedTaskId] = useState(null);
-
-  const showModal = (taskId) => {
-    setSelectedTaskId(taskId);
-    setIsModalVisible(true);
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-    setSelectedTaskId(null);
-  };
 
   return (
     <VerticalStackLayout gap={7}>
@@ -113,12 +100,13 @@ const TaskSection: React.FC<TaskSectionProps> = ({
               >
                 Delete
               </Button>
-
               <Button
+                onClick={() => handleShareTask(task.id)}
                 kind={ButtonKind.SECONDARY}
                 size={ButtonSize.DEFAULT}
-                startEnhancer={<TbShare3 />}
-                onClick={() => showModal(task.id)}
+                startEnhancer={
+                  <img src="assets/svg/share-icon.svg" alt="Share task" />
+                }
               >
                 Share
               </Button>
@@ -129,15 +117,10 @@ const TaskSection: React.FC<TaskSectionProps> = ({
 
       <TaskModal
         formik={updateTaskFormik}
-        isModalOpen={updateTaskModal}
-        setIsModalOpen={setUpdateTaskModal}
+        isOpen={updateTaskModal}
+        setIsOpen={setUpdateTaskModal}
         btnText={'Update Task'}
       />
-      <TaskSharingModal
-                visible={isModalVisible}
-                onCancel={handleCancel}
-                taskId={selectedTaskId}
-            />
     </VerticalStackLayout>
   );
 };
