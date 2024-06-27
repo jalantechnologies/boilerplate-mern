@@ -1,15 +1,15 @@
 import { Types } from 'mongoose';
-import SharedTaskRepository from './store/share-task-repository';
-import { SharedTaskDB } from './store/share-task-db';
+import SharedTaskRepository from './store/shared-task-repository';
+import { SharedTaskDB } from './store/shared-task-db';
 
 export default class SharedTaskService {
   public static async shareTask(
     taskId: Types.ObjectId,
-    userId: Types.ObjectId,
+    accountId: Types.ObjectId,
   ): Promise<SharedTaskDB> {
     const sharedTask = await SharedTaskRepository.create({
-      taskId,
-      userId,
+      task: taskId,
+      account: accountId,
     });
 
     return sharedTask;
@@ -19,7 +19,7 @@ export default class SharedTaskService {
     accountId: Types.ObjectId,
   ): Promise<SharedTaskDB[]> {
     return SharedTaskRepository.find({
-      accountId,
+      account: accountId,
     });
   }
 }

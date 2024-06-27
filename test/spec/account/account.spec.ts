@@ -2,21 +2,29 @@ import faker from '@faker-js/faker';
 import chai, { expect } from 'chai';
 import sinon from 'sinon';
 
-import { AccountNotFoundError, AccountWithUserNameExistsError, PhoneNumber } from '../../../src/apps/backend/modules/account';
+import {
+  AccountNotFoundError,
+  AccountWithUserNameExistsError,
+  PhoneNumber,
+} from '../../../src/apps/backend/modules/account';
 import AccountWriter from '../../../src/apps/backend/modules/account/internal/account-writer';
 import { SMSService } from '../../../src/apps/backend/modules/communication';
+import { createAccount } from '../../helpers/account';
 import { app } from '../../helpers/app';
 
 describe('Account API', () => {
   let sinonSandbox: sinon.SinonSandbox;
   let sendSMSStub: sinon.SinonStub;
+  let accessToken: any;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     sinonSandbox = sinon.createSandbox();
 
     sendSMSStub = sinonSandbox
       .stub(SMSService, 'sendSMS')
       .returns(Promise.resolve());
+
+    ({ accessToken } = await createAccount());
   });
 
   afterEach(() => {
@@ -179,6 +187,39 @@ describe('Account API', () => {
       expect(res.body.message).to.eq(
         new AccountNotFoundError(accountId).message,
       );
+    });
+  });
+
+  describe('GET /accounts', () => {
+    it('should return a paginated list of accounts', async () => {
+      const res = await chai
+        .request(app)
+        .get('/api/accounts?page=1&size=10')
+        .set('Authorization', `Bearer ${accessToken.token}`)
+        .send();
+
+      expect(res.status).to.be.eq(200);
+      expect(res.body).to.be.an('array');
+      expect(res.body.length).to.be.at.most(10);
+    });
+
+    it('should return a filtered list of accounts based on the search query', async () => {
+      const searchQuery = 'jane';
+      const res = await chai
+        .request(app)
+        .get(`/api/accounts?page=1&size=10&search=${searchQuery}`)
+        .set('Authorization', `Bearer ${accessToken.token}`)
+        .send();
+
+      expect(res.status).to.be.eq(200);
+      expect(res.body).to.be.an('array');
+      res.body.forEach((account: any) => {
+        expect(
+          account.firstName.toLowerCase().includes(searchQuery) ||
+            account.lastName.toLowerCase().includes(searchQuery) ||
+            account.username.toLowerCase().includes(searchQuery),
+        ).to.be.true;
+      });
     });
   });
 });

@@ -9,4 +9,5 @@ enableSMS: false
 mongoDb:
   uri: 'mongodb://127.0.0.1:27017/boilerplate-mern-dev-new1'
 
+
 webAppHost: 'http://localhost:3000'

@@ -18,33 +18,33 @@ import useTaskForm from './tasks-form.hook';
 interface TaskModalProps {
   btnText: string;
   formik: FormikProps<Task>;
-  isOpen: boolean;
+  isModalOpen: boolean;
   onError?: (error: AsyncError) => void;
   onSuccess?: () => void;
-  setIsOpen: (open: boolean) => void;
+  setIsModalOpen: (open: boolean) => void;
 }
 
 const TaskModal: React.FC<TaskModalProps> = ({
   btnText,
   formik,
-  isOpen,
+  isModalOpen,
   onError,
   onSuccess,
-  setIsOpen,
+  setIsModalOpen,
 }) => {
   const { isAddTaskLoading, isUpdateTaskLoading } = useTaskForm({ onSuccess, onError });
 
   const handleClick = () => {
     if (isAddTaskLoading || isUpdateTaskLoading) {
-      setIsOpen(false);
+      setIsModalOpen(false);
     }
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+    <Modal isModalOpen={isModalOpen}>
       <div className="absolute right-1 top-1 sm:right-5 sm:top-5">
         <Button
-          onClick={() => setIsOpen(false)}
+          onClick={() => setIsModalOpen(false)}
           kind={ButtonKind.TERTIARY}
           startEnhancer={
             <img
@@ -53,7 +53,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
               className="fill-current"
             />
           }
-        />
+        ></Button>
       </div>
 
       <form onSubmit={formik.handleSubmit}>

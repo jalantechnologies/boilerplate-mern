@@ -1,7 +1,5 @@
-//shared-task-controller.ts
-
 import { Request, Response } from 'express';
-import SharedTaskService from '../internal/share-task-service';
+import SharedTaskService from '../internal/shared-task-service';
 import { Types } from 'mongoose';
 import { HttpStatusCodes } from '../../http';
 import { applicationController } from '../../application';

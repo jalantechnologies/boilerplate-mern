@@ -26,7 +26,7 @@ const TaskHeader: React.FC<TaskHeaderProps> = ({ onError }) => {
   });
 
   return (
-    <div className="rounded-sm border border-stroke bg-white p-3 shadow-default">
+    <div className="rounded-sm  border border-stroke bg-white p-3 shadow-default">
       <div className="flex flex-col items-start justify-between gap-5 sm:flex-row sm:items-center ">
         <div className="pl-2">
           <HeadingLarge>Tasks</HeadingLarge>
@@ -44,8 +44,8 @@ const TaskHeader: React.FC<TaskHeaderProps> = ({ onError }) => {
         </div>
         <TaskModal
           formik={addTaskFormik}
-          isOpen={isModalOpen}
-          setIsOpen={setIsModalOpen}
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
           btnText={'Add Task'}
         />
       </div>

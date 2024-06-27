@@ -1,23 +1,20 @@
+import { Schema, Types, model, Document } from 'mongoose';
 
-//share-task-db.ts
-import { Schema, Types } from 'mongoose';
-
-export interface SharedTaskDB {
-  _id: Types.ObjectId;
-  taskId: Types.ObjectId;
-  userId: Types.ObjectId;
+export interface SharedTaskDB extends Document {
+  task: Types.ObjectId;
+  account: Types.ObjectId;
 }
 
 export const SharedTaskDbSchema: Schema = new Schema<SharedTaskDB>(
   {
-    taskId: {
+    task: {
       type: Schema.Types.ObjectId,
       ref: 'Task',
       required: true,
     },
-    userId: {
+    account: {
       type: Schema.Types.ObjectId,
-      ref: 'User',
+      ref: 'Account',
       required: true,
     },
   },
@@ -30,4 +27,6 @@ export const SharedTaskDbSchema: Schema = new Schema<SharedTaskDB>(
   },
 );
 
-SharedTaskDbSchema.index({ taskId: 1, userId: 1 }, { unique: true });
+SharedTaskDbSchema.index({ task: 1, account: 1 }, { unique: true });
+
+export default model<SharedTaskDB>('SharedTask', SharedTaskDbSchema);

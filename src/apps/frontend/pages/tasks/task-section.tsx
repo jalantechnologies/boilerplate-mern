@@ -117,8 +117,8 @@ const TaskSection: React.FC<TaskSectionProps> = ({
 
       <TaskModal
         formik={updateTaskFormik}
-        isOpen={updateTaskModal}
-        setIsOpen={setUpdateTaskModal}
+        isModalOpen={updateTaskModal}
+        setIsModalOpen={setUpdateTaskModal}
         btnText={'Update Task'}
       />
     </VerticalStackLayout>
