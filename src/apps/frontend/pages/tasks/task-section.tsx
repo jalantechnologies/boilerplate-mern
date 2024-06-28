@@ -16,6 +16,8 @@ import { Task } from '../../types/task';
 
 import TaskModal from './task-modal';
 import useTaskForm from './tasks-form.hook';
+import { PiShareFatLight } from 'react-icons/pi';
+
 
 interface TaskSectionProps {
   handleDeleteTask: (taskId: string) => void;
@@ -104,9 +106,7 @@ const TaskSection: React.FC<TaskSectionProps> = ({
                 onClick={() => handleShareTask(task.id)}
                 kind={ButtonKind.SECONDARY}
                 size={ButtonSize.DEFAULT}
-                startEnhancer={
-                  <img src="assets/svg/share-icon.svg" alt="Share task" />
-                }
+                startEnhancer={<PiShareFatLight />}
               >
                 Share
               </Button>
