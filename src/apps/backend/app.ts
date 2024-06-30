@@ -11,7 +11,8 @@ import { ConfigService } from './modules/config';
 import { Logger, CustomLoggerTransport } from './modules/logger';
 import { PasswordResetTokenServer } from './modules/password-reset-token';
 import { TaskServer } from './modules/task';
-
+import {ShareTaskServer} from './modules/share-tasks';
+import { CommentServer } from './modules/comments';
 const isDevEnv = process.env.NODE_ENV === 'development';
 
 export default class App {
@@ -60,6 +61,8 @@ export default class App {
       new AccessTokenServer(),
       new PasswordResetTokenServer(),
       new TaskServer(),
+      new ShareTaskServer(),
+      new CommentServer(),
     ].forEach((server) => {
       app.use('/', server.server);
     });

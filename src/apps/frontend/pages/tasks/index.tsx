@@ -27,7 +27,7 @@ const Tasks: React.FC = () => {
   const handleDeleteTask = (taskId: string) => {
     deleteTask(taskId)
       .then(() => {
-        setTasksList(tasksList.filter((task) => task.id !== taskId));
+        setTasksList(tasksList.filter((task) => task.taskId !== taskId));
       })
       .catch((error) => onError(error as AsyncError));
   };

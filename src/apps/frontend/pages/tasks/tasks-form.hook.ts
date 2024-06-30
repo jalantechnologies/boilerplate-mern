@@ -30,7 +30,7 @@ const useTaskForm = ({ onError, onSuccess }: TaskFormProps) => {
 
   const updateTaskFormik = useFormik({
     initialValues: {
-      id: '',
+      taskId: '',
       description: '',
       title: '',
     },
@@ -46,13 +46,13 @@ const useTaskForm = ({ onError, onSuccess }: TaskFormProps) => {
         .required(constant.DESCRIPTION_VALIDATION_ERROR),
     }),
     onSubmit: (values) => {
-      updateTask(values.id, {
+      updateTask(values.taskId, {
         title: values.title,
         description: values.description,
       })
         .then((response) => {
           const newUpdatedTasks = tasksList.map((taskData) => {
-            if (taskData.id === values.id) {
+            if (taskData.taskId === values.taskId) {
               return response;
             }
             return taskData;
@@ -67,7 +67,7 @@ const useTaskForm = ({ onError, onSuccess }: TaskFormProps) => {
 
   const addTaskFormik = useFormik({
     initialValues: {
-      id: '',
+      taskId: '',
       description: '',
       title: '',
     },

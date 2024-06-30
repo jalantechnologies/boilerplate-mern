@@ -196,4 +196,86 @@ describe('Task API', () => {
       expect(updatedToken.active).to.be.false;
     });
   });
+  describe('POST /tasks/:taskId/share', () => {
+    it('should be able to share a task with other users', async () => {
+      const task = await TaskService.createTask({
+        accountId: account.id,
+        title: 'my-task',
+        description: 'This is a test description.',
+      });
+  
+      const { account: anotherAccount1 } = await createAccount(
+        {
+          accountParams: {
+            username: 'anotherAccount1',
+            password: 'password123', 
+          }
+        });
+      const { account: anotherAccount2 } = await createAccount(
+        {
+          accountParams: {
+            username: 'anotherAccount2',
+            password: 'password123', 
+          }
+        }
+      );
+  
+      const res = await chai
+        .request(app)
+        .post(`/api/tasks/${task.id}/share`)
+        .set('content-type', 'application/json')
+        .set('Authorization', `Bearer ${accessToken.token}`)
+        .send({
+          userIds: [anotherAccount1.id, anotherAccount2.id],
+        });
+  
+      expect(res.status).to.eq(200);
+      expect(res.body).to.have.property('id');
+      expect(res.body.id).to.eq(task.id);
+      expect(res.body.message).to.eq('Task shared successfully');
+      });
+  
+    it('should return error if task to share does not exist', async () => {
+
+      const { account: anotherAccount1 } = await createAccount({
+        accountParams: {
+          username: 'anotherAccount1 ',
+          password: 'password123', // Add password if required
+        },
+      });
+
+      const res = await chai
+        .request(app)
+        .post(`/api/tasks/${ObjectIdUtils.createNew()}/share`)
+        .set('content-type', 'application/json')
+        .set('Authorization', `Bearer ${accessToken.token}`)
+        .send({
+          userIds: [anotherAccount1.id],
+        });
+  
+      expect(res.status).to.eq(404);
+    });
+  
+    it('should return error if user does not have permission to share the task', async () => {
+      const { account: anotherAccount1 } = await createAccount();
+      const task = await TaskService.createTask({
+        accountId: anotherAccount1.id, // Creating task with another account
+        title: 'another-task',
+        description: 'This is another test description.',
+      });
+  
+      const res = await chai
+        .request(app)
+        .post(`/api/tasks/${task.id}/share`)
+        .set('content-type', 'application/json')
+        .set('Authorization', `Bearer ${accessToken.token}`)
+        .send({
+          userIds: ['some-user-id'],
+        });
+  
+      expect(res.status).to.eq(403);
+    });
+  });
+  
+
 });

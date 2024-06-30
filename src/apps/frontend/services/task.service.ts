@@ -1,6 +1,8 @@
 import { AccessToken, ApiError, ApiResponse } from '../types';
 import { JsonObject } from '../types/common-types';
-import { Task, Account, SharedTask } from '../types/task';
+import { Task} from '../types/task';
+import { SharedTask } from '../types/shared-task';
+import { Account } from '../types';
 
 import APIService from './api.service';
 
@@ -98,29 +100,20 @@ export default class TaskService extends APIService {
     }
   };
 
-  shareTask = async (
-    taskId: string,
-    accountId: string,
-  ): Promise<ApiResponse<void>> => {
+  shareTask = async (taskId: string, accountId: string): Promise<ApiResponse<void>> => {
     try {
-      const userAccessToken = JSON.parse(
-        localStorage.getItem('access-token'),
-      ) as AccessToken;
-      await this.apiClient.post(
-        `/tasks/${taskId}/share`,
-        { accountId },
-        {
-          headers: {
-            Authorization: `Bearer ${userAccessToken.token}`,
-          },
+      const userAccessToken = JSON.parse(localStorage.getItem('access-token')) as AccessToken;
+      const response = await this.apiClient.post(`/tasks/share`, { accountId,taskId }, {
+        headers: {
+          Authorization: `Bearer ${userAccessToken.token}`,
         },
-      );
+      });
+      console.log(response);
+      console.log("task service taskId", taskId);
       return new ApiResponse(undefined, undefined);
     } catch (e) {
-      return new ApiResponse(
-        undefined,
-        new ApiError(e.response.data as JsonObject),
-      );
+      console.error("Error sharing task:", e);
+      return new ApiResponse(undefined, new ApiError(e.response?.data as JsonObject));
     }
   };
 
@@ -130,9 +123,7 @@ export default class TaskService extends APIService {
     search?: string,
   ): Promise<ApiResponse<Account[]>> => {
     try {
-      const userAccessToken = JSON.parse(
-        localStorage.getItem('access-token'),
-      ) as AccessToken;
+      const userAccessToken = JSON.parse(localStorage.getItem('access-token')) as AccessToken;
       const response = await this.apiClient.get(
         `/accounts?page=${page}&size=${size}&search=${search}`,
         {
@@ -146,19 +137,18 @@ export default class TaskService extends APIService {
       );
       return new ApiResponse(accounts, undefined);
     } catch (e) {
+      console.error("Error fetching accounts:", e);
       return new ApiResponse(
         undefined,
-        new ApiError(e.response.data as JsonObject),
+        new ApiError(e.response?.data as JsonObject),
       );
     }
   };
 
-  getSharedTasks = async (): Promise<ApiResponse<SharedTask[]>> => {
+  getSharedTasks = async (accountId: string): Promise<ApiResponse<SharedTask[]>> => {
     try {
-      const userAccessToken = JSON.parse(
-        localStorage.getItem('access-token'),
-      ) as AccessToken;
-      const response = await this.apiClient.get('/shared-tasks', {
+      const userAccessToken = JSON.parse(localStorage.getItem('access-token')) as AccessToken;
+      const response = await this.apiClient.get(`/tasks/shared-tasks/${accountId}`, {
         headers: {
           Authorization: `Bearer ${userAccessToken.token}`,
         },
@@ -168,10 +158,12 @@ export default class TaskService extends APIService {
       );
       return new ApiResponse(sharedTasks, undefined);
     } catch (e) {
+      console.error("Error fetching shared tasks:", e);
       return new ApiResponse(
         undefined,
-        new ApiError(e.response.data as JsonObject),
+        new ApiError(e.response?.data as JsonObject),
       );
     }
   };
+  
 }
