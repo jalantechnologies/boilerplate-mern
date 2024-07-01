@@ -1,5 +1,5 @@
-import { SharedTask } from '../types';
-import { SharedTaskDB } from '../internal/store/share-task-db';
+import  SharedTask  from '../types';
+import  {SharedTaskDB}  from './store/task-sharing-db';
 
 export default class ShareTaskUtil {
   public static convertSharedTaskDBToSharedTask(sharedTaskDb: SharedTaskDB): SharedTask {

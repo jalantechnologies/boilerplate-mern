@@ -1,5 +1,5 @@
 import { ApplicationRepository } from '../../../application';
-import { SharedTaskDB, SharedTaskDbSchema } from './share-task-db';
+import { SharedTaskDB, SharedTaskDbSchema } from './task-sharing-db';
 
 const SharedTaskRepository = ApplicationRepository<SharedTaskDB>(
   'SharedTask',

@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 import {
   Button,
   FormControl,
+  HorizontalStackLayout,
   Input,
   Spinner,
   VerticalStackLayout,
@@ -12,7 +13,6 @@ import {
 import Modal from '../../components/modal';
 import { useTaskContext } from '../../contexts';
 import { ButtonKind, ButtonSize, ButtonType } from '../../types/button';
-import ScrollView from '../../components/scrollview/scrollview';
 
 interface ShareTaskModalProps {
   isModalOpen: boolean;
@@ -39,7 +39,7 @@ const ShareTaskModal: React.FC<ShareTaskModalProps> = ({
     const fetchAccounts = async () => {
       try {
         const response = await getAccounts(1, 10, searchQuery);
-        setAccounts(response); // Ensure response is correctly handled
+        setAccounts(response); 
       } catch (error) {
         toast.error('Failed to fetch accounts');
       }
@@ -48,7 +48,7 @@ const ShareTaskModal: React.FC<ShareTaskModalProps> = ({
     if (isModalOpen) {
       fetchAccounts();
     }
-  }, [searchQuery, isModalOpen]); // Ensure correct dependencies
+  }, [searchQuery, isModalOpen]); 
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -112,7 +112,6 @@ const ShareTaskModal: React.FC<ShareTaskModalProps> = ({
             error={''}
           />
         </FormControl>
-        <ScrollView>
         {isGetAccountsLoading? (
           <Spinner />
         ) : (
@@ -127,12 +126,17 @@ const ShareTaskModal: React.FC<ShareTaskModalProps> = ({
               />
               <label htmlFor={`account-${account.accountId}`} className="ml-2">
                 <div>{account.firstName}</div>
-                <div className="text-sm text-gray-500">{account.username}</div>
               </label>
             </div>
           ))
         )}
-        </ScrollView>
+
+        <HorizontalStackLayout gap={2} >
+        
+        <Button kind={ButtonKind.TERTIARY}>Previous</Button>  
+        <Button kind={ButtonKind.TERTIARY}>Next</Button>
+           
+      </HorizontalStackLayout>
 
         <Button
           onClick={handleSubmit}
@@ -143,6 +147,8 @@ const ShareTaskModal: React.FC<ShareTaskModalProps> = ({
           Share Task
         </Button>
       </VerticalStackLayout>
+
+      
     </Modal>
   );
 };

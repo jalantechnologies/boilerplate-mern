@@ -1,10 +1,10 @@
-import React, { useEffect, useCallback, useMemo} from 'react';
-import { VerticalStackLayout, HeadingMedium } from '../../components';
-import { useTaskContext } from '../../contexts';
+import React, { useEffect, useCallback, useMemo } from 'react';
+import { VerticalStackLayout, HeadingMedium } from '../../components'; 
+import { useTaskContext } from '../../contexts'; 
 
 const SharedTasks: React.FC = () => {
   const { getSharedTasks, isGetSharedTasksLoading, sharedTasksList } = useTaskContext();
-  const userAccessToken = JSON.parse(localStorage.getItem('access-token'));
+  const userAccessToken = JSON.parse(localStorage.getItem('access-token') || '{}');
   const accountId = useMemo(() => userAccessToken.accountId, [userAccessToken]);
 
   const getSharedTasksCallback = useCallback(() => {
@@ -13,10 +13,7 @@ const SharedTasks: React.FC = () => {
 
   useEffect(() => {
     getSharedTasksCallback();
-  }, [accountId]);
-
-  console.log('sharedTasksList:', sharedTasksList);
-  console.log('isGetSharedTasksLoading:', isGetSharedTasksLoading);
+  }, [getSharedTasksCallback]);
 
   return (
     <div className="mx-auto h-screen max-w-screen-2xl overflow-y-auto p-4 md:p-6 2xl:p-10">
@@ -36,7 +33,7 @@ const SharedTasks: React.FC = () => {
                 </h3>
                 <p>{sharedTask.task.description}</p>
                 <p className="text-sm text-gray-500">
-                  shared by:{}
+                  shared by: {sharedTask.sharedBy}
                 </p>
                 <p className="text-sm text-gray-500">
                   Shared at: {new Date(sharedTask.sharedAt).toLocaleString()}
