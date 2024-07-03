@@ -20,8 +20,8 @@ services:
       - '8080:8080'
     volumes:
       - './:/app:delegated'
-      - '/app/node_modules/'
-    working_dir: /opt/app
+      - node_modules:/app/node_modules
+    working_dir: /app
 
   db:
     image: mongo:5.0
@@ -33,3 +33,6 @@ services:
     volumes:
       - './data/mongodb:/data/db'
       - './logs:/var/log'
+
+volumes:
+  node_modules:
