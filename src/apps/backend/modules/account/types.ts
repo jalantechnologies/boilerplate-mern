@@ -70,6 +70,8 @@ export type UpdateAccountDetailsParams = {
 
 export type UpdateAccountParams = UpdateAccountDetailsParams | ResetPasswordParams;
 
+export type DeleteAccountParams = GetAccountParams;
+
 export enum AccountErrorCode {
   USERNAME_ALREADY_EXISTS = 'ACCOUNT_ERR_01',
   NOT_FOUND = 'ACCOUNT_ERR_02',
