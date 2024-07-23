@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
 import { HeadingLarge, VerticalStackLayout } from '../../../components';
@@ -23,12 +24,13 @@ const ProfileSettings = () => {
   };
 
   const onAccountDeletionError = (err: AsyncError) => {
-    alert(err.message);
+    toast.error(err.message);
   };
 
   const handleDeleteAccount = () => {
     deleteAccount()
       .then(() => {
+        toast.success('Account deleted successfully');
         handleLogout();
       })
       .catch((err) => {
