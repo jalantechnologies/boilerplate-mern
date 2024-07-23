@@ -15,4 +15,12 @@ export default class AccountService extends APIService {
       },
     });
   };
+
+  deleteAccount = async (): Promise<ApiResponse<void>> => {
+    const userAccessToken = JSON.parse(
+      localStorage.getItem('access-token'),
+    ) as AccessToken;
+
+    return this.apiClient.delete(`/accounts/${userAccessToken.accountId}`);
+  };
 }
