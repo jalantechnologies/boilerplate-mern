@@ -20,7 +20,9 @@ export const AppLayout: React.FC<PropsWithChildren> = ({
 
           {/* Main Content */}
           <main>
-            {children}
+            <div className="mx-auto h-screen max-w-screen-2xl overflow-y-auto p-4 md:p-6 2xl:p-10">
+              {children}
+            </div>
           </main>
         </div>
       </div>
