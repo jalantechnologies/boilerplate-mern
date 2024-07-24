@@ -31,6 +31,10 @@ export type UpdateTaskParams = {
   taskId: string;
   title: string;
 };
+export type ShareTaskParams = {
+  accountId: string; 
+  taskId: string; 
+};
 
 export type DeleteTaskParams = {
   accountId: string;

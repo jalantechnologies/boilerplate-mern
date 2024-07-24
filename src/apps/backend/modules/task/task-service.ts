@@ -7,6 +7,7 @@ import {
   GetTaskParams,
   Task,
   UpdateTaskParams,
+  ShareTaskParams,
 } from './types';
 
 export default class TaskService {
@@ -20,6 +21,9 @@ export default class TaskService {
 
   public static async updateTask(params: UpdateTaskParams): Promise<Task> {
     return TaskWriter.updateTask(params);
+  }
+  public static async shareTask(params: ShareTaskParams): Promise<Task> {
+    return TaskWriter.shareTask(params);
   }
 
   public static async getTaskForAccount(params: GetTaskParams): Promise<Task> {
