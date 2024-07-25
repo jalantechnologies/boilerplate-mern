@@ -88,4 +88,10 @@ export default class AccountWriter {
 
     return AccountUtil.convertAccountDBToAccount(dbAccount);
   }
+
+  public static async deleteAccountById(
+    accountId: string,
+  ): Promise<void> {
+    await AccountRepository.findByIdAndDelete(accountId);
+  }
 }

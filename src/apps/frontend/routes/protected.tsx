@@ -3,7 +3,12 @@ import { Outlet } from 'react-router-dom';
 
 import routes from '../constants/routes';
 import { TaskProvider, useAccountContext } from '../contexts';
-import { Dashboard, NotFound, Tasks } from '../pages';
+import {
+  Dashboard,
+  NotFound,
+  ProfileSettings,
+  Tasks,
+} from '../pages';
 import AppLayout from '../pages/app-layout/app-layout';
 
 const App = () => {
@@ -34,6 +39,10 @@ export const protectedRoutes = [
             <Tasks />
           </TaskProvider>
         ),
+      },
+      {
+        path: routes.PROFILE_SETTINGS,
+        element: <ProfileSettings />,
       },
       { path: '*', element: <NotFound /> },
     ],

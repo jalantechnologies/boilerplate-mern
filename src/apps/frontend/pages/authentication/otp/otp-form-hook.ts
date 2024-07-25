@@ -3,7 +3,7 @@ import * as Yup from 'yup';
 
 import constant from '../../../constants';
 import { useAuthContext } from '../../../contexts';
-import { AsyncError } from '../../../types';
+import { AsyncError, PhoneNumber } from '../../../types';
 
 interface OTPFormProps {
   onError: (error: AsyncError) => void;
@@ -42,7 +42,7 @@ const useOTPForm = ({
       const otp = values.otp.join('');
 
       verifyOTP(
-        { countryCode, phoneNumber },
+        new PhoneNumber({ countryCode, phoneNumber }),
         otp,
       ).then(() => {
         onVerifyOTPSuccess();
@@ -54,10 +54,7 @@ const useOTPForm = ({
   });
 
   const handleResendOTP = () => {
-    sendOTP({
-      countryCode,
-      phoneNumber,
-    })
+    sendOTP(new PhoneNumber({ countryCode, phoneNumber }))
       .then(() => {
         onResendOTPSuccess();
       })
