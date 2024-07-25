@@ -19,12 +19,15 @@ type TaskContextType = {
   isDeleteTaskLoading: boolean;
   isGetTasksLoading: boolean;
   isUpdateTaskLoading: boolean;
+  isShareTaskLoading: boolean;
   setTasksList: React.Dispatch<React.SetStateAction<Task[]>>;
   task: Task;
   tasks: Task[];
   tasksList: Task[];
   updateTask: (taskId: string, taskData: Partial<Task>) => Promise<Task>;
   updateTaskError: AsyncError;
+  shareTask: (taskId: string, accountId: string) => Promise<Task>;
+  shareTaskError: AsyncError;
   updatedTask: Task;
 };
 
@@ -44,8 +47,15 @@ const updateTaskFn = async (
   taskData: Task,
 ): Promise<ApiResponse<Task>> => taskService.updateTask(taskId, taskData);
 
+const shareTaskFn = async (
+  taskId: string,
+  accountId: string,
+): Promise<ApiResponse<Task>> => taskService.shareTask(taskId, accountId);
+
 const deleteTaskFn = async (taskId: string):
 Promise<ApiResponse<void>> => taskService.deleteTask(taskId);
+
+
 
 export const TaskProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [tasksList, setTasksList] = useState<Task[]>([]);
@@ -83,6 +93,14 @@ export const TaskProvider: React.FC<PropsWithChildren> = ({ children }) => {
     isLoading: isDeleteTaskLoading,
   } = useAsync(deleteTaskFn);
 
+  const {
+    asyncCallback: shareTask,
+    error: shareTaskError,
+    isLoading: isShareTaskLoading,
+  } = useAsync(shareTaskFn);
+
+ 
+
   return (
     <TaskContext.Provider
       value={{
@@ -96,13 +114,16 @@ export const TaskProvider: React.FC<PropsWithChildren> = ({ children }) => {
         isDeleteTaskLoading,
         isGetTasksLoading,
         isUpdateTaskLoading,
+        isShareTaskLoading,
         setTasksList,
+        shareTask,
+        shareTaskError,
         task,
         tasks,
         tasksList,
         updateTask,
         updateTaskError,
-        updatedTask,
+          updatedTask
       }}
     >
       {children}

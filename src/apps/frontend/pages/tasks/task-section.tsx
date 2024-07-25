@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import toast from 'react-hot-toast';
+// import toast from 'react-hot-toast';
 
 import {
   Button,
@@ -16,32 +16,43 @@ import { Task } from '../../types/task';
 
 import TaskModal from './task-modal';
 import useTaskForm from './tasks-form.hook';
+import ShareTaskModal from './task-share-modal';
 
 interface TaskSectionProps {
   handleDeleteTask: (taskId: string) => void;
   isGetTasksLoading: boolean;
   onError?: (error: AsyncError) => void;
   tasks: Task[];
+  // handleShareTask: (taskId:string, accountId:string) => void;
 }
 
 const TaskSection: React.FC<TaskSectionProps> = ({
   handleDeleteTask,
+  // handleShareTask,
   isGetTasksLoading,
   onError,
   tasks,
 }) => {
   const [updateTaskModal, setUpdateTaskModal] = useState(false);
+  const [shareTaskModal, setShareTaskModal] = useState(false);
 
-  const onSuccess = () => {
-    toast.success('Task has been updated successfully');
+  const onSuccess = () => { 
     setUpdateTaskModal(false);
+    setShareTaskModal(false);
   };
 
   const { updateTaskFormik, setFormikFieldValue } = useTaskForm({
     onError,
     onSuccess,
   });
-
+   const {shareTaskFormik,setShareFormikFieldValue} = useTaskForm({
+    onError,
+    onSuccess
+   })
+  const handleShareTask = (task:Task) =>{
+    setShareTaskModal(!shareTaskModal); 
+    setShareFormikFieldValue(shareTaskFormik,'taskId', task.id); 
+  }
   const handleTaskOperation = (task: Task) => {
     setUpdateTaskModal(!updateTaskModal);
     setFormikFieldValue(updateTaskFormik, 'title', task.title);
@@ -98,6 +109,16 @@ const TaskSection: React.FC<TaskSectionProps> = ({
               >
                 Delete
               </Button>
+              <Button
+                onClick={() => handleShareTask(task)}
+                kind={ButtonKind.SECONDARY}
+                size={ButtonSize.DEFAULT}
+                startEnhancer={
+                  <img src="assets/svg/share-icon.svg" alt="Share task" />
+                }
+              >
+                Share
+              </Button>
             </MenuItem>
           </div>
         </div>
@@ -108,6 +129,13 @@ const TaskSection: React.FC<TaskSectionProps> = ({
         isModalOpen={updateTaskModal}
         setIsModalOpen={setUpdateTaskModal}
         btnText={'Update Task'}
+      />
+      <ShareTaskModal
+        formik={shareTaskFormik}
+        isModalOpen={shareTaskModal}
+        setIsModalOpen={setShareTaskModal}
+        onSuccess={onSuccess}
+        onError={onError}
       />
     </VerticalStackLayout>
   );

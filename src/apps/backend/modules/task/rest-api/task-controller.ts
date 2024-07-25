@@ -102,7 +102,7 @@ export class TaskController {
 ) => {
     const sharedTask: Task = await TaskService.shareTask({
         taskId: req.params.id,
-        accountId: req.body.accountId,
+        username: req.body.username,
     });
     const taskJSON = serializeTaskAsJSON(sharedTask);
 

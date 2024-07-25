@@ -6,9 +6,16 @@ export class Task {
   account: string;
   description: string;
   title: string;
+  sharedAccounts: string[]
+
 }
 
 export type GetAllTaskParams = {
+  accountId: string;
+  page?: number;
+  size?: number;
+};
+export type GetAllSharedTaskParams = {
   accountId: string;
   page?: number;
   size?: number;
@@ -32,7 +39,7 @@ export type UpdateTaskParams = {
   title: string;
 };
 export type ShareTaskParams = {
-  accountId: string; 
+  username: string; 
   taskId: string; 
 };
 

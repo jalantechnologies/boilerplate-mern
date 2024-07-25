@@ -5,6 +5,7 @@ import {
   DeleteTaskParams,
   GetAllTaskParams,
   GetTaskParams,
+  GetAllSharedTaskParams,
   Task,
   UpdateTaskParams,
   ShareTaskParams,
@@ -28,6 +29,9 @@ export default class TaskService {
 
   public static async getTaskForAccount(params: GetTaskParams): Promise<Task> {
     return TaskReader.getTaskForAccount(params);
+  }
+  public static async getSharedTasksForAccount(params: GetAllSharedTaskParams): Promise<Task[]> {
+    return TaskReader.getSharedTasksForAccount(params);
   }
 
   public static async getTasksForAccount(params: GetAllTaskParams): Promise<Task[]> {

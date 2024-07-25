@@ -47,6 +47,28 @@ export default class TaskService extends APIService {
     }
   };
 
+  shareTask = async (taskId: string, username: string): Promise<ApiResponse<Task>> => {
+    try {
+      const userAccessToken = JSON.parse(
+        localStorage.getItem('access-token'),
+      ) as AccessToken;
+      const response = await this.apiClient.post(
+        `/tasks/${taskId}`,
+        { username },
+        {
+          headers: {
+            Authorization: `Bearer ${userAccessToken.token}`,
+          },
+        },
+      );
+      const sharedTask = new Task(response.data as JsonObject);
+      return new ApiResponse(sharedTask, undefined);
+    } catch (e) {
+      return new ApiResponse(undefined, new ApiError(e.response.data as JsonObject));
+    }
+  };
+  
+
   updateTask = async (
     taskId: string,
     taskData: Task,
@@ -84,4 +106,5 @@ export default class TaskService extends APIService {
       return new ApiResponse(undefined, new ApiError(e.response.data as JsonObject));
     }
   };
+  
 }

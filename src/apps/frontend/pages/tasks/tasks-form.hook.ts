@@ -12,7 +12,7 @@ interface TaskFormProps {
 }
 const useTaskForm = ({ onError, onSuccess }: TaskFormProps) => {
   const {
-    addTask, setTasksList, tasksList, updateTask, isAddTaskLoading, isUpdateTaskLoading,
+    addTask, setTasksList, tasksList, updateTask, isAddTaskLoading, isUpdateTaskLoading, shareTask
   } = useTaskContext();
 
   const setFormikFieldValue = (
@@ -24,7 +24,20 @@ const useTaskForm = ({ onError, onSuccess }: TaskFormProps) => {
       .setFieldValue(fieldName, data)
       .then()
       .catch((err) => {
-        onError(err as AsyncError);
+        onError?.(err as AsyncError);
+      });
+  };
+
+  const setShareFormikFieldValue = (
+    formik: FormikProps<{ taskId: string }>,
+    fieldName: string,
+    data: string,
+  ) => {
+    formik
+      .setFieldValue(fieldName, data)
+      .then()
+      .catch((err) => {
+        onError?.(err as AsyncError);
       });
   };
 
@@ -58,10 +71,10 @@ const useTaskForm = ({ onError, onSuccess }: TaskFormProps) => {
             return taskData;
           });
           setTasksList(newUpdatedTasks);
-          onSuccess();
+          onSuccess?.();
           updateTaskFormik.resetForm();
         })
-        .catch((error) => onError(error as AsyncError));
+        .catch((error) => onError?.(error as AsyncError));
     },
   });
 
@@ -86,16 +99,38 @@ const useTaskForm = ({ onError, onSuccess }: TaskFormProps) => {
       addTask(values.title, values.description)
         .then((newTask) => {
           setTasksList([...tasksList, newTask]);
-          onSuccess();
+          onSuccess?.();
           addTaskFormik.resetForm();
         })
         .catch((error) => {
-          onError(error as AsyncError);
+          onError?.(error as AsyncError);
         });
     },
   });
 
+  // Defining shareTaskFormik
+  const shareTaskFormik = useFormik({
+    initialValues: {
+      taskId: '',
+      username: '',
+    },
+    validationSchema: Yup.object({
+      username: Yup.string()
+        .required('username is required'),
+    }),
+    onSubmit: (values) => {
+      shareTask(values.taskId, values.username)
+        .then(() => {
+          onSuccess?.();
+          shareTaskFormik.resetForm();
+        })
+        .catch((error) => onError?.(error as AsyncError));
+    },
+  });
+
   return {
+    shareTaskFormik,
+    setShareFormikFieldValue,
     addTaskFormik,
     isAddTaskLoading,
     isUpdateTaskLoading,
