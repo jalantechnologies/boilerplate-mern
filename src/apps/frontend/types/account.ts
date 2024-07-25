@@ -12,15 +12,11 @@ export class Account {
     this.id = json.id as string;
     this.firstName = json.firstName as string;
     this.lastName = json.lastName as string;
-    this.phoneNumber = json.phoneNumber as PhoneNumber;
+    this.phoneNumber = json.phoneNumber ? new PhoneNumber(json.phoneNumber as JsonObject) : null;
     this.username = json.username as string;
   }
 
   displayName(): string {
     return (`${this.firstName} ${this.lastName}`).trim();
-  }
-
-  displayPhoneNumber(): string {
-    return `${this.phoneNumber.countryCode} ${this.phoneNumber.phoneNumber}`;
   }
 }

@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import constant from '../../../constants';
 import routes from '../../../constants/routes';
 import { useAuthContext } from '../../../contexts';
-import { AsyncError } from '../../../types';
+import { AsyncError, PhoneNumber } from '../../../types';
 
 interface PhoneLoginFormProps {
   onError: (err: AsyncError) => void;
@@ -46,10 +46,12 @@ const usePhoneLoginForm = ({ onSendOTPSuccess, onError }: PhoneLoginFormProps) =
       const encodedCountryCode = encodeURIComponent(values.countryCode);
       const otpPageUrl = `${routes.OTP}&country_code=${encodedCountryCode}&phone_number=${formattedPhoneNumber}`;
 
-      sendOTP({
-        countryCode: values.countryCode,
-        phoneNumber: formattedPhoneNumber,
-      })
+      sendOTP(
+        new PhoneNumber({
+          countryCode: values.countryCode,
+          phoneNumber: formattedPhoneNumber,
+        }),
+      )
         .then(() => {
           onSendOTPSuccess();
           navigate(otpPageUrl);
