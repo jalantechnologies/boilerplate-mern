@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Button, LabelLarge } from '../../../components';
 import { Account } from '../../../types';
-import { ButtonSize } from '../../../types/button';
+import { ButtonKind, ButtonSize } from '../../../types/button';
 
 interface AccountActionsSectionProps {
   accountDetails: Account;
@@ -31,6 +31,7 @@ const AccountActionsSection: React.FC<AccountActionsSectionProps> = ({
       <Button
         onClick={() => setIsDeleteAccountModalOpen(true)}
         size={ButtonSize.LARGE}
+        kind={ButtonKind.DANGER}
       >
         Delete Account
       </Button>

@@ -47,6 +47,7 @@ const AccountDeletionModal: React.FC<AccountDeletionModalProps> = ({
             isLoading={isDeleteAccountLoading}
             onClick={() => handleDeleteAccount()}
             size={ButtonSize.DEFAULT}
+            kind={ButtonKind.DANGER}
           >
             Delete Account
           </Button>
