@@ -3,7 +3,7 @@ accounts:
 
 defaultOTP: '1111'
 
-enableSMS: true
+enableSMS: false
 
 logger:
   transports: [ 'datadog' ]
