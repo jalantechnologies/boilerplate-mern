@@ -97,8 +97,6 @@ This project support following integrations
 
 This project deploys on Kubernetes via GitHub actions using workflows defined in [GitHub CI](https://github.com/jalantechnologies/github-ci).
 
-For setup, consult [this](https://docs.google.com/document/d/1aPlKI6t-NsClzFMygNEn2PEXgfpI9KJEb5xERQ_WhW8/edit?usp=drive_link) document.
-
 ## E2E Testing
 
 **Pre Requirements:**
