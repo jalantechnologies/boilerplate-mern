@@ -82,7 +82,10 @@ export default class TaskReader {
   }
 
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 09e6ecb626c02d7c8caec3ecdfe0c0c0be1e2e4c
    
 }

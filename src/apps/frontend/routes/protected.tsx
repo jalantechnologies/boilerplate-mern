@@ -35,6 +35,7 @@ export const protectedRoutes = [
         element: (
           <CommentProvider>
             <TaskProvider>
+<<<<<<< HEAD
               <Tasks />
             </TaskProvider>
           </CommentProvider>
@@ -47,6 +48,10 @@ export const protectedRoutes = [
             <SharedTaskProvider>
               <SharedTasks />
             </SharedTaskProvider>
+=======
+            <Tasks />
+          </TaskProvider>
+>>>>>>> 09e6ecb626c02d7c8caec3ecdfe0c0c0be1e2e4c
           </CommentProvider>
         ),
       },
