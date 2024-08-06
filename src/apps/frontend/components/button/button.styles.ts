@@ -45,6 +45,25 @@ const styles = {
       disableState: 'cursor-not-allowed text-slate-500',
       enableState: 'cursor-pointer',
     },
+    danger: {
+      base: `
+        active:bg-danger/80
+        bg-danger
+        border
+        flex
+        font-medium
+        gap-2
+        items-center
+        justify-center
+        px-4
+        rounded-md
+        text-white
+        transition
+        w-full
+      `,
+      disableState: 'cursor-not-allowed bg-danger/80',
+      enableState: 'hover:bg-danger/90 cursor-pointer',
+    },
   },
   size: {
     compact: 'p-2',

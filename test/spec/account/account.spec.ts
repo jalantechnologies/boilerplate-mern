@@ -181,4 +181,36 @@ describe('Account API', () => {
       );
     });
   });
+
+  describe('DELETE /accounts/:accountId', () => {
+    it('should delete an account', async () => {
+      const account = await AccountWriter.createAccountByUsernameAndPassword(
+        faker.name.firstName(),
+        faker.name.lastName(),
+        'password',
+        faker.internet.userName(),
+      );
+
+      const res = await chai
+        .request(app)
+        .delete(`/api/accounts/${account.id}`)
+        .set('content-type', 'application/json');
+
+      expect(res.status).to.be.eq(204);
+    });
+
+    it('should throw an error when deleting an account with an account ID that does not exist', async () => {
+      const accountId = faker.database.mongodbObjectId();
+
+      const res = await chai
+        .request(app)
+        .delete(`/api/accounts/${accountId}`)
+        .set('content-type', 'application/json');
+
+      expect(res.status).to.be.eq(404);
+      expect(res.body.message).to.eq(
+        new AccountNotFoundError(accountId).message,
+      );
+    });
+  });
 });

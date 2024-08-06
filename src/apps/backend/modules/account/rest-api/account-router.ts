@@ -12,6 +12,8 @@ export default class AccountRouter extends ApplicationRouter {
 
     router.patch('/:accountId', ctrl.updateAccount);
 
+    router.delete('/:accountId', ctrl.deleteAccount);
+
     router.use(accessAuthMiddleware);
 
     router.get('/:accountId', ctrl.getAccountById);

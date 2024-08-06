@@ -61,6 +61,18 @@ const Sidebar: React.FC<SidebarProps> = ({
               setIsSidebarOpen={setIsSidebarOpen}
               title="Shared Tasks"
             />
+            <SidebarMenuItem
+              iconPath="/assets/img/icon/profile-sidebar-icon.svg"
+              path={routes.PROFILE}
+              setIsSidebarOpen={setIsSidebarOpen}
+              title="Profile"
+              subItems={[
+                {
+                  path: routes.PROFILE_SETTINGS,
+                  title: 'Settings',
+                },
+              ]}
+            />
           </ul>
         </nav>
       </div>

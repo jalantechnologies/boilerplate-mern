@@ -6,6 +6,7 @@ import {
   CreateAccountParams,
   CreateAccountParamsByPhoneNumber,
   CreateAccountParamsByUsernameAndPassword,
+  DeleteAccountParams,
   GetAccountParams,
   GetAllAccountsParams,
   PhoneNumber,
@@ -94,6 +95,7 @@ export class AccountController {
     },
   );
 
+ 
   getAllAccounts = applicationController(
     async (req: Request, res: Response) => {
       const search = req.query.search as string;
@@ -109,3 +111,15 @@ export class AccountController {
     },
   );
 }
+ 
+  deleteAccount = applicationController(
+    async (req: Request<DeleteAccountParams>, res: Response) => {
+      const { accountId } = req.params as DeleteAccountParams;
+      await AccountService.deleteAccountById({
+        accountId,
+      });
+
+      res.status(HttpStatusCodes.NO_CONTENT).send();
+    },
+  );
+} 

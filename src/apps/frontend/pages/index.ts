@@ -10,6 +10,7 @@ import ResetPassword from './authentication/reset-password';
 import Signup from './authentication/signup';
 import Dashboard from './dashboard';
 import NotFound from './not-found/not-found.page';
+import ProfileSettings from './profile/settings';
 import Tasks from './tasks';
 
 export {
@@ -23,6 +24,7 @@ export {
   OTPPage,
   PhoneLogin,
   ResetPassword,
+  ProfileSettings,
   Signup,
   Tasks,
 };
