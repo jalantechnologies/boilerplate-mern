@@ -15,5 +15,7 @@ export default class AccountRouter extends ApplicationRouter {
     router.use(accessAuthMiddleware);
 
     router.get('/:accountId', ctrl.getAccountById);
+
+    router.get('/', ctrl.getAllAccounts);
   }
 }

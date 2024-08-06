@@ -7,6 +7,7 @@ import {
   CreateAccountParamsByPhoneNumber,
   CreateAccountParamsByUsernameAndPassword,
   GetAccountParams,
+  GetAllAccountsParams,
   PhoneNumber,
   ResetPasswordParams,
   UpdateAccountDetailsParams,
@@ -90,6 +91,21 @@ export class AccountController {
       const accountJSON = serializeAccountAsJSON(account);
 
       res.status(HttpStatusCodes.OK).send(accountJSON);
+    },
+  );
+
+  getAllAccounts = applicationController(
+    async (req: Request, res: Response) => {
+      const search = req.query.search as string;
+      
+
+      const params: GetAllAccountsParams = { search };
+      const accounts = await AccountService.getAllAccounts(params);
+      const accountsJSON = accounts.map((account) =>
+        serializeAccountAsJSON(account),
+      );
+
+      res.status(HttpStatusCodes.OK).send(accountsJSON);
     },
   );
 }

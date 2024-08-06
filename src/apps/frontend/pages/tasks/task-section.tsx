@@ -16,6 +16,9 @@ import { Task } from '../../types/task';
 
 import TaskModal from './task-modal';
 import useTaskForm from './tasks-form.hook';
+import CommentList from '../comments/comments';
+import AddComment from '../comments/new-comment';
+import ShareTaskModal from './task-share-modal';
 
 interface TaskSectionProps {
   handleDeleteTask: (taskId: string) => void;
@@ -31,6 +34,9 @@ const TaskSection: React.FC<TaskSectionProps> = ({
   tasks,
 }) => {
   const [updateTaskModal, setUpdateTaskModal] = useState(false);
+  const [shareTaskModal, setShareTaskModal] = useState(false);
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+  const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
 
   const onSuccess = () => {
     toast.success('Task has been updated successfully');
@@ -47,6 +53,15 @@ const TaskSection: React.FC<TaskSectionProps> = ({
     setFormikFieldValue(updateTaskFormik, 'title', task.title);
     setFormikFieldValue(updateTaskFormik, 'id', task.id);
     setFormikFieldValue(updateTaskFormik, 'description', task.description);
+  };
+
+  const handleShareTask = (task: Task) => {
+    setSelectedTask(task);
+    setShareTaskModal(true);
+  };
+
+  const toggleComments = (taskId: string) => {
+    setSelectedTaskId(selectedTaskId === taskId ? null : taskId);
   };
 
   if (isGetTasksLoading) {
@@ -75,7 +90,6 @@ const TaskSection: React.FC<TaskSectionProps> = ({
             <LabelLarge>{task.title}</LabelLarge>
             <ParagraphSmall>{task.description}</ParagraphSmall>
           </VerticalStackLayout>
-
           <div className="absolute right-4 top-4">
             <MenuItem>
               <Button
@@ -98,8 +112,36 @@ const TaskSection: React.FC<TaskSectionProps> = ({
               >
                 Delete
               </Button>
+              <Button
+                onClick={() => handleShareTask(task)}
+                kind={ButtonKind.SECONDARY}
+                size={ButtonSize.DEFAULT}
+                startEnhancer={
+                  <img src="assets/svg/share-icon.svg" alt="Share task" />
+                }
+              >
+                Share
+              </Button>
             </MenuItem>
           </div>
+          <div className="w-50 my-3 px-2 py-1 bg-blue-500  rounded d-flex justify-content-center align-items-center ">
+            <Button
+              onClick={() => toggleComments(task.id)}
+              kind={ButtonKind.SECONDARY}
+              size={ButtonSize.DEFAULT}
+            >
+              <div className='text-white'>
+              {selectedTaskId === task.id ? 'Hide Comments' : 'Show Comments'}
+              </div>
+            </Button>
+          </div>
+
+          {selectedTaskId === task.id && (
+            <div className="mt-4 p-4 bg-gray-100 rounded">
+              <CommentList taskId={task.id} />
+              <AddComment taskId={task.id} />
+            </div>
+          )}
         </div>
       ))}
 
@@ -108,6 +150,11 @@ const TaskSection: React.FC<TaskSectionProps> = ({
         isModalOpen={updateTaskModal}
         setIsModalOpen={setUpdateTaskModal}
         btnText={'Update Task'}
+      />
+      <ShareTaskModal
+        task={selectedTask}
+        isModalOpen={shareTaskModal}
+        setIsModalOpen={setShareTaskModal}
       />
     </VerticalStackLayout>
   );
