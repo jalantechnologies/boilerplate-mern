@@ -5,8 +5,7 @@ import {
   Spinner,
   LabelLarge,
   ParagraphSmall,
-  Button,
-  MenuItem,
+  Button, 
 } from '../../components';
 import { ButtonKind, ButtonSize } from '../../types/button';
 import SharedTaskService from '../../services/shared-tasks.service';
@@ -62,16 +61,16 @@ const SharedTasks: React.FC = () => {
             <ParagraphSmall>{task.description}</ParagraphSmall>
           </VerticalStackLayout>
 
-          <div className="absolute right-4 top-4">
-            <MenuItem> 
-              <Button
-                onClick={() => toggleComments(task.id)}
-                kind={ButtonKind.SECONDARY}
-                size={ButtonSize.DEFAULT}
-              >
-                {selectedTaskId === task.id ? 'Hide Comments' : 'Comments'}
-              </Button>
-            </MenuItem>
+          <div className="w-50 my-2 px-2 py-1 bg-blue-500  rounded d-flex justify-content-center align-items-center">
+            <Button
+              onClick={() => toggleComments(task.id)}
+              kind={ButtonKind.SECONDARY}
+              size={ButtonSize.DEFAULT}
+            >
+              <div className='text-white'>
+              {selectedTaskId === task.id ? 'Hide Comments' : 'Show Comments'}
+              </div>
+            </Button>
           </div>
 
           {selectedTaskId === task.id && (
