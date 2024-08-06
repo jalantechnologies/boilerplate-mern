@@ -51,9 +51,7 @@ export interface GetCommentParams{
     accountId:String;
     commentId:String;
 }
-// export interface GetCommentForTaskParams{
-//     taskId: string;
-// }
+
 
 export class CommentNotFoundError extends ApplicationError{
     code:string;
