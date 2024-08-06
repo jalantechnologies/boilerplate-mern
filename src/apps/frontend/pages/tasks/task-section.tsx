@@ -122,10 +122,9 @@ const TaskSection: React.FC<TaskSectionProps> = ({
               >
                 Share
               </Button>
-<<<<<<< HEAD
             </MenuItem>
           </div>
-          <div className="w-50 my-3 px-2 py-1 bg-blue-500  rounded d-flex justify-content-center align-items-center ">
+          <div className="w-50 my-2 px-2 py-1 bg-blue-500  rounded d-flex justify-content-center align-items-center">
             <Button
               onClick={() => toggleComments(task.id)}
               kind={ButtonKind.SECONDARY}
@@ -136,17 +135,6 @@ const TaskSection: React.FC<TaskSectionProps> = ({
               </div>
             </Button>
           </div>
-=======
-              <Button
-                onClick={() => toggleComments(task.id)}
-                kind={ButtonKind.SECONDARY}
-                size={ButtonSize.DEFAULT}
-              >
-                {selectedTaskId === task.id ? 'Hide Comments' : 'Comments'}
-              </Button>
-            </MenuItem>
-          </div>
->>>>>>> 09e6ecb626c02d7c8caec3ecdfe0c0c0be1e2e4c
 
           {selectedTaskId === task.id && (
             <div className="mt-4 p-4 bg-gray-100 rounded">

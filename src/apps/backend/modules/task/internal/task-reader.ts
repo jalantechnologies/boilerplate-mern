@@ -79,13 +79,5 @@ export default class TaskReader {
       .limit(paginationParams.size)
       .skip(startIndex); 
     return tasksDb.map((taskDb) => TaskUtil.convertTaskDBToTask(taskDb));
-  }
-
-
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 09e6ecb626c02d7c8caec3ecdfe0c0c0be1e2e4c
-   
+  } 
 }
