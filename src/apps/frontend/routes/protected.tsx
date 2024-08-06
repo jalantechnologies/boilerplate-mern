@@ -5,6 +5,7 @@ import routes from '../constants/routes';
 import { TaskProvider, useAccountContext } from '../contexts';
 import { Dashboard, NotFound, Tasks } from '../pages';
 import AppLayout from '../pages/app-layout/app-layout';
+import { CommentProvider } from '../contexts/comment.provider';
 
 const App = () => {
   const { getAccountDetails } = useAccountContext();
@@ -30,9 +31,11 @@ export const protectedRoutes = [
       {
         path: routes.TASKS,
         element: (
-          <TaskProvider>
+          <CommentProvider>
+            <TaskProvider>
             <Tasks />
           </TaskProvider>
+          </CommentProvider>
         ),
       },
       { path: '*', element: <NotFound /> },

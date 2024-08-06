@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-// import toast from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 import {
   Button,
@@ -16,6 +16,8 @@ import { Task } from '../../types/task';
 
 import TaskModal from './task-modal';
 import useTaskForm from './tasks-form.hook';
+import CommentList from '../comments/comments';
+import AddComment from '../comments/new-comment';
 import ShareTaskModal from './task-share-modal';
 
 interface TaskSectionProps {
@@ -23,41 +25,43 @@ interface TaskSectionProps {
   isGetTasksLoading: boolean;
   onError?: (error: AsyncError) => void;
   tasks: Task[];
-  // handleShareTask: (taskId:string, accountId:string) => void;
 }
 
 const TaskSection: React.FC<TaskSectionProps> = ({
   handleDeleteTask,
-  // handleShareTask,
   isGetTasksLoading,
   onError,
   tasks,
 }) => {
   const [updateTaskModal, setUpdateTaskModal] = useState(false);
   const [shareTaskModal, setShareTaskModal] = useState(false);
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+  const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
 
-  const onSuccess = () => { 
+  const onSuccess = () => {
+    toast.success('Task has been updated successfully');
     setUpdateTaskModal(false);
-    setShareTaskModal(false);
   };
 
   const { updateTaskFormik, setFormikFieldValue } = useTaskForm({
     onError,
     onSuccess,
   });
-   const {shareTaskFormik,setShareFormikFieldValue} = useTaskForm({
-    onError,
-    onSuccess
-   })
-  const handleShareTask = (task:Task) =>{
-    setShareTaskModal(!shareTaskModal); 
-    setShareFormikFieldValue(shareTaskFormik,'taskId', task.id); 
-  }
+
   const handleTaskOperation = (task: Task) => {
     setUpdateTaskModal(!updateTaskModal);
     setFormikFieldValue(updateTaskFormik, 'title', task.title);
     setFormikFieldValue(updateTaskFormik, 'id', task.id);
     setFormikFieldValue(updateTaskFormik, 'description', task.description);
+  };
+
+  const handleShareTask = (task: Task) => {
+    setSelectedTask(task);
+    setShareTaskModal(true);
+  };
+
+  const toggleComments = (taskId: string) => {
+    setSelectedTaskId(selectedTaskId === taskId ? null : taskId);
   };
 
   if (isGetTasksLoading) {
@@ -119,8 +123,22 @@ const TaskSection: React.FC<TaskSectionProps> = ({
               >
                 Share
               </Button>
+              <Button
+                onClick={() => toggleComments(task.id)}
+                kind={ButtonKind.SECONDARY}
+                size={ButtonSize.DEFAULT}
+              >
+                {selectedTaskId === task.id ? 'Hide Comments' : 'Comments'}
+              </Button>
             </MenuItem>
           </div>
+
+          {selectedTaskId === task.id && (
+            <div className="mt-4 p-4 bg-gray-100 rounded">
+              <CommentList taskId={task.id} />
+              <AddComment taskId={task.id} />
+            </div>
+          )}
         </div>
       ))}
 
@@ -131,11 +149,9 @@ const TaskSection: React.FC<TaskSectionProps> = ({
         btnText={'Update Task'}
       />
       <ShareTaskModal
-        formik={shareTaskFormik}
+        task={selectedTask}
         isModalOpen={shareTaskModal}
         setIsModalOpen={setShareTaskModal}
-        onSuccess={onSuccess}
-        onError={onError}
       />
     </VerticalStackLayout>
   );

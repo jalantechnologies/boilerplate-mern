@@ -6,6 +6,7 @@ import {
   InvalidCredentialsError,
   Nullable,
   PhoneNumber,
+  GetAllAccountsParams,
 } from '../types';
 
 import AccountUtil from './account-util';
@@ -113,5 +114,23 @@ export default class AccountReader {
     }
 
     return false;
+  }
+
+  public static async getAllAccounts(
+    params: GetAllAccountsParams,
+  ): Promise<Account[]> {
+
+    const accountsDb = await AccountRepository.find({
+      active: true,
+      $or: [
+        { firstName: { $regex: params.search, $options: 'i' } },
+        { lastName: { $regex: params.search, $options: 'i' } },
+        { username: { $regex: params.search, $options: 'i' } },
+      ],
+    })
+
+    return accountsDb.map((accountDb) =>
+      AccountUtil.convertAccountDBToAccount(accountDb),
+    );
   }
 }

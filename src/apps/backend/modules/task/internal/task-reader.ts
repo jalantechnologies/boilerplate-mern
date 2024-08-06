@@ -1,6 +1,5 @@
 import {
-  GetAllTaskParams,
-  GetAllSharedTaskParams,
+  GetAllTaskParams, 
   
   GetTaskParams,
   Task,
@@ -45,24 +44,5 @@ export default class TaskReader {
   }
 
 
-  public static async getSharedTasksForAccount(params: GetAllSharedTaskParams): Promise<Task[]> { 
-    const totalSharedTasksCount = await TaskRepository.countDocuments({
-        sharedAccounts: params.accountId,
-        active: true,
-    });
-
-    const paginationParams: PaginationParams = {
-        page: params.page ? params.page : 1,
-        size: params.size ? params.size : totalSharedTasksCount,
-    };
-
-    const startIndex = (paginationParams.page - 1) * paginationParams.size;
-
-    const sharedTasksDb = await TaskRepository
-        .find({ sharedAccounts: params.accountId, active: true })
-        .limit(paginationParams.size)
-        .skip(startIndex);
-
-    return sharedTasksDb.map((taskDb) => TaskUtil.convertTaskDBToTask(taskDb));
-}
+   
 }

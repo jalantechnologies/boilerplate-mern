@@ -1,18 +1,14 @@
 import {
   CreateTaskParams,
-  DeleteTaskParams,
-  ShareTaskParams,
+  DeleteTaskParams, 
   Task,
   TaskNotFoundError,
   UpdateTaskParams,
-} from '../types';
-
-import AccountReader from '../../account/internal/account-reader'; 
+} from '../types'; 
 
 import TaskRepository from './store/task-repository';
 import TaskReader from './task-reader';
-import TaskUtil from './task-util';
-import { AccountNotFoundError } from '../../account';
+import TaskUtil from './task-util'; 
 
 export default class TaskWriter {
   public static async createTask(params: CreateTaskParams): Promise<Task> {
@@ -47,49 +43,7 @@ export default class TaskWriter {
 
     return TaskUtil.convertTaskDBToTask(task);
   }
-  public static async shareTask(params: ShareTaskParams): Promise<Task> {
-    // First, find the task
-    const task = await TaskRepository.findOne({
-      _id: params.taskId,
-      active: true,
-    });
-  
-    if (!task) {
-      console.log("no task");
-      throw new TaskNotFoundError(params.taskId);
-    }
-  
-    // Find the user by email
-    const user = await AccountReader.getAccountByUsername(params.username);
-  
-    if (!user) { 
-      throw new AccountNotFoundError(params.username);
-    }
-  
-    // Get the user ID
-    const userId = user.id;
-  
-    // Update the task's sharedAccounts
-    const updatedTask = await TaskRepository.findOneAndUpdate(
-      {
-        _id: params.taskId,
-        active: true,
-      },
-      {
-        $set: {
-          sharedAccounts: [...task.sharedAccounts, userId],
-        },
-      },
-      { new: true },
-    );
-  
-    if (!updatedTask) {
-      console.log("no task updated");
-      throw new TaskNotFoundError(params.taskId);
-    }
-  
-    return TaskUtil.convertTaskDBToTask(updatedTask);
-  }
+   
 
 
   public static async deleteTask(params: DeleteTaskParams): Promise<void> {

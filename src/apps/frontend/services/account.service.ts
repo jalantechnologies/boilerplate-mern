@@ -15,4 +15,24 @@ export default class AccountService extends APIService {
       },
     });
   };
+  getAccounts = async (params: {
+    search: string;
+    page: number;
+    size: number;
+  }): Promise<ApiResponse<Account[]>> => {
+    const userAccessToken = JSON.parse(
+      localStorage.getItem('access-token'),
+    ) as AccessToken;
+
+    const response = await this.apiClient.get('/accounts', {
+      headers: {
+        Authorization: `Bearer ${userAccessToken.token}`,
+      },
+      params,
+    }); 
+    const accounts: Account[] = response.data.map(
+      (accountData: any) => new Account(accountData),
+    );
+    return new ApiResponse(accounts, undefined);
+  };
 }
