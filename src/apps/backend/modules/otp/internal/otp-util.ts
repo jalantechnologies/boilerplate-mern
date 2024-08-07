@@ -26,7 +26,7 @@ export default class OtpUtil {
   }
 
   public static getOtp(phoneNumber: string): string {
-    const isProdEnv = process.env.NODE_ENV === 'production';
+    const isProdEnv = process.env.NODE_CONFIG_ENV === 'production';
 
     // If the phone number is the default phone number in production or if we are in a
     // non-production environment and the default OTP is set in the config, return the default OTP
