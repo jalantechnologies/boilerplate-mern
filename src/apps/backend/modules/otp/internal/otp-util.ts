@@ -30,6 +30,10 @@ export default class OtpUtil {
 
     // If the phone number is the default phone number in production or if we are in a
     // non-production environment and the default OTP is set in the config, return the default OTP
+    console.log('isProdEnv', isProdEnv);
+    console.log('isDefaultPhoneNumber(phoneNumber)', isDefaultPhoneNumber(phoneNumber));
+    console.log('ConfigService.hasValue(\'defaultOTP\')', ConfigService.hasValue('defaultOTP'));
+    console.log('ConfigService.getValue<string>(\'defaultOTP\')', ConfigService.getValue<string>('defaultOTP'));
     if (
       (isProdEnv && isDefaultPhoneNumber(phoneNumber))
       || (!isProdEnv && ConfigService.hasValue('defaultOTP'))
