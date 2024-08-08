@@ -40,6 +40,10 @@ export default class AccountService {
 
     return account;
   }
+  
+  public static async getAllActiveAccounts(userId): Promise<Account[]>{
+    return AccountReader.getAllActiveAccounts(userId);
+  }
 
   public static async getAccountByUsernameAndPassword(
     password: string,

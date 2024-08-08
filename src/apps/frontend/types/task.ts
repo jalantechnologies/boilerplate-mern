@@ -8,6 +8,7 @@ export class Task {
   id: string;
   description: string;
   title: string;
+  sharedWith: string[];
 
   constructor(json: JsonObject) {
     this.id = json.id as string;

@@ -1,6 +1,8 @@
+import { Types } from 'mongoose';
 import {
   CreateTaskParams,
   DeleteTaskParams,
+  ShareTasksParams,
   Task,
   TaskNotFoundError,
   UpdateTaskParams,
@@ -17,6 +19,7 @@ export default class TaskWriter {
       description: params.description,
       title: params.title,
       active: true,
+      sharedWith: [],
     });
     return TaskUtil.convertTaskDBToTask(createdTask);
   }
@@ -42,6 +45,22 @@ export default class TaskWriter {
     }
 
     return TaskUtil.convertTaskDBToTask(task);
+  }
+
+  public static async shareTasks(params: ShareTasksParams): Promise<void> {
+    const userIds = params.userIds.map(Types.ObjectId.createFromHexString);
+    await TaskRepository.updateMany(
+      {
+        _id: { $in: params.taskIds },
+        active: true,
+      },
+      {
+        $addToSet: {
+            'sharedWith': {$each: userIds},
+        },
+      },
+      { new: true },
+    );
   }
 
   public static async deleteTask(params: DeleteTaskParams): Promise<void> {

@@ -15,6 +15,7 @@ const constant = {
   TITLE_MIN_LENGTH: 3,
   TITLE_VALIDATION_ERROR: 'Title should be at least 3 characters long',
   TOASTER_AUTO_HIDE_DURATION: 3000,
+  SHAREDWITH_VALIDATION_ERROR: 'Please share at least one user to share with',   
 };
 
 export default constant;

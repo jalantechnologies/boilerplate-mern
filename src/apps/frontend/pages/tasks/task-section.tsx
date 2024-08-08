@@ -4,6 +4,8 @@ import toast from 'react-hot-toast';
 import {
   Button,
   HeadingSmall,
+  HorizontalStackLayout,
+  Input,
   LabelLarge,
   MenuItem,
   ParagraphSmall,
@@ -19,9 +21,11 @@ import useTaskForm from './tasks-form.hook';
 
 interface TaskSectionProps {
   handleDeleteTask: (taskId: string) => void;
+  handleTaskCheckBoxToggle: (taskId: string) => void;
   isGetTasksLoading: boolean;
   onError?: (error: AsyncError) => void;
   tasks: Task[];
+  selectedTasks: string[];
 }
 
 const TaskSection: React.FC<TaskSectionProps> = ({
@@ -29,6 +33,8 @@ const TaskSection: React.FC<TaskSectionProps> = ({
   isGetTasksLoading,
   onError,
   tasks,
+  handleTaskCheckBoxToggle,
+  selectedTasks,
 }) => {
   const [updateTaskModal, setUpdateTaskModal] = useState(false);
 
@@ -71,10 +77,22 @@ const TaskSection: React.FC<TaskSectionProps> = ({
           className="relative rounded-sm border border-stroke bg-white p-9 shadow-default"
           key={task.id}
         >
-          <VerticalStackLayout gap={3}>
-            <LabelLarge>{task.title}</LabelLarge>
-            <ParagraphSmall>{task.description}</ParagraphSmall>
-          </VerticalStackLayout>
+          <HorizontalStackLayout gap={5}>
+            <div>
+              <Input
+                type="checkbox"
+                error=""
+                checked={selectedTasks.includes(task.id)}
+                onChange={() => handleTaskCheckBoxToggle(task.id)}
+              />
+            </div>
+            <div>
+              <VerticalStackLayout gap={3}>
+                <LabelLarge>{task.title}</LabelLarge>
+                <ParagraphSmall>{task.description}</ParagraphSmall>
+              </VerticalStackLayout>
+            </div>
+          </HorizontalStackLayout>
 
           <div className="absolute right-4 top-4">
             <MenuItem>

@@ -20,15 +20,9 @@ export class AccountController {
   createAccount = applicationController(
     async (req: Request<CreateAccountParams>, res: Response) => {
       let account: Account;
-      const {
-        firstName,
-        lastName,
-        password,
-        username,
-      } = req.body as CreateAccountParamsByUsernameAndPassword;
-      const {
-        phoneNumber,
-      } = req.body as CreateAccountParamsByPhoneNumber;
+      const { firstName, lastName, password, username } =
+        req.body as CreateAccountParamsByUsernameAndPassword;
+      const { phoneNumber } = req.body as CreateAccountParamsByPhoneNumber;
 
       if (username && password) {
         account = await AccountService.createAccountByUsernameAndPassword(
@@ -60,19 +54,21 @@ export class AccountController {
     },
   );
 
+  getAllActiveAccounts = applicationController(
+    async (req: Request<GetAccountParams>, res: Response) => {
+      const activeAccounts = await AccountService.getAllActiveAccounts(req.accountId);
+      const accountJsonArray = activeAccounts.map(serializeAccountAsJSON);
+      res.status(HttpStatusCodes.OK).send(accountJsonArray);
+    },
+  );
+
   updateAccount = applicationController(
     async (req: Request<UpdateAccountParams>, res: Response) => {
       const { accountId } = req.params;
       let account: Account;
-      const {
-        firstName,
-        lastName,
-      } = req.body as UpdateAccountDetailsParams;
+      const { firstName, lastName } = req.body as UpdateAccountDetailsParams;
 
-      const {
-        newPassword,
-        token,
-      } = req.body as ResetPasswordParams;
+      const { newPassword, token } = req.body as ResetPasswordParams;
 
       if (newPassword && token) {
         account = await AccountService.resetAccountPassword({

@@ -1,5 +1,6 @@
-import { ApiResponse } from '../types';
+import { ApiError, ApiResponse } from '../types';
 import { Account } from '../types/account';
+import { JsonObject } from '../types/common-types';
 import { getAccessTokenFromStorage } from '../utils/storage-util';
 
 import APIService from './api.service';
@@ -13,6 +14,27 @@ export default class AccountService extends APIService {
         Authorization: `Bearer ${userAccessToken.token}`,
       },
     });
+  };
+
+  getAllActiveAccounts = async (): Promise<ApiResponse<Account[]>> => {
+    try {
+      const userAccessToken = getAccessTokenFromStorage();
+
+      const response = await this.apiClient.get(`/accounts`, {
+        headers: {
+          Authorization: `Bearer ${userAccessToken.token}`,
+        },
+      });
+      const accounts: Account[] = (response.data as JsonObject[])
+      .filter((account) => account.id !== userAccessToken.accountId)
+      .map((accountData) => new Account(accountData));
+      return new ApiResponse(accounts, undefined);
+    } catch (e) {
+      return new ApiResponse(
+        undefined,
+        new ApiError(e.response.data as JsonObject),
+      );
+    }
   };
 
   deleteAccount = async (): Promise<ApiResponse<void>> => {

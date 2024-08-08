@@ -1,19 +1,27 @@
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 
-import { Button, HeadingLarge } from '../../components';
+import { Button, HeadingLarge, HorizontalStackLayout } from '../../components';
 import { AsyncError } from '../../types';
-import { ButtonSize } from '../../types/button';
+import { ButtonKind, ButtonSize } from '../../types/button';
 
 import TaskModal from './task-modal';
 import useTaskForm from './tasks-form.hook';
+import ShareTasksModal from './share-tasks-modal';
 
 interface TaskHeaderProps {
   onError?: (error: AsyncError) => void;
+  selectedTasks: string[];
+  resetSelectedTasks: () => void;
 }
 
-const TaskHeader: React.FC<TaskHeaderProps> = ({ onError }) => {
+const TaskHeader: React.FC<TaskHeaderProps> = ({
+  onError,
+  selectedTasks,
+  resetSelectedTasks,
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isShareTasksModalOpen, setIsShareTasksModalOpen] = useState(false);
 
   const onSuccess = () => {
     toast.success('Task has been added successfully');
@@ -31,7 +39,19 @@ const TaskHeader: React.FC<TaskHeaderProps> = ({ onError }) => {
         <div className="pl-2">
           <HeadingLarge>Tasks</HeadingLarge>
         </div>
-        <div>
+        <HorizontalStackLayout gap={3}>
+          <Button
+            onClick={() => setIsShareTasksModalOpen(!isShareTasksModalOpen)}
+            size={ButtonSize.COMPACT}
+            kind={ButtonKind.PRIMARY}
+            disabled={selectedTasks.length === 0}
+            startEnhancer={
+              <img src="assets/svg/share-icon.svg" alt="Share Icon" />
+            }
+          >
+            Share task(s)
+          </Button>
+
           <Button
             onClick={() => setIsModalOpen(!isModalOpen)}
             size={ButtonSize.COMPACT}
@@ -41,12 +61,19 @@ const TaskHeader: React.FC<TaskHeaderProps> = ({ onError }) => {
           >
             Add task
           </Button>
-        </div>
+        </HorizontalStackLayout>
         <TaskModal
           formik={addTaskFormik}
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
           btnText={'Add Task'}
+        />
+        <ShareTasksModal
+          taskIds={selectedTasks}
+          resetSelectedTasks={resetSelectedTasks}
+          isModalOpen={isShareTasksModalOpen}
+          setIsModalOpen={setIsShareTasksModalOpen}
+          btnText={'Share Task'}
         />
       </div>
     </div>

@@ -26,6 +26,10 @@ type TaskContextType = {
   updateTask: (taskId: string, taskData: Partial<Task>) => Promise<Task>;
   updateTaskError: AsyncError;
   updatedTask: Task;
+  shareTasks: (taskIds: string[], userIds: string[]) => Promise<Task[]>;
+  shareTaskError: AsyncError;
+  shareTaskResult: Task[];
+  isShareTaskLoading: boolean;
 };
 
 const TaskContext = createContext<TaskContextType | null>(null);
@@ -43,6 +47,11 @@ const updateTaskFn = async (
   taskId: string,
   taskData: Task,
 ): Promise<ApiResponse<Task>> => taskService.updateTask(taskId, taskData);
+
+const shareTaskFn = async (
+  taskIds: string[],
+  userIds: string[],
+): Promise<ApiResponse<Task[]>> => taskService.shareTasks(taskIds, userIds);
 
 const deleteTaskFn = async (taskId: string):
 Promise<ApiResponse<void>> => taskService.deleteTask(taskId);
@@ -77,6 +86,13 @@ export const TaskProvider: React.FC<PropsWithChildren> = ({ children }) => {
     result: updatedTask,
   } = useAsync(updateTaskFn);
 
+    const {
+      asyncCallback: shareTasks,
+      error: shareTaskError,
+      isLoading: isShareTaskLoading,
+      result: shareTaskResult,
+    } = useAsync(shareTaskFn);
+
   const {
     asyncCallback: deleteTask,
     error: deleteTaskError,
@@ -103,6 +119,10 @@ export const TaskProvider: React.FC<PropsWithChildren> = ({ children }) => {
         updateTask,
         updateTaskError,
         updatedTask,
+        shareTasks,
+        shareTaskError,
+        shareTaskResult,
+        isShareTaskLoading,
       }}
     >
       {children}

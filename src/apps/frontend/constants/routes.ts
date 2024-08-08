@@ -10,6 +10,7 @@ const routes = {
   PROFILE_SETTINGS: '/profile/settings',
   SIGNUP: '/signup',
   TASKS: '/tasks',
+  SHARED: '/shared',
 };
 
 export default routes;

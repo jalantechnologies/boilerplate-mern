@@ -33,6 +33,7 @@ const useTaskForm = ({ onError, onSuccess }: TaskFormProps) => {
       id: '',
       description: '',
       title: '',
+      sharedWith: [],
     },
     validationSchema: Yup.object({
       title: Yup.string()
@@ -70,6 +71,7 @@ const useTaskForm = ({ onError, onSuccess }: TaskFormProps) => {
       id: '',
       description: '',
       title: '',
+      sharedWith: [],
     },
     validationSchema: Yup.object({
       title: Yup.string()
