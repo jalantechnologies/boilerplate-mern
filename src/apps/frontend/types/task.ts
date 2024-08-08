@@ -14,5 +14,6 @@ export class Task {
     this.id = json.id as string;
     this.description = json.description as string;
     this.title = json.title as string;
+    this.sharedWith = json.sharedWith as string[];
   }
 }

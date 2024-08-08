@@ -9,6 +9,7 @@ import HorizontalStackLayout from './layouts/horizontal-stack-layout';
 import VerticalStackLayout from './layouts/vertical-stack-layout';
 import MenuItem from './menu-item';
 import OTP from './otp';
+import Badge from './badge';
 import Select from './select';
 import Spinner from './spinner/spinner';
 import H2 from './typography/h2';
@@ -20,6 +21,7 @@ import ParagraphMedium from './typography/paragraph-medium';
 import ParagraphSmall from './typography/paragraph-small';
 
 export {
+  Badge,
   Button,
   Flex,
   FlexItem,

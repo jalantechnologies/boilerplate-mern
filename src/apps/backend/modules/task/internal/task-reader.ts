@@ -23,11 +23,12 @@ export default class TaskReader {
     return TaskUtil.convertTaskDBToTask(taskDb);
   }
 
-  public static async getTasksForAccount(params: GetAllTaskParams): Promise<Task []> {
-    const totalTasksCount = await TaskRepository.countDocuments({
-      account: params.accountId,
-      active: true,
-    });
+  public static async getTasksForAccount(params: GetAllTaskParams): Promise<Task[]> {
+    const FIND_COND = [
+      { account: params.accountId, active: true },
+      { active: true, sharedWith: params.accountId },
+    ];
+    const totalTasksCount = await TaskRepository.countDocuments(FIND_COND);
     const paginationParams: PaginationParams = {
       page: (params.page) ? (params.page) : 1,
       size: (params.size) ? (params.size) : totalTasksCount,
@@ -35,10 +36,10 @@ export default class TaskReader {
     const startIndex = (paginationParams.page - 1) * (paginationParams.size);
 
     const tasksDb = await TaskRepository
-      .find({ account: params.accountId, active: true })
+      .find({$or: FIND_COND})
       .limit(paginationParams.size)
       .skip(startIndex);
 
-    return tasksDb.map((taskDb) => TaskUtil.convertTaskDBToTask(taskDb));
+   return tasksDb.map((taskDb) => TaskUtil.convertTaskDBToTask(taskDb));
   }
 }
