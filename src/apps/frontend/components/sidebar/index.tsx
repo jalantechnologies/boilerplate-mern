@@ -56,12 +56,6 @@ const Sidebar: React.FC<SidebarProps> = ({
               title="Tasks"
             />
             <SidebarMenuItem
-              iconPath="/assets/img/icon/tasks-sidebar-icon.svg"
-              path={routes.SHARED}
-              setIsSidebarOpen={setIsSidebarOpen}
-              title="Shared with you"
-            />
-            <SidebarMenuItem
               iconPath="/assets/img/icon/profile-sidebar-icon.svg"
               path={routes.PROFILE}
               setIsSidebarOpen={setIsSidebarOpen}

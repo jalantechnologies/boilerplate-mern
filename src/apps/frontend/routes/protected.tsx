@@ -41,14 +41,6 @@ export const protectedRoutes = [
         ),
       },
       {
-        path: routes.SHARED,
-        element: (
-          <TaskProvider>
-            <Tasks />
-          </TaskProvider>
-        ),
-      },
-      {
         path: routes.PROFILE_SETTINGS,
         element: <ProfileSettings />,
       },
