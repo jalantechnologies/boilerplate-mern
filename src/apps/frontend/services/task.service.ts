@@ -81,7 +81,7 @@ export default class TaskService extends APIService {
     try {
       const userAccessToken = getAccessTokenFromStorage();
       await this.apiClient.post(
-        '/tasks/share-tasks',
+        '/tasks/share',
         { taskIds, userIds },
         {
           headers: {
