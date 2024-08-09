@@ -1,10 +1,8 @@
 accounts:
   passwordResetEmailEnabled: true
 
-defaultOTP: '1111'
-defaultPhoneNumber: '9999999999'
-
-enableSMS: true
+sms:
+  enabled: true
 
 logger:
   transports: [ 'datadog' ]

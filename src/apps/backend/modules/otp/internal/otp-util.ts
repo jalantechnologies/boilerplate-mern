@@ -26,15 +26,8 @@ export default class OtpUtil {
   }
 
   public static getOtp(phoneNumber: string): string {
-    const isProdEnv = process.env.NODE_CONFIG_ENV === 'production';
-
-    // If the phone number is the default phone number in production or if we are in a
-    // non-production environment and the default OTP is set in the config, return the default OTP
-    if (
-      (isProdEnv && isDefaultPhoneNumber(phoneNumber))
-      || (!isProdEnv && ConfigService.hasValue('defaultOTP'))
-    ) {
-      return ConfigService.getValue<string>('defaultOTP');
+    if (ConfigService.hasValue('otp.defaultOTP') && isDefaultPhoneNumber(phoneNumber)) {
+      return ConfigService.getValue<string>('otp.defaultOTP');
     }
     return OtpUtil.generateOtp(OTP_LENGTH);
   }

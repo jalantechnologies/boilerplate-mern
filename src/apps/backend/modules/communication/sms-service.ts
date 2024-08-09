@@ -1,15 +1,15 @@
 import { ConfigService } from '../config';
-import { isDefaultPhoneNumber } from '../util/phone-number-util';
+import { Logger } from '../logger';
 
 import TwilioService from './internals/twilio-service';
 import { SendSMSParams } from './types';
 
 export default class SMSService {
   public static async sendSMS(params: SendSMSParams): Promise<void> {
-    const enableSMS = ConfigService.getValue('enableSMS');
+    const isSmsEnabled = ConfigService.getValue('sms.enabled');
 
-    // If SMS is disabled or the recipient phone number is the default phone number, do not send SMS
-    if (!enableSMS || isDefaultPhoneNumber(params.recipientPhone.phoneNumber)) {
+    if (!isSmsEnabled) {
+      Logger.warn(`SMS not enabled. Could not send message - ${params.messageBody}`);
       return;
     }
 

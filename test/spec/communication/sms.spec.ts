@@ -14,7 +14,7 @@ describe('SMSService', () => {
       .returns('AC-random-id')
       .withArgs('twilio.verify.authToken')
       .returns('random-token')
-      .withArgs('enableSMS')
+      .withArgs('sms.enabled')
       .returns(true);
 
     // TODO: This needs to be fixed
