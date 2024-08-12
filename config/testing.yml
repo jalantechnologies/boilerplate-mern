@@ -8,7 +8,7 @@ mailer:
   forgetPasswordMailTemplateId: 'FORGOT_PASSWORD_MAIL_TEMPLATE_ID'
 
 sms:
-  enabled: true
+  enabled: false
 
 mongoDb:
   uri: 'mongodb://localhost:27017/boilerplate-mern-test'
