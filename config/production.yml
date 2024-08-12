@@ -1,9 +1,8 @@
 accounts:
   passwordResetEmailEnabled: true
 
-defaultOTP: '1111'
-
-enableSMS: false
+sms:
+  enabled: true
 
 logger:
   transports: [ 'datadog' ]
