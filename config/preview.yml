@@ -2,7 +2,7 @@ accounts:
   passwordResetEmailEnabled: true
 
 sms:
-  enabled: false
+  enabled: true
 
 logger:
   transports: [ 'datadog' ]
