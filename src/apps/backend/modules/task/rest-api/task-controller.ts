@@ -17,10 +17,11 @@ export class TaskController {
     req: Request<CreateTaskParams>,
     res: Response,
   ) => {
+    const { accountId, description, title } = req.body;
     const task: Task = await TaskService.createTask({
-      accountId: req.accountId,
-      description: req.body.description,
-      title: req.body.title,
+      accountId,
+      description,
+      title,
     });
     const taskJSON = serializeTaskAsJSON(task);
 
@@ -33,9 +34,10 @@ export class TaskController {
     req: Request<DeleteTaskParams>,
     res: Response,
   ) => {
+    const { accountId, taskId } = req.params;
     await TaskService.deleteTask({
-      accountId: req.accountId,
-      taskId: req.params.id,
+      accountId,
+      taskId,
     });
 
     res
@@ -47,9 +49,10 @@ export class TaskController {
     req: Request<GetTaskParams>,
     res: Response,
   ) => {
+    const { accountId, taskId } = req.params;
     const task = await TaskService.getTaskForAccount({
-      accountId: req.accountId,
-      taskId: req.params.id,
+      accountId,
+      taskId,
     });
     const taskJSON = serializeTaskAsJSON(task);
 
@@ -62,10 +65,11 @@ export class TaskController {
     req: Request,
     res: Response,
   ) => {
-    const page = +req.query.page;
-    const size = +req.query.size;
+    const page = req.query.page ? +req.query.page : 1; // Default to page 1 if not provided
+    const size = req.query.size ? +req.query.size : 10; // Default to size 10 if not provided
+    const { accountId } = req.params;
     const params: GetAllTaskParams = {
-      accountId: req.accountId,
+      accountId,
       page,
       size,
     };
@@ -82,11 +86,13 @@ export class TaskController {
     req: Request<UpdateTaskParams>,
     res: Response,
   ) => {
+    const { taskId, description, title } = req.body;
+    const { accountId } = req.params;
     const updatedTask: Task = await TaskService.updateTask({
-      accountId: req.accountId,
-      taskId: req.params.id,
-      description: req.body.description,
-      title: req.body.title,
+      accountId,
+      description,
+      taskId,
+      title,
     });
     const taskJSON = serializeTaskAsJSON(updatedTask);
 

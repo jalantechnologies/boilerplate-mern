@@ -1,8 +1,6 @@
 import { ApplicationError } from '../application';
 import { HttpStatusCodes } from '../http';
 
-export type Nullable<T> = T | null;
-
 export class PhoneNumber {
   countryCode: string;
   phoneNumber: string;

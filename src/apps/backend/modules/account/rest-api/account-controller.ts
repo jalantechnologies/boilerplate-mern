@@ -1,3 +1,4 @@
+import { Nullable } from '../../../types';
 import { applicationController, Request, Response } from '../../application';
 import { HttpStatusCodes } from '../../http';
 import AccountService from '../account-service';
@@ -19,7 +20,7 @@ import { serializeAccountAsJSON } from './account-serializer';
 export class AccountController {
   createAccount = applicationController(
     async (req: Request<CreateAccountParams>, res: Response) => {
-      let account: Account;
+      let account: Nullable<Account> = null;
       const {
         firstName,
         lastName,
