@@ -15,6 +15,18 @@ const useTaskForm = ({ onError, onSuccess }: TaskFormProps) => {
     addTask, setTasksList, tasksList, updateTask, isAddTaskLoading, isUpdateTaskLoading,
   } = useTaskContext();
 
+  const handleError = (error: AsyncError) => {
+    if (onError) {
+      onError(error);
+    }
+  };
+
+  const handleSuccess = () => {
+    if (onSuccess) {
+      onSuccess();
+    }
+  };
+
   const setFormikFieldValue = (
     formik: FormikProps<Task>,
     fieldName: string,
@@ -24,9 +36,7 @@ const useTaskForm = ({ onError, onSuccess }: TaskFormProps) => {
       .setFieldValue(fieldName, data)
       .then()
       .catch((err) => {
-        if (onError) {
-          onError(err as AsyncError);
-        }
+        handleError(err as AsyncError);
       });
   };
 
@@ -60,15 +70,11 @@ const useTaskForm = ({ onError, onSuccess }: TaskFormProps) => {
             return taskData;
           });
           setTasksList(newUpdatedTasks as Task[]);
-          if (onSuccess) {
-            onSuccess();
-          }
+          handleSuccess();
           updateTaskFormik.resetForm();
         })
         .catch((error) => {
-          if (onError) {
-            onError(error as AsyncError);
-          }
+          handleError(error as AsyncError);
         });
     },
   });
@@ -94,15 +100,11 @@ const useTaskForm = ({ onError, onSuccess }: TaskFormProps) => {
       addTask(values.title, values.description)
         .then((newTask) => {
           setTasksList([...tasksList, newTask as Task]);
-          if (onSuccess) {
-            onSuccess();
-          }
+          handleSuccess();
           addTaskFormik.resetForm();
         })
         .catch((error) => {
-          if (onError) {
-            onError(error as AsyncError);
-          }
+          handleError(error as AsyncError);
         });
     },
   });
