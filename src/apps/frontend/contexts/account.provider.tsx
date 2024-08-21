@@ -13,10 +13,10 @@ import useAsync from './async.hook';
 
 type AccountContextType = {
   accountDetails: Account;
-  accountError: AsyncError;
+  accountError: AsyncError | undefined;
   deleteAccount: () => Promise<void>;
-  deleteAccountError: AsyncError;
-  getAccountDetails: () => Promise<Account>;
+  deleteAccountError: AsyncError | undefined;
+  getAccountDetails: () => Promise<Account | undefined>;
   isAccountLoading: boolean;
   isDeleteAccountLoading: boolean;
 };
@@ -25,7 +25,9 @@ const AccountContext = createContext<AccountContextType | null>(null);
 
 const accountService = new AccountService();
 
-export const useAccountContext = (): AccountContextType => useContext(AccountContext);
+export const useAccountContext = (): AccountContextType => useContext(
+  AccountContext,
+) as AccountContextType;
 
 const getAccountDetailsFn = async (): Promise<ApiResponse<Account>> => accountService
   .getAccountDetails();

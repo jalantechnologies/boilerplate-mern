@@ -16,9 +16,9 @@ type ResetPasswordContextType = {
   isResetPasswordLoading: boolean;
   isSendForgotPasswordEmailLoading: boolean;
   resetPassword: (params: ResetPasswordParams) => Promise<void>;
-  resetPasswordError: AsyncError;
+  resetPasswordError: AsyncError | undefined;
   sendForgotPasswordEmail: (username: string) => Promise<void>;
-  sendForgotPasswordEmailError: AsyncError;
+  sendForgotPasswordEmailError: AsyncError | undefined;
 };
 
 const ResetPasswordContext = createContext<ResetPasswordContextType | null>(null);
@@ -27,7 +27,7 @@ const resetPasswordService = new ResetPasswordService();
 
 export const useResetPasswordContext = (): ResetPasswordContextType => useContext(
   ResetPasswordContext,
-);
+) as ResetPasswordContextType;
 
 const resetPasswordFn = async (
   params: ResetPasswordParams,

@@ -1,3 +1,4 @@
+import { Nullable } from '../../../types';
 import { PhoneNumber } from '../../account/types';
 import { applicationController, Request, Response } from '../../application';
 import AccessTokenService from '../access-token-service';
@@ -15,7 +16,7 @@ export class AccessTokenController {
     req: Request<CreateAccessTokenParams>,
     res: Response,
   ) => {
-    let accessToken: AccessToken;
+    let accessToken: Nullable<AccessToken> = null;
     const { username, password } = req.body as EmailBasedAuthAccessTokenRequestParams;
     const { phoneNumber, otpCode } = req.body as OTPBasedAuthAccessTokenRequestParams;
 
