@@ -17,12 +17,14 @@ export class TaskController {
     req: Request<CreateTaskParams>,
     res: Response,
   ) => {
-    const { accountId, description, title } = req.body;
-    const task: Task = await TaskService.createTask({
-      accountId,
+    const { accountId } = req;
+    const { description, title } = req.body;
+    const params: CreateTaskParams = {
+      accountId: accountId as string,
       description,
       title,
-    });
+    };
+    const task: Task = await TaskService.createTask(params);
     const taskJSON = serializeTaskAsJSON(task);
 
     res
@@ -34,11 +36,13 @@ export class TaskController {
     req: Request<DeleteTaskParams>,
     res: Response,
   ) => {
-    const { accountId, taskId } = req.params;
-    await TaskService.deleteTask({
-      accountId,
-      taskId,
-    });
+    const { accountId } = req;
+    const { id } = req.params;
+    const params: DeleteTaskParams = {
+      accountId: accountId as string,
+      taskId: id,
+    };
+    await TaskService.deleteTask(params);
 
     res
       .status(HttpStatusCodes.NO_CONTENT)
@@ -49,11 +53,13 @@ export class TaskController {
     req: Request<GetTaskParams>,
     res: Response,
   ) => {
-    const { accountId, taskId } = req.params;
-    const task = await TaskService.getTaskForAccount({
-      accountId,
+    const { accountId } = req;
+    const { taskId } = req.params;
+    const params: GetTaskParams = {
+      accountId: accountId as string,
       taskId,
-    });
+    };
+    const task = await TaskService.getTaskForAccount(params);
     const taskJSON = serializeTaskAsJSON(task);
 
     res
@@ -67,9 +73,9 @@ export class TaskController {
   ) => {
     const page = req.query.page ? +req.query.page : 1; // Default to page 1 if not provided
     const size = req.query.size ? +req.query.size : 10; // Default to size 10 if not provided
-    const { accountId } = req.params;
+    const { accountId } = req;
     const params: GetAllTaskParams = {
-      accountId,
+      accountId: accountId as string,
       page,
       size,
     };
@@ -86,14 +92,16 @@ export class TaskController {
     req: Request<UpdateTaskParams>,
     res: Response,
   ) => {
-    const { taskId, description, title } = req.body;
-    const { accountId } = req.params;
-    const updatedTask: Task = await TaskService.updateTask({
-      accountId,
+    const { accountId } = req;
+    const { id } = req.params;
+    const { description, title } = req.body;
+    const params: UpdateTaskParams = {
+      accountId: accountId as string,
       description,
-      taskId,
+      taskId: id,
       title,
-    });
+    };
+    const updatedTask: Task = await TaskService.updateTask(params);
     const taskJSON = serializeTaskAsJSON(updatedTask);
 
     res

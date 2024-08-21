@@ -24,7 +24,9 @@ const useTaskForm = ({ onError, onSuccess }: TaskFormProps) => {
       .setFieldValue(fieldName, data)
       .then()
       .catch((err) => {
-        onError(err as AsyncError);
+        if (onError) {
+          onError(err as AsyncError);
+        }
       });
   };
 
@@ -57,11 +59,17 @@ const useTaskForm = ({ onError, onSuccess }: TaskFormProps) => {
             }
             return taskData;
           });
-          setTasksList(newUpdatedTasks);
-          onSuccess();
+          setTasksList(newUpdatedTasks as Task[]);
+          if (onSuccess) {
+            onSuccess();
+          }
           updateTaskFormik.resetForm();
         })
-        .catch((error) => onError(error as AsyncError));
+        .catch((error) => {
+          if (onError) {
+            onError(error as AsyncError);
+          }
+        });
     },
   });
 
@@ -85,12 +93,16 @@ const useTaskForm = ({ onError, onSuccess }: TaskFormProps) => {
     onSubmit: (values) => {
       addTask(values.title, values.description)
         .then((newTask) => {
-          setTasksList([...tasksList, newTask]);
-          onSuccess();
+          setTasksList([...tasksList, newTask as Task]);
+          if (onSuccess) {
+            onSuccess();
+          }
           addTaskFormik.resetForm();
         })
         .catch((error) => {
-          onError(error as AsyncError);
+          if (onError) {
+            onError(error as AsyncError);
+          }
         });
     },
   });

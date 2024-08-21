@@ -9,40 +9,40 @@ import { Task } from '../types/task';
 import useAsync from './async.hook';
 
 type TaskContextType = {
-  addTask: (title: string, description: string) => Promise<Task>;
-  addTaskError: AsyncError;
+  addTask: (title: string, description: string) => Promise<Task | undefined>;
+  addTaskError: AsyncError | undefined;
   deleteTask: (taskId: string) => Promise<void>;
-  deleteTaskError: AsyncError;
-  getTasks: () => Promise<Task[]>;
-  getTasksError: AsyncError;
+  deleteTaskError: AsyncError | undefined;
+  getTasks: () => Promise<Task[] | undefined>;
+  getTasksError: AsyncError | undefined;
   isAddTaskLoading: boolean;
   isDeleteTaskLoading: boolean;
   isGetTasksLoading: boolean;
   isUpdateTaskLoading: boolean;
   setTasksList: React.Dispatch<React.SetStateAction<Task[]>>;
-  task: Task;
-  tasks: Task[];
+  task: Task | undefined;
+  tasks: Task[] | undefined;
   tasksList: Task[];
-  updateTask: (taskId: string, taskData: Partial<Task>) => Promise<Task>;
-  updateTaskError: AsyncError;
-  updatedTask: Task;
+  updateTask: (taskId: string, taskData: Partial<Task>) => Promise<Task | undefined>;
+  updateTaskError: AsyncError | undefined;
+  updatedTask: Task | undefined;
 };
 
 const TaskContext = createContext<TaskContextType | null>(null);
 
 const taskService = new TaskService();
 
-export const useTaskContext = (): TaskContextType => useContext(TaskContext);
+export const useTaskContext = (): TaskContextType => useContext(TaskContext) as TaskContextType;
 
 const addTaskFn = async (
   title: string,
   description: string,
-): Promise<ApiResponse<Task>> => taskService.addTask(title, description);
+): Promise<ApiResponse<Task>> => taskService.addTask(title, description) as ApiResponse<Task>;
 
 const updateTaskFn = async (
   taskId: string,
   taskData: Task,
-): Promise<ApiResponse<Task>> => taskService.updateTask(taskId, taskData);
+): Promise<ApiResponse<Task>> => taskService.updateTask(taskId, taskData) as ApiResponse<Task>;
 
 const deleteTaskFn = async (taskId: string):
 Promise<ApiResponse<void>> => taskService.deleteTask(taskId);
@@ -52,8 +52,8 @@ export const TaskProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
   const getTasksFn = async (): Promise<ApiResponse<Task[]>> => {
     const response = await taskService.getTasks();
-    setTasksList(response.data);
-    return response;
+    setTasksList(response.data as Task[]);
+    return response as ApiResponse<Task[]>;
   };
 
   const {

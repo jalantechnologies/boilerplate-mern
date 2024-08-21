@@ -96,9 +96,9 @@ const TaskModal: React.FC<TaskModalProps> = ({
             isLoading={btnText === 'Add Task' ? isAddTaskLoading : isUpdateTaskLoading}
             size={ButtonSize.DEFAULT}
             startEnhancer={
-              !isAddTaskLoading && !isUpdateTaskLoading && (
+              (!isAddTaskLoading && !isUpdateTaskLoading) ? (
                 <img src="assets/svg/plus-icon.svg" alt="Plus Icon" />
-              )
+              ) : undefined
             }
           >
             {btnText}

@@ -18,34 +18,34 @@ type AuthContextType = {
   isSignupLoading: boolean;
   isUserAuthenticated: () => boolean;
   isVerifyOTPLoading: boolean;
-  login: (username: string, password: string) => Promise<AccessToken>;
-  loginError: AsyncError;
-  loginResult: AccessToken;
+  login: (username: string, password: string) => Promise<AccessToken | undefined>;
+  loginError: AsyncError | undefined;
+  loginResult: AccessToken | undefined;
   logout: () => void;
   sendOTP: (
     phoneNumber: PhoneNumber,
   ) => Promise<void>;
-  sendOTPError: AsyncError;
+  sendOTPError: AsyncError | undefined;
   signup: (
     firstName: string,
     lastName: string,
     username: string,
     password: string
   ) => Promise<void>;
-  signupError: AsyncError;
+  signupError: AsyncError | undefined;
   verifyOTP: (
     phoneNumber: PhoneNumber,
     otp: string,
-  ) => Promise<AccessToken>;
-  verifyOTPError: AsyncError;
-  verifyOTPResult: AccessToken;
+  ) => Promise<AccessToken | undefined>;
+  verifyOTPError: AsyncError | undefined;
+  verifyOTPResult: AccessToken | undefined;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
 const authService = new AuthService();
 
-export const useAuthContext = (): AuthContextType => useContext(AuthContext);
+export const useAuthContext = (): AuthContextType => useContext(AuthContext) as AuthContextType;
 
 const loginFn = async (
   username: string,
@@ -72,7 +72,7 @@ const signupFn = async (
 
 const logoutFn = (): void => removeAccessTokenFromStorage();
 
-const getAccessToken = (): AccessToken => getAccessTokenFromStorage();
+const getAccessToken = (): AccessToken => getAccessTokenFromStorage() as AccessToken;
 
 const isUserAuthenticated = () => !!getAccessToken();
 

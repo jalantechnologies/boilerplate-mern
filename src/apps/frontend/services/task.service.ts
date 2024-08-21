@@ -9,14 +9,14 @@ export default class TaskService extends APIService {
   addTask = async (
     title: string,
     description: string,
-  ): Promise<ApiResponse<Task>> => {
+  ): Promise<ApiResponse<Task | undefined>> => {
     try {
       const userAccessToken = getAccessTokenFromStorage();
       const response = await this.apiClient.post(
         '/tasks', { title, description },
         {
           headers: {
-            Authorization: `Bearer ${userAccessToken.token}`,
+            Authorization: `Bearer ${userAccessToken?.token}`,
           },
         },
       );
@@ -26,14 +26,14 @@ export default class TaskService extends APIService {
     }
   };
 
-  getTasks = async (): Promise<ApiResponse<Task[]>> => {
+  getTasks = async (): Promise<ApiResponse<Task[] | undefined>> => {
     try {
       const userAccessToken = getAccessTokenFromStorage();
       const response = await this.apiClient.get(
         '/tasks',
         {
           headers: {
-            Authorization: `Bearer ${userAccessToken.token}`,
+            Authorization: `Bearer ${userAccessToken?.token}`,
           },
         },
       );
@@ -47,14 +47,14 @@ export default class TaskService extends APIService {
   updateTask = async (
     taskId: string,
     taskData: Task,
-  ): Promise<ApiResponse<Task>> => {
+  ): Promise<ApiResponse<Task | undefined>> => {
     try {
       const userAccessToken = getAccessTokenFromStorage();
       const response = await this.apiClient.patch(
         `/tasks/${taskId}`, taskData,
         {
           headers: {
-            Authorization: `Bearer ${userAccessToken.token}`,
+            Authorization: `Bearer ${userAccessToken?.token}`,
           },
         },
       );
@@ -69,7 +69,7 @@ export default class TaskService extends APIService {
       const userAccessToken = getAccessTokenFromStorage();
       await this.apiClient.delete(`/tasks/${taskId}`, {
         headers: {
-          Authorization: `Bearer ${userAccessToken.token}`,
+          Authorization: `Bearer ${userAccessToken?.token}`,
         },
       });
       return new ApiResponse(undefined, undefined);

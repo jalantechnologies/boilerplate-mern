@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { PropsWithChildren } from 'react';
+import React, { MouseEventHandler, PropsWithChildren } from 'react';
 
 import { ButtonKind, ButtonSize, ButtonType } from '../../types/button';
 import HorizontalStackLayout from '../layouts/horizontal-stack-layout';
@@ -12,7 +12,7 @@ interface ButtonProps {
   endEnhancer?: React.ReactElement | string;
   isLoading?: boolean;
   kind?: ButtonKind;
-  onClick?: (e) => void;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
   size?: ButtonSize;
   startEnhancer?: React.ReactElement | string;
   type?: ButtonType;

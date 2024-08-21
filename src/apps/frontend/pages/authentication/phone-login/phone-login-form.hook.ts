@@ -42,7 +42,7 @@ const usePhoneLoginForm = ({ onSendOTPSuccess, onError }: PhoneLoginFormProps) =
         return;
       }
 
-      const formattedPhoneNumber = parsedPhoneNumber.getNationalNumber().toString();
+      const formattedPhoneNumber = parsedPhoneNumber.getNationalNumber()?.toString();
       const encodedCountryCode = encodeURIComponent(values.countryCode);
       const otpPageUrl = `${routes.OTP}&country_code=${encodedCountryCode}&phone_number=${formattedPhoneNumber}`;
 
