@@ -37,12 +37,14 @@ export const useTaskContext = (): TaskContextType => useContext(TaskContext) as 
 const addTaskFn = async (
   title: string,
   description: string,
-): Promise<ApiResponse<Task>> => taskService.addTask(title, description) as ApiResponse<Task>;
+): Promise<ApiResponse<Task>> => await taskService.addTask(title, description) as ApiResponse<Task>;
 
 const updateTaskFn = async (
   taskId: string,
   taskData: Task,
-): Promise<ApiResponse<Task>> => taskService.updateTask(taskId, taskData) as ApiResponse<Task>;
+): Promise<ApiResponse<Task>> => await taskService.updateTask(
+  taskId, taskData,
+) as ApiResponse<Task>;
 
 const deleteTaskFn = async (taskId: string):
 Promise<ApiResponse<void>> => taskService.deleteTask(taskId);
