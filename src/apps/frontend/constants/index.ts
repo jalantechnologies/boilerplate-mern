@@ -1,6 +1,7 @@
 const constant = {
   DESCRIPTION_MIN_LENGTH: 10,
-  DESCRIPTION_VALIDATION_ERROR: 'Description should be at least 10 characters long',
+  DESCRIPTION_VALIDATION_ERROR:
+    'Description should be at least 10 characters long',
   EMAIL_VALIDATION_ERROR: 'Please enter a valid email',
   FIRST_NAME_MIN_LENGTH: 1,
   FIRST_NAME_VALIDATION_ERROR: 'Please specify your first name',
@@ -8,7 +9,8 @@ const constant = {
   LAST_NAME_VALIDATION_ERROR: 'Please specify your last name',
   OTP_INPUT_MAX_LENGTH: 2,
   OTP_LENGTH: 4,
-  PASSWORD_MATCH_VALIDATION_ERROR: 'The confirmed password doesn\'t match the chosen password.',
+  PASSWORD_MATCH_VALIDATION_ERROR:
+    "The confirmed password doesn't match the chosen password.",
   PASSWORD_MIN_LENGTH: 8,
   PASSWORD_VALIDATION_ERROR: 'Please enter at least 8 characters long password',
   PHONE_VALIDATION_ERROR: 'Please enter a valid phone number',

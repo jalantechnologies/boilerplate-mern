@@ -23,7 +23,8 @@ export type OTPBasedAuthAccessTokenRequestParams = {
 };
 
 export type CreateAccessTokenParams =
-  EmailBasedAuthAccessTokenRequestParams | OTPBasedAuthAccessTokenRequestParams;
+  | EmailBasedAuthAccessTokenRequestParams
+  | OTPBasedAuthAccessTokenRequestParams;
 
 export type VerifyAccessTokenParams = {
   token: string;

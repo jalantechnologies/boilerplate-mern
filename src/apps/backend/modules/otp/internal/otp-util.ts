@@ -26,7 +26,10 @@ export default class OtpUtil {
   }
 
   public static getOtp(phoneNumber: string): string {
-    if (ConfigService.hasValue('otp.defaultOTP') && isDefaultPhoneNumber(phoneNumber)) {
+    if (
+      ConfigService.hasValue('otp.defaultOTP') &&
+      isDefaultPhoneNumber(phoneNumber)
+    ) {
       return ConfigService.getValue<string>('otp.defaultOTP');
     }
     return OtpUtil.generateOtp(OTP_LENGTH);

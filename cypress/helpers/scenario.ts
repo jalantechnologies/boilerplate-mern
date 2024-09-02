@@ -1,4 +1,7 @@
-export const setupScenario = <T = unknown>(name: string, params?: unknown): T => {
+export const setupScenario = <T = unknown>(
+  name: string,
+  params?: unknown,
+): T => {
   let result: T;
 
   beforeEach((done) => {

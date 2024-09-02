@@ -26,7 +26,9 @@ export default class TaskService {
     return TaskReader.getTaskForAccount(params);
   }
 
-  public static async getTasksForAccount(params: GetAllTaskParams): Promise<Task[]> {
+  public static async getTasksForAccount(
+    params: GetAllTaskParams,
+  ): Promise<Task[]> {
     return TaskReader.getTasksForAccount(params);
   }
 }

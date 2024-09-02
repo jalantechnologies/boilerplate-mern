@@ -18,7 +18,10 @@ export default class AccessTokenService {
     password: string,
     username: string,
   ): Promise<AccessToken> {
-    const account = await AccountService.getAccountByUsernameAndPassword(password, username);
+    const account = await AccountService.getAccountByUsernameAndPassword(
+      password,
+      username,
+    );
 
     return AccessTokenService.generateAccessToken(account);
   }
@@ -29,10 +32,7 @@ export default class AccessTokenService {
   ): Promise<AccessToken> {
     const account = await AccountService.getAccountByPhoneNumber(phoneNumber);
 
-    const otp = await OtpService.verifyOTP(
-      otpCode,
-      phoneNumber,
-    );
+    const otp = await OtpService.verifyOTP(otpCode, phoneNumber);
 
     if (otp.status !== OtpStatus.SUCCESS) {
       throw new OtpIncorrectError();
@@ -50,11 +50,9 @@ export default class AccessTokenService {
     try {
       const jwtSigningKey = ConfigService.getValue<string>('accounts.tokenKey');
 
-      verifiedToken = jsonwebtoken.verify(
-        token,
-        jwtSigningKey,
-        { ignoreExpiration: true },
-      ) as jsonwebtoken.JwtPayload;
+      verifiedToken = jsonwebtoken.verify(token, jwtSigningKey, {
+        ignoreExpiration: true,
+      }) as jsonwebtoken.JwtPayload;
     } catch (e) {
       throw new AccessTokenInvalidError();
     }
@@ -68,9 +66,7 @@ export default class AccessTokenService {
     };
   }
 
-  private static generateAccessToken(
-    account: Account,
-  ): AccessToken {
+  private static generateAccessToken(account: Account): AccessToken {
     const jwtSigningKey = ConfigService.getValue<string>('accounts.tokenKey');
     const jwtExpiry = ConfigService.getValue<string>('accounts.tokenExpiry');
 
@@ -84,7 +80,9 @@ export default class AccessTokenService {
     accessToken.accountId = account.id;
     accessToken.token = jwtToken;
 
-    const jwtTokenDecoded = jsonwebtoken.decode(jwtToken) as jsonwebtoken.JwtPayload;
+    const jwtTokenDecoded = jsonwebtoken.decode(
+      jwtToken,
+    ) as jsonwebtoken.JwtPayload;
     accessToken.expiresAt = new Date(jwtTokenDecoded.exp * 1000);
 
     return accessToken;

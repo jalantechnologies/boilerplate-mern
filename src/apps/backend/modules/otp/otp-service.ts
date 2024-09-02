@@ -3,14 +3,10 @@ import { SMSService } from '../communication';
 import { isDefaultPhoneNumber } from '../util/phone-number-util';
 
 import OtpWriter from './internal/otp-writer';
-import {
-  Otp,
-} from './types';
+import { Otp } from './types';
 
 export default class OtpService {
-  public static async createOtp(
-    phoneNumber: PhoneNumber,
-  ): Promise<Otp> {
+  public static async createOtp(phoneNumber: PhoneNumber): Promise<Otp> {
     const otp = await OtpWriter.expirePreviousOtpAndCreateNewOtp(phoneNumber);
 
     if (!isDefaultPhoneNumber(phoneNumber.phoneNumber)) {

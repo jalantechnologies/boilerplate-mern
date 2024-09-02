@@ -9,7 +9,9 @@ export default class SMSService {
     const isSmsEnabled = ConfigService.getValue('sms.enabled');
 
     if (!isSmsEnabled) {
-      Logger.warn(`SMS not enabled. Could not send message - ${params.messageBody}`);
+      Logger.warn(
+        `SMS not enabled. Could not send message - ${params.messageBody}`,
+      );
       return;
     }
 

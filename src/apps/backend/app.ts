@@ -49,9 +49,11 @@ export default class App {
     // from webpack dev server
     if (isDevEnv) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-      app.use(cors({
-        origin: 'http://localhost:3000',
-      }));
+      app.use(
+        cors({
+          origin: 'http://localhost:3000',
+        }),
+      );
     }
 
     // add your new server here to the list
@@ -83,12 +85,10 @@ export default class App {
 
   private static getRequestLogger(): express.Handler {
     return expressWinston.logger({
-      transports: [
-        new CustomLoggerTransport(),
-      ],
+      transports: [new CustomLoggerTransport()],
       // no pre-build meta
       meta: false,
-      msg: 'app - request - {{req.ip}} - {{res.statusCode}} - {{req.method}} - {{res.responseTime}}ms - {{req.url}} - {{req.headers[\'user-agent\']}}',
+      msg: "app - request - {{req.ip}} - {{res.statusCode}} - {{req.method}} - {{res.responseTime}}ms - {{req.url}} - {{req.headers['user-agent']}}",
       // use the default express/morgan request formatting
       // enabling this will override any msg if true
       expressFormat: false,
@@ -101,9 +101,7 @@ export default class App {
 
   private static getErrorLogger(): express.ErrorRequestHandler {
     return expressWinston.errorLogger({
-      transports: [
-        new CustomLoggerTransport(),
-      ],
+      transports: [new CustomLoggerTransport()],
     });
   }
 }
