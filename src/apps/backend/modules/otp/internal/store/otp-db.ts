@@ -15,7 +15,7 @@ export interface OtpDB {
   status: OtpStatus;
 }
 
-export const OtpDbSchema: Schema = new Schema<OtpDB>(
+export const OtpDbSchema = new Schema<OtpDB>(
   {
     active: {
       required: true,
