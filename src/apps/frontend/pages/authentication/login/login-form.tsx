@@ -63,13 +63,16 @@ const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
           />
         </FormControl>
 
-        <Flex alignItems='center' justifyContent='between'>
+        <Flex alignItems="center" justifyContent="between">
           <label htmlFor="formCheckbox" className="flex cursor-pointer">
             <LoginFormCheckbox />
             <p>Remember me</p>
           </label>
 
-          <Link to={routes.FORGOT_PASSWORD} className="text-sm text-primary hover:underline">
+          <Link
+            to={routes.FORGOT_PASSWORD}
+            className="text-sm text-primary hover:underline"
+          >
             Forget password?
           </Link>
         </Flex>

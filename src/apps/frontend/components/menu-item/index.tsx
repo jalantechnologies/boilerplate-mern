@@ -7,11 +7,8 @@ const MenuItem: React.FC<PropsWithChildren> = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div className="relative flex">
-      <Button
-        onClick={() => setIsOpen(!isOpen)}
-        kind={ButtonKind.TERTIARY}
-      >
-        <img src="assets/svg/ellipsis-icon.svg" alt='Ellipsis Icon'/>
+      <Button onClick={() => setIsOpen(!isOpen)} kind={ButtonKind.TERTIARY}>
+        <img src="assets/svg/ellipsis-icon.svg" alt="Ellipsis Icon" />
       </Button>
       <div
         onFocus={() => setIsOpen(true)}

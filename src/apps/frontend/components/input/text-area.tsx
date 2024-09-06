@@ -1,4 +1,8 @@
-import React, { ChangeEventHandler, FocusEventHandler, FormEventHandler } from 'react';
+import React, {
+  ChangeEventHandler,
+  FocusEventHandler,
+  FormEventHandler,
+} from 'react';
 
 interface TextAreaProps {
   cols: number;

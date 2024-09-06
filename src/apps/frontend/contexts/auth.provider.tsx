@@ -1,14 +1,12 @@
-import React, {
-  createContext,
-  PropsWithChildren,
-  useContext,
-} from 'react';
+import React, { createContext, PropsWithChildren, useContext } from 'react';
 
 import { AuthService } from '../services';
+import { AccessToken, ApiResponse, AsyncError, PhoneNumber } from '../types';
 import {
-  AccessToken, ApiResponse, AsyncError, PhoneNumber,
-} from '../types';
-import { getAccessTokenFromStorage, removeAccessTokenFromStorage, setAccessTokenToStorage } from '../utils/storage-util';
+  getAccessTokenFromStorage,
+  removeAccessTokenFromStorage,
+  setAccessTokenToStorage,
+} from '../utils/storage-util';
 
 import useAsync from './async.hook';
 
@@ -22,21 +20,16 @@ type AuthContextType = {
   loginError: AsyncError;
   loginResult: AccessToken;
   logout: () => void;
-  sendOTP: (
-    phoneNumber: PhoneNumber,
-  ) => Promise<void>;
+  sendOTP: (phoneNumber: PhoneNumber) => Promise<void>;
   sendOTPError: AsyncError;
   signup: (
     firstName: string,
     lastName: string,
     username: string,
-    password: string
+    password: string,
   ) => Promise<void>;
   signupError: AsyncError;
-  verifyOTP: (
-    phoneNumber: PhoneNumber,
-    otp: string,
-  ) => Promise<AccessToken>;
+  verifyOTP: (phoneNumber: PhoneNumber, otp: string) => Promise<AccessToken>;
   verifyOTPError: AsyncError;
   verifyOTPResult: AccessToken;
 };
@@ -63,12 +56,8 @@ const signupFn = async (
   lastName: string,
   username: string,
   password: string,
-): Promise<ApiResponse<void>> => authService.signup(
-  firstName,
-  lastName,
-  username,
-  password,
-);
+): Promise<ApiResponse<void>> =>
+  authService.signup(firstName, lastName, username, password);
 
 const logoutFn = (): void => removeAccessTokenFromStorage();
 

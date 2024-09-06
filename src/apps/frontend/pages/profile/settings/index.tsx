@@ -12,11 +12,13 @@ import AccountDeletionModal from './account-deletion-modal';
 import PersonalInfoSection from './personal-info-section';
 
 const ProfileSettings = () => {
-  const { accountDetails, deleteAccount, isDeleteAccountLoading } = useAccountContext();
+  const { accountDetails, deleteAccount, isDeleteAccountLoading } =
+    useAccountContext();
   const { logout } = useAuthContext();
   const navigate = useNavigate();
 
-  const [isDeleteAccountModalOpen, setIsDeleteAccountModalOpen] = useState(false);
+  const [isDeleteAccountModalOpen, setIsDeleteAccountModalOpen] =
+    useState(false);
 
   const handleLogout = () => {
     logout();
