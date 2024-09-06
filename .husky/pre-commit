@@ -1,5 +1,11 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+# Run the formatter
 npm run format
+
+# Run lint and fix every rule violation it is capable of fixing
 npm run lint:fix
+
+# Stage all changes made by the formatter and lint to include in the current commit
+git add .
