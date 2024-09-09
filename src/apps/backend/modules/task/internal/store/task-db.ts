@@ -8,7 +8,7 @@ export interface TaskDB {
   title: string;
 }
 
-export const TaskDbSchema: Schema = new Schema<TaskDB>(
+export const TaskDbSchema = new Schema<TaskDB>(
   {
     active: {
       type: Boolean,

@@ -8,25 +8,24 @@ export interface PasswordResetTokenDB {
   isUsed: boolean;
 }
 
-export const passwordResetTokenDbSchema: Schema =
-  new Schema<PasswordResetTokenDB>(
-    {
-      account: {
-        ref: 'Account',
-        required: true,
-        type: Schema.Types.ObjectId,
-      },
-      expiresAt: { type: Date, required: true },
-      token: { type: String, required: true },
-      isUsed: {
-        type: Boolean,
-        default: false,
-      },
+export const passwordResetTokenDbSchema = new Schema<PasswordResetTokenDB>(
+  {
+    account: {
+      ref: 'Account',
+      required: true,
+      type: Schema.Types.ObjectId,
     },
-    {
-      timestamps: {
-        createdAt: 'createdAt',
-        updatedAt: 'updatedAt',
-      },
+    expiresAt: { type: Date, required: true },
+    token: { type: String, required: true },
+    isUsed: {
+      type: Boolean,
+      default: false,
     },
-  );
+  },
+  {
+    timestamps: {
+      createdAt: 'createdAt',
+      updatedAt: 'updatedAt',
+    },
+  },
+);
