@@ -2,7 +2,7 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 # Run the formatter
-npm run format
+npm run fmt
 
 # Run lint and fix every rule violation it is capable of fixing
 npm run lint:fix

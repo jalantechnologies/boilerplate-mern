@@ -42,7 +42,7 @@ Boilerplate project for NodeJS, React based projects in TypeScript. This README 
 - Run Lint (Markdown) - `npm run lint:md`
 - Run E2E tests - `npm run e2e`
 - Open Cypress - `npm run cy:open`
-- Format files using Prettier - `npm run format`
+- Format files using Prettier - `npm run fmt`
 
 ## Configuration
 
