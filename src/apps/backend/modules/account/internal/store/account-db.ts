@@ -15,7 +15,7 @@ export interface AccountDB {
   username: string;
 }
 
-export const AccountDbSchema: Schema = new Schema<AccountDB>(
+export const AccountDbSchema = new Schema<AccountDB>(
   {
     active: {
       type: Boolean,
