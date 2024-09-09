@@ -50,9 +50,15 @@ export default class AccessTokenService {
     try {
       const jwtSigningKey = ConfigService.getValue<string>('accounts.tokenKey');
 
-      verifiedToken = jsonwebtoken.verify(token, jwtSigningKey, {
+      const decodedToken = jsonwebtoken.verify(token, jwtSigningKey, {
         ignoreExpiration: true,
-      }) as jsonwebtoken.JwtPayload;
+      });
+
+      if (typeof decodedToken === 'string') {
+        throw new AccessTokenInvalidError();
+      }
+
+      verifiedToken = decodedToken;
     } catch (e) {
       throw new AccessTokenInvalidError();
     }
@@ -80,9 +86,12 @@ export default class AccessTokenService {
     accessToken.accountId = account.id;
     accessToken.token = jwtToken;
 
-    const jwtTokenDecoded = jsonwebtoken.decode(
-      jwtToken,
-    ) as jsonwebtoken.JwtPayload;
+    const jwtTokenDecoded = jsonwebtoken.decode(jwtToken);
+
+    if (typeof jwtTokenDecoded === 'string') {
+      throw new AccessTokenInvalidError();
+    }
+
     accessToken.expiresAt = new Date(jwtTokenDecoded.exp * 1000);
 
     return accessToken;
