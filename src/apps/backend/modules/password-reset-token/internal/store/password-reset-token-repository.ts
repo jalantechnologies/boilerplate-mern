@@ -1,14 +1,11 @@
 import { ApplicationRepository } from '../../../application';
+import { PasswordResetToken } from '../../types';
 
-import {
-  PasswordResetTokenDB,
+import { passwordResetTokenDbSchema } from './password-reset-token-db';
+
+const PasswordResetTokenRepository = ApplicationRepository<PasswordResetToken>(
+  'password-reset-tokens',
   passwordResetTokenDbSchema,
-} from './password-reset-token-db';
-
-const PasswordResetTokenRepository =
-  ApplicationRepository<PasswordResetTokenDB>(
-    'password-reset-tokens',
-    passwordResetTokenDbSchema,
-  );
+);
 
 export default PasswordResetTokenRepository;

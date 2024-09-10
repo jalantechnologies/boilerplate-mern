@@ -1,17 +1,11 @@
-import { Schema, Types } from 'mongoose';
+import { Schema } from 'mongoose';
 
-export interface PasswordResetTokenDB {
-  _id: Types.ObjectId;
-  account: Types.ObjectId;
-  expiresAt: Date;
-  token: string;
-  isUsed: boolean;
-}
+import { PasswordResetToken } from '../../types';
 
-export const passwordResetTokenDbSchema = new Schema<PasswordResetTokenDB>(
+export const passwordResetTokenDbSchema = new Schema<PasswordResetToken>(
   {
     account: {
-      ref: 'Account',
+      ref: 'accounts',
       required: true,
       type: Schema.Types.ObjectId,
     },
