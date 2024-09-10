@@ -3,12 +3,18 @@ import chai, { expect } from 'chai';
 import sinon from 'sinon';
 
 import {
-  Account, AccountBadRequestError, AccountNotFoundError, ResetPasswordParams,
+  Account,
+  AccountBadRequestError,
+  AccountNotFoundError,
+  ResetPasswordParams,
 } from '../../../src/apps/backend/modules/account';
 import AccountUtil from '../../../src/apps/backend/modules/account/internal/account-util';
 import AccountRepository from '../../../src/apps/backend/modules/account/internal/store/account-repository';
 import { EmailService } from '../../../src/apps/backend/modules/communication';
-import { PasswordResetTokenNotFoundError, PasswordResetTokenService } from '../../../src/apps/backend/modules/password-reset-token';
+import {
+  PasswordResetTokenNotFoundError,
+  PasswordResetTokenService,
+} from '../../../src/apps/backend/modules/password-reset-token';
 import PasswordResetTokenUtil from '../../../src/apps/backend/modules/password-reset-token/internal/password-reset-token-util';
 import PasswordResetTokenRepository from '../../../src/apps/backend/modules/password-reset-token/internal/store/password-reset-token-repository';
 import { createAccount } from '../../helpers/account';
@@ -45,7 +51,9 @@ describe('Account Password Reset', () => {
       const stubEmailService = sinonSandbox.stub(EmailService, 'sendEmail');
 
       const resetToken = faker.random.alphaNumeric();
-      sinonSandbox.stub(PasswordResetTokenUtil, 'generatePasswordResetToken').returns(resetToken);
+      sinonSandbox
+        .stub(PasswordResetTokenUtil, 'generatePasswordResetToken')
+        .returns(resetToken);
 
       const res = await chai
         .request(app)
@@ -59,7 +67,9 @@ describe('Account Password Reset', () => {
       expect(res.body).to.have.property('token');
       expect(res.body.isUsed).to.eq(false);
       expect(stubEmailService.calledOnce).to.be.true;
-      expect(stubEmailService.getCall(0).args[0].templateData).to.have.property('passwordResetLink');
+      expect(stubEmailService.getCall(0).args[0].templateData).to.have.property(
+        'passwordResetLink',
+      );
       expect(res.body.account).to.eq(account.id);
 
       expect(
@@ -96,7 +106,9 @@ describe('Account Password Reset', () => {
       sinonSandbox.stub(EmailService, 'sendEmail').returns(Promise.resolve());
 
       const resetToken = faker.random.alphaNumeric();
-      sinonSandbox.stub(PasswordResetTokenUtil, 'generatePasswordResetToken').returns(resetToken);
+      sinonSandbox
+        .stub(PasswordResetTokenUtil, 'generatePasswordResetToken')
+        .returns(resetToken);
 
       await PasswordResetTokenService.createPasswordResetToken({
         username: account.username,
@@ -122,9 +134,7 @@ describe('Account Password Reset', () => {
       expect(res.body.username).to.eq(account.username);
 
       // Check if account password reset successfully
-      const updatedAccount = await AccountRepository.findById(
-        account.id,
-      );
+      const updatedAccount = await AccountRepository.findById(account.id);
 
       expect(
         await AccountUtil.comparePassword(
@@ -134,8 +144,8 @@ describe('Account Password Reset', () => {
       ).to.eq(true);
 
       // Check if password reset token is marked as used.
-      const updatedPasswordResetToken = await PasswordResetTokenService
-        .getPasswordResetTokenByAccountId(
+      const updatedPasswordResetToken =
+        await PasswordResetTokenService.getPasswordResetTokenByAccountId(
           account.id,
         );
 
@@ -163,14 +173,18 @@ describe('Account Password Reset', () => {
         .send(passwordResetTokenParams);
 
       expect(res).to.have.status(404);
-      expect(res.body.message).to.eq(new AccountNotFoundError(accountId).message);
+      expect(res.body.message).to.eq(
+        new AccountNotFoundError(accountId).message,
+      );
     });
 
-    it('should throw 404 if the account\'s password reset token is not found', async () => {
+    it("should throw 404 if the account's password reset token is not found", async () => {
       sinonSandbox.stub(EmailService, 'sendEmail').returns(Promise.resolve());
 
       const resetToken = faker.random.alphaNumeric();
-      sinonSandbox.stub(PasswordResetTokenUtil, 'generatePasswordResetToken').returns(resetToken);
+      sinonSandbox
+        .stub(PasswordResetTokenUtil, 'generatePasswordResetToken')
+        .returns(resetToken);
 
       expect(
         await PasswordResetTokenRepository.findOne({
@@ -221,14 +235,19 @@ describe('Account Password Reset', () => {
       sinonSandbox.stub(EmailService, 'sendEmail').returns(Promise.resolve());
 
       const resetToken = faker.random.alphaNumeric();
-      sinonSandbox.stub(PasswordResetTokenUtil, 'generatePasswordResetToken').returns(resetToken);
+      sinonSandbox
+        .stub(PasswordResetTokenUtil, 'generatePasswordResetToken')
+        .returns(resetToken);
 
-      const passwordResetToken = await PasswordResetTokenService.createPasswordResetToken({
-        username: account.username,
-      });
+      const passwordResetToken =
+        await PasswordResetTokenService.createPasswordResetToken({
+          username: account.username,
+        });
 
       // Setting Token as used
-      await PasswordResetTokenService.setPasswordResetTokenAsUsedById(passwordResetToken.id);
+      await PasswordResetTokenService.setPasswordResetTokenAsUsedById(
+        passwordResetToken.id,
+      );
 
       const newPassword = faker.internet.password();
       const passwordResetTokenParams: ResetPasswordParams = {
@@ -291,15 +310,21 @@ describe('Account Password Reset', () => {
       sinonSandbox.stub(EmailService, 'sendEmail').returns(Promise.resolve());
 
       const resetToken = faker.random.alphaNumeric();
-      sinonSandbox.stub(PasswordResetTokenUtil, 'generatePasswordResetToken').returns(resetToken);
+      sinonSandbox
+        .stub(PasswordResetTokenUtil, 'generatePasswordResetToken')
+        .returns(resetToken);
 
-      const passwordResetToken = await PasswordResetTokenService.createPasswordResetToken({
-        username: account.username,
-      });
+      const passwordResetToken =
+        await PasswordResetTokenService.createPasswordResetToken({
+          username: account.username,
+        });
 
-      await PasswordResetTokenRepository.findByIdAndUpdate(passwordResetToken.id, {
-        expiresAt: new Date('2024-03-12'),
-      });
+      await PasswordResetTokenRepository.findByIdAndUpdate(
+        passwordResetToken.id,
+        {
+          expiresAt: new Date('2024-03-12'),
+        },
+      );
 
       const newPassword = faker.internet.password();
       const passwordResetTokenParams: ResetPasswordParams = {

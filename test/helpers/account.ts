@@ -2,13 +2,17 @@ import faker from '@faker-js/faker';
 
 import { AccessToken } from '../../src/apps/backend/modules/access-token';
 import AccessTokenService from '../../src/apps/backend/modules/access-token/access-token-service';
-import { Account, CreateAccountParams, AccountService } from '../../src/apps/backend/modules/account';
+import {
+  Account,
+  CreateAccountParams,
+  AccountService,
+} from '../../src/apps/backend/modules/account';
 
 export const createAccount = async (params?: {
-  accountParams?: Partial<CreateAccountParams>,
+  accountParams?: Partial<CreateAccountParams>;
 }): Promise<{
-  accessToken: AccessToken,
-  account: Account,
+  accessToken: AccessToken;
+  account: Account;
 }> => {
   const firstName = faker.name.firstName();
   const lastName = faker.name.lastName();
@@ -20,7 +24,7 @@ export const createAccount = async (params?: {
     password,
     firstName,
     lastName,
-    ...params?.accountParams && params.accountParams,
+    ...(params?.accountParams && params.accountParams),
   };
 
   const account = await AccountService.createAccountByUsernameAndPassword(
@@ -30,10 +34,11 @@ export const createAccount = async (params?: {
     accountCreateParams.username,
   );
 
-  const accessToken = await AccessTokenService.createAccessTokenByUsernameAndPassword(
-    accountCreateParams.password,
-    accountCreateParams.username,
-  );
+  const accessToken =
+    await AccessTokenService.createAccessTokenByUsernameAndPassword(
+      accountCreateParams.password,
+      accountCreateParams.username,
+    );
 
   return {
     account,

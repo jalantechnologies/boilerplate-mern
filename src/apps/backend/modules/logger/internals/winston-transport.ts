@@ -7,8 +7,8 @@ type TransportLogLevel = 'info' | 'warn' | 'error';
 type TransportLogCallback = () => void;
 
 type TransportLogInfo = {
-  level: TransportLogLevel
-  message: string
+  level: TransportLogLevel;
+  message: string;
 };
 
 export default class CustomWinstonTransport extends WinstonTransport {

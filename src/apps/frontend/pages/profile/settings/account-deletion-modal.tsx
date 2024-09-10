@@ -39,8 +39,11 @@ const AccountDeletionModal: React.FC<AccountDeletionModalProps> = ({
       <div className="mt-6 flex items-center justify-end gap-4">
         <div>
           <Button
-          onClick={() => setIsModalOpen(false)}
-          kind={ButtonKind.SECONDARY}>Cancel</Button>
+            onClick={() => setIsModalOpen(false)}
+            kind={ButtonKind.SECONDARY}
+          >
+            Cancel
+          </Button>
         </div>
         <div>
           <Button

@@ -1,7 +1,5 @@
 import bodyParser from 'body-parser';
-import express, {
-  Application, NextFunction, Request, Response,
-} from 'express';
+import express, { Application, NextFunction, Request, Response } from 'express';
 
 import { HttpStatusCodes } from '../http';
 import { Logger } from '../logger';
@@ -41,9 +39,7 @@ export default abstract class ApplicationServer {
       err.code = ApplicationServerErrorCodes.UNHANDLED_ERROR;
       err.httpStatusCode = HttpStatusCodes.SERVER_ERROR;
 
-      res
-        .status(err.httpStatusCode)
-        .json(err.toJson());
+      res.status(err.httpStatusCode).json(err.toJson());
 
       next(error);
     }

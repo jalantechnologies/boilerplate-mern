@@ -18,7 +18,9 @@ export default class PasswordResetTokenUtil {
     passwordResetToken.expiresAt = passwordResetTokenDb.expiresAt;
     passwordResetToken.token = passwordResetTokenDb.token;
     passwordResetToken.isUsed = passwordResetTokenDb.isUsed;
-    passwordResetToken.isExpired = !moment(passwordResetTokenDb.expiresAt).isAfter(moment());
+    passwordResetToken.isExpired = !moment(
+      passwordResetTokenDb.expiresAt,
+    ).isAfter(moment());
     return passwordResetToken;
   }
 
@@ -37,7 +39,9 @@ export default class PasswordResetTokenUtil {
     return crypto.randomBytes(32).toString('hex');
   }
 
-  public static async hashPasswordResetToken(resetToken: string): Promise<string> {
+  public static async hashPasswordResetToken(
+    resetToken: string,
+  ): Promise<string> {
     return bcrypt.hash(resetToken, 10);
   }
 
@@ -46,6 +50,9 @@ export default class PasswordResetTokenUtil {
       'passwordResetToken.expiresInSeconds',
     );
 
-    return moment().add(parseInt(defaultTokenExpireTimeInSeconds, 10), 'seconds');
+    return moment().add(
+      parseInt(defaultTokenExpireTimeInSeconds, 10),
+      'seconds',
+    );
   }
 }

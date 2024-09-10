@@ -11,7 +11,9 @@ export const startApplication = async (): Promise<void> => {
 
 export const stopApplication = async (): Promise<void> => {
   if (!app) {
-    throw new Error('Application could not be stopped - Application not started yet');
+    throw new Error(
+      'Application could not be stopped - Application not started yet',
+    );
   }
 
   await new Promise<void>((resolve, reject) => {

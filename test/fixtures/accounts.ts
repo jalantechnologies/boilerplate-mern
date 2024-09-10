@@ -12,7 +12,9 @@ export default class AccountsFixture {
   public static async seedMany(
     numberOfEntries = 10,
   ): Promise<CreateAccountParamsByUsernameAndPassword[]> {
-    const data: CreateAccountParamsByUsernameAndPassword[] = new Array(numberOfEntries)
+    const data: CreateAccountParamsByUsernameAndPassword[] = new Array(
+      numberOfEntries,
+    )
       .fill('x')
       .map(() => ({
         firstName: faker.name.firstName(),
@@ -21,12 +23,16 @@ export default class AccountsFixture {
         password: faker.internet.password(),
       }));
 
-    await Promise.all(data.map((datum) => AccountService.createAccountByUsernameAndPassword(
-      datum.firstName,
-      datum.lastName,
-      datum.password,
-      datum.username,
-    )));
+    await Promise.all(
+      data.map((datum) =>
+        AccountService.createAccountByUsernameAndPassword(
+          datum.firstName,
+          datum.lastName,
+          datum.password,
+          datum.username,
+        ),
+      ),
+    );
 
     return data;
   }

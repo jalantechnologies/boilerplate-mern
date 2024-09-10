@@ -8,10 +8,18 @@ export default defineConfig({
     baseUrl: config.get('webAppHost'),
     setupNodeEvents(on) {
       on('task', {
-        'scenario:setup': async ({ name, params }: { name: string, params?: unknown }) => {
+        'scenario:setup': async ({
+          name,
+          params,
+        }: {
+          name: string;
+          params?: unknown;
+        }) => {
           const scenario = scenarios[name];
           if (!scenario) {
-            throw new Error(`Could not run setup - Scenario with name ${name} not found`);
+            throw new Error(
+              `Could not run setup - Scenario with name ${name} not found`,
+            );
           }
 
           const res = await scenario.setup(params);
@@ -20,7 +28,9 @@ export default defineConfig({
         'scenario:cleanup': async ({ name }: { name: string }) => {
           const scenario = scenarios[name];
           if (!scenario) {
-            throw new Error(`Could not run cleanup - Scenario with name ${name} not found`);
+            throw new Error(
+              `Could not run cleanup - Scenario with name ${name} not found`,
+            );
           }
 
           await scenario.cleanup();

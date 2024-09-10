@@ -16,18 +16,20 @@ export default class SMSParams {
 
   public static validate(params: SendSMSParams): void {
     const failures: ValidationFailure[] = [];
-    const phoneUtil = <PhoneUtilInterface>(<PhoneUtilInstance>PhoneNumberUtil).getInstance();
+    const phoneUtil = <PhoneUtilInterface>(
+      (<PhoneUtilInstance>PhoneNumberUtil).getInstance()
+    );
 
-    const isRecipientPhoneValid: boolean = phoneUtil
-      .isValidNumber(
-        phoneUtil.parse(this.phoneNumberToString(params.recipientPhone)),
-      );
+    const isRecipientPhoneValid: boolean = phoneUtil.isValidNumber(
+      phoneUtil.parse(this.phoneNumberToString(params.recipientPhone)),
+    );
 
     const isMessageValid = !!params.messageBody;
     if (!isRecipientPhoneValid) {
       failures.push({
         field: 'recipientPhone',
-        message: 'Please specify valid recipient phone number in format +12124567890.',
+        message:
+          'Please specify valid recipient phone number in format +12124567890.',
       });
     }
     if (!isMessageValid) {

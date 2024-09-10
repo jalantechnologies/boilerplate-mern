@@ -16,7 +16,7 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
         <div className="w-full sm:w-1/2">
           <FormControl label="First Name" error="">
             <Input
-            defaultValue={accountDetails.firstName}
+              defaultValue={accountDetails.firstName}
               disabled={true}
               error={''}
             />
@@ -24,7 +24,11 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
         </div>
         <div className="w-full sm:w-1/2">
           <FormControl label="Last Name" error="">
-            <Input defaultValue={accountDetails.lastName} disabled={true} error={''} />
+            <Input
+              defaultValue={accountDetails.lastName}
+              disabled={true}
+              error={''}
+            />
           </FormControl>
         </div>
       </div>
@@ -32,7 +36,11 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
     <div className="mb-5.5">
       {accountDetails.username && (
         <FormControl label="Username" error="">
-          <Input defaultValue={accountDetails.username} disabled={true} error={''} />
+          <Input
+            defaultValue={accountDetails.username}
+            disabled={true}
+            error={''}
+          />
         </FormControl>
       )}
       {accountDetails.phoneNumber && (

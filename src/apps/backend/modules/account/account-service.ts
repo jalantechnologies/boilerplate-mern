@@ -30,7 +30,8 @@ export default class AccountService {
   public static async getOrCreateAccountByPhoneNumber(
     phoneNumber: PhoneNumber,
   ): Promise<Account> {
-    let account = await AccountReader.getAccountByPhoneNumberOptional(phoneNumber);
+    let account =
+      await AccountReader.getAccountByPhoneNumberOptional(phoneNumber);
 
     if (!account) {
       account = await AccountWriter.createAccountByPhoneNumber(phoneNumber);
@@ -60,9 +61,7 @@ export default class AccountService {
     return AccountReader.getAccountById(params.accountId);
   }
 
-  public static async getAccountByUsername(
-    username: string,
-  ): Promise<Account> {
+  public static async getAccountByUsername(username: string): Promise<Account> {
     return AccountReader.getAccountByUsername(username);
   }
 
@@ -72,17 +71,20 @@ export default class AccountService {
     const { accountId, newPassword, token } = params;
     await AccountReader.getAccountById(accountId);
 
-    const passwordResetToken = await PasswordResetTokenService.verifyPasswordResetToken(
-      accountId,
-      token,
-    );
+    const passwordResetToken =
+      await PasswordResetTokenService.verifyPasswordResetToken(
+        accountId,
+        token,
+      );
 
     const updatedAccount = await AccountWriter.updatePasswordByAccountId(
       accountId,
       newPassword,
     );
 
-    await PasswordResetTokenService.setPasswordResetTokenAsUsedById(passwordResetToken.id);
+    await PasswordResetTokenService.setPasswordResetTokenAsUsedById(
+      passwordResetToken.id,
+    );
 
     return updatedAccount;
   }
@@ -93,11 +95,7 @@ export default class AccountService {
     const { accountId, firstName, lastName } = params;
     await AccountReader.getAccountById(accountId);
 
-    return AccountWriter.updateAccountDetails(
-      accountId,
-      firstName,
-      lastName,
-    );
+    return AccountWriter.updateAccountDetails(accountId, firstName, lastName);
   }
 
   public static async deleteAccountById(

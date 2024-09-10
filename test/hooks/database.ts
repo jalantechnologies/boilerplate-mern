@@ -6,9 +6,7 @@ const mongoDbURI = config.get('mongoDb.uri');
 export const cleanDatabase = async (): Promise<void> => {
   const collections = await mongoose.connection.db.collections();
 
-  await Promise.all(
-    collections.map((collection) => collection.deleteMany({})),
-  );
+  await Promise.all(collections.map((collection) => collection.deleteMany({})));
 };
 
 export const connectDatabase = async (): Promise<void> => {
@@ -20,7 +18,9 @@ export const connectDatabase = async (): Promise<void> => {
   const dbPingResult = await db.ping();
 
   if (dbPingResult?.ok !== 1) {
-    throw new Error(`Connection to database failed - ${JSON.stringify(dbPingResult)}`);
+    throw new Error(
+      `Connection to database failed - ${JSON.stringify(dbPingResult)}`,
+    );
   }
 };
 

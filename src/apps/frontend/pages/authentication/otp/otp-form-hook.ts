@@ -34,19 +34,16 @@ const useOTPForm = ({
     },
 
     validationSchema: Yup.object({
-      otp: Yup.array()
-        .of(Yup.string().required('')),
+      otp: Yup.array().of(Yup.string().required('')),
     }),
 
     onSubmit: (values) => {
       const otp = values.otp.join('');
 
-      verifyOTP(
-        new PhoneNumber({ countryCode, phoneNumber }),
-        otp,
-      ).then(() => {
-        onVerifyOTPSuccess();
-      })
+      verifyOTP(new PhoneNumber({ countryCode, phoneNumber }), otp)
+        .then(() => {
+          onVerifyOTPSuccess();
+        })
         .catch((error) => {
           onError(error as AsyncError);
         });

@@ -9,9 +9,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   disabled?: boolean;
   endEnhancer?: React.ReactElement | string;
   error: string;
-  handleInputRef?: (
-    ref: HTMLInputElement,
-  ) => void;
+  handleInputRef?: (ref: HTMLInputElement) => void;
   index?: number;
   startEnhancer?: React.ReactElement | string;
   testId?: string;
@@ -39,12 +37,14 @@ const Input: React.FC<InputProps> = ({
     ])}
   >
     <HorizontalStackLayout gap={2}>
-      {startEnhancer && <span className="flex h-full min-w-6 items-center justify-center">
-        {startEnhancer}
-      </span>}
+      {startEnhancer && (
+        <span className="flex h-full min-w-6 items-center justify-center">
+          {startEnhancer}
+        </span>
+      )}
       <input
         {...props}
-        autoComplete='off'
+        autoComplete="off"
         className={clsx([
           styles.input,
           disabled ? styles.disabled : '',
@@ -54,9 +54,11 @@ const Input: React.FC<InputProps> = ({
         type={type || 'text'}
         ref={handleInputRef ? (ref) => handleInputRef(ref) : null}
       />
-      {endEnhancer && <span className="flex h-full min-w-6 items-center justify-center">
-        {endEnhancer}
-      </span>}
+      {endEnhancer && (
+        <span className="flex h-full min-w-6 items-center justify-center">
+          {endEnhancer}
+        </span>
+      )}
     </HorizontalStackLayout>
   </div>
 );
