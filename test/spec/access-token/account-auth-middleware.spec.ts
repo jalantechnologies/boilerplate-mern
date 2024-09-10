@@ -38,7 +38,7 @@ describe('accessAuthMiddleware', () => {
     accessAuthMiddleware(
       {
         params: {
-          accountId: account.id,
+          accountId: account._id,
         },
         headers: {
           authorization: `Bearer ${accessToken.token}`,
@@ -91,7 +91,7 @@ describe('accessAuthMiddleware', () => {
         accessAuthMiddleware(
           {
             params: {
-              accountId: account.id,
+              accountId: account._id,
             },
             headers: {
               authorization: `Bearer ${expiredToken.token}`,

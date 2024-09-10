@@ -1,18 +1,23 @@
+import { Account } from '../account/types';
 import { ApplicationError } from '../application';
 import { HttpStatusCodes } from '../http';
 
 export class PasswordResetToken {
-  id: string;
-
-  account: string;
-
+  _id: string;
+  account: Account;
   expiresAt: Date;
-
   isExpired: boolean;
-
   token: string;
-
   isUsed: boolean;
+
+  constructor(params: PasswordResetToken) {
+    this._id = params._id;
+    this.account = params.account;
+    this.expiresAt = params.expiresAt;
+    this.isExpired = params.isExpired;
+    this.token = params.token;
+    this.isUsed = params.isUsed;
+  }
 }
 
 export type CreatePasswordResetTokenParams = {

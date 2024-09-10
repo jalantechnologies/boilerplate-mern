@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { Document as MongooseDocument } from 'mongoose';
 
 import { ConfigService } from '../config';
 import { Logger } from '../logger';
@@ -32,3 +32,7 @@ export default function ApplicationRepository<T>(
 
   return connection.model<T>(name, schema, collection);
 }
+
+export type Document<T> = MongooseDocument<unknown, unknown, T> &
+  T &
+  Required<{ _id: string }>;

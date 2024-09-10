@@ -32,7 +32,7 @@ describe('Account Password Reset', () => {
   afterEach(async () => {
     sinonSandbox.restore();
     await AccountRepository.deleteOne({
-      _id: account.id,
+      _id: account._id,
     });
   });
 
@@ -40,7 +40,7 @@ describe('Account Password Reset', () => {
     it('should create a new password reset token and send an email with password reset link, if enabled for the env', async () => {
       expect(
         await PasswordResetTokenRepository.findOne({
-          account: account.id,
+          account: account._id,
         }),
       ).to.not.exist;
 
@@ -70,16 +70,16 @@ describe('Account Password Reset', () => {
       expect(stubEmailService.getCall(0).args[0].templateData).to.have.property(
         'passwordResetLink',
       );
-      expect(res.body.account).to.eq(account.id);
+      expect(res.body.account.id).to.eq(account._id);
 
       expect(
         await PasswordResetTokenRepository.findOne({
-          account: account.id,
+          account: account._id,
         }),
       ).to.exist;
 
       await PasswordResetTokenRepository.deleteOne({
-        account: account.id,
+        account: account._id,
       });
     });
 
@@ -116,25 +116,25 @@ describe('Account Password Reset', () => {
 
       const newPassword = faker.internet.password();
       const passwordResetTokenParams: ResetPasswordParams = {
-        accountId: account.id,
+        accountId: account._id,
         newPassword,
         token: resetToken,
       };
 
       const res = await chai
         .request(app)
-        .patch(`/api/accounts/${account.id}`)
+        .patch(`/api/accounts/${account._id}`)
         .set('content-type', 'application/json')
         .send(passwordResetTokenParams);
 
       expect(res).to.have.status(200);
       expect(res.body).to.have.property('id');
       expect(res.body).to.have.property('username');
-      expect(res.body.id).to.eq(account.id);
+      expect(res.body.id).to.eq(account._id);
       expect(res.body.username).to.eq(account.username);
 
       // Check if account password reset successfully
-      const updatedAccount = await AccountRepository.findById(account.id);
+      const updatedAccount = await AccountRepository.findById(account._id);
 
       expect(
         await AccountUtil.comparePassword(
@@ -146,13 +146,13 @@ describe('Account Password Reset', () => {
       // Check if password reset token is marked as used.
       const updatedPasswordResetToken =
         await PasswordResetTokenService.getPasswordResetTokenByAccountId(
-          account.id,
+          account._id,
         );
 
       expect(updatedPasswordResetToken.isUsed).to.eq(true);
 
       await PasswordResetTokenRepository.deleteOne({
-        _id: updatedPasswordResetToken.id,
+        _id: updatedPasswordResetToken._id,
       });
     });
 
@@ -188,7 +188,7 @@ describe('Account Password Reset', () => {
 
       expect(
         await PasswordResetTokenRepository.findOne({
-          account: account.id,
+          account: account._id,
         }),
       ).to.not.exist;
 
@@ -198,36 +198,36 @@ describe('Account Password Reset', () => {
 
       expect(
         await PasswordResetTokenRepository.findOne({
-          account: account.id,
+          account: account._id,
         }),
       ).to.exist;
 
       const newPassword = faker.internet.password();
       const passwordResetTokenParams: ResetPasswordParams = {
-        accountId: account.id,
+        accountId: account._id,
         newPassword,
         token: resetToken,
       };
 
       await PasswordResetTokenRepository.deleteOne({
-        account: account.id,
+        account: account._id,
       });
 
       expect(
         await PasswordResetTokenRepository.findOne({
-          account: account.id,
+          account: account._id,
         }),
       ).to.not.exist;
 
       const res = await chai
         .request(app)
-        .patch(`/api/accounts/${account.id}`)
+        .patch(`/api/accounts/${account._id}`)
         .set('content-type', 'application/json')
         .send(passwordResetTokenParams);
 
       expect(res).to.have.status(404);
       expect(res.body.message).to.eq(
-        new PasswordResetTokenNotFoundError(account.id).message,
+        new PasswordResetTokenNotFoundError(account._id).message,
       );
     });
 
@@ -246,31 +246,31 @@ describe('Account Password Reset', () => {
 
       // Setting Token as used
       await PasswordResetTokenService.setPasswordResetTokenAsUsedById(
-        passwordResetToken.id,
+        passwordResetToken._id,
       );
 
       const newPassword = faker.internet.password();
       const passwordResetTokenParams: ResetPasswordParams = {
-        accountId: account.id,
+        accountId: account._id,
         newPassword,
         token: resetToken,
       };
 
       const res = await chai
         .request(app)
-        .patch(`/api/accounts/${account.id}`)
+        .patch(`/api/accounts/${account._id}`)
         .set('content-type', 'application/json')
         .send(passwordResetTokenParams);
 
       expect(res).to.have.status(400);
       expect(res.body.message).to.eq(
         new AccountBadRequestError(
-          `Password reset is already used for accountId ${account.id}. Please retry with new link`,
+          `Password reset is already used for accountId ${account._id}. Please retry with new link`,
         ).message,
       );
 
       await PasswordResetTokenRepository.deleteOne({
-        account: account.id,
+        account: account._id,
       });
     });
 
@@ -283,26 +283,26 @@ describe('Account Password Reset', () => {
 
       const newPassword = faker.internet.password();
       const passwordResetTokenParams: ResetPasswordParams = {
-        accountId: account.id,
+        accountId: account._id,
         newPassword,
         token: resetToken,
       };
 
       const res = await chai
         .request(app)
-        .patch(`/api/accounts/${account.id}`)
+        .patch(`/api/accounts/${account._id}`)
         .set('content-type', 'application/json')
         .send(passwordResetTokenParams);
 
       expect(res).to.have.status(400);
       expect(res.body.message).to.eq(
         new AccountBadRequestError(
-          `Password reset link is invalid for accountId ${account.id}. Please retry with new link.`,
+          `Password reset link is invalid for accountId ${account._id}. Please retry with new link.`,
         ).message,
       );
 
       await PasswordResetTokenRepository.deleteOne({
-        account: account.id,
+        account: account._id,
       });
     });
 
@@ -320,7 +320,7 @@ describe('Account Password Reset', () => {
         });
 
       await PasswordResetTokenRepository.findByIdAndUpdate(
-        passwordResetToken.id,
+        passwordResetToken._id,
         {
           expiresAt: new Date('2024-03-12'),
         },
@@ -328,26 +328,26 @@ describe('Account Password Reset', () => {
 
       const newPassword = faker.internet.password();
       const passwordResetTokenParams: ResetPasswordParams = {
-        accountId: account.id,
+        accountId: account._id,
         newPassword,
         token: resetToken,
       };
 
       const res = await chai
         .request(app)
-        .patch(`/api/accounts/${account.id}`)
+        .patch(`/api/accounts/${account._id}`)
         .set('content-type', 'application/json')
         .send(passwordResetTokenParams);
 
       expect(res).to.have.status(400);
       expect(res.body.message).to.eq(
         new AccountBadRequestError(
-          `Password reset link is expired for accountId ${account.id}. Please retry with new link`,
+          `Password reset link is expired for accountId ${account._id}. Please retry with new link`,
         ).message,
       );
 
       await PasswordResetTokenRepository.deleteOne({
-        account: account.id,
+        account: account._id,
       });
     });
   });

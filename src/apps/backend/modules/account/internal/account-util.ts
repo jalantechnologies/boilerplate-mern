@@ -6,14 +6,14 @@ import { AccountDB } from './store/account-db';
 
 export default class AccountUtil {
   public static convertAccountDBToAccount(accountDb: AccountDB): Account {
-    const account = new Account();
-    account.id = accountDb._id.toString();
-    account.phoneNumber = accountDb.phoneNumber;
-    account.firstName = accountDb.firstName;
-    account.lastName = accountDb.lastName;
-    account.username = accountDb.username;
-    account.hashedPassword = accountDb.hashedPassword;
-    return account;
+    return new Account({
+      _id: accountDb._id.toString(),
+      firstName: accountDb.firstName,
+      hashedPassword: accountDb.hashedPassword,
+      lastName: accountDb.lastName,
+      phoneNumber: accountDb.phoneNumber,
+      username: accountDb.username,
+    });
   }
 
   public static async hashPassword(password: string): Promise<string> {

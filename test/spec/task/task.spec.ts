@@ -19,12 +19,12 @@ describe('Task API', () => {
   describe('GET /tasks', () => {
     it('should be able to return list of tasks created by the account', async () => {
       await TaskService.createTask({
-        accountId: account.id,
+        accountId: account._id,
         title: 'my-task-1',
         description: 'This is a test description.',
       });
       await TaskService.createTask({
-        accountId: account.id,
+        accountId: account._id,
         title: 'my-task-2',
         description: 'This is a test description.',
       });
@@ -43,18 +43,18 @@ describe('Task API', () => {
 
     it('should skip out tasks which have been marked as deleted', async () => {
       const t1 = await TaskService.createTask({
-        accountId: account.id,
+        accountId: account._id,
         title: 'my-task-1',
         description: 'This is a test description.',
       });
       const t2 = await TaskService.createTask({
-        accountId: account.id,
+        accountId: account._id,
         title: 'my-task-2',
         description: 'This is a test description.',
       });
 
       await TaskService.deleteTask({
-        accountId: account.id,
+        accountId: account._id,
         taskId: t2.id,
       });
 
@@ -73,14 +73,14 @@ describe('Task API', () => {
 
     it('should skip out tasks which do not belong to the logged in account', async () => {
       const task = await TaskService.createTask({
-        accountId: account.id,
+        accountId: account._id,
         title: 'my-task-1',
         description: 'This is a test description.',
       });
 
       const { account: anotherAccount } = await createAccount();
       await TaskService.createTask({
-        accountId: anotherAccount.id,
+        accountId: anotherAccount._id,
         title: 'my-task-2',
         description: 'This is a test description.',
       });
@@ -116,7 +116,7 @@ describe('Task API', () => {
       expect(res.body).to.have.property('account');
       expect(res.body).to.have.property('title');
       expect(res.body).to.have.property('description');
-      expect(res.body.account).to.eq(account.id);
+      expect(res.body.account).to.eq(account._id);
       expect(res.body.title).to.eq('my-task');
       expect(res.body.description).to.eq('This is a test description.');
     });
@@ -125,7 +125,7 @@ describe('Task API', () => {
   describe('GET /tasks/:id', () => {
     it('should be able to return the requested task', async () => {
       const task = await TaskService.createTask({
-        accountId: account.id,
+        accountId: account._id,
         title: 'my-task',
         description: 'This is a test description.',
       });
@@ -156,12 +156,12 @@ describe('Task API', () => {
 
     it('should return error if requested task has been marked as deleted', async () => {
       const task = await TaskService.createTask({
-        accountId: account.id,
+        accountId: account._id,
         title: 'my-task-1',
         description: 'This is a test description.',
       });
       await TaskService.deleteTask({
-        accountId: account.id,
+        accountId: account._id,
         taskId: task.id,
       });
 
@@ -179,7 +179,7 @@ describe('Task API', () => {
   describe('DELETE /tasks/:taskId', () => {
     it('should be able to delete provided task', async () => {
       const task = await TaskService.createTask({
-        accountId: account.id,
+        accountId: account._id,
         title: 'my-task',
         description: 'This is a test description.',
       });

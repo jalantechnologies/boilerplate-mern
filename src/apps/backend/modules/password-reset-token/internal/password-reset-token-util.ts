@@ -3,25 +3,23 @@ import crypto from 'crypto';
 import * as bcrypt from 'bcrypt';
 import moment, { Moment } from 'moment';
 
+import { Account } from '../../account';
+import { Document } from '../../application/application-repository';
 import { ConfigService } from '../../config';
 import { PasswordResetToken } from '../types';
 
-import { PasswordResetTokenDB } from './store/password-reset-token-db';
-
 export default class PasswordResetTokenUtil {
   public static convertPasswordResetTokenDBToPasswordResetToken(
-    passwordResetTokenDb: PasswordResetTokenDB,
+    passwordResetTokenDb: Document<PasswordResetToken>,
   ): PasswordResetToken {
-    const passwordResetToken = new PasswordResetToken();
-    passwordResetToken.id = passwordResetTokenDb._id.toString();
-    passwordResetToken.account = passwordResetTokenDb.account.toString();
-    passwordResetToken.expiresAt = passwordResetTokenDb.expiresAt;
-    passwordResetToken.token = passwordResetTokenDb.token;
-    passwordResetToken.isUsed = passwordResetTokenDb.isUsed;
-    passwordResetToken.isExpired = !moment(
-      passwordResetTokenDb.expiresAt,
-    ).isAfter(moment());
-    return passwordResetToken;
+    return new PasswordResetToken({
+      _id: passwordResetTokenDb._id.toString(),
+      account: new Account(passwordResetTokenDb.account),
+      expiresAt: passwordResetTokenDb.expiresAt,
+      isExpired: !moment(passwordResetTokenDb.expiresAt).isAfter(moment()),
+      isUsed: passwordResetTokenDb.isUsed,
+      token: passwordResetTokenDb.token,
+    });
   }
 
   public static async hashPassword(password: string): Promise<string> {
