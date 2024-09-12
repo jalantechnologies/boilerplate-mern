@@ -1,17 +1,26 @@
+import { Types } from 'mongoose';
+
 import { Account } from '../account/types';
 import { ApplicationError } from '../application';
 import { HttpStatusCodes } from '../http';
 
 export class PasswordResetToken {
-  _id: string;
+  // DB attributes, just making these optional to avoid passing them in constructor, we can try some alternate implemantation if needed.
+  _id?: Types.ObjectId;
+  accountId?: Types.ObjectId;
+
+  // attributes of this class which are different from db ones
   account: Account;
-  expiresAt: Date;
+  id: string;
+
+  // common attributes
   isExpired: boolean;
   token: string;
   isUsed: boolean;
+  expiresAt: Date;
 
   constructor(params: PasswordResetToken) {
-    this._id = params._id;
+    this.id = params.id;
     this.account = params.account;
     this.expiresAt = params.expiresAt;
     this.isExpired = params.isExpired;

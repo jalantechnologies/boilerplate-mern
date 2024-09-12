@@ -83,7 +83,7 @@ export default class AccountService {
     );
 
     await PasswordResetTokenService.setPasswordResetTokenAsUsedById(
-      passwordResetToken._id,
+      passwordResetToken.id,
     );
 
     return updatedAccount;

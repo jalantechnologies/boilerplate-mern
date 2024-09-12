@@ -3,18 +3,20 @@ import crypto from 'crypto';
 import * as bcrypt from 'bcrypt';
 import moment, { Moment } from 'moment';
 
-import { Account } from '../../account';
+import { AccountService } from '../../account';
 import { Document } from '../../application/application-repository';
 import { ConfigService } from '../../config';
 import { PasswordResetToken } from '../types';
 
 export default class PasswordResetTokenUtil {
-  public static convertPasswordResetTokenDBToPasswordResetToken(
+  public static async convertPasswordResetTokenDBToPasswordResetToken(
     passwordResetTokenDb: Document<PasswordResetToken>,
-  ): PasswordResetToken {
+  ): Promise<PasswordResetToken> {
     return new PasswordResetToken({
-      _id: passwordResetTokenDb._id.toString(),
-      account: new Account(passwordResetTokenDb.account),
+      id: passwordResetTokenDb._id.toString(),
+      account: await AccountService.getAccountById({
+        accountId: passwordResetTokenDb.accountId.toString(),
+      }),
       expiresAt: passwordResetTokenDb.expiresAt,
       isExpired: !moment(passwordResetTokenDb.expiresAt).isAfter(moment()),
       isUsed: passwordResetTokenDb.isUsed,

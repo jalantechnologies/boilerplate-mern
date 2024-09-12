@@ -18,8 +18,6 @@ export default class PasswordResetTokenWriter {
       token: tokenHash,
     });
 
-    await passwordResetTokenDB.populate('account');
-
     return PasswordResetTokenUtil.convertPasswordResetTokenDBToPasswordResetToken(
       passwordResetTokenDB,
     );

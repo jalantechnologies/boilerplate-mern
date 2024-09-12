@@ -1,4 +1,4 @@
-import mongoose, { Document as MongooseDocument } from 'mongoose';
+import mongoose, { Document as MongooseDocument, Types } from 'mongoose';
 
 import { ConfigService } from '../config';
 import { Logger } from '../logger';
@@ -35,4 +35,4 @@ export default function ApplicationRepository<T>(
 
 export type Document<T> = MongooseDocument<unknown, unknown, T> &
   T &
-  Required<{ _id: string }>;
+  Required<{ _id: Types.ObjectId }>;

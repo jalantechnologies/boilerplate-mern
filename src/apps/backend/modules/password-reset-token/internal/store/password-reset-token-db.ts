@@ -4,7 +4,7 @@ import { PasswordResetToken } from '../../types';
 
 export const passwordResetTokenDbSchema = new Schema<PasswordResetToken>(
   {
-    account: {
+    accountId: {
       ref: 'accounts',
       required: true,
       type: Schema.Types.ObjectId,
