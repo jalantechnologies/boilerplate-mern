@@ -6,6 +6,7 @@ on:
 
 jobs:
   clean:
+    if: github.repository_owner == 'jalantechnologies'
     uses: jalantechnologies/github-ci/.github/workflows/clean.yml@v2.4
     concurrency:
       group: ci-preview-${{ github.event.pull_request.head.ref }}
