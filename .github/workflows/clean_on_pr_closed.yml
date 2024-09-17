@@ -2,7 +2,8 @@ name: clean_on_pr_closed
 
 on:
   pull_request_target:
-    types: [ closed ]
+    types:
+      - closed
 
 jobs:
   clean:
