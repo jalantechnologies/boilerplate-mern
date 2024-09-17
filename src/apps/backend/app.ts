@@ -57,7 +57,6 @@ export default class App {
     }
 
     // add your new server here to the list
-    [
       new AccessTokenServer(),
       new AccountServer(),
       new PasswordResetTokenServer(),
