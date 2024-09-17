@@ -58,10 +58,10 @@ export default class App {
 
     // add your new server here to the list
     [
+      new TaskServer(),
+      new PasswordResetTokenServer(),
       new AccountServer(),
       new AccessTokenServer(),
-      new PasswordResetTokenServer(),
-      new TaskServer(),
     ].forEach((server) => {
       app.use('/', server.server);
     });
