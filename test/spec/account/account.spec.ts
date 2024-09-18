@@ -155,7 +155,7 @@ describe('Account API', () => {
 
       const res = await chai
         .request(app)
-        .patch(`/api/accounts/${account.id}`)
+        .patch(`/api/accounts/${account._id}`)
         .set('content-type', 'application/json')
         .send(updateAccountDetailsParams);
 
@@ -197,7 +197,7 @@ describe('Account API', () => {
 
       const res = await chai
         .request(app)
-        .delete(`/api/accounts/${account.id}`)
+        .delete(`/api/accounts/${account._id}`)
         .set('content-type', 'application/json');
 
       expect(res.status).to.be.eq(204);

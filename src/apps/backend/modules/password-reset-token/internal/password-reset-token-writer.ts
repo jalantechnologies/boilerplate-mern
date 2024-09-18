@@ -26,12 +26,17 @@ export default class PasswordResetTokenWriter {
   public static async setPasswordResetTokenAsUsed(
     passwordResetTokenId: string,
   ): Promise<PasswordResetToken> {
-    return PasswordResetTokenRepository.findByIdAndUpdate(
-      passwordResetTokenId,
-      {
-        isUsed: true,
-      },
-      { new: true },
+    const passwordResetTokenDB =
+      await PasswordResetTokenRepository.findByIdAndUpdate(
+        passwordResetTokenId,
+        {
+          isUsed: true,
+        },
+        { new: true },
+      ).populate('account');
+
+    return PasswordResetTokenUtil.convertPasswordResetTokenDBToPasswordResetToken(
+      passwordResetTokenDB,
     );
   }
 }

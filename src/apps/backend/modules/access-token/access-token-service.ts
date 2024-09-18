@@ -77,13 +77,13 @@ export default class AccessTokenService {
     const jwtExpiry = ConfigService.getValue<string>('accounts.tokenExpiry');
 
     const jwtToken = jsonwebtoken.sign(
-      { accountId: account.id },
+      { accountId: account._id },
       jwtSigningKey,
       { expiresIn: jwtExpiry },
     );
 
     const accessToken = new AccessToken();
-    accessToken.accountId = account.id;
+    accessToken.accountId = account._id;
     accessToken.token = jwtToken;
 
     const jwtTokenDecoded = jsonwebtoken.decode(jwtToken);

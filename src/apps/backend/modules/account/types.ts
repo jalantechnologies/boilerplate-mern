@@ -18,12 +18,21 @@ export class PhoneNumber {
 }
 
 export class Account {
+  _id: string;
   firstName: string;
   hashedPassword: string;
-  id: string;
   lastName: string;
   phoneNumber: PhoneNumber;
   username: string;
+
+  constructor(params: Account) {
+    this._id = params._id;
+    this.firstName = params.firstName;
+    this.hashedPassword = params.hashedPassword;
+    this.lastName = params.lastName;
+    this.phoneNumber = params.phoneNumber;
+    this.username = params.username;
+  }
 }
 
 export type CreateAccountParamsByPhoneNumber = {

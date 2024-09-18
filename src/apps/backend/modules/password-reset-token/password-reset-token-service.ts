@@ -22,12 +22,12 @@ export default class PasswordResetTokenService {
 
     const passwordResetToken =
       await PasswordResetTokenWriter.createPasswordResetToken(
-        account.id,
+        account._id,
         token,
       );
 
     await this.sendPasswordResetEmail(
-      account.id,
+      account._id,
       account.firstName,
       account.username,
       token,

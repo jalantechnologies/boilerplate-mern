@@ -9,7 +9,9 @@ export default class PasswordResetTokenReader {
   ): Promise<PasswordResetToken> {
     const tokenDB = await PasswordResetTokenRepository.findOne({
       account: accountId,
-    }).sort({ createdAt: -1 }); // to get the latest token
+    })
+      .populate('account')
+      .sort({ createdAt: -1 }); // to get the latest token
 
     if (!tokenDB) {
       throw new PasswordResetTokenNotFoundError(accountId);
