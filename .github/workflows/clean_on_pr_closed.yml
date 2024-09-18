@@ -6,8 +6,6 @@ on:
 
 jobs:
   clean:
-    # Only run for the organization's pr(s) to avoid the risk of exposing secrets to fork repos
-    if: github.repository_owner == 'jalantechnologies'
     uses: jalantechnologies/github-ci/.github/workflows/clean.yml@v2.4
     concurrency:
       group: ci-preview-${{ github.event.pull_request.head.ref }}
