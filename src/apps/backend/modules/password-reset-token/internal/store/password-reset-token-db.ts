@@ -8,7 +8,7 @@ export interface PasswordResetTokenDB {
   isUsed: boolean;
 }
 
-export const passwordResetTokenDbSchema: Schema = new Schema<PasswordResetTokenDB>(
+export const passwordResetTokenDbSchema = new Schema<PasswordResetTokenDB>(
   {
     account: {
       ref: 'Account',

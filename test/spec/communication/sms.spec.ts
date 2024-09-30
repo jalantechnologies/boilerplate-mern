@@ -14,7 +14,7 @@ describe('SMSService', () => {
       .returns('AC-random-id')
       .withArgs('twilio.verify.authToken')
       .returns('random-token')
-      .withArgs('enableSMS')
+      .withArgs('sms.enabled')
       .returns(true);
 
     // TODO: This needs to be fixed
@@ -33,8 +33,10 @@ describe('SMSService', () => {
       messageBody: 'simple message.',
     };
 
-    return expect(SMSService.sendSMS(params)).to.eventually
-      .be.rejectedWith('SMS cannot be send, please check the params validity.')
+    return expect(SMSService.sendSMS(params))
+      .to.eventually.be.rejectedWith(
+        'SMS cannot be send, please check the params validity.',
+      )
       .then((error) => {
         expect(error).to.have.property('code');
         expect(error).to.have.property('failures');
@@ -53,8 +55,10 @@ describe('SMSService', () => {
       messageBody: '',
     };
 
-    return expect(SMSService.sendSMS(params)).to.eventually
-      .be.rejectedWith('SMS cannot be send, please check the params validity.')
+    return expect(SMSService.sendSMS(params))
+      .to.eventually.be.rejectedWith(
+        'SMS cannot be send, please check the params validity.',
+      )
       .then((error) => {
         expect(error).to.have.property('code');
         expect(error).to.have.property('failures');
@@ -74,9 +78,8 @@ describe('SMSService', () => {
       messageBody: 'simple message',
     };
 
-    return expect(SMSService.sendSMS(params)).to.be.fulfilled
-      .then(() => {
-        sinon.assert.calledOnce(twilioCreateMessage);
-      });
+    return expect(SMSService.sendSMS(params)).to.be.fulfilled.then(() => {
+      sinon.assert.calledOnce(twilioCreateMessage);
+    });
   });
 });

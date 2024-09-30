@@ -1,12 +1,5 @@
 import { PhoneNumber } from '../../account/types';
-import { ConfigService } from '../../config';
-import { OTP_LENGTH } from '../constants';
-import {
-  Otp,
-  OtpExpiredError,
-  OtpIncorrectError,
-  OtpStatus,
-} from '../types';
+import { Otp, OtpExpiredError, OtpIncorrectError, OtpStatus } from '../types';
 
 import OtpUtil from './otp-util';
 import OtpRepository from './store/otp-repository';
@@ -27,7 +20,7 @@ export default class OtpWriter {
       await previousOtpDb.save();
     }
 
-    const otp = ConfigService.hasValue('defaultOTP') ? ConfigService.getValue<string>('defaultOTP') : OtpUtil.generateOtp(OTP_LENGTH);
+    const otp = OtpUtil.getOtp(phoneNumber.phoneNumber);
 
     const otpDb = await OtpRepository.create({
       active: true,

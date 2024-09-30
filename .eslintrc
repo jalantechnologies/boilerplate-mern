@@ -14,7 +14,8 @@
         "airbnb-base",
         "plugin:eslint-comments/recommended",
         "plugin:import/recommended",
-        "plugin:tailwindcss/recommended"
+        "plugin:tailwindcss/recommended",
+        "prettier"
       ],
       "rules": {
         "eslint-comments/disable-enable-pair": "off",
@@ -55,7 +56,8 @@
         "plugin:@typescript-eslint/recommended-requiring-type-checking",
         "plugin:cypress/recommended",
         "plugin:react-hooks/recommended",
-        "plugin:tailwindcss/recommended"
+        "plugin:tailwindcss/recommended",
+        "prettier"
       ],
       "parserOptions": {
         "project": "./tsconfig.json"

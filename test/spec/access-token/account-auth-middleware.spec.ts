@@ -11,9 +11,7 @@ import {
   UnAuthorizedAccessError,
   accessAuthMiddleware,
 } from '../../../src/apps/backend/modules/access-token';
-import {
-  Account,
-} from '../../../src/apps/backend/modules/account';
+import { Account } from '../../../src/apps/backend/modules/account';
 import ConfigService from '../../../src/apps/backend/modules/config/config-service';
 import { ObjectIdUtils } from '../../../src/apps/backend/modules/database';
 import { createAccount } from '../../helpers/account';
@@ -37,30 +35,37 @@ describe('accessAuthMiddleware', () => {
   });
 
   it('should invoke provided controller if valid token was provided', () => {
-    accessAuthMiddleware({
-      params: {
-        accountId: account.id,
-      },
-      headers: {
-        authorization:
-          `Bearer ${accessToken.token}`,
-      },
-    } as unknown as Request, undefined, controller);
+    accessAuthMiddleware(
+      {
+        params: {
+          accountId: account.id,
+        },
+        headers: {
+          authorization: `Bearer ${accessToken.token}`,
+        },
+      } as unknown as Request,
+      undefined,
+      controller,
+    );
 
     sinon.assert.calledOnce(controller);
   });
 
   it('should throw error if provided accountId different', () => {
     assert.throws(
-      () => accessAuthMiddleware({
-        params: {
-          accountId: ObjectIdUtils.createNew(),
-        },
-        headers: {
-          authorization:
-            `Bearer ${accessToken.token}`,
-        },
-      } as unknown as Request, undefined, controller),
+      () =>
+        accessAuthMiddleware(
+          {
+            params: {
+              accountId: ObjectIdUtils.createNew(),
+            },
+            headers: {
+              authorization: `Bearer ${accessToken.token}`,
+            },
+          } as unknown as Request,
+          undefined,
+          controller,
+        ),
       new UnAuthorizedAccessError().message,
     );
 
@@ -75,20 +80,26 @@ describe('accessAuthMiddleware', () => {
       .withArgs('accounts.tokenExpiry')
       .returns('-1h');
 
-    const expiredToken = await AccessTokenService.createAccessTokenByUsernameAndPassword(
-      password,
-      account.username,
-    );
+    const expiredToken =
+      await AccessTokenService.createAccessTokenByUsernameAndPassword(
+        password,
+        account.username,
+      );
 
     assert.throws(
-      () => accessAuthMiddleware({
-        params: {
-          accountId: account.id,
-        },
-        headers: {
-          authorization: `Bearer ${expiredToken.token}`,
-        },
-      } as unknown as Request, undefined, controller),
+      () =>
+        accessAuthMiddleware(
+          {
+            params: {
+              accountId: account.id,
+            },
+            headers: {
+              authorization: `Bearer ${expiredToken.token}`,
+            },
+          } as unknown as Request,
+          undefined,
+          controller,
+        ),
       new AccessTokenExpiredError().message,
     );
 
@@ -99,10 +110,15 @@ describe('accessAuthMiddleware', () => {
     const accountId = 'testAccountId';
 
     assert.throws(
-      () => accessAuthMiddleware({
-        params: { accountId },
-        headers: {},
-      } as unknown as Request, undefined, controller),
+      () =>
+        accessAuthMiddleware(
+          {
+            params: { accountId },
+            headers: {},
+          } as unknown as Request,
+          undefined,
+          controller,
+        ),
       new AuthorizationHeaderNotFound().message,
     );
 
@@ -113,12 +129,17 @@ describe('accessAuthMiddleware', () => {
     const accountId = 'testAccountId';
 
     assert.throws(
-      () => accessAuthMiddleware({
-        params: { accountId },
-        headers: {
-          authorization: 'invalidAuthHeader',
-        },
-      } as unknown as Request, undefined, controller),
+      () =>
+        accessAuthMiddleware(
+          {
+            params: { accountId },
+            headers: {
+              authorization: 'invalidAuthHeader',
+            },
+          } as unknown as Request,
+          undefined,
+          controller,
+        ),
       new InvalidAuthorizationHeader().message,
     );
 

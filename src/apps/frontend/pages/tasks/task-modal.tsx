@@ -32,7 +32,10 @@ const TaskModal: React.FC<TaskModalProps> = ({
   onSuccess,
   setIsModalOpen,
 }) => {
-  const { isAddTaskLoading, isUpdateTaskLoading } = useTaskForm({ onSuccess, onError });
+  const { isAddTaskLoading, isUpdateTaskLoading } = useTaskForm({
+    onSuccess,
+    onError,
+  });
 
   const handleClick = () => {
     if (isAddTaskLoading || isUpdateTaskLoading) {
@@ -93,10 +96,13 @@ const TaskModal: React.FC<TaskModalProps> = ({
           <Button
             type={ButtonType.SUBMIT}
             onClick={handleClick}
-            isLoading={btnText === 'Add Task' ? isAddTaskLoading : isUpdateTaskLoading}
+            isLoading={
+              btnText === 'Add Task' ? isAddTaskLoading : isUpdateTaskLoading
+            }
             size={ButtonSize.DEFAULT}
             startEnhancer={
-              !isAddTaskLoading && !isUpdateTaskLoading && (
+              !isAddTaskLoading &&
+              !isUpdateTaskLoading && (
                 <img src="assets/svg/plus-icon.svg" alt="Plus Icon" />
               )
             }

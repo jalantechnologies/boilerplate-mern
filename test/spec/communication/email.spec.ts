@@ -30,8 +30,10 @@ describe('EmailService', () => {
       templateId: 'someTemplateId',
     };
 
-    return expect(EmailService.sendEmail(params)).to.eventually
-      .be.rejectedWith('Email cannot be send, please check the params validity.')
+    return expect(EmailService.sendEmail(params))
+      .to.eventually.be.rejectedWith(
+        'Email cannot be send, please check the params validity.',
+      )
       .then((error) => {
         expect(error).to.have.property('code');
         expect(error).to.have.property('failures');
@@ -53,8 +55,10 @@ describe('EmailService', () => {
       templateId: '',
     };
 
-    return expect(EmailService.sendEmail(params)).to.eventually
-      .be.rejectedWith('Email cannot be send, please check the params validity.')
+    return expect(EmailService.sendEmail(params))
+      .to.eventually.be.rejectedWith(
+        'Email cannot be send, please check the params validity.',
+      )
       .then((error) => {
         expect(error).to.have.property('code');
         expect(error).to.have.property('failures');
@@ -76,8 +80,10 @@ describe('EmailService', () => {
       templateId: '',
     };
 
-    return expect(EmailService.sendEmail(params)).to.eventually
-      .be.rejectedWith('Email cannot be send, please check the params validity.')
+    return expect(EmailService.sendEmail(params))
+      .to.eventually.be.rejectedWith(
+        'Email cannot be send, please check the params validity.',
+      )
       .then((error) => {
         expect(error).to.have.property('code');
         expect(error).to.have.property('failures');
@@ -100,9 +106,8 @@ describe('EmailService', () => {
       templateData: {},
     };
 
-    return expect(EmailService.sendEmail(params)).to.be.fulfilled
-      .then(() => {
-        sinon.assert.calledOnce(sendgridSend);
-      });
+    return expect(EmailService.sendEmail(params)).to.be.fulfilled.then(() => {
+      sinon.assert.calledOnce(sendgridSend);
+    });
   });
 });

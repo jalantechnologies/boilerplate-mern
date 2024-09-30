@@ -38,7 +38,8 @@ export type CreateAccountParamsByUsernameAndPassword = {
 };
 
 export type CreateAccountParams =
-  CreateAccountParamsByUsernameAndPassword | CreateAccountParamsByPhoneNumber;
+  | CreateAccountParamsByUsernameAndPassword
+  | CreateAccountParamsByPhoneNumber;
 
 export type AccountSearchByUsernameAndPasswordParams = {
   password: string;
@@ -50,7 +51,8 @@ export type AccountSearchByPhoneNumberParams = {
 };
 
 export type AccountSearchParams =
-  AccountSearchByUsernameAndPasswordParams | AccountSearchByPhoneNumberParams;
+  | AccountSearchByUsernameAndPasswordParams
+  | AccountSearchByPhoneNumberParams;
 
 export type GetAccountParams = {
   accountId: string;
@@ -68,7 +70,11 @@ export type UpdateAccountDetailsParams = {
   lastName: string;
 };
 
-export type UpdateAccountParams = UpdateAccountDetailsParams | ResetPasswordParams;
+export type UpdateAccountParams =
+  | UpdateAccountDetailsParams
+  | ResetPasswordParams;
+
+export type DeleteAccountParams = GetAccountParams;
 
 export enum AccountErrorCode {
   USERNAME_ALREADY_EXISTS = 'ACCOUNT_ERR_01',

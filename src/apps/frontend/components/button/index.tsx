@@ -29,7 +29,8 @@ const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
   startEnhancer,
   type = ButtonType.BUTTON,
 }) => {
-  const content = isLoading && kind === ButtonKind.PRIMARY ? <Spinner /> : children;
+  const content =
+    isLoading && kind === ButtonKind.PRIMARY ? <Spinner /> : children;
 
   return (
     <button

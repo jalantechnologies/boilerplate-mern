@@ -28,7 +28,8 @@ export class PasswordResetTokenEmailNotEnabledForTheEnvironmentError extends App
 
   constructor() {
     super('Password reset token is not enabled for the environment.');
-    this.code = PasswordResetTokenErrorCode.PASSWORD_RESET_EMAIL_NOT_ENABLED_FOR_THE_ENVIRONMENT;
+    this.code =
+      PasswordResetTokenErrorCode.PASSWORD_RESET_EMAIL_NOT_ENABLED_FOR_THE_ENVIRONMENT;
     this.httpStatusCode = HttpStatusCodes.CONFLICT;
   }
 }

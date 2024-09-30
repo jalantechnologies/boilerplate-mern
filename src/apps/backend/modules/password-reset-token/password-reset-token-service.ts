@@ -6,7 +6,11 @@ import { ConfigService } from '../config';
 import PasswordResetTokenReader from './internal/password-reset-token-reader';
 import PasswordResetTokenUtil from './internal/password-reset-token-util';
 import PasswordResetTokenWriter from './internal/password-reset-token-writer';
-import { CreatePasswordResetTokenParams, PasswordResetToken, PasswordResetTokenEmailNotEnabledForTheEnvironmentError } from './types';
+import {
+  CreatePasswordResetTokenParams,
+  PasswordResetToken,
+  PasswordResetTokenEmailNotEnabledForTheEnvironmentError,
+} from './types';
 
 export default class PasswordResetTokenService {
   public static async createPasswordResetToken(
@@ -16,10 +20,11 @@ export default class PasswordResetTokenService {
 
     const token = PasswordResetTokenUtil.generatePasswordResetToken();
 
-    const passwordResetToken = await PasswordResetTokenWriter.createPasswordResetToken(
-      account.id,
-      token,
-    );
+    const passwordResetToken =
+      await PasswordResetTokenWriter.createPasswordResetToken(
+        account.id,
+        token,
+      );
 
     await this.sendPasswordResetEmail(
       account.id,
@@ -49,8 +54,10 @@ export default class PasswordResetTokenService {
     accountId: string,
     token: string,
   ): Promise<PasswordResetToken> {
-    const passwordResetToken = await PasswordResetTokenService
-      .getPasswordResetTokenByAccountId(accountId);
+    const passwordResetToken =
+      await PasswordResetTokenService.getPasswordResetTokenByAccountId(
+        accountId,
+      );
 
     if (passwordResetToken.isExpired) {
       throw new AccountBadRequestError(

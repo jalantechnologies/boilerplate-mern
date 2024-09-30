@@ -1,5 +1,8 @@
 import React, {
-  createContext, PropsWithChildren, useContext, useState,
+  createContext,
+  PropsWithChildren,
+  useContext,
+  useState,
 } from 'react';
 
 import TaskService from '../services/task.service';
@@ -44,8 +47,8 @@ const updateTaskFn = async (
   taskData: Task,
 ): Promise<ApiResponse<Task>> => taskService.updateTask(taskId, taskData);
 
-const deleteTaskFn = async (taskId: string):
-Promise<ApiResponse<void>> => taskService.deleteTask(taskId);
+const deleteTaskFn = async (taskId: string): Promise<ApiResponse<void>> =>
+  taskService.deleteTask(taskId);
 
 export const TaskProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [tasksList, setTasksList] = useState<Task[]>([]);

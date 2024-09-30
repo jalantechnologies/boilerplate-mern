@@ -8,7 +8,8 @@ export default class PasswordResetTokenWriter {
     accountId: string,
     token: string,
   ): Promise<PasswordResetToken> {
-    const tokenHash = await PasswordResetTokenUtil.hashPasswordResetToken(token);
+    const tokenHash =
+      await PasswordResetTokenUtil.hashPasswordResetToken(token);
     const expiresAt = PasswordResetTokenUtil.getTokenExpiresAt();
 
     const passwordResetTokenDB = await PasswordResetTokenRepository.create({

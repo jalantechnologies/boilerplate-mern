@@ -13,13 +13,11 @@ const Tasks: React.FC = () => {
     toast.error(error.message);
   };
 
-  const {
-    deleteTask, getTasks, isGetTasksLoading, setTasksList, tasksList,
-  } = useTaskContext();
+  const { deleteTask, getTasks, isGetTasksLoading, setTasksList, tasksList } =
+    useTaskContext();
 
   useEffect(() => {
-    getTasks()
-      .catch((error) => onError(error as AsyncError));
+    getTasks().catch((error) => onError(error as AsyncError));
   }, []);
 
   const handleDeleteTask = (taskId: string) => {
@@ -31,18 +29,16 @@ const Tasks: React.FC = () => {
   };
 
   return (
-    <div className="mx-auto h-screen max-w-screen-2xl overflow-y-auto p-4 md:p-6 2xl:p-10">
-      <div className="mx-auto max-w-5xl">
-        <VerticalStackLayout gap={7}>
-          <HeadingMedium>TaskList</HeadingMedium>
-          <TaskHeader />
-          <TaskSection
-            tasks={tasksList}
-            isGetTasksLoading={isGetTasksLoading}
-            handleDeleteTask={handleDeleteTask}
-          />
-        </VerticalStackLayout>
-      </div>
+    <div className="mx-auto max-w-5xl">
+      <VerticalStackLayout gap={7}>
+        <HeadingMedium>TaskList</HeadingMedium>
+        <TaskHeader />
+        <TaskSection
+          tasks={tasksList}
+          isGetTasksLoading={isGetTasksLoading}
+          handleDeleteTask={handleDeleteTask}
+        />
+      </VerticalStackLayout>
     </div>
   );
 };

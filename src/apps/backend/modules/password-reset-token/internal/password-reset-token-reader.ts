@@ -15,6 +15,8 @@ export default class PasswordResetTokenReader {
       throw new PasswordResetTokenNotFoundError(accountId);
     }
 
-    return PasswordResetTokenUtil.convertPasswordResetTokenDBToPasswordResetToken(tokenDB);
+    return PasswordResetTokenUtil.convertPasswordResetTokenDBToPasswordResetToken(
+      tokenDB,
+    );
   }
 }

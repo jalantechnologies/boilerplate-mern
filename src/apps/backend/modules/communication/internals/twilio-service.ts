@@ -1,10 +1,7 @@
 import { Twilio } from 'twilio';
 
 import { ConfigService } from '../../config';
-import {
-  SendSMSParams,
-  ServiceError,
-} from '../types';
+import { SendSMSParams, ServiceError } from '../types';
 
 import SMSParams from './twilio-params';
 

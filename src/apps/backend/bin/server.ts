@@ -3,8 +3,7 @@
 
 import App from '../app';
 
-App.startServer()
-  .catch((err) => {
-    console.error(err);
-    process.exit(1);
-  });
+App.startServer().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});

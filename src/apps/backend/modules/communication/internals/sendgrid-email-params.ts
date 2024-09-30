@@ -1,8 +1,4 @@
-import {
-  SendEmailParams,
-  ValidationError,
-  ValidationFailure,
-} from '../types';
+import { SendEmailParams, ValidationError, ValidationFailure } from '../types';
 
 import { emailRegex } from './constants';
 
@@ -16,7 +12,8 @@ export default class EmailParams {
     if (!recipientEmailValid) {
       failures.push({
         field: 'recipient.email',
-        message: 'Please specify valid recipient email in format you@example.com.',
+        message:
+          'Please specify valid recipient email in format you@example.com.',
       });
     }
 

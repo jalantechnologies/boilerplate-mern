@@ -39,7 +39,8 @@ export default class Loggers {
   }
 
   private static getLoggers(): Logger[] {
-    const transports: LoggerTransport[] = ConfigService.getValue<LoggerTransport[]>('logger.transports');
+    const transports: LoggerTransport[] =
+      ConfigService.getValue<LoggerTransport[]>('logger.transports');
     const loggers: Logger[] = [];
 
     transports.forEach((loggerTransport: LoggerTransport) => {

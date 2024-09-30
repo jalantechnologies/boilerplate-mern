@@ -8,11 +8,13 @@ import { serializePasswordResetTokenAsJSON } from './password-reset-token-serial
 export class PasswordResetTokenController {
   createPasswordResetToken = applicationController(
     async (req: Request<CreatePasswordResetTokenParams>, res: Response) => {
-      const passwordResetToken = await PasswordResetTokenService.createPasswordResetToken({
-        username: req.body.username,
-      });
+      const passwordResetToken =
+        await PasswordResetTokenService.createPasswordResetToken({
+          username: req.body.username,
+        });
 
-      const passwordResetTokenJSON = serializePasswordResetTokenAsJSON(passwordResetToken);
+      const passwordResetTokenJSON =
+        serializePasswordResetTokenAsJSON(passwordResetToken);
 
       res.status(HttpStatusCodes.CREATED).send(passwordResetTokenJSON);
     },

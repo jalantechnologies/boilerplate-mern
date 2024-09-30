@@ -15,9 +15,7 @@ describe('AccessToken API', () => {
   beforeEach(() => {
     sinonSandbox = sinon.createSandbox();
 
-    sinonSandbox
-      .stub(SMSService, 'sendSMS')
-      .returns(Promise.resolve());
+    sinonSandbox.stub(SMSService, 'sendSMS').returns(Promise.resolve());
   });
 
   afterEach(async () => {
@@ -61,10 +59,7 @@ describe('AccessToken API', () => {
       );
 
       const otp = await OtpService.createOtp(
-        new PhoneNumber(
-          phoneNumber.countryCode,
-          phoneNumber.phoneNumber,
-        ),
+        new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber),
       );
 
       const res = await chai
@@ -90,10 +85,7 @@ describe('AccessToken API', () => {
       );
 
       await OtpService.createOtp(
-        new PhoneNumber(
-          phoneNumber.countryCode,
-          phoneNumber.phoneNumber,
-        ),
+        new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber),
       );
 
       const res = await chai
@@ -106,7 +98,9 @@ describe('AccessToken API', () => {
         });
 
       expect(res.status).to.be.eq(400);
-      expect(res.body.message).to.be.eq('Please provide the correct OTP to login.');
+      expect(res.body.message).to.be.eq(
+        'Please provide the correct OTP to login.',
+      );
     });
 
     it('should throw an error if OTP has expired', async () => {
@@ -120,18 +114,12 @@ describe('AccessToken API', () => {
       );
 
       const otp = await OtpService.createOtp(
-        new PhoneNumber(
-          phoneNumber.countryCode,
-          phoneNumber.phoneNumber,
-        ),
+        new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber),
       );
 
       await OtpService.verifyOTP(
         otp.otpCode,
-        new PhoneNumber(
-          phoneNumber.countryCode,
-          phoneNumber.phoneNumber,
-        ),
+        new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber),
       );
 
       const res = await chai
@@ -144,7 +132,9 @@ describe('AccessToken API', () => {
         });
 
       expect(res.status).to.be.eq(400);
-      expect(res.body.message).to.be.eq('OTP has expired. Please request a new OTP.');
+      expect(res.body.message).to.be.eq(
+        'OTP has expired. Please request a new OTP.',
+      );
     });
   });
 });

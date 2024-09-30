@@ -43,6 +43,7 @@ Boilerplate project for NodeJS, React based projects in TypeScript. This README 
 - Run E2E tests - `npm run e2e`
 - Open Cypress - `npm run cy:open`
 - Generate a new module - `npm run add-module`
+- Format files using Prettier - `npm run fmt`
 
 ## Configuration
 
@@ -97,8 +98,6 @@ This project support following integrations
 ## Deployment
 
 This project deploys on Kubernetes via GitHub actions using workflows defined in [GitHub CI](https://github.com/jalantechnologies/github-ci).
-
-For setup, consult [this](https://docs.google.com/document/d/1aPlKI6t-NsClzFMygNEn2PEXgfpI9KJEb5xERQ_WhW8/edit?usp=drive_link) document.
 
 ## E2E Testing
 

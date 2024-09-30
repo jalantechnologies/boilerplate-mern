@@ -1,6 +1,9 @@
 import { PhoneNumberUtil } from 'google-libphonenumber';
 
-import { PhoneUtilInstance, PhoneUtilInterface } from '../../communication/types';
+import {
+  PhoneUtilInstance,
+  PhoneUtilInterface,
+} from '../../communication/types';
 import { OtpRequestError } from '../../otp/types';
 import { Account, PhoneNumber } from '../types';
 
@@ -34,11 +37,11 @@ export default class AccountWriter {
   public static async createAccountByPhoneNumber(
     phoneNumber: PhoneNumber,
   ): Promise<Account> {
-    const phoneUtil = <PhoneUtilInterface>(<PhoneUtilInstance>PhoneNumberUtil).getInstance();
+    const phoneUtil = <PhoneUtilInterface>(
+      (<PhoneUtilInstance>PhoneNumberUtil).getInstance()
+    );
     const isValidPhoneNumber = phoneUtil.isValidNumber(
-      phoneUtil.parse(
-        phoneNumber.toString(),
-      ),
+      phoneUtil.parse(phoneNumber.toString()),
     );
 
     if (!isValidPhoneNumber) {
@@ -87,5 +90,9 @@ export default class AccountWriter {
     );
 
     return AccountUtil.convertAccountDBToAccount(dbAccount);
+  }
+
+  public static async deleteAccountById(accountId: string): Promise<void> {
+    await AccountRepository.findByIdAndDelete(accountId);
   }
 }
