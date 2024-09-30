@@ -19,5 +19,8 @@
     "experimentalDecorators": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
-  }
+  },
+  "exclude": [
+    "./templates"
+  ]
 }

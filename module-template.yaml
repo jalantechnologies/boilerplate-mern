@@ -1,0 +1,43 @@
+configs:
+  rootDir: './src/apps/backend/modules'
+  templatesDir: './templates/module'
+  defaults:
+    moduleName: test
+    entityName: Test
+variables:
+  - moduleName
+  - entityName
+  - baseUrl
+folders:
+  - name: $moduleName
+    folders:
+      - name: internals
+        folders:
+          - name: store
+            files:
+              - name: $moduleName-db.ts
+                filePath: 'internal/store/db-template.ts'
+              - name: $moduleName-repository.ts
+                filePath: 'internal/store/repository-template.ts'
+        files:
+          - name: $moduleName-writer.ts
+            filePath: 'internal/writer-template.ts'
+          - name: $moduleName-reader.ts
+            filePath: 'internal/reader-template.ts'
+      - name: rest-api
+        files:
+          - name: $moduleName-controller.ts
+            filePath: 'rest-api/controller-template.ts'
+          - name: $moduleName-router.ts
+            filePath: 'rest-api/router-template.ts'
+          - name: $moduleName-serializer.ts
+            filePath: 'rest-api/serializer-template.ts'
+          - name: $moduleName-server.ts
+            filePath: 'rest-api/server-template.ts'
+      - files:
+          - name: service.ts
+            filePath: 'service-template.ts'
+          - name: index.ts
+            filePath: 'index-template.ts'
+          - name: types.ts
+            filePath: 'types-template.ts'

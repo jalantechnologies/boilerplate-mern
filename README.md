@@ -42,6 +42,7 @@ Boilerplate project for NodeJS, React based projects in TypeScript. This README 
 - Run Lint (Markdown) - `npm run lint:md`
 - Run E2E tests - `npm run e2e`
 - Open Cypress - `npm run cy:open`
+- Generate a new module - `npm run add-module`
 
 ## Configuration
 
@@ -77,21 +78,21 @@ Config module can be also used to inject configuration values into frontend buil
 into frontend builds.
 
 - Define the config entry in appropriate config file under `public`, example - `public.myServiceKey`. Note that deployment does not supports injecting config
-values using environment variables so avoid using `custom-environment-variables.yml` here.
+  values using environment variables so avoid using `custom-environment-variables.yml` here.
 - Use the config value via `Config.getConfigValue('myServiceKey')`
 - For scripts directly using the config from `window`, can use the config directly via `window.Config.myServiceKey`. For type safety for the same, can add the entry in
-`src/apps/frontend/types/globals.d.ts`.
+  `src/apps/frontend/types/globals.d.ts`.
 
 ## Integrations
 
 This project support following integrations
 **TODO: Need to add documentation for all integrations**
 
-| Name    | Type   | Documentation                                                                                    | Configuration                                                                                                                                                                                                                                                                                                                                                                                        |
-|---------|--------|--------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| DataDog | Logger | -Create a dedicated public channel named "Error Alerts" within your MS Teams workspace. This centralized space will serve as a hub for all error-related communications.<br>-Streamline the error alert process by integrating the "Error Alerts" channel with DataDog. This integration enhances communication and incident response. <br>-Guidance on Integration<br>  https://jalantechnologies.com/uncategorized/push-notifications-from-datadog-to-microsoft-teams/<br>-For implementation, refer the following links<br>-PR: https://github.com/jalantechnologies/boilerplate-mern/pull/88<br>-docs: https://docs.datadoghq.com/logs/log_collection/nodejs/?tab=winston30 | - logger.transports = ['datadog']<br>- datadog.api_key - <DATADOG_CLIENT_TOKEN><br>- datadog.app_name - <DATADOG_CLIENT_TOKEN_NAME> <br> in this implementation these are not the datadog's api key and name, to generate these, create a client token under Organisational settings > Client token<br> refer docs under logs > getting started > client for more info |
-| Inspectlet | Analytics | https://docs.inspectlet.com/hc/en-us/articles/206355438-Installing-Inspectlet | - inspectlet.wid = Unique Inspectlet key provided by inspectlet |         
-|        |                                                                                                  |                                                                                                                                                                                                                                                                                                                                                                                                      |
+| Name       | Type      | Documentation                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Configuration                                                                                                                                                                                                                                                                                                                                                          |
+| ---------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| DataDog    | Logger    | -Create a dedicated public channel named "Error Alerts" within your MS Teams workspace. This centralized space will serve as a hub for all error-related communications.<br>-Streamline the error alert process by integrating the "Error Alerts" channel with DataDog. This integration enhances communication and incident response. <br>-Guidance on Integration<br> https://jalantechnologies.com/uncategorized/push-notifications-from-datadog-to-microsoft-teams/<br>-For implementation, refer the following links<br>-PR: https://github.com/jalantechnologies/boilerplate-mern/pull/88<br>-docs: https://docs.datadoghq.com/logs/log_collection/nodejs/?tab=winston30 | - logger.transports = ['datadog']<br>- datadog.api_key - <DATADOG_CLIENT_TOKEN><br>- datadog.app_name - <DATADOG_CLIENT_TOKEN_NAME> <br> in this implementation these are not the datadog's api key and name, to generate these, create a client token under Organisational settings > Client token<br> refer docs under logs > getting started > client for more info |
+| Inspectlet | Analytics | https://docs.inspectlet.com/hc/en-us/articles/206355438-Installing-Inspectlet                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | - inspectlet.wid = Unique Inspectlet key provided by inspectlet                                                                                                                                                                                                                                                                                                        |
+|            |           |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 
 ## Deployment
 
@@ -107,7 +108,7 @@ Get the application up and running via following steps in [Getting Started](#get
 
 **Troubleshooting:**
 
-If you're running into ```npm ERR! code ELIFECYCLE npm ERR! err no1``` error, follow these steps to fix it:
+If you're running into `npm ERR! code ELIFECYCLE npm ERR! err no1` error, follow these steps to fix it:
 
 - `sudo npm cache clean -f (force) clear you npm cache`
 - `sudo npm install -g n install n`
@@ -120,7 +121,7 @@ For more detailed info, check out this official [guide](https://docs.cypress.io/
 ```shell
 # run the entire suite
 cypress run
-  
+
 # run headless chrome
 cypress run --headless --browser chrome
 
