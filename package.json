@@ -15,7 +15,7 @@
     "test": "cross-env NODE_ENV=production NODE_CONFIG_ENV=testing mocha --exit -r ts-node/register --project tsconfig.mocha.json test/**/*.spec.ts",
     "test:e2e": "cross-env NODE_ENV=production NODE_CONFIG_ENV=e2e concurrently --success first --kill-others --kill-others-on-fail \"wait-on tcp:8080 && cypress run\" \"npm start\"",
     "lint": "eslint .",
-    "add-module":"tmb add-module ./module-template.yaml",
+    "add-module": "tmb add-module ./module-template.yaml",
     "lint:md": "remark .",
     "lint:fix": "eslint --fix .",
     "prepare": "husky install",
@@ -73,7 +73,7 @@
   "devDependencies": {
     "@babel/core": "^7.17.5",
     "@faker-js/faker": "^6.3.1",
-    "@govindgovind852/tmb": "^0.0.5",
+    "@govindgovind852/tmb": "^0.0.8",
     "@types/bcrypt": "^5.0.0",
     "@types/body-parser": "^1.19.2",
     "@types/chai": "^4.3.6",

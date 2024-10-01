@@ -1,18 +1,14 @@
-import { Schema, Types } from 'mongoose';
+import { Schema, Types } from "mongoose";
 
-export interface $entityNameDB {
-  _id: Types.ObjectId;
-  createdAt: Date;
-  updatedAt: Date;
-}
+export $dbTypeDef
 
 export const $entityNameDbSchema: Schema = new Schema<$entityNameDB>(
-  {},
+  $dbSchema,
   {
-    collection: '$moduleName',
+    collection: "$moduleName",
     timestamps: {
-      createdAt: 'createdAt',
-      updatedAt: 'updatedAt',
+      createdAt: "createdAt",
+      updatedAt: "updatedAt",
     },
-  },
+  }
 );
