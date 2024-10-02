@@ -10,6 +10,7 @@ configs:
       moduleName: 'test'
       entityName: 'Test'
       pageLimit: '10'
+      baseUrl: ''
 
 variables:
   filepaths:
@@ -20,6 +21,7 @@ variables:
     - moduleName
     - entityName
     - pageLimit
+    - baseUrl
 
 folders:
   - name: $moduleName

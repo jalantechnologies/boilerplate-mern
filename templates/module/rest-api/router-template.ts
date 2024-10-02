@@ -10,13 +10,15 @@ export default class $entityNameRouter extends ApplicationRouter {
 
     router.use(accessAuthMiddleware);
 
+    const baseUrl='$baseUrl'
+
     // Define get routes
-    router.get('/', ctrl.get$entityName);
-    router.get('/:id', ctrl.get$entityNameById);
+    router.get(`${baseUrl}/`, ctrl.get$entityName);
+    router.get(`${baseUrl}/:id`, ctrl.get$entityNameById);
 
     // Define post routes here
-    router.post('/', ctrl.create$entityName);
-    router.patch('/:id', ctrl.update$entityName);
-    router.delete('/:id', ctrl.delete$entityName);
+    router.post(`${baseUrl}/`, ctrl.create$entityName);
+    router.patch(`${baseUrl}/:id`, ctrl.update$entityName);
+    router.delete(`${baseUrl}/:id`, ctrl.delete$entityName);
   }
 }
