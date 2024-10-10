@@ -1,5 +1,0 @@
-{"method":"POST","path":"/api/tasks/"}
-{"method":"GET","path":"/api/tasks/"}
-{"method":"GET","path":"/api/tasks/:id"}
-{"method":"PATCH","path":"/api/tasks/:id"}
-{"method":"DELETE","path":"/api/tasks/:id"}

@@ -15,18 +15,5 @@ export default class TaskRouter extends ApplicationRouter {
     router.get('/:id', ctrl.getTask);
     router.patch('/:id', ctrl.updateTask);
     router.delete('/:id', ctrl.deleteTask);
-
-    this.logRoutes();
-  }
-
-  private logRoutes() {
-    this.router.stack.forEach((layer) => {
-      if (layer.route) {
-        const methods = Object.keys(layer.route.methods)
-          .map((method) => method.toUpperCase())
-          .join(', ');
-        console.log(`${methods} '/api/tasks${layer.route.path}'`);
-      }
-    });
   }
 }
