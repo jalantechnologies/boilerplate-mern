@@ -1,0 +1,30 @@
+API: POST /api/tasks
+Controller: TaskController.createTask
+Controller Method:
+createTask = applicationController(
+    async (req: Request<CreateTaskParams>, res: Response) => {
+      const task: Task = await TaskService.createTask({
+        accountId: req.accountId,
+        description: req.body.description,
+        title: req.body.title,
+      });
+      const taskJSON = serializeTaskAsJSON(task);
+
+      res.status(HttpStatusCodes.CREATED).send(taskJSON);
+    },
+  );
+Serializer Method:
+export const serializeTaskAsJSON = (task: Task): unknown => ({
+  id: task.id,
+  account: task.account,
+  description: task.description,
+  title: task.title,
+});
+Return Type:
+export class Task {
+  id: string;
+  account: string;
+  description: string;
+  title: string;
+}
+---

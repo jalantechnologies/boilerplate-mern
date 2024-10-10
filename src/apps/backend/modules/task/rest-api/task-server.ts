@@ -7,6 +7,6 @@ export default class TaskServer extends ApplicationServer {
     const { server } = this;
     const router = new TaskRouter();
 
-    server.use('/tasks', router.router);
+    server.use('/', router.router);
   }
 }
