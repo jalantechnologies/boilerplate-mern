@@ -1,4 +1,5 @@
-import { applicationController, Request, Response } from '../../application';
+import { Request, Response } from '../../application';
+import { Route } from '../../application/reflect-metadata';
 import { HttpStatusCodes } from '../../http';
 import TaskService from '../task-service';
 import {
@@ -13,68 +14,72 @@ import {
 import { serializeTaskAsJSON } from './task-serializer';
 
 export class TaskController {
-  createTask = applicationController(
-    async (req: Request<CreateTaskParams>, res: Response) => {
-      const task: Task = await TaskService.createTask({
-        accountId: req.accountId,
-        description: req.body.description,
-        title: req.body.title,
-      });
-      const taskJSON = serializeTaskAsJSON(task);
-
-      res.status(HttpStatusCodes.CREATED).send(taskJSON);
-    },
-  );
-
-  deleteTask = applicationController(
-    async (req: Request<DeleteTaskParams>, res: Response) => {
-      await TaskService.deleteTask({
-        accountId: req.accountId,
-        taskId: req.params.id,
-      });
-
-      res.status(HttpStatusCodes.NO_CONTENT).send();
-    },
-  );
-
-  getTask = applicationController(
-    async (req: Request<GetTaskParams>, res: Response) => {
-      const task = await TaskService.getTaskForAccount({
-        accountId: req.accountId,
-        taskId: req.params.id,
-      });
-      const taskJSON = serializeTaskAsJSON(task);
-
-      res.status(HttpStatusCodes.OK).send(taskJSON);
-    },
-  );
-
-  getTasks = applicationController(async (req: Request, res: Response) => {
-    const page = +req.query.page;
-    const size = +req.query.size;
-    const params: GetAllTaskParams = {
+  @Route('POST', '/tasks')
+  async createTask(req: Request<CreateTaskParams>, res: Response) {
+    const task: Task = await TaskService.createTask({
       accountId: req.accountId,
-      page,
-      size,
-    };
+      description: req.body.description,
+      title: req.body.title,
+    });
+    const taskJSON = serializeTaskAsJSON(task);
 
-    const tasks = await TaskService.getTasksForAccount(params);
-    const tasksJSON = tasks.map((task) => serializeTaskAsJSON(task));
+    res.status(HttpStatusCodes.CREATED).send(taskJSON);
+  };
 
-    res.status(HttpStatusCodes.OK).send(tasksJSON);
-  });
+  // createTask(req: Request<CreateTaskParams>, res: Response) {
+  //   return applicationController(async (req: Request<CreateTaskParams>, res: Response) => {
+  //     const task: Task = await TaskService.createTask({
+  //       accountId: req.accountId,
+  //       description: req.body.description,
+  //       title: req.body.title,
+  //     });
+  //     const taskJSON = serializeTaskAsJSON(task);
 
-  updateTask = applicationController(
-    async (req: Request<UpdateTaskParams>, res: Response) => {
-      const updatedTask: Task = await TaskService.updateTask({
-        accountId: req.accountId,
-        taskId: req.params.id,
-        description: req.body.description,
-        title: req.body.title,
-      });
-      const taskJSON = serializeTaskAsJSON(updatedTask);
+  //     res.status(HttpStatusCodes.CREATED).send(taskJSON);
+  //   })(req, res);
+  // }
 
-      res.status(HttpStatusCodes.OK).send(taskJSON);
-    },
-  );
+  @Route('DELETE', '/tasks/:id')
+  async deleteTask(req: Request<DeleteTaskParams>, res: Response) {
+    await TaskService.deleteTask({
+      accountId: req.accountId,
+      taskId: req.params.id,
+    });
+    res.status(HttpStatusCodes.NO_CONTENT).send();
+  }
+
+  @Route('GET', '/tasks/:id')
+  async getTask(req: Request<GetTaskParams>, res: Response) {
+    const task: Task = await TaskService.getTaskForAccount({
+      accountId: req.accountId,
+      taskId: req.params.id,
+    });
+    const taskJSON = serializeTaskAsJSON(task);
+
+    res.status(HttpStatusCodes.CREATED).send(taskJSON);
+  }
+
+  @Route('GET', '/tasks')
+  async getTasks(req: Request<GetAllTaskParams>, res: Response) {
+    const tasks: Task[] = await TaskService.getTasksForAccount({
+      accountId: req.accountId,
+    });
+
+    const tasksJSON = tasks.map(serializeTaskAsJSON);
+
+    res.status(HttpStatusCodes.CREATED).send(tasksJSON);
+  }
+
+  @Route('PATCH', '/tasks/:id')
+  async updateTask(req: Request<UpdateTaskParams>, res: Response) {
+    const updatedTask: Task = await TaskService.updateTask({
+      accountId: req.accountId,
+      taskId: req.params.id,
+      description: req.body.description,
+      title: req.body.title,
+    });
+    const taskJSON = serializeTaskAsJSON(updatedTask);
+
+    res.status(HttpStatusCodes.CREATED).send(taskJSON);
+  }
 }
