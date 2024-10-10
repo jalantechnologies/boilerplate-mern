@@ -1,8 +1,6 @@
 import { ApplicationError } from '../application';
 import { HttpStatusCodes } from '../http';
 
-export const moduleName = '/task';
-
 export class Task {
   id: string;
   account: string;

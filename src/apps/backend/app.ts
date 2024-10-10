@@ -1,4 +1,3 @@
-import fs from 'fs';
 import { Server } from 'http';
 import * as path from 'path';
 
@@ -6,10 +5,8 @@ import cors from 'cors';
 import express, { Application } from 'express';
 import expressWinston from 'express-winston';
 
-import { appBaseRoute } from './constants';
 import { AccessTokenServer } from './modules/access-token';
 import { AccountServer } from './modules/account';
-import { routeMetadata } from './modules/application/route-metadata';
 import { ConfigService } from './modules/config';
 import { Logger, CustomLoggerTransport } from './modules/logger';
 import { PasswordResetTokenServer } from './modules/password-reset-token';
@@ -25,7 +22,7 @@ export default class App {
     this.app.use(App.getRequestLogger());
 
     const restAPIServer = this.createRESTApiServer();
-    this.app.use(appBaseRoute, restAPIServer);
+    this.app.use('/api', restAPIServer);
 
     const app = this.createExperienceService();
     this.app.use('/', app);
@@ -40,26 +37,9 @@ export default class App {
     const port = ConfigService.getValue<string>('server.port');
     const server = this.app.listen(port, () => {
       Logger.info('app - server started listening on  - %s', server.address());
-      this.logRouteMetadata(); // Add this line to log the route metadata
     });
 
     return Promise.resolve(server);
-  }
-
-  public static logRouteMetadata() {
-    let output = '';
-
-    routeMetadata.forEach((metadata) => {
-      output += `API: ${metadata.method} ${metadata.route}\n`;
-      output += `Controller: ${metadata.controller}.${metadata.action}\n`;
-      output += `Controller Method:\n${metadata.controllerMethod}\n`;
-      output += `Serializer Method:\n${metadata.serializerMethod}\n`;
-      output += `Return Type:\n${metadata.returnType}\n`;
-      output += '---\n';
-    });
-
-    const outputPath = path.join(process.cwd(), 'sample-output.txt');
-    fs.writeFileSync(outputPath, output);
   }
 
   private static createRESTApiServer(): Application {
