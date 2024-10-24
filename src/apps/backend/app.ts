@@ -7,6 +7,7 @@ import expressWinston from 'express-winston';
 
 import { AccessTokenServer } from './modules/access-token';
 import { AccountServer } from './modules/account';
+import expressListRoutes from './modules/app-route-handler/express-list-routes';
 import { ConfigService } from './modules/config';
 import { Logger, CustomLoggerTransport } from './modules/logger';
 import { PasswordResetTokenServer } from './modules/password-reset-token';
@@ -64,6 +65,10 @@ export default class App {
       new TaskServer(),
     ].forEach((server) => {
       app.use('/', server.server);
+      // TODO: remove logs and add implementation to generate docs for routes,
+      // once able to fetch controller and serializer methods and type defs
+      console.log(server.routerFilePath);
+      console.log(expressListRoutes(server.server));
     });
 
     return app;
