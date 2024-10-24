@@ -4,6 +4,10 @@ import { ApplicationRouter } from '../../application';
 import { TaskController } from './task-controller';
 
 export default class TaskRouter extends ApplicationRouter {
+  public static currentFilePath(): string {
+    return __filename;
+  }
+
   configure(): void {
     const { router } = this;
     const ctrl = new TaskController();
