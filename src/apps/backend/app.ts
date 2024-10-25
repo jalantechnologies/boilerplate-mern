@@ -42,6 +42,21 @@ export default class App {
     return Promise.resolve(server);
   }
 
+  public static getAllServers(): (
+    | AccountServer
+    | AccessTokenServer
+    | PasswordResetTokenServer
+    | TaskServer
+  )[] {
+    // add your new server here to the list
+    return [
+      new AccountServer(),
+      new AccessTokenServer(),
+      new PasswordResetTokenServer(),
+      new TaskServer(),
+    ];
+  }
+
   private static createRESTApiServer(): Application {
     const app: Application = express();
 
@@ -56,16 +71,9 @@ export default class App {
       );
     }
 
-    // add your new server here to the list
-    [
-      new AccountServer(),
-      new AccessTokenServer(),
-      new PasswordResetTokenServer(),
-      new TaskServer(),
-    ].forEach((server) => {
+    this.getAllServers().forEach((server) => {
       app.use('/', server.server);
     });
-
     return app;
   }
 
