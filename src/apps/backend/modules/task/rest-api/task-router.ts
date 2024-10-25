@@ -4,6 +4,10 @@ import { ApplicationRouter } from '../../application';
 import { TaskController } from './task-controller';
 
 export default class TaskRouter extends ApplicationRouter {
+  constructor() {
+    super(__filename);
+  }
+
   configure(): void {
     const { router } = this;
     const ctrl = new TaskController();
