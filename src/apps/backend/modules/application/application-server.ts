@@ -13,7 +13,11 @@ export enum ApplicationServerErrorCodes {
 export default abstract class ApplicationServer {
   readonly server: Application;
 
-  constructor() {
+  routerFilePath: string;
+
+  constructor(routerFilePath: string) {
+    this.routerFilePath = routerFilePath;
+
     const server = express();
     server.use(bodyParser.urlencoded({ extended: true }));
     server.use(bodyParser.json());
