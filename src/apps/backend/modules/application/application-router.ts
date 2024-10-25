@@ -3,11 +3,7 @@ import { Router } from 'express';
 export default abstract class ApplicationRouter {
   readonly router: Router;
 
-  routerFilePath: string;
-
-  constructor(routerFilePath: string) {
-    this.routerFilePath = routerFilePath;
-
+  constructor() {
     this.router = Router({ mergeParams: true });
     this.configure();
   }
