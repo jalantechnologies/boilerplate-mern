@@ -1,6 +1,6 @@
 import { Application } from 'express';
 
-import { HttpRoute, Stack } from './types';
+import { HttpRoute, Stack } from '../types';
 
 const getPathFromRegex = (regexp: RegExp): string =>
   regexp
@@ -48,8 +48,8 @@ const expressListRoutes = (app: Application): HttpRoute[] => {
         if (method) {
           paths.push({
             method,
-            routerPath: stack.routerPath,
-            path: stack.route.path,
+            rootRouterPath: stack.routerPath,
+            routerPath: stack.route.path,
           });
         }
       });

@@ -11,10 +11,13 @@ import { ConfigService } from './modules/config';
 import { Logger, CustomLoggerTransport } from './modules/logger';
 import { PasswordResetTokenServer } from './modules/password-reset-token';
 import { TaskServer } from './modules/task';
+import { APIMicroserviceService } from './types';
 
 const isDevEnv = process.env.NODE_ENV === 'development';
 
 export default class App {
+  public static baseRoutePath = '/api';
+
   private static app: Application;
 
   public static async startServer(): Promise<Server> {
@@ -22,7 +25,7 @@ export default class App {
     this.app.use(App.getRequestLogger());
 
     const restAPIServer = this.createRESTApiServer();
-    this.app.use('/api', restAPIServer);
+    this.app.use(this.baseRoutePath, restAPIServer);
 
     const app = this.createExperienceService();
     this.app.use('/', app);
@@ -42,19 +45,38 @@ export default class App {
     return Promise.resolve(server);
   }
 
-  public static getAllServers(): (
-    | AccountServer
-    | AccessTokenServer
-    | PasswordResetTokenServer
-    | TaskServer
-  )[] {
+  public static getAPIMicroservices(): APIMicroserviceService[] {
+    const microservices: APIMicroserviceService[] = [];
+
     // add your new server here to the list
-    return [
+    const servers = [
       new AccountServer(),
       new AccessTokenServer(),
       new PasswordResetTokenServer(),
       new TaskServer(),
     ];
+
+    // Use the module cache to find file paths
+    const moduleCache = require.cache;
+
+    servers.forEach((server) => {
+      const serverName = server.constructor.name;
+      const moduleEntry = Object.values(moduleCache).find(
+        (entry) => entry.exports && entry.exports[serverName],
+      );
+      const serverRootFolderPath = moduleEntry.filename.replace(
+        '/index.ts',
+        '',
+      );
+
+      microservices.push({
+        serverName,
+        serverRootFolderPath,
+        serverInstance: server,
+      });
+    });
+
+    return microservices;
   }
 
   private static createRESTApiServer(): Application {
@@ -71,8 +93,8 @@ export default class App {
       );
     }
 
-    this.getAllServers().forEach((server) => {
-      app.use('/', server.server);
+    this.getAPIMicroservices().forEach((server) => {
+      app.use('/', server.serverInstance.server);
     });
     return app;
   }
