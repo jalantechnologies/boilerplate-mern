@@ -16,7 +16,7 @@ import { APIMicroserviceService } from './types';
 const isDevEnv = process.env.NODE_ENV === 'development';
 
 export default class App {
-  public static baseRoutePath = '/api';
+  public static baseAPIRoutePath = '/api';
 
   private static app: Application;
 
@@ -25,7 +25,7 @@ export default class App {
     this.app.use(App.getRequestLogger());
 
     const restAPIServer = this.createRESTApiServer();
-    this.app.use(this.baseRoutePath, restAPIServer);
+    this.app.use(this.baseAPIRoutePath, restAPIServer);
 
     const app = this.createExperienceService();
     this.app.use('/', app);
