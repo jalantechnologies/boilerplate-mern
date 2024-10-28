@@ -6,3 +6,6 @@ sms:
 
 logger:
   transports: [ 'datadog' ]
+
+documentation:
+  enabled: true

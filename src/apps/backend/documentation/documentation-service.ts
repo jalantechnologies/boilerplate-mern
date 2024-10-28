@@ -2,6 +2,8 @@ import fs from 'fs';
 import path from 'path';
 
 import App from '../app';
+import { ConfigService } from '../modules/config';
+import { Logger } from '../modules/logger';
 
 import expressListRoutes from './internals/express-list-routes';
 
@@ -21,6 +23,14 @@ export default class DocumentationService {
       documentationContent += serverInfo;
     });
 
-    fs.writeFileSync(documentationPath, documentationContent, 'utf8');
+    const isDocumentationEnabled = ConfigService.getValue<boolean>(
+      'documentation.enabled',
+    );
+
+    if (isDocumentationEnabled) {
+      fs.writeFileSync(documentationPath, documentationContent, 'utf8');
+    } else {
+      Logger.info('Documentation is disabled for the current environment');
+    }
   }
 }
