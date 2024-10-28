@@ -1,10 +1,20 @@
 accounts:
   tokenKey: 'JWT_TOKEN'
 
+datadog:
+  api_key: 'DD_API_KEY'
+  app_name: 'DD_APP_NAME'
+
+inspectlet:
+  wid: 'INSPECTLET_KEY'
+
 mailer:
   defaultEmail: 'DEFAULT_EMAIL'
   defaultEmailName: 'DEFAULT_EMAIL_NAME'
   forgetPasswordMailTemplateId: 'FORGOT_PASSWORD_MAIL_TEMPLATE_ID'
+
+mongoDb:
+  uri: 'MONGODB_URI'
 
 otp:
   defaultOTP: 'DEFAULT_OTP'
@@ -14,6 +24,12 @@ rollbar:
   env: 'ROLLBAR_ENV'
   accessToken: 'ROLLBAR_ACCESS_TOKEN'
 
+sendgrid:
+  apiKey: 'SENDGRID_API_KEY'
+
+server:
+  port: 'PORT'
+
 twilio:
   verify:
     accountSid: 'TWILIO_ACCOUNT_SID'
@@ -21,20 +37,4 @@ twilio:
   messaging:
     messagingServiceSid: 'TWILIO_MESSAGING_SERVICE_SID'
 
-sendgrid:
-  apiKey: 'SENDGRID_API_KEY'
-
-mongoDb:
-  uri: 'MONGODB_URI'
-
-server:
-  port: 'PORT'
-
 webAppHost: 'WEB_APP_HOST'
-
-inspectlet:
-  wid: 'INSPECTLET_KEY'
-
-datadog:
-  api_key: 'DD_API_KEY'
-  app_name: 'DD_APP_NAME'
