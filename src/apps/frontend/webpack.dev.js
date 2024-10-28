@@ -22,7 +22,14 @@ const config = {
     port: devServerPort,
     proxy: {
       secure: false,
-      '/api': `http://localhost:${devServerAPIProxyPort}`,
+      '/api': {
+        target: `http://localhost:${devServerAPIProxyPort}`,
+        bypass: function (req) {
+          if (req.url === '/api/documentation') {
+            return '/index.html'; // Bypass proxy for this specific route
+          }
+        },
+      },
       '/assets': `http://localhost:${devServerAPIProxyPort}`,
     },
   },

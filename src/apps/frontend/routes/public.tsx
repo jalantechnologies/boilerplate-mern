@@ -12,6 +12,7 @@ import {
   ResetPassword,
   Signup,
 } from '../pages';
+import Documentation from '../pages/documentation';
 
 import AuthRoute from './auth-route';
 
@@ -41,5 +42,6 @@ export const publicRoutes = [
     ),
   },
   { path: routes.ABOUT, element: <About /> },
+  { path: routes.DOCUMENTATION, element: <Documentation /> },
   { path: '*', element: <Navigate to={routes.LOGIN} /> },
 ];

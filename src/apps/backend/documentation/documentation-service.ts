@@ -13,7 +13,7 @@ export default class DocumentationService {
     // TODO: update to a valid path & file name, once done with documentation generation through ai
     const documentationPath = path.join(
       __dirname,
-      '../../../assets/documentation/index.txt',
+      '../../../assets/documentation/index.md',
     );
     let documentationContent = '';
 
