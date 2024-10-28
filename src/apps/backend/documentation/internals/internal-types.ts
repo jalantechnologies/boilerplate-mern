@@ -1,5 +1,5 @@
-import { ApplicationError } from '../modules/application';
-import { HttpStatusCodes } from '../modules/http';
+import { ApplicationError } from '../../modules/application';
+import { HttpStatusCodes } from '../../modules/http';
 
 export type HttpRoute = {
   method: string;
