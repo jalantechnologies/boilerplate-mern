@@ -7,7 +7,7 @@
     "npm": "10.2.4"
   },
   "scripts": {
-    "build": "cross-env NODE_ENV=production concurrently --kill-others-on-fail npm:build:*",
+    "build": "npm run generate-documentation && cross-env NODE_ENV=production concurrently --kill-others-on-fail npm:build:*",
     "build:assets": "cpx \"src/assets/**/*.*\" dist/assets",
     "build:backend": "tsc -p src/apps/backend/tsconfig.json --outDir dist",
     "build:frontend": "webpack --output-path dist/public --config src/apps/frontend/webpack.prod.js",
