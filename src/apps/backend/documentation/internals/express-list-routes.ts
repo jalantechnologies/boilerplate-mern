@@ -1,6 +1,8 @@
 import { Application } from 'express';
 
-import { HttpRoute, Stack } from './internal-types';
+import { HttpRoute } from '../types';
+
+import { Stack } from './internal-types';
 
 const getPathFromRegex = (regexp: RegExp): string =>
   regexp
