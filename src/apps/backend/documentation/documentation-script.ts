@@ -1,6 +1,11 @@
+import { Logger } from '../modules/logger';
+
 import DocumentationService from './documentation-service';
 
-(() => {
-  DocumentationService.generateDocumentation();
+(async () => {
+  await DocumentationService.generateDocumentation();
   process.exit(0);
-})();
+})().catch((err: Error) => {
+  Logger.error(err.message);
+  process.exit(1);
+});

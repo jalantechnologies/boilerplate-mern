@@ -16,6 +16,9 @@ mailer:
 mongoDb:
   uri: 'MONGODB_URI'
 
+openai:
+  apiKey: 'OPENAI_API_KEY'
+
 otp:
   defaultOTP: 'DEFAULT_OTP'
   defaultPhoneNumber: 'DEFAULT_PHONE_NUMBER'

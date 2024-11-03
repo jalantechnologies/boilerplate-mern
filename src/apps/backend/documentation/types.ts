@@ -9,8 +9,10 @@ export type HttpRoute = {
   routerPath: string;
 };
 
-export type HttpRouteWithDetails = HttpRoute & {
+export type HttpRouteWithDetails = {
   controllerMethod: string;
+  endpoint: string;
+  method: string;
   responseObjectTypeDefinition: string;
   serializerMethod: string;
 };

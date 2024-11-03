@@ -6,10 +6,11 @@ import { ConfigService } from '../modules/config';
 import { Logger } from '../modules/logger';
 
 import expressListRoutes from './internals/express-list-routes';
+import OpenAIAdapter from './rest-api/openai-adapter';
 import { HttpRouteWithDetails, HttpRoute, Nullable } from './types';
 
 export default class DocumentationService {
-  public static generateDocumentation(): void {
+  public static async generateDocumentation(): Promise<void> {
     const isDocumentationEnabled = ConfigService.getValue<boolean>(
       'documentation.enabled',
     );
@@ -20,8 +21,13 @@ export default class DocumentationService {
         '../../../assets/documentation/index.md',
       );
       const routes = this.getAllApiRoutesWithDetails();
+      const prompt = `Generate a comprehensive API documentation in a human readable format, for the following routes: ${JSON.stringify(routes, null, 2)}. And return the documentation as a markdown file, without any additional text or comments like adding \`\`\`markdown at the beginning or at the end. Also please provide the response object in simplified JSON format, without any typescript code or comments.`;
+      const markdownDocumentation =
+        await OpenAIAdapter.generateDocumentation(prompt);
+      fs.writeFileSync(documentationPath, markdownDocumentation, 'utf8');
+      // TODO: Remove this, as this is only for debugging purposes
       fs.writeFileSync(
-        documentationPath,
+        './routes-sample-log.json',
         JSON.stringify(routes, null, 2),
         'utf8',
       );
@@ -50,8 +56,9 @@ export default class DocumentationService {
           serializerMethod,
         );
         return {
-          ...route,
           controllerMethod,
+          endpoint: this.getEndpoint(route),
+          method: route.method,
           responseObjectTypeDefinition,
           serializerMethod,
         };
@@ -278,5 +285,13 @@ export default class DocumentationService {
 
     Logger.warn(`No matching type definition found for: ${paramType}`);
     return null;
+  }
+
+  private static getEndpoint(route: HttpRoute): string {
+    return `${App.baseAPIRoutePath}/${this.removeLeadingAndTrailingSlashes(route.rootRouterPath)}/${this.removeLeadingAndTrailingSlashes(route.routerPath)}`;
+  }
+
+  private static removeLeadingAndTrailingSlashes(routePath: string): string {
+    return routePath.replace(/^\/|\/$/g, '');
   }
 }
