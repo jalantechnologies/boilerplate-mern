@@ -6,20 +6,36 @@ import { ConfigService } from '../modules/config';
 import { Logger } from '../modules/logger';
 
 import expressListRoutes from './internals/express-list-routes';
-import { HttpRoute, Nullable } from './types';
+import { HttpRouteWithDetails, HttpRoute, Nullable } from './types';
 
 export default class DocumentationService {
   public static generateDocumentation(): void {
-    const apiMicroservices = App.getAPIMicroservices();
-    const documentationPath = path.join(
-      __dirname,
-      '../../../assets/documentation/index.md',
+    const isDocumentationEnabled = ConfigService.getValue<boolean>(
+      'documentation.enabled',
     );
-    let documentationContent = '';
+
+    if (isDocumentationEnabled) {
+      const documentationPath = path.join(
+        __dirname,
+        '../../../assets/documentation/index.md',
+      );
+      const routes = this.getAllApiRoutesWithDetails();
+      fs.writeFileSync(
+        documentationPath,
+        JSON.stringify(routes, null, 2),
+        'utf8',
+      );
+    } else {
+      Logger.info('Documentation is disabled for the current environment');
+    }
+  }
+
+  private static getAllApiRoutesWithDetails(): HttpRouteWithDetails[] {
+    const apiMicroservices = App.getAPIMicroservices();
+    const routesList: HttpRouteWithDetails[] = [];
 
     apiMicroservices.forEach((server) => {
       const routes = expressListRoutes(server.serverInstance.server);
-      documentationContent += `Server Root: ${server.serverRootFolderPath}\n`;
       const routesWithControllerMethods = routes.map((route) => {
         const controllerMethod = this.getControllerMethodCode(
           route,
@@ -40,19 +56,10 @@ export default class DocumentationService {
           serializerMethod,
         };
       });
-      const routesInfo = `Routes:\n${JSON.stringify(routesWithControllerMethods, null, 2)}\n`;
-      documentationContent += routesInfo;
+      routesList.push(...routesWithControllerMethods);
     });
 
-    const isDocumentationEnabled = ConfigService.getValue<boolean>(
-      'documentation.enabled',
-    );
-
-    if (isDocumentationEnabled) {
-      fs.writeFileSync(documentationPath, documentationContent, 'utf8');
-    } else {
-      Logger.info('Documentation is disabled for the current environment');
-    }
+    return routesList;
   }
 
   private static getControllerMethodCode(

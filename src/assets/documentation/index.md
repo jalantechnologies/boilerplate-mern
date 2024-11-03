@@ -1,5 +1,3 @@
-Server Root: /Users/gkv/repos/jtc/boilerplate-mern/src/apps/backend/modules/account
-Routes:
 [
   {
     "method": "POST",
@@ -32,11 +30,7 @@ Routes:
     "controllerMethod": "getAccountById = applicationController(\n    async (req: Request<GetAccountParams>, res: Response) => {\n      const account = await AccountService.getAccountById({\n        accountId: req.params.accountId,\n      });\n      const accountJSON = serializeAccountAsJSON(account);\n\n      res.status(HttpStatusCodes.OK).send(accountJSON);\n    },\n  );",
     "responseObjectTypeDefinition": "export class Account {\n  firstName: string;\n  hashedPassword: string;\n  id: string;\n  lastName: string;\n  phoneNumber: PhoneNumber;\n  username: string;\n}",
     "serializerMethod": "export const serializeAccountAsJSON = (account: Account): unknown => ({\n  id: account.id,\n  phoneNumber: account.phoneNumber,\n  firstName: account.firstName,\n  lastName: account.lastName,\n  username: account.username,\n});"
-  }
-]
-Server Root: /Users/gkv/repos/jtc/boilerplate-mern/src/apps/backend/modules/access-token
-Routes:
-[
+  },
   {
     "method": "POST",
     "rootRouterPath": "/access-tokens/",
@@ -44,11 +38,7 @@ Routes:
     "controllerMethod": "createAccessToken = applicationController(\n    async (req: Request<CreateAccessTokenParams>, res: Response) => {\n      let accessToken: AccessToken;\n      const { username, password } =\n        req.body as EmailBasedAuthAccessTokenRequestParams;\n      const { phoneNumber, otpCode } =\n        req.body as OTPBasedAuthAccessTokenRequestParams;\n\n      if (username && password) {\n        accessToken =\n          await AccessTokenService.createAccessTokenByUsernameAndPassword(\n            password,\n            username,\n          );\n      } else if (phoneNumber && otpCode) {\n        accessToken = await AccessTokenService.createAccessTokenByPhoneNumber(\n          otpCode,\n          new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber),\n        );\n      }\n\n      const accessTokenJSON = serializeAccessTokenAsJSON(accessToken);\n\n      res.send(accessTokenJSON);\n    },\n  );",
     "responseObjectTypeDefinition": "export class AccessToken {\n  token: string;\n  accountId: string;\n  expiresAt: Date;\n}",
     "serializerMethod": "export const serializeAccessTokenAsJSON = (\n  accessToken: AccessToken,\n): unknown => ({\n  accountId: accessToken.accountId,\n  expiresAt: accessToken.expiresAt.toUTCString(),\n  token: accessToken.token,\n});"
-  }
-]
-Server Root: /Users/gkv/repos/jtc/boilerplate-mern/src/apps/backend/modules/password-reset-token
-Routes:
-[
+  },
   {
     "method": "POST",
     "rootRouterPath": "/",
@@ -56,11 +46,7 @@ Routes:
     "controllerMethod": "createPasswordResetToken = applicationController(\n    async (req: Request<CreatePasswordResetTokenParams>, res: Response) => {\n      const passwordResetToken =\n        await PasswordResetTokenService.createPasswordResetToken({\n          username: req.body.username,\n        });\n\n      const passwordResetTokenJSON =\n        serializePasswordResetTokenAsJSON(passwordResetToken);\n\n      res.status(HttpStatusCodes.CREATED).send(passwordResetTokenJSON);\n    },\n  );",
     "responseObjectTypeDefinition": "export class PasswordResetToken {\n  id: string;\n\n  account: string;\n\n  expiresAt: Date;\n\n  isExpired: boolean;\n\n  token: string;\n\n  isUsed: boolean;\n}",
     "serializerMethod": "export const serializePasswordResetTokenAsJSON = (\n  passwordResetToken: PasswordResetToken,\n): unknown => ({\n  id: passwordResetToken.id,\n  account: passwordResetToken.account,\n  expiresAt: passwordResetToken.expiresAt,\n  token: passwordResetToken.token,\n  isUsed: passwordResetToken.isUsed,\n  isExpired: passwordResetToken.isExpired,\n});"
-  }
-]
-Server Root: /Users/gkv/repos/jtc/boilerplate-mern/src/apps/backend/modules/task
-Routes:
-[
+  },
   {
     "method": "POST",
     "rootRouterPath": "/tasks/",

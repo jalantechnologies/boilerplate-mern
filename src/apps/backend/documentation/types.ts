@@ -9,6 +9,12 @@ export type HttpRoute = {
   routerPath: string;
 };
 
+export type HttpRouteWithDetails = HttpRoute & {
+  controllerMethod: string;
+  responseObjectTypeDefinition: string;
+  serializerMethod: string;
+};
+
 export enum DocumentationErrorCode {
   ERROR_GENERATING_DOCUMENTATION = 'DOCUMENTATION_ERR_01',
 }
