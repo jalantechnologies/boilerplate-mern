@@ -20,13 +20,26 @@ export default class DocumentationService {
     apiMicroservices.forEach((server) => {
       const routes = expressListRoutes(server.serverInstance.server);
       documentationContent += `Server Root: ${server.serverRootFolderPath}\n`;
-      const routesWithControllerMethods = routes.map((route) => ({
-        ...route,
-        controllerMethod: this.getControllerMethodCode(
+      const routesWithControllerMethods = routes.map((route) => {
+        const controllerMethod = this.getControllerMethodCode(
           route,
           server.serverRootFolderPath,
-        ),
-      }));
+        );
+        const serializerMethod = this.getSerializerMethodCode(
+          server.serverRootFolderPath,
+          controllerMethod,
+        );
+        const responseObjectTypeDefinition = this.getParameterTypeDefinition(
+          server.serverRootFolderPath,
+          serializerMethod,
+        );
+        return {
+          ...route,
+          controllerMethod,
+          responseObjectTypeDefinition,
+          serializerMethod,
+        };
+      });
       const routesInfo = `Routes:\n${JSON.stringify(routesWithControllerMethods, null, 2)}\n`;
       documentationContent += routesInfo;
     });
@@ -40,47 +53,6 @@ export default class DocumentationService {
     } else {
       Logger.info('Documentation is disabled for the current environment');
     }
-  }
-
-  private static getControllerMethodName(
-    serverRootFolderPath: string,
-    route: HttpRoute,
-  ): Nullable<string> {
-    const restApiFolderPath = path.join(serverRootFolderPath, 'rest-api');
-
-    try {
-      const files = fs.readdirSync(restApiFolderPath);
-      const routerFileName = files.find((file) => file.endsWith('-router.ts'));
-
-      if (!routerFileName) {
-        Logger.error(
-          `No router file found in the rest-api folder at path: ${restApiFolderPath}`,
-        );
-        return null;
-      }
-
-      const routerFilePath = path.join(restApiFolderPath, routerFileName);
-      const routerFileContent = fs.readFileSync(routerFilePath, 'utf8');
-
-      const routeRegex = new RegExp(
-        `router\\.${route.method.toLowerCase()}\\(['"]${route.routerPath}['"],\\s*ctrl\\.(\\w+)\\)`,
-        'g',
-      );
-      const match = routeRegex.exec(routerFileContent);
-
-      if (match) {
-        const [, controllerMethod] = match;
-        return controllerMethod;
-      }
-
-      throw new Error(
-        `No matching route found for method: ${route.method.toUpperCase()} and path: ${route.routerPath}`,
-      );
-    } catch (error) {
-      Logger.error(`Error reading or writing router file: ${error.message}`);
-    }
-
-    return null;
   }
 
   private static getControllerMethodCode(
@@ -101,7 +73,7 @@ export default class DocumentationService {
       );
 
       if (!controllerFileName) {
-        Logger.error(
+        Logger.warn(
           `No controller file found in the rest-api folder at path: ${restApiFolderPath}`,
         );
         return null;
@@ -126,13 +98,14 @@ export default class DocumentationService {
           if (line.includes(`${controllerMethodName} =`)) {
             isCapturingCodebase = true;
             numberOfOpenBraces =
-              (line.match(/{/g) || []).length - (line.match(/}/g) || []).length;
+              (line.match(/[({]/g) || []).length -
+              (line.match(/[)}]/g) || []).length;
             methodCode += `${line}\n`;
           }
         } else {
           methodCode += `${line}\n`;
-          numberOfOpenBraces += (line.match(/{/g) || []).length;
-          numberOfOpenBraces -= (line.match(/}/g) || []).length;
+          numberOfOpenBraces += (line.match(/[({]/g) || []).length;
+          numberOfOpenBraces -= (line.match(/[)}]/g) || []).length;
 
           if (numberOfOpenBraces === 0) {
             shouldStopCapturingCodebase = true;
@@ -146,9 +119,157 @@ export default class DocumentationService {
 
       throw new Error(`No matching method found for: ${controllerMethodName}`);
     } catch (error) {
-      Logger.error(`Error reading controller file: ${error.message}`);
+      Logger.warn(`Error reading controller file: ${error.message}`);
     }
 
+    return null;
+  }
+
+  private static getSerializerMethodCode(
+    serverRootFolderPath: string,
+    controllerMethodCode: string,
+  ): Nullable<string> {
+    const serializeMethodName =
+      this.extractSerializeMethodName(controllerMethodCode);
+    if (!serializeMethodName) {
+      Logger.warn('No serialize method found in the controller method code');
+      return null;
+    }
+
+    const restApiFolderPath = path.join(serverRootFolderPath, 'rest-api');
+    const serializerFileName = fs
+      .readdirSync(restApiFolderPath)
+      .find((file) => file.endsWith('-serializer.ts'));
+
+    if (!serializerFileName) {
+      Logger.warn(
+        `No serializer file found in the rest-api folder at path: ${restApiFolderPath}`,
+      );
+      return null;
+    }
+
+    const serializerFilePath = path.join(restApiFolderPath, serializerFileName);
+    const serializerFileContent = fs.readFileSync(serializerFilePath, 'utf8');
+    const codebaseLines = serializerFileContent.split('\n');
+
+    let methodCode = '';
+    let isCapturingCodebase = false;
+    let numberOfOpenBraces = 0;
+    let shouldStopCapturingCodebase = false;
+
+    codebaseLines.forEach((line) => {
+      if (shouldStopCapturingCodebase) return;
+
+      if (!isCapturingCodebase) {
+        if (line.includes(`const ${serializeMethodName} =`)) {
+          isCapturingCodebase = true;
+          numberOfOpenBraces =
+            (line.match(/[({]/g) || []).length -
+            (line.match(/[)}]/g) || []).length;
+          methodCode += `${line}\n`;
+        }
+      } else {
+        methodCode += `${line}\n`;
+        numberOfOpenBraces += (line.match(/[({]/g) || []).length;
+        numberOfOpenBraces -= (line.match(/[)}]/g) || []).length;
+
+        if (numberOfOpenBraces === 0) {
+          shouldStopCapturingCodebase = true;
+        }
+      }
+    });
+
+    if (methodCode) {
+      return methodCode.trim();
+    }
+
+    Logger.warn(
+      `No matching serialize method found for: ${serializeMethodName}`,
+    );
+    return null;
+  }
+
+  private static getControllerMethodName(
+    serverRootFolderPath: string,
+    route: HttpRoute,
+  ): Nullable<string> {
+    const restApiFolderPath = path.join(serverRootFolderPath, 'rest-api');
+
+    try {
+      const files = fs.readdirSync(restApiFolderPath);
+      const routerFileName = files.find((file) => file.endsWith('-router.ts'));
+
+      if (!routerFileName) {
+        Logger.warn(
+          `No router file found in the rest-api folder at path: ${restApiFolderPath}`,
+        );
+        return null;
+      }
+
+      const routerFilePath = path.join(restApiFolderPath, routerFileName);
+      const routerFileContent = fs.readFileSync(routerFilePath, 'utf8');
+
+      const routeRegex = new RegExp(
+        `router\\.${route.method.toLowerCase()}\\(['"]${route.routerPath}['"],\\s*ctrl\\.(\\w+)\\)`,
+        'g',
+      );
+      const match = routeRegex.exec(routerFileContent);
+
+      if (match) {
+        const [, controllerMethod] = match;
+        return controllerMethod;
+      }
+
+      throw new Error(
+        `No matching route found for method: ${route.method.toUpperCase()} and path: ${route.routerPath}`,
+      );
+    } catch (error) {
+      Logger.warn(`Error reading or writing router file: ${error.message}`);
+    }
+
+    return null;
+  }
+
+  private static extractSerializeMethodName(
+    controllerMethodCode: string,
+  ): string | null {
+    const serializeMethodRegex = /serialize\w+AsJSON/g;
+    const match = serializeMethodRegex.exec(controllerMethodCode);
+    return match ? match[0] : null;
+  }
+
+  private static getParameterTypeDefinition(
+    serverRootFolderPath: string,
+    serializerMethodCode: string,
+  ): Nullable<string> {
+    const paramTypeRegex = /\(\s*(\w+)\s*:\s*([\w<>]+)\s*,?\s*\)/;
+    const match = paramTypeRegex.exec(serializerMethodCode);
+
+    if (!match) {
+      Logger.warn('No parameter type found in the serializer method code');
+      return null;
+    }
+
+    const [, , paramType] = match;
+
+    const typesFilePath = path.join(serverRootFolderPath, 'types.ts');
+    if (!fs.existsSync(typesFilePath)) {
+      Logger.warn(`No types file found at path: ${typesFilePath}`);
+      return null;
+    }
+
+    const typesFileContent = fs.readFileSync(typesFilePath, 'utf8');
+    const typeDefRegex = new RegExp(
+      `export\\s+class\\s+${paramType}\\s*{([^]*?)}`,
+      'm',
+    );
+    const typeDefMatch = typeDefRegex.exec(typesFileContent);
+
+    if (typeDefMatch) {
+      return `export class ${paramType} {${typeDefMatch[1]}}`.trim();
+    }
+
+    Logger.warn(`No matching type definition found for: ${paramType}`);
     return null;
   }
 }
