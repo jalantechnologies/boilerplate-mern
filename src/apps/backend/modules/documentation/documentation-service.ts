@@ -79,7 +79,7 @@ export default class DocumentationService {
       return null;
     }
 
-    return this.extractMethodCode(
+    return this.extractMethodCodeWithSignature(
       restApiFolderPath,
       '-controller.ts',
       `${controllerMethodName} =`,
@@ -98,72 +98,11 @@ export default class DocumentationService {
       return null;
     }
 
-    return this.extractMethodCode(
+    return this.extractMethodCodeWithSignature(
       path.join(serverRootFolderPath, 'rest-api'),
       '-serializer.ts',
       `const ${serializeMethodName} =`,
     );
-  }
-
-  private static extractMethodCode(
-    folderPath: string,
-    fileSuffix: string,
-    methodSignature: string,
-  ): Nullable<string> {
-    try {
-      const files = fs.readdirSync(folderPath);
-      const fileName = files.find((file) => file.endsWith(fileSuffix));
-
-      if (!fileName) {
-        Logger.warn(
-          `No file found with suffix ${fileSuffix} in folder: ${folderPath}`,
-        );
-        return null;
-      }
-
-      const filePath = path.join(folderPath, fileName);
-      const fileContent = fs.readFileSync(filePath, 'utf8');
-      const codebaseLines = fileContent.split('\n');
-
-      let methodCode = '';
-      let isCapturingCodebase = false;
-      let numberOfOpenBraces = 0;
-      let shouldStopCapturingCodebase = false;
-
-      codebaseLines.forEach((line) => {
-        if (shouldStopCapturingCodebase) return;
-
-        if (!isCapturingCodebase) {
-          if (line.includes(methodSignature)) {
-            isCapturingCodebase = true;
-            numberOfOpenBraces =
-              (line.match(/[({]/g) || []).length -
-              (line.match(/[)}]/g) || []).length;
-            methodCode += `${line}\n`;
-          }
-        } else {
-          methodCode += `${line}\n`;
-          numberOfOpenBraces += (line.match(/[({]/g) || []).length;
-          numberOfOpenBraces -= (line.match(/[)}]/g) || []).length;
-
-          if (numberOfOpenBraces === 0) {
-            shouldStopCapturingCodebase = true;
-          }
-        }
-      });
-
-      if (methodCode) {
-        return methodCode.trim();
-      }
-
-      throw new Error(
-        `No matching method found for signature: ${methodSignature}`,
-      );
-    } catch (error) {
-      Logger.warn(`Error reading file: ${error.message}`);
-    }
-
-    return null;
   }
 
   private static getControllerMethodName(
@@ -271,5 +210,89 @@ export default class DocumentationService {
   ): string {
     const trimmedRoutePath = routePath.replace(/(^\/)|(\/$)/g, '');
     return trimmedRoutePath ? `/${trimmedRoutePath}` : '';
+  }
+
+  private static extractMethodCodeWithSignature(
+    folderPath: string,
+    fileSuffix: string,
+    methodSignature: string,
+  ): Nullable<string> {
+    try {
+      const fileName = this.findFileWithSuffix(folderPath, fileSuffix);
+      if (!fileName) return null;
+
+      const fileContent = this.readFileContent(folderPath, fileName);
+      const methodCode = this.extractMethodFromContent(
+        fileContent,
+        methodSignature,
+      );
+
+      if (methodCode) {
+        return methodCode.trim();
+      }
+
+      throw new Error(
+        `No matching method found for signature: ${methodSignature}`,
+      );
+    } catch (error) {
+      Logger.warn(`Error reading file: ${error.message}`);
+      return null;
+    }
+  }
+
+  private static findFileWithSuffix(
+    folderPath: string,
+    fileSuffix: string,
+  ): Nullable<string> {
+    const files = fs.readdirSync(folderPath);
+    const fileName = files.find((file) => file.endsWith(fileSuffix));
+
+    if (!fileName) {
+      Logger.warn(
+        `No file found with suffix ${fileSuffix} in folder: ${folderPath}`,
+      );
+      return null;
+    }
+
+    return fileName;
+  }
+
+  private static readFileContent(folderPath: string, fileName: string): string {
+    const filePath = path.join(folderPath, fileName);
+    return fs.readFileSync(filePath, 'utf8');
+  }
+
+  private static extractMethodFromContent(
+    fileContent: string,
+    methodSignature: string,
+  ): string {
+    const codebaseLines = fileContent.split('\n');
+    let methodCode = '';
+    let isCapturingCodebase = false;
+    let numberOfOpenBraces = 0;
+
+    codebaseLines.some((line) => {
+      if (!isCapturingCodebase) {
+        if (line.includes(methodSignature)) {
+          isCapturingCodebase = true;
+          numberOfOpenBraces = this.countBraces(line);
+          methodCode += `${line}\n`;
+        }
+        return false;
+      }
+
+      methodCode += `${line}\n`;
+      numberOfOpenBraces += this.countBraces(line);
+
+      return numberOfOpenBraces === 0;
+    });
+
+    return methodCode;
+  }
+
+  private static countBraces(line: string): number {
+    const openBraces = (line.match(/[({]/g) || []).length;
+    const closeBraces = (line.match(/[)}]/g) || []).length;
+    return openBraces - closeBraces;
   }
 }
