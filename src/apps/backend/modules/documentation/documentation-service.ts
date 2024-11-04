@@ -219,7 +219,7 @@ export default class DocumentationService {
     serverRootFolderPath: string,
     serializerMethodCode: string,
   ): Nullable<string> {
-    const paramTypeRegex = /\(\s*(\w+)\s*:\s*([\w<>]+)\s*,?\s*\)/;
+    const paramTypeRegex = /\([\s]*(\w+)[\s]*:[\s]*([\w<>]+)(?:[\s]*,)?[\s]*\)/;
     const match = paramTypeRegex.exec(serializerMethodCode);
 
     if (!match) {
