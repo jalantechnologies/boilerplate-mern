@@ -38,17 +38,21 @@ export default class DocumentationService {
     apiMicroservices.forEach((server) => {
       const routes = expressListRoutes(server.serverInstance.server);
       const routesWithControllerMethods = routes.map((route) => {
-        const controllerMethod = this.getControllerMethodCode(
-          route,
+        const restApiFolderPath = path.join(
           server.serverRootFolderPath,
+          'rest-api',
+        );
+        const controllerMethod = this.getControllerMethodCode(
+          restApiFolderPath,
+          route,
         );
         const serializerMethod = this.getSerializerMethodCode(
-          server.serverRootFolderPath,
           controllerMethod,
+          restApiFolderPath,
         );
         const responseObjectTypeDefinition = this.getParameterTypeDefinition(
-          server.serverRootFolderPath,
           serializerMethod,
+          server.serverRootFolderPath,
         );
         return {
           controllerMethod,
@@ -65,12 +69,11 @@ export default class DocumentationService {
   }
 
   private static getControllerMethodCode(
+    restApiFolderPath: string,
     route: HttpRoute,
-    serverRootFolderPath: string,
   ): Nullable<string> {
-    const restApiFolderPath = path.join(serverRootFolderPath, 'rest-api');
     const controllerMethodName = this.getControllerMethodName(
-      serverRootFolderPath,
+      restApiFolderPath,
       route,
     );
 
@@ -80,15 +83,15 @@ export default class DocumentationService {
     }
 
     return this.extractMethodCodeWithSignature(
-      restApiFolderPath,
       '-controller.ts',
+      restApiFolderPath,
       `${controllerMethodName} =`,
     );
   }
 
   private static getSerializerMethodCode(
-    serverRootFolderPath: string,
     controllerMethodCode: string,
+    restApiFolderPath: string,
   ): Nullable<string> {
     const serializeMethodName =
       this.extractSerializeMethodName(controllerMethodCode);
@@ -99,18 +102,16 @@ export default class DocumentationService {
     }
 
     return this.extractMethodCodeWithSignature(
-      path.join(serverRootFolderPath, 'rest-api'),
       '-serializer.ts',
+      restApiFolderPath,
       `const ${serializeMethodName} =`,
     );
   }
 
   private static getControllerMethodName(
-    serverRootFolderPath: string,
+    restApiFolderPath: string,
     route: HttpRoute,
   ): Nullable<string> {
-    const restApiFolderPath = path.join(serverRootFolderPath, 'rest-api');
-
     try {
       const files = fs.readdirSync(restApiFolderPath);
       const routerFileName = files.find((file) => file.endsWith('-router.ts'));
@@ -155,8 +156,8 @@ export default class DocumentationService {
   }
 
   private static getParameterTypeDefinition(
-    serverRootFolderPath: string,
     serializerMethodCode: string,
+    serverRootFolderPath: string,
   ): Nullable<string> {
     const paramTypeRegex = /\([\s]*(\w+)[\s]*:[\s]*([\w<>]+)(?:[\s]*,)?[\s]*\)/;
     const match = paramTypeRegex.exec(serializerMethodCode);
@@ -213,15 +214,15 @@ export default class DocumentationService {
   }
 
   private static extractMethodCodeWithSignature(
-    folderPath: string,
     fileSuffix: string,
+    folderPath: string,
     methodSignature: string,
   ): Nullable<string> {
     try {
-      const fileName = this.findFileWithSuffix(folderPath, fileSuffix);
+      const fileName = this.findFileWithSuffix(fileSuffix, folderPath);
       if (!fileName) return null;
 
-      const fileContent = this.readFileContent(folderPath, fileName);
+      const fileContent = this.readFileContent(fileName, folderPath);
       const methodCode = this.extractMethodFromContent(
         fileContent,
         methodSignature,
@@ -241,8 +242,8 @@ export default class DocumentationService {
   }
 
   private static findFileWithSuffix(
-    folderPath: string,
     fileSuffix: string,
+    folderPath: string,
   ): Nullable<string> {
     const files = fs.readdirSync(folderPath);
     const fileName = files.find((file) => file.endsWith(fileSuffix));
@@ -257,7 +258,7 @@ export default class DocumentationService {
     return fileName;
   }
 
-  private static readFileContent(folderPath: string, fileName: string): string {
+  private static readFileContent(fileName: string, folderPath: string): string {
     const filePath = path.join(folderPath, fileName);
     return fs.readFileSync(filePath, 'utf8');
   }
