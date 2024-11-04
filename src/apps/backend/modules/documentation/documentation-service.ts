@@ -283,10 +283,25 @@ export default class DocumentationService {
   }
 
   private static getEndpoint(route: HttpRoute): string {
-    return `${App.baseAPIRoutePath}/${this.removeLeadingAndTrailingSlashes(route.rootRouterPath)}/${this.removeLeadingAndTrailingSlashes(route.routerPath)}`;
+    const baseApiRoutePath =
+      this.addLeadingSlashesIfNotExistsAndRemoveTrailingSlashes(
+        App.baseAPIRoutePath,
+      );
+    const rootRouterPath =
+      this.addLeadingSlashesIfNotExistsAndRemoveTrailingSlashes(
+        route.rootRouterPath,
+      );
+    const routerPath =
+      this.addLeadingSlashesIfNotExistsAndRemoveTrailingSlashes(
+        route.routerPath,
+      );
+    return `${baseApiRoutePath}${rootRouterPath}${routerPath}`;
   }
 
-  private static removeLeadingAndTrailingSlashes(routePath: string): string {
-    return routePath.replace(/^\/|\/$/g, '');
+  private static addLeadingSlashesIfNotExistsAndRemoveTrailingSlashes(
+    routePath: string,
+  ): string {
+    const trimmedRoutePath = routePath.replace(/(^\/)|(\/$)/g, '');
+    return trimmedRoutePath ? `/${trimmedRoutePath}` : '';
   }
 }
