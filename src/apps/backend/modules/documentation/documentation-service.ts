@@ -24,7 +24,7 @@ export default class DocumentationService {
       const routes = this.getAllApiRoutesWithDetails();
       const prompt = `${DOCUMENTATION_PROMPT}\n${JSON.stringify(routes, null, 2)}`;
       const markdownDocumentation =
-        await OpenAIService.generateDocumentation(prompt);
+        await OpenAIService.getChatCompletionResponse(prompt);
       fs.writeFileSync(documentationPath, markdownDocumentation, 'utf8');
     } else {
       Logger.info('Documentation is disabled for the current environment');

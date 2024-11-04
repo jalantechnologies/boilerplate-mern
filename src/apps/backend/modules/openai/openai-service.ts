@@ -2,9 +2,9 @@ import OpenAIAdapter from './rest-api/openai-adapter';
 import { Nullable } from './types';
 
 export default class OpenAIService {
-  public static async generateDocumentation(
+  public static async getChatCompletionResponse(
     prompt: string,
   ): Promise<Nullable<string>> {
-    return OpenAIAdapter.generateDocumentation(prompt);
+    return OpenAIAdapter.getChatCompletionResponse(prompt);
   }
 }
