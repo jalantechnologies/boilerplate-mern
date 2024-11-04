@@ -7,6 +7,7 @@ import expressWinston from 'express-winston';
 
 import { AccessTokenServer } from './modules/access-token';
 import { AccountServer } from './modules/account';
+import { ApplicationServer } from './modules/application';
 import { ConfigService } from './modules/config';
 import { Logger, CustomLoggerTransport } from './modules/logger';
 import { PasswordResetTokenServer } from './modules/password-reset-token';
@@ -48,13 +49,7 @@ export default class App {
   public static getAPIMicroservices(): APIMicroserviceService[] {
     const microservices: APIMicroserviceService[] = [];
 
-    // add your new server here to the list
-    const servers = [
-      new AccountServer(),
-      new AccessTokenServer(),
-      new PasswordResetTokenServer(),
-      new TaskServer(),
-    ];
+    const servers = this.getRestAPIServers();
 
     // Use the module cache to find file paths
     const moduleCache = require.cache;
@@ -79,6 +74,16 @@ export default class App {
     return microservices;
   }
 
+  private static getRestAPIServers(): ApplicationServer[] {
+    // add the new server here to the list
+    return [
+      new AccountServer(),
+      new AccessTokenServer(),
+      new PasswordResetTokenServer(),
+      new TaskServer(),
+    ];
+  }
+
   private static createRESTApiServer(): Application {
     const app: Application = express();
 
@@ -93,8 +98,8 @@ export default class App {
       );
     }
 
-    this.getAPIMicroservices().forEach((server) => {
-      app.use('/', server.serverInstance.server);
+    this.getRestAPIServers().forEach((server) => {
+      app.use('/', server.server);
     });
     return app;
   }
