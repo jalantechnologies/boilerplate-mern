@@ -1,4 +1,4 @@
-import { Logger } from '../modules/logger';
+import { Logger } from '../logger';
 
 import DocumentationService from './documentation-service';
 

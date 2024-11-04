@@ -1,9 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 
-import App from '../app';
-import { ConfigService } from '../modules/config';
-import { Logger } from '../modules/logger';
+import App from '../../app';
+import { ConfigService } from '../config';
+import { Logger } from '../logger';
 
 import expressListRoutes from './internals/express-list-routes';
 import OpenAIAdapter from './rest-api/openai-adapter';

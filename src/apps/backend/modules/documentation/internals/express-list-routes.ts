@@ -2,7 +2,7 @@ import { Application } from 'express';
 
 import { HttpRoute } from '../types';
 
-import { Stack } from './internal-types';
+import { Stack } from './types';
 
 const getPathFromRegex = (regexp: RegExp): string =>
   regexp
