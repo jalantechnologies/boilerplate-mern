@@ -2,6 +2,7 @@ import axios, { AxiosInstance, AxiosResponse } from 'axios';
 
 import { ConfigService } from '../../config';
 import { Logger } from '../../logger';
+import { Nullable } from '../types';
 
 export default class OpenAIAdapter {
   private static apiUrl = 'https://api.openai.com/v1/chat/completions';
@@ -14,13 +15,17 @@ export default class OpenAIAdapter {
     },
   });
 
-  static async generateDocumentation(prompt: string): Promise<string> {
+  static async generateDocumentation(
+    prompt: string,
+  ): Promise<Nullable<string>> {
     try {
       const response: AxiosResponse = await OpenAIAdapter.apiClient.post('', {
         model: 'gpt-4o-mini',
         messages: [
-          { role: 'system', content: 'You are a helpful assistant.' },
-          { role: 'user', content: prompt },
+          {
+            role: 'user',
+            content: prompt,
+          },
         ],
         temperature: 0.2,
       });

@@ -4,9 +4,9 @@ import path from 'path';
 import App from '../../app';
 import { ConfigService } from '../config';
 import { Logger } from '../logger';
+import { OpenAIService } from '../openai';
 
 import expressListRoutes from './internals/express-list-routes';
-import OpenAIAdapter from './rest-api/openai-adapter';
 import { HttpRouteWithDetails, HttpRoute, Nullable } from './types';
 
 export default class DocumentationService {
@@ -23,7 +23,7 @@ export default class DocumentationService {
       const routes = this.getAllApiRoutesWithDetails();
       const prompt = `Generate a comprehensive API documentation in a human readable format, for the following routes: ${JSON.stringify(routes, null, 2)}. And return the documentation as a markdown file, without any additional text or comments like adding \`\`\`markdown at the beginning or at the end. Also please provide the response object in simplified JSON format, without any typescript code or comments.`;
       const markdownDocumentation =
-        await OpenAIAdapter.generateDocumentation(prompt);
+        await OpenAIService.generateDocumentation(prompt);
       fs.writeFileSync(documentationPath, markdownDocumentation, 'utf8');
     } else {
       Logger.info('Documentation is disabled for the current environment');
