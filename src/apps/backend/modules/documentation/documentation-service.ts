@@ -25,12 +25,6 @@ export default class DocumentationService {
       const markdownDocumentation =
         await OpenAIAdapter.generateDocumentation(prompt);
       fs.writeFileSync(documentationPath, markdownDocumentation, 'utf8');
-      // TODO: Remove this, as this is only for debugging purposes
-      fs.writeFileSync(
-        './routes-sample-log.json',
-        JSON.stringify(routes, null, 2),
-        'utf8',
-      );
     } else {
       Logger.info('Documentation is disabled for the current environment');
     }
