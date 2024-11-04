@@ -3,203 +3,251 @@
 ## Accounts
 
 ### Create Account
-- **Endpoint:** `/api/accounts/`
-- **Method:** `POST`
-- **Request Body:**
-  - `firstName`: string
-  - `lastName`: string
-  - `password`: string (required if `username` is provided)
-  - `username`: string (required if `password` is provided)
-  - `phoneNumber`: object (required if `username` and `password` are not provided)
-    - `countryCode`: string
-    - `phoneNumber`: string
+- **Description**: Creates a new account using either username and password or phone number.
+- **Endpoint**: `/api/accounts`
+- **HTTP Method**: `POST`
 
-- **Response:**
-  - **Status Code:** 201 Created
-  - **Response Body:**
-    ```json
-    {
-      "id": "string",
-      "phoneNumber": {
-        "countryCode": "string",
-        "phoneNumber": "string"
-      },
-      "firstName": "string",
-      "lastName": "string",
-      "username": "string"
-    }
-    ```
+#### Request Body Parameters
+- **By Username and Password**
+  - `firstName` (string, required): The first name of the account holder.
+  - `lastName` (string, required): The last name of the account holder.
+  - `username` (string, required): The username for the account.
+  - `password` (string, required): The password for the account.
+
+- **By Phone Number**
+  - `phoneNumber` (object, required):
+    - `countryCode` (string, required): The country code of the phone number.
+    - `phoneNumber` (string, required): The phone number.
+
+#### Response
+- **Status Code**: `201 Created`
+- **Response Body**:
+```json
+{
+  "id": "string",
+  "phoneNumber": {
+    "countryCode": "string",
+    "phoneNumber": "string"
+  },
+  "firstName": "string",
+  "lastName": "string",
+  "username": "string"
+}
+```
+---
 
 ### Update Account
-- **Endpoint:** `/api/accounts/:accountId`
-- **Method:** `PATCH`
-- **Request Body:**
-  - `firstName`: string (optional)
-  - `lastName`: string (optional)
-  - `newPassword`: string (required if `token` is provided)
-  - `token`: string (required if `newPassword` is provided)
+- **Description**: Updates account details or resets the account password.
+- **Endpoint**: `/api/accounts/:accountId`
+- **HTTP Method**: `PATCH`
 
-- **Response:**
-  - **Status Code:** 200 OK
-  - **Response Body:**
-    ```json
-    {
-      "id": "string",
-      "phoneNumber": {
-        "countryCode": "string",
-        "phoneNumber": "string"
-      },
-      "firstName": "string",
-      "lastName": "string",
-      "username": "string"
-    }
-    ```
+#### Request Body Parameters
+- **Update Account Details**
+  - `firstName` (string, optional): The new first name of the account holder.
+  - `lastName` (string, optional): The new last name of the account holder.
+
+- **Reset Password**
+  - `newPassword` (string, required): The new password for the account.
+  - `token` (string, required): The token for password reset.
+
+#### Response
+- **Status Code**: `200 OK`
+- **Response Body**:
+```json
+{
+  "id": "string",
+  "phoneNumber": {
+    "countryCode": "string",
+    "phoneNumber": "string"
+  },
+  "firstName": "string",
+  "lastName": "string",
+  "username": "string"
+}
+```
+---
 
 ### Delete Account
-- **Endpoint:** `/api/accounts/:accountId`
-- **Method:** `DELETE`
-- **Response:**
-  - **Status Code:** 204 No Content
+- **Description**: Deletes an account by its ID.
+- **Endpoint**: `/api/accounts/:accountId`
+- **HTTP Method**: `DELETE`
 
+#### Response
+- **Status Code**: `204 No Content`
+- **Response Body**: None
+---
+  
 ### Get Account by ID
-- **Endpoint:** `/api/accounts/:accountId`
-- **Method:** `GET`
-- **Response:**
-  - **Status Code:** 200 OK
-  - **Response Body:**
-    ```json
-    {
-      "id": "string",
-      "phoneNumber": {
-        "countryCode": "string",
-        "phoneNumber": "string"
-      },
-      "firstName": "string",
-      "lastName": "string",
-      "username": "string"
-    }
-    ```
+- **Description**: Retrieves account details by account ID.
+- **Endpoint**: `/api/accounts/:accountId`
+- **HTTP Method**: `GET`
+
+#### Response
+- **Status Code**: `200 OK`
+- **Response Body**:
+```json
+{
+  "id": "string",
+  "phoneNumber": {
+    "countryCode": "string",
+    "phoneNumber": "string"
+  },
+  "firstName": "string",
+  "lastName": "string",
+  "username": "string"
+}
+```
+---
 
 ## Access Tokens
 
 ### Create Access Token
-- **Endpoint:** `/api/access-tokens/`
-- **Method:** `POST`
-- **Request Body:**
-  - `username`: string (required if `password` is provided)
-  - `password`: string (required if `username` is provided)
-  - `phoneNumber`: object (required if `otpCode` is provided)
-    - `countryCode`: string
-    - `phoneNumber`: string
-  - `otpCode`: string (required if `phoneNumber` is provided)
+- **Description**: Generates an access token using either username and password or phone number with OTP.
+- **Endpoint**: `/api/access-tokens`
+- **HTTP Method**: `POST`
 
-- **Response:**
-  - **Status Code:** 200 OK
-  - **Response Body:**
-    ```json
-    {
-      "token": "string",
-      "accountId": "string",
-      "expiresAt": "date"
-    }
-    ```
+#### Request Body Parameters
+- **By Username and Password**
+  - `username` (string, required): The username for authentication.
+  - `password` (string, required): The password for authentication.
+
+- **By Phone Number and OTP**
+  - `phoneNumber` (object, required):
+    - `countryCode` (string, required): The country code of the phone number.
+    - `phoneNumber` (string, required): The phone number.
+  - `otpCode` (string, required): The OTP code sent to the phone number.
+
+#### Response
+- **Status Code**: `200 OK`
+- **Response Body**:
+```json
+{
+  "token": "string",
+  "accountId": "string",
+  "expiresAt": "Date"
+}
+```
+---
 
 ## Password Reset Tokens
 
 ### Create Password Reset Token
-- **Endpoint:** `/api/password-reset-tokens`
-- **Method:** `POST`
-- **Request Body:**
-  - `username`: string
+- **Description**: Creates a password reset token for a user.
+- **Endpoint**: `/api/password-reset-tokens`
+- **HTTP Method**: `POST`
 
-- **Response:**
-  - **Status Code:** 201 Created
-  - **Response Body:**
-    ```json
-    {
-      "id": "string",
-      "account": "string",
-      "expiresAt": "date",
-      "isExpired": false,
-      "token": "string",
-      "isUsed": false
-    }
-    ```
+#### Request Body Parameters
+- `username` (string, required): The username for which to create the reset token.
+
+#### Response
+- **Status Code**: `201 Created`
+- **Response Body**:
+```json
+{
+  "id": "string",
+  "account": "string",
+  "expiresAt": "Date",
+  "isExpired": false,
+  "token": "string",
+  "isUsed": false
+}
+```
+---
 
 ## Tasks
 
 ### Create Task
-- **Endpoint:** `/api/tasks/`
-- **Method:** `POST`
-- **Request Body:**
-  - `description`: string
-  - `title`: string
+- **Description**: Creates a new task for the authenticated account.
+- **Endpoint**: `/api/tasks`
+- **HTTP Method**: `POST`
 
-- **Response:**
-  - **Status Code:** 201 Created
-  - **Response Body:**
-    ```json
-    {
-      "id": "string",
-      "account": "string",
-      "description": "string",
-      "title": "string"
-    }
-    ```
+#### Request Body Parameters
+- `title` (string, required): The title of the task.
+- `description` (string, required): The description of the task.
+
+#### Response
+- **Status Code**: `201 Created`
+- **Response Body**:
+```json
+{
+  "id": "string",
+  "account": "string",
+  "description": "string",
+  "title": "string"
+}
+```
+---
 
 ### Get Tasks
-- **Endpoint:** `/api/tasks/`
-- **Method:** `GET`
-- **Response:**
-  - **Status Code:** 200 OK
-  - **Response Body:**
-    ```json
-    [
-      {
-        "id": "string",
-        "account": "string",
-        "description": "string",
-        "title": "string"
-      }
-    ]
-    ```
+- **Description**: Retrieves all tasks for the authenticated account with pagination.
+- **Endpoint**: `/api/tasks`
+- **HTTP Method**: `GET`
+
+#### Query Parameters
+- `page` (integer, optional): The page number for pagination.
+- `size` (integer, optional): The number of tasks per page.
+
+#### Response
+- **Status Code**: `200 OK`
+- **Response Body**:
+```json
+[
+  {
+    "id": "string",
+    "account": "string",
+    "description": "string",
+    "title": "string"
+  }
+]
+```
+---
 
 ### Get Task
-- **Endpoint:** `/api/tasks/:id`
-- **Method:** `GET`
-- **Response:**
-  - **Status Code:** 200 OK
-  - **Response Body:**
-    ```json
-    {
-      "id": "string",
-      "account": "string",
-      "description": "string",
-      "title": "string"
-    }
-    ```
+- **Description**: Retrieves a specific task by its ID for the authenticated account.
+- **Endpoint**: `/api/tasks/:id`
+- **HTTP Method**: `GET`
+
+#### Response
+- **Status Code**: `200 OK`
+- **Response Body**:
+```json
+{
+  "id": "string",
+  "account": "string",
+  "description": "string",
+  "title": "string"
+}
+```
+---
 
 ### Update Task
-- **Endpoint:** `/api/tasks/:id`
-- **Method:** `PATCH`
-- **Request Body:**
-  - `description`: string
-  - `title`: string
+- **Description**: Updates an existing task by its ID for the authenticated account.
+- **Endpoint**: `/api/tasks/:id`
+- **HTTP Method**: `PATCH`
 
-- **Response:**
-  - **Status Code:** 200 OK
-  - **Response Body:**
-    ```json
-    {
-      "id": "string",
-      "account": "string",
-      "description": "string",
-      "title": "string"
-    }
-    ```
+#### Request Body Parameters
+- `title` (string, optional): The new title of the task.
+- `description` (string, optional): The new description of the task.
+
+#### Response
+- **Status Code**: `200 OK`
+- **Response Body**:
+```json
+{
+  "id": "string",
+  "account": "string",
+  "description": "string",
+  "title": "string"
+}
+```
+---
 
 ### Delete Task
-- **Endpoint:** `/api/tasks/:id`
-- **Method:** `DELETE`
-- **Response:**
-  - **Status Code:** 204 No Content
+- **Description**: Deletes a task by its ID for the authenticated account.
+- **Endpoint**: `/api/tasks/:id`
+- **HTTP Method**: `DELETE`
+
+#### Response
+- **Status Code**: `204 No Content`
+- **Response Body**: None
+---

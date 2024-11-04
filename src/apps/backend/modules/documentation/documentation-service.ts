@@ -6,7 +6,7 @@ import { ConfigService } from '../config';
 import { Logger } from '../logger';
 import { OpenAIService } from '../openai';
 
-import { DOCUMENTATION_PROMPT } from './internals/constants';
+import { DOCUMENTATION_GENERATION_PROMPT } from './internals/constants';
 import expressListRoutes from './internals/express-list-routes';
 import { HttpRouteWithDetails, HttpRoute, Nullable } from './types';
 
@@ -22,7 +22,7 @@ export default class DocumentationService {
         '../../../../assets/documentation/index.md',
       );
       const routes = this.getAllApiRoutesWithDetails();
-      const prompt = `${DOCUMENTATION_PROMPT}\n${JSON.stringify(routes, null, 2)}`;
+      const prompt = `${DOCUMENTATION_GENERATION_PROMPT}\n${JSON.stringify(routes, null, 2)}`;
       const markdownDocumentation =
         await OpenAIService.getChatCompletionResponse(prompt);
       fs.writeFileSync(documentationPath, markdownDocumentation, 'utf8');

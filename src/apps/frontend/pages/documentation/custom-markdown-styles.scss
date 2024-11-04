@@ -10,4 +10,19 @@
     background-color: #f6f8fa; /* Light background for code blocks*/
     color: #24292e;
   }
+
+  h1 {
+    border-bottom: 1.5px solid #000000;
+  }
+
+  h2 {
+    border-bottom: 1px solid #000000;
+  }
+
+  hr {
+    background-color: #ffffff;
+    border: none;
+    border-top: 2px dotted #5d5d5d;
+    height: 0.5px;
+  }
 }
