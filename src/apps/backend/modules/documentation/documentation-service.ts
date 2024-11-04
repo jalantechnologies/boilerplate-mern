@@ -69,31 +69,61 @@ export default class DocumentationService {
     serverRootFolderPath: string,
   ): Nullable<string> {
     const restApiFolderPath = path.join(serverRootFolderPath, 'rest-api');
+    const controllerMethodName = this.getControllerMethodName(
+      serverRootFolderPath,
+      route,
+    );
 
+    if (!controllerMethodName) {
+      Logger.warn('Controller method name could not be determined');
+      return null;
+    }
+
+    return this.extractMethodCode(
+      restApiFolderPath,
+      '-controller.ts',
+      `${controllerMethodName} =`,
+    );
+  }
+
+  private static getSerializerMethodCode(
+    serverRootFolderPath: string,
+    controllerMethodCode: string,
+  ): Nullable<string> {
+    const serializeMethodName =
+      this.extractSerializeMethodName(controllerMethodCode);
+
+    if (!serializeMethodName) {
+      Logger.warn('No serialize method found in the controller method code');
+      return null;
+    }
+
+    return this.extractMethodCode(
+      path.join(serverRootFolderPath, 'rest-api'),
+      '-serializer.ts',
+      `const ${serializeMethodName} =`,
+    );
+  }
+
+  private static extractMethodCode(
+    folderPath: string,
+    fileSuffix: string,
+    methodSignature: string,
+  ): Nullable<string> {
     try {
-      const files = fs.readdirSync(restApiFolderPath);
-      const controllerFileName = files.find((file) =>
-        file.endsWith('-controller.ts'),
-      );
+      const files = fs.readdirSync(folderPath);
+      const fileName = files.find((file) => file.endsWith(fileSuffix));
 
-      const controllerMethodName = this.getControllerMethodName(
-        serverRootFolderPath,
-        route,
-      );
-
-      if (!controllerFileName) {
+      if (!fileName) {
         Logger.warn(
-          `No controller file found in the rest-api folder at path: ${restApiFolderPath}`,
+          `No file found with suffix ${fileSuffix} in folder: ${folderPath}`,
         );
         return null;
       }
 
-      const controllerFilePath = path.join(
-        restApiFolderPath,
-        controllerFileName,
-      );
-      const controllerFileContent = fs.readFileSync(controllerFilePath, 'utf8');
-      const codebaseLines = controllerFileContent.split('\n');
+      const filePath = path.join(folderPath, fileName);
+      const fileContent = fs.readFileSync(filePath, 'utf8');
+      const codebaseLines = fileContent.split('\n');
 
       let methodCode = '';
       let isCapturingCodebase = false;
@@ -104,7 +134,7 @@ export default class DocumentationService {
         if (shouldStopCapturingCodebase) return;
 
         if (!isCapturingCodebase) {
-          if (line.includes(`${controllerMethodName} =`)) {
+          if (line.includes(methodSignature)) {
             isCapturingCodebase = true;
             numberOfOpenBraces =
               (line.match(/[({]/g) || []).length -
@@ -126,75 +156,13 @@ export default class DocumentationService {
         return methodCode.trim();
       }
 
-      throw new Error(`No matching method found for: ${controllerMethodName}`);
-    } catch (error) {
-      Logger.warn(`Error reading controller file: ${error.message}`);
-    }
-
-    return null;
-  }
-
-  private static getSerializerMethodCode(
-    serverRootFolderPath: string,
-    controllerMethodCode: string,
-  ): Nullable<string> {
-    const serializeMethodName =
-      this.extractSerializeMethodName(controllerMethodCode);
-    if (!serializeMethodName) {
-      Logger.warn('No serialize method found in the controller method code');
-      return null;
-    }
-
-    const restApiFolderPath = path.join(serverRootFolderPath, 'rest-api');
-    const serializerFileName = fs
-      .readdirSync(restApiFolderPath)
-      .find((file) => file.endsWith('-serializer.ts'));
-
-    if (!serializerFileName) {
-      Logger.warn(
-        `No serializer file found in the rest-api folder at path: ${restApiFolderPath}`,
+      throw new Error(
+        `No matching method found for signature: ${methodSignature}`,
       );
-      return null;
+    } catch (error) {
+      Logger.warn(`Error reading file: ${error.message}`);
     }
 
-    const serializerFilePath = path.join(restApiFolderPath, serializerFileName);
-    const serializerFileContent = fs.readFileSync(serializerFilePath, 'utf8');
-    const codebaseLines = serializerFileContent.split('\n');
-
-    let methodCode = '';
-    let isCapturingCodebase = false;
-    let numberOfOpenBraces = 0;
-    let shouldStopCapturingCodebase = false;
-
-    codebaseLines.forEach((line) => {
-      if (shouldStopCapturingCodebase) return;
-
-      if (!isCapturingCodebase) {
-        if (line.includes(`const ${serializeMethodName} =`)) {
-          isCapturingCodebase = true;
-          numberOfOpenBraces =
-            (line.match(/[({]/g) || []).length -
-            (line.match(/[)}]/g) || []).length;
-          methodCode += `${line}\n`;
-        }
-      } else {
-        methodCode += `${line}\n`;
-        numberOfOpenBraces += (line.match(/[({]/g) || []).length;
-        numberOfOpenBraces -= (line.match(/[)}]/g) || []).length;
-
-        if (numberOfOpenBraces === 0) {
-          shouldStopCapturingCodebase = true;
-        }
-      }
-    });
-
-    if (methodCode) {
-      return methodCode.trim();
-    }
-
-    Logger.warn(
-      `No matching serialize method found for: ${serializeMethodName}`,
-    );
     return null;
   }
 
