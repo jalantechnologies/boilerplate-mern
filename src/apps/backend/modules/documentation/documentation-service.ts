@@ -18,7 +18,7 @@ export default class DocumentationService {
     if (isDocumentationEnabled) {
       const documentationPath = path.join(
         __dirname,
-        '../../../assets/documentation/index.md',
+        '../../../../assets/documentation/index.md',
       );
       const routes = this.getAllApiRoutesWithDetails();
       const prompt = `Generate a comprehensive API documentation in a human readable format, for the following routes: ${JSON.stringify(routes, null, 2)}. And return the documentation as a markdown file, without any additional text or comments like adding \`\`\`markdown at the beginning or at the end. Also please provide the response object in simplified JSON format, without any typescript code or comments.`;
