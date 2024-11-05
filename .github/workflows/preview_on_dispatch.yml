@@ -4,6 +4,7 @@ on: workflow_dispatch
 
 jobs:
   preview:
+    runs-on: ubuntu-latest
     env:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
     uses: jalantechnologies/github-ci/.github/workflows/ci.yml@v2.4
