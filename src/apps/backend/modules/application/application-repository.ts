@@ -7,7 +7,9 @@ const getDatabaseConnection = (): mongoose.Connection => {
   const mongoConnCaching: boolean = ConfigService.getValue(
     'mongoDb.connCaching',
   );
-  const mongoURI: string = ConfigService.getValue('mongoDb.uri');
+  const mongoURI: string =
+    ConfigService.hasValue('mongoDb.uri') &&
+    ConfigService.getValue('mongoDb.uri');
 
   if (mongoConnCaching) {
     mongoose.connect(mongoURI).catch((err: Error) => {

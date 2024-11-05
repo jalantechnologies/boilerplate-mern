@@ -7,7 +7,9 @@ import WinstonLogger from './winston-logger';
 export default class DatadogLogger extends WinstonLogger {
   constructor() {
     const DD_REGION = ConfigService.getValue<string>('datadog.region');
-    const DD_API_KEY = ConfigService.getValue<string>('datadog.api_key');
+    const DD_API_KEY =
+      ConfigService.getValue('datadog.api_key') &&
+      ConfigService.getValue<string>('datadog.api_key');
     const DD_APP_NAME = ConfigService.getValue<string>('datadog.app_name');
 
     const transport = new winston.transports.Http({
