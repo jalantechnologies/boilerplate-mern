@@ -21,6 +21,10 @@ COPY . /opt/app
 ARG NODE_ENV
 ARG NODE_CONFIG_ENV
 
+ENV OPENAI_API_KEY=${OPENAI_API_KEY}
+
+RUN npm run generate-documentation
+
 RUN npm run build
 
 CMD [ "npm", "start" ]

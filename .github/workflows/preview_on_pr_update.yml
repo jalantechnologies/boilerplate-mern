@@ -20,6 +20,7 @@ jobs:
       branch: ${{ github.event.pull_request.head.ref }}
       build_args: |
         NODE_CONFIG_ENV=preview
+        OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
       checks: "['npm:lint', 'compose:test', 'compose:e2e']"
       docker_registry: ${{ vars.DOCKER_REGISTRY }}
       docker_username: ${{ vars.DOCKER_USERNAME }}
