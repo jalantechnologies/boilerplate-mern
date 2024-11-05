@@ -21,7 +21,10 @@ COPY . /opt/app
 ARG NODE_ENV
 ARG NODE_CONFIG_ENV
 
-RUN npm run generate-documentation
+# Mount secret during documentation generation
+RUN --mount=type=secret,id=openai_key \
+    export OPENAI_API_KEY=$(cat /run/secrets/openai_key) && \
+    npm run generate-documentation
 
 RUN npm run build
 
