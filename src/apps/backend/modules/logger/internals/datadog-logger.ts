@@ -8,7 +8,7 @@ export default class DatadogLogger extends WinstonLogger {
   constructor() {
     const DD_REGION = ConfigService.getValue<string>('datadog.region');
     const DD_API_KEY =
-      ConfigService.getValue('datadog.api_key') &&
+      ConfigService.hasValue('datadog.api_key') &&
       ConfigService.getValue<string>('datadog.api_key');
     const DD_APP_NAME = ConfigService.getValue<string>('datadog.app_name');
 
