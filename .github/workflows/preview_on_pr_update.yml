@@ -6,6 +6,8 @@ on:
 
 jobs:
   preview:
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
     # only run when updating an 'Open' PR
     if: github.event.pull_request.state == 'open'
     uses: jalantechnologies/github-ci/.github/workflows/ci.yml@v2.4
@@ -20,7 +22,6 @@ jobs:
       branch: ${{ github.event.pull_request.head.ref }}
       build_args: |
         NODE_CONFIG_ENV=preview
-        OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
       checks: "['npm:lint', 'compose:test', 'compose:e2e']"
       docker_registry: ${{ vars.DOCKER_REGISTRY }}
       docker_username: ${{ vars.DOCKER_USERNAME }}

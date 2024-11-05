@@ -4,6 +4,8 @@ on: workflow_dispatch
 
 jobs:
   preview:
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
     uses: jalantechnologies/github-ci/.github/workflows/ci.yml@v2.4
     concurrency:
       group: ci-preview-${{ github.event.ref }}
@@ -15,7 +17,6 @@ jobs:
       branch: ${{ github.event.ref }}
       build_args: |
         NODE_CONFIG_ENV=preview
-        OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
       docker_registry: ${{ vars.DOCKER_REGISTRY }}
       docker_username: ${{ vars.DOCKER_USERNAME }}
       do_cluster_id: ${{ vars.DO_CLUSTER_ID }}
