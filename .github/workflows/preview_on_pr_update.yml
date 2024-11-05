@@ -30,5 +30,4 @@ jobs:
       docker_password: ${{ secrets.DOCKER_PASSWORD }}
       doppler_token: ${{ secrets.DOPPLER_PREVIEW_TOKEN }}
       do_access_token: ${{ secrets.DO_ACCESS_TOKEN }}
-      openai_key: ${{ secrets.OPENAI_API_KEY }}
       sonar_token: ${{ secrets.SONAR_TOKEN }}
