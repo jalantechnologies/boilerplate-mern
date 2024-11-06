@@ -1,67 +1,69 @@
 import fs from 'fs';
 import path from 'path';
 
-import App from '../../app';
 import { ConfigService } from '../config';
+import { HttpRoute } from '../list-routes';
 import { Logger } from '../logger';
 import { OpenAIService } from '../openai';
 
 import { DOCUMENTATION_GENERATION_PROMPT } from './internals/constants';
-import expressListRoutes from './internals/express-list-routes';
-import { HttpRouteWithDetails, HttpRoute, Nullable } from './types';
+import {
+  HttpRouteWithControllerAndSerializerDetails,
+  Nullable,
+  DocumentationDisabledError,
+  MarkdownDocumentation,
+  HttpRouteWithRootFolderPath,
+} from './types';
 
 export default class DocumentationService {
-  public static async generateDocumentation(): Promise<void> {
+  public static expressRoutesList: HttpRouteWithRootFolderPath[] = [];
+
+  public static async getDocumentation(): Promise<MarkdownDocumentation> {
     const isDocumentationEnabled = ConfigService.getValue<boolean>(
       'documentation.enabled',
     );
 
-    if (isDocumentationEnabled) {
-      const documentationPath = path.join(
-        __dirname,
-        '../../../../assets/documentation/index.md',
-      );
-      const routes = this.getAllApiRoutesWithDetails();
-      const prompt = `${DOCUMENTATION_GENERATION_PROMPT}\n${JSON.stringify(routes, null, 2)}`;
-      const markdownDocumentation =
-        await OpenAIService.getChatCompletionResponse(prompt);
-      fs.writeFileSync(documentationPath, markdownDocumentation, 'utf8');
-    } else {
-      Logger.info('Documentation is disabled for the current environment');
+    if (!isDocumentationEnabled) {
+      throw new DocumentationDisabledError();
     }
+
+    const routes = this.getRoutesWithControllerAndSerializerDetails();
+    const prompt = `${DOCUMENTATION_GENERATION_PROMPT}\n${JSON.stringify(routes, null, 2)}`;
+    return {
+      markdownDocumentation:
+        await OpenAIService.getChatCompletionResponse(prompt),
+    };
   }
 
-  private static getAllApiRoutesWithDetails(): HttpRouteWithDetails[] {
-    const apiMicroservices = App.getAPIMicroservices();
-    const routesList: HttpRouteWithDetails[] = [];
+  private static getRoutesWithControllerAndSerializerDetails(): HttpRouteWithControllerAndSerializerDetails[] {
+    const routesList: HttpRouteWithControllerAndSerializerDetails[] = [];
 
-    apiMicroservices.forEach((server) => {
-      const routes = expressListRoutes(server.serverInstance.server);
-      const routesWithControllerMethods = routes.map((route) => {
-        const restApiFolderPath = path.join(
-          server.serverRootFolderPath,
-          'rest-api',
-        );
-        const controllerMethod = this.getControllerMethodCode(
-          restApiFolderPath,
-          route,
-        );
-        const serializerMethod = this.getSerializerMethodCode(
-          controllerMethod,
-          restApiFolderPath,
-        );
-        const responseObjectTypeDefinition = this.getParameterTypeDefinition(
-          serializerMethod,
-          server.serverRootFolderPath,
-        );
-        return {
-          controllerMethod,
-          endpoint: this.getEndpoint(route),
-          method: route.method,
-          responseObjectTypeDefinition,
-          serializerMethod,
-        };
-      });
+    this.expressRoutesList.forEach((routeWithRootFolderPath) => {
+      const restApiFolderPath = path.join(
+        routeWithRootFolderPath.rootFolderPath,
+        'rest-api',
+      );
+      const routesWithControllerMethods = routeWithRootFolderPath.routes.map(
+        (route) => {
+          const controllerMethod = this.getControllerMethodCode(
+            restApiFolderPath,
+            route,
+          );
+          let serializerMethod: string;
+          if (route.method !== 'DELETE') {
+            serializerMethod = this.getSerializerMethodCode(
+              controllerMethod,
+              restApiFolderPath,
+            );
+          }
+          return {
+            controllerMethod,
+            endpoint: this.getEndpoint(route),
+            method: route.method,
+            serializerMethod,
+          };
+        },
+      );
       routesList.push(...routesWithControllerMethods);
     });
 
@@ -83,7 +85,7 @@ export default class DocumentationService {
     }
 
     return this.extractMethodCodeWithSignature(
-      '-controller.ts',
+      '-controller.js',
       restApiFolderPath,
       `${controllerMethodName} =`,
     );
@@ -102,7 +104,7 @@ export default class DocumentationService {
     }
 
     return this.extractMethodCodeWithSignature(
-      '-serializer.ts',
+      '-serializer.js',
       restApiFolderPath,
       `const ${serializeMethodName} =`,
     );
@@ -114,7 +116,7 @@ export default class DocumentationService {
   ): Nullable<string> {
     try {
       const files = fs.readdirSync(restApiFolderPath);
-      const routerFileName = files.find((file) => file.endsWith('-router.ts'));
+      const routerFileName = files.find((file) => file.endsWith('-router.js'));
 
       if (!routerFileName) {
         Logger.warn(
@@ -155,45 +157,10 @@ export default class DocumentationService {
     return match ? match[0] : null;
   }
 
-  private static getParameterTypeDefinition(
-    serializerMethodCode: string,
-    serverRootFolderPath: string,
-  ): Nullable<string> {
-    const paramTypeRegex = /\([\s]*(\w+)[\s]*:[\s]*([\w<>]+)(?:[\s]*,)?[\s]*\)/;
-    const match = paramTypeRegex.exec(serializerMethodCode);
-
-    if (!match) {
-      Logger.warn('No parameter type found in the serializer method code');
-      return null;
-    }
-
-    const [, , paramType] = match;
-
-    const typesFilePath = path.join(serverRootFolderPath, 'types.ts');
-    if (!fs.existsSync(typesFilePath)) {
-      Logger.warn(`No types file found at path: ${typesFilePath}`);
-      return null;
-    }
-
-    const typesFileContent = fs.readFileSync(typesFilePath, 'utf8');
-    const typeDefRegex = new RegExp(
-      `export\\s+class\\s+${paramType}\\s*{([^]*?)}`,
-      'm',
-    );
-    const typeDefMatch = typeDefRegex.exec(typesFileContent);
-
-    if (typeDefMatch) {
-      return `export class ${paramType} {${typeDefMatch[1]}}`.trim();
-    }
-
-    Logger.warn(`No matching type definition found for: ${paramType}`);
-    return null;
-  }
-
   private static getEndpoint(route: HttpRoute): string {
     const baseApiRoutePath =
       this.addLeadingSlashesIfNotExistsAndRemoveTrailingSlashes(
-        App.baseAPIRoutePath,
+        route.baseAPIRoutePath,
       );
     const rootRouterPath =
       this.addLeadingSlashesIfNotExistsAndRemoveTrailingSlashes(
