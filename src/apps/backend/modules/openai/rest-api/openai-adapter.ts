@@ -2,7 +2,7 @@ import axios, { AxiosInstance, AxiosResponse } from 'axios';
 
 import { ConfigService } from '../../config';
 import { Logger } from '../../logger';
-import { Nullable } from '../types';
+import { ErrorGettingChatCompletionResponse } from '../types';
 
 export default class OpenAIAdapter {
   private static apiUrl = 'https://api.openai.com/v1/chat/completions';
@@ -15,12 +15,12 @@ export default class OpenAIAdapter {
     },
   });
 
-  static async getChatCompletionResponse(
-    prompt: string,
-  ): Promise<Nullable<string>> {
+  private static model = 'gpt-4o-mini';
+
+  static async getChatCompletionResponse(prompt: string): Promise<string> {
     try {
       const response: AxiosResponse = await OpenAIAdapter.apiClient.post('', {
-        model: 'gpt-4o-mini',
+        model: OpenAIAdapter.model,
         messages: [
           {
             role: 'user',
@@ -33,10 +33,9 @@ export default class OpenAIAdapter {
       return response.data.choices[0].message.content as string;
     } catch (error) {
       Logger.error(
-        'Error getting chat completion response from OpenAI:',
-        error,
+        `Error getting chat completion response from OpenAI: ${error}`,
       );
-      return null;
+      throw new ErrorGettingChatCompletionResponse();
     }
   }
 }

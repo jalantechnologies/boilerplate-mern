@@ -2,8 +2,6 @@ import { ApplicationError } from '../application';
 import { HttpStatusCodes } from '../http';
 import { HttpRoute } from '../list-routes';
 
-export type Nullable<T> = T | null;
-
 export type HttpRouteWithRootFolderPath = {
   rootFolderPath: string;
   routes: HttpRoute[];
@@ -23,6 +21,7 @@ export type MarkdownDocumentation = {
 export enum DocumentationErrorCode {
   ERROR_GENERATING_DOCUMENTATION = 'DOCUMENTATION_ERR_01',
   DOCUMENTATION_DISABLED = 'DOCUMENTATION_ERR_02',
+  ERROR_READING_FILE = 'DOCUMENTATION_ERR_03',
 }
 
 export class DocumentationGenerationError extends ApplicationError {
@@ -41,5 +40,16 @@ export class DocumentationDisabledError extends ApplicationError {
   constructor() {
     super('Documentation is disabled for the current environment');
     this.code = DocumentationErrorCode.DOCUMENTATION_DISABLED;
+    this.httpStatusCode = HttpStatusCodes.SERVICE_UNAVAILABLE;
+  }
+}
+
+export class ErrorReadingFile extends ApplicationError {
+  code: DocumentationErrorCode;
+
+  constructor(message: string) {
+    super(message);
+    this.code = DocumentationErrorCode.ERROR_READING_FILE;
+    this.httpStatusCode = HttpStatusCodes.SERVER_ERROR;
   }
 }

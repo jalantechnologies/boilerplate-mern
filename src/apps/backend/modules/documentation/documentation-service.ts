@@ -3,16 +3,15 @@ import path from 'path';
 
 import { ConfigService } from '../config';
 import { HttpRoute } from '../list-routes';
-import { Logger } from '../logger';
 import { OpenAIService } from '../openai';
 
 import { DOCUMENTATION_GENERATION_PROMPT } from './internals/constants';
 import {
-  HttpRouteWithControllerAndSerializerDetails,
-  Nullable,
   DocumentationDisabledError,
-  MarkdownDocumentation,
+  ErrorReadingFile,
+  HttpRouteWithControllerAndSerializerDetails,
   HttpRouteWithRootFolderPath,
+  MarkdownDocumentation,
 } from './types';
 
 export default class DocumentationService {
@@ -73,15 +72,16 @@ export default class DocumentationService {
   private static getControllerMethodCode(
     restApiFolderPath: string,
     route: HttpRoute,
-  ): Nullable<string> {
+  ): string {
     const controllerMethodName = this.getControllerMethodName(
       restApiFolderPath,
       route,
     );
 
     if (!controllerMethodName) {
-      Logger.warn('Controller method name could not be determined');
-      return null;
+      throw new ErrorReadingFile(
+        'Controller method name could not be determined',
+      );
     }
 
     return this.extractMethodCodeWithSignature(
@@ -94,13 +94,14 @@ export default class DocumentationService {
   private static getSerializerMethodCode(
     controllerMethodCode: string,
     restApiFolderPath: string,
-  ): Nullable<string> {
+  ): string {
     const serializeMethodName =
       this.extractSerializeMethodName(controllerMethodCode);
 
     if (!serializeMethodName) {
-      Logger.warn('No serialize method found in the controller method code');
-      return null;
+      throw new ErrorReadingFile(
+        'No serialize method found in the controller method code',
+      );
     }
 
     return this.extractMethodCodeWithSignature(
@@ -113,16 +114,15 @@ export default class DocumentationService {
   private static getControllerMethodName(
     restApiFolderPath: string,
     route: HttpRoute,
-  ): Nullable<string> {
+  ): string {
     try {
       const files = fs.readdirSync(restApiFolderPath);
       const routerFileName = files.find((file) => file.endsWith('-router.js'));
 
       if (!routerFileName) {
-        Logger.warn(
+        throw new ErrorReadingFile(
           `No router file found in the rest-api folder at path: ${restApiFolderPath}`,
         );
-        return null;
       }
 
       const routerFilePath = path.join(restApiFolderPath, routerFileName);
@@ -139,14 +139,14 @@ export default class DocumentationService {
         return controllerMethod;
       }
 
-      throw new Error(
+      throw new ErrorReadingFile(
         `No matching route found for method: ${route.method.toUpperCase()} and path: ${route.routerPath}`,
       );
     } catch (error) {
-      Logger.warn(`Error reading or writing router file: ${error.message}`);
+      throw new ErrorReadingFile(
+        `Error reading or writing router file: ${error.message}`,
+      );
     }
-
-    return null;
   }
 
   private static extractSerializeMethodName(
@@ -184,7 +184,7 @@ export default class DocumentationService {
     fileSuffix: string,
     folderPath: string,
     methodSignature: string,
-  ): Nullable<string> {
+  ): string {
     try {
       const fileName = this.findFileWithSuffix(fileSuffix, folderPath);
       if (!fileName) return null;
@@ -199,27 +199,25 @@ export default class DocumentationService {
         return methodCode.trim();
       }
 
-      throw new Error(
+      throw new ErrorReadingFile(
         `No matching method found for signature: ${methodSignature}`,
       );
     } catch (error) {
-      Logger.warn(`Error reading file: ${error.message}`);
-      return null;
+      throw new ErrorReadingFile(`Error reading file: ${error.message}`);
     }
   }
 
   private static findFileWithSuffix(
     fileSuffix: string,
     folderPath: string,
-  ): Nullable<string> {
+  ): string {
     const files = fs.readdirSync(folderPath);
     const fileName = files.find((file) => file.endsWith(fileSuffix));
 
     if (!fileName) {
-      Logger.warn(
+      throw new ErrorReadingFile(
         `No file found with suffix ${fileSuffix} in folder: ${folderPath}`,
       );
-      return null;
     }
 
     return fileName;
