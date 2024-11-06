@@ -20,8 +20,7 @@ export type MarkdownDocumentation = {
 
 export enum DocumentationErrorCode {
   ERROR_GENERATING_DOCUMENTATION = 'DOCUMENTATION_ERR_01',
-  DOCUMENTATION_DISABLED = 'DOCUMENTATION_ERR_02',
-  ERROR_READING_FILE = 'DOCUMENTATION_ERR_03',
+  ERROR_READING_FILE = 'DOCUMENTATION_ERR_02',
 }
 
 export class DocumentationGenerationError extends ApplicationError {
@@ -31,16 +30,6 @@ export class DocumentationGenerationError extends ApplicationError {
     super(`Documentation generation failed with error: ${message}`);
     this.code = DocumentationErrorCode.ERROR_GENERATING_DOCUMENTATION;
     this.httpStatusCode = HttpStatusCodes.SERVER_ERROR;
-  }
-}
-
-export class DocumentationDisabledError extends ApplicationError {
-  code: DocumentationErrorCode;
-
-  constructor() {
-    super('Documentation is disabled for the current environment');
-    this.code = DocumentationErrorCode.DOCUMENTATION_DISABLED;
-    this.httpStatusCode = HttpStatusCodes.SERVICE_UNAVAILABLE;
   }
 }
 

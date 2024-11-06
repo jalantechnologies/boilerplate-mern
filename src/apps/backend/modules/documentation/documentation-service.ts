@@ -7,7 +7,6 @@ import { OpenAIService } from '../openai';
 
 import { DOCUMENTATION_GENERATION_PROMPT } from './internals/constants';
 import {
-  DocumentationDisabledError,
   ErrorReadingFile,
   HttpRouteWithControllerAndSerializerDetails,
   HttpRouteWithRootFolderPath,
@@ -23,7 +22,7 @@ export default class DocumentationService {
     );
 
     if (!isDocumentationEnabled) {
-      throw new DocumentationDisabledError();
+      return null;
     }
 
     const routes = this.getRoutesWithControllerAndSerializerDetails();
