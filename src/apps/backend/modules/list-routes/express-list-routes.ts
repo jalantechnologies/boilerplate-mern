@@ -1,8 +1,6 @@
 import { Application } from 'express';
 
-import { HttpRoute } from '../types';
-
-import { Stack } from './types';
+import { HttpRoute, Stack } from './types';
 
 const getPathFromRegex = (regexp: RegExp): string =>
   regexp
@@ -35,7 +33,10 @@ const getStacks = (app: Application): Stack[] => {
   return [];
 };
 
-const expressListRoutes = (app: Application): HttpRoute[] => {
+const expressListRoutes = (
+  app: Application,
+  baseAPIRoutePath: string,
+): HttpRoute[] => {
   const stacks = getStacks(app);
   if (!stacks) {
     return [];
@@ -49,6 +50,7 @@ const expressListRoutes = (app: Application): HttpRoute[] => {
         const method = route.method ? route.method.toUpperCase() : null;
         if (method) {
           paths.push({
+            baseAPIRoutePath,
             method,
             rootRouterPath: stack.routerPath,
             routerPath: stack.route.path,
