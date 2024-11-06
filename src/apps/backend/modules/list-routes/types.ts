@@ -1,3 +1,10 @@
+export type HttpRoute = {
+  baseAPIRoutePath: string;
+  method: string;
+  rootRouterPath: string;
+  routerPath: string;
+};
+
 export interface NestedStack {
   method?: string;
   path: string;
