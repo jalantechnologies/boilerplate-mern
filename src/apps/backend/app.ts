@@ -7,8 +7,12 @@ import expressWinston from 'express-winston';
 
 import { AccessTokenServer } from './modules/access-token';
 import { AccountServer } from './modules/account';
-import { ApplicationServer } from './modules/application';
 import { ConfigService } from './modules/config';
+import {
+  DocumentationServer,
+  DocumentationService,
+} from './modules/documentation';
+import { expressListRoutes } from './modules/list-routes';
 import { Logger, CustomLoggerTransport } from './modules/logger';
 import { PasswordResetTokenServer } from './modules/password-reset-token';
 import { TaskServer } from './modules/task';
@@ -47,40 +51,28 @@ export default class App {
   }
 
   public static getAPIMicroservices(): APIMicroserviceService[] {
-    const microservices: APIMicroserviceService[] = [];
-
-    const servers = this.getRestAPIServers();
-
-    // Use the module cache to find file paths
-    const moduleCache = require.cache;
-
-    servers.forEach((server) => {
-      const serverName = server.constructor.name;
-      const moduleEntry = Object.values(moduleCache).find(
-        (entry) => entry.exports && entry.exports[serverName],
-      );
-      const serverRootFolderPath = moduleEntry.filename.replace(
-        '/index.ts',
-        '',
-      );
-
-      microservices.push({
-        serverName,
-        serverRootFolderPath,
-        serverInstance: server,
-      });
-    });
-
-    return microservices;
-  }
-
-  private static getRestAPIServers(): ApplicationServer[] {
     // add the new server here to the list
     return [
-      new AccountServer(),
-      new AccessTokenServer(),
-      new PasswordResetTokenServer(),
-      new TaskServer(),
+      {
+        serverInstance: new AccountServer(),
+        rootFolderPath: path.join(__dirname, 'modules/account'),
+      },
+      {
+        serverInstance: new AccessTokenServer(),
+        rootFolderPath: path.join(__dirname, 'modules/access-token'),
+      },
+      {
+        serverInstance: new DocumentationServer(),
+        rootFolderPath: path.join(__dirname, 'modules/documentation'),
+      },
+      {
+        serverInstance: new PasswordResetTokenServer(),
+        rootFolderPath: path.join(__dirname, 'modules/password-reset-token'),
+      },
+      {
+        serverInstance: new TaskServer(),
+        rootFolderPath: path.join(__dirname, 'modules/task'),
+      },
     ];
   }
 
@@ -98,8 +90,17 @@ export default class App {
       );
     }
 
-    this.getRestAPIServers().forEach((server) => {
-      app.use('/', server.server);
+    this.getAPIMicroservices().forEach((server) => {
+      app.use('/', server.serverInstance.server);
+
+      const routes = expressListRoutes(
+        server.serverInstance.server,
+        this.baseAPIRoutePath,
+      );
+      DocumentationService.expressRoutesList.push({
+        rootFolderPath: server.rootFolderPath,
+        routes,
+      });
     });
     return app;
   }
