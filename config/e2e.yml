@@ -1,6 +1,9 @@
 accounts:
   tokenKey: 'e2e_auth_token'
 
+documentation:
+  enabled: false
+
 mongoDb:
   uri: 'mongodb://localhost:27017/boilerplate-mern-e2e'
 
