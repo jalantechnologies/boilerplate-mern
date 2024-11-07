@@ -36,7 +36,7 @@ export default class DocumentationService {
     };
   }
 
-  public static async generateAndInjectDocumentationUnderDistFolder(): Promise<MarkdownDocumentation> {
+  public static async generateAPIDocumentation(): Promise<MarkdownDocumentation> {
     const documentation = await this.getDocumentation();
 
     try {

@@ -52,13 +52,11 @@ export default class App {
       Logger.info('app - server started listening on  - %s', server.address());
     });
 
-    DocumentationService.generateAndInjectDocumentationUnderDistFolder().catch(
-      (error: Error) => {
-        Logger.error(
-          `app - error generating and injecting documentation: ${error.message}`,
-        );
-      },
-    );
+    DocumentationService.generateAPIDocumentation().catch((error: Error) => {
+      Logger.error(
+        `app - error generating and injecting documentation: ${error.message}`,
+      );
+    });
 
     return Promise.resolve(server);
   }
