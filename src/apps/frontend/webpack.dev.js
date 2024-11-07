@@ -6,6 +6,8 @@ const devServerOpen = process.env.WEBPACK_DEV_DISABLE_OPEN !== 'true';
 const devServerPort = 3000;
 const devServerAPIProxyPort = 8080;
 
+const DOCUMENTATION_PAGE_ROUTE = '/api/documentation';
+
 const config = {
   mode: 'development',
   output: {
@@ -22,11 +24,13 @@ const config = {
     port: devServerPort,
     proxy: {
       secure: false,
+      // Forwards requests with /api to server running on the devServerAPIProxyPort
       '/api': {
         target: `http://localhost:${devServerAPIProxyPort}`,
         bypass: function (req) {
-          if (req.url === '/api/documentation') {
-            return '/index.html'; // Bypass proxy for this specific route
+          // To place the documentation page on the respective route, the proxy should be bypassed for this route.
+          if (req.url === DOCUMENTATION_PAGE_ROUTE) {
+            return '/index.html';
           }
         },
       },
