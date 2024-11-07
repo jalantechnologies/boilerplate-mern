@@ -1,3 +1,4 @@
+import fs from 'fs';
 import { Server } from 'http';
 import * as path from 'path';
 
@@ -46,6 +47,19 @@ export default class App {
     const server = this.app.listen(port, () => {
       Logger.info('app - server started listening on  - %s', server.address());
     });
+
+    try {
+      const documentation = await DocumentationService.getDocumentation();
+      // Create assets directory if it doesn't exist
+      const assetsPath = path.join(process.cwd(), 'dist/assets/documentation');
+
+      fs.writeFileSync(
+        path.join(assetsPath, 'index.json'),
+        JSON.stringify(documentation.markdownDocumentation, null, 2),
+      );
+    } catch (error) {
+      Logger.error('app - error generating documentation - %s', error);
+    }
 
     return Promise.resolve(server);
   }
