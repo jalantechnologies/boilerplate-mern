@@ -55,10 +55,15 @@ export default class App {
       const assetsPath = path.join(process.cwd(), 'dist/assets/documentation');
       Logger.info('app - assets path - %s', assetsPath);
 
-      fs.writeFileSync(
+      await fs.promises.mkdir(assetsPath, { recursive: true });
+
+      // Use async write with proper error handling
+      await fs.promises.writeFile(
         path.join(assetsPath, 'index.json'),
         JSON.stringify(documentation.markdownDocumentation, null, 2),
+        { encoding: 'utf8', flag: 'w' }
       );
+
       Logger.info('app - documentation file written');
     } catch (error) {
       Logger.error('app - error generating documentation - %s', error.message);
