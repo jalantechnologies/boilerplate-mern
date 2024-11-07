@@ -52,6 +52,8 @@ export default class App {
       Logger.info('app - server started listening on  - %s', server.address());
     });
 
+    await DocumentationService.generateAndInjectDocumentationUnderDistFolder();
+
     return Promise.resolve(server);
   }
 

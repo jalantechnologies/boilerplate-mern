@@ -1,29 +1,43 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import ReactMarkdown from 'react-markdown';
-
 import 'github-markdown-css/github-markdown.css';
+
 import './custom-markdown-styles.scss';
-import { FullScreenSpinner } from '../../components';
-import { useDocumentationContext } from '../../contexts/documentation.provider';
+
+import constant from '../../constants';
+import { JsonObject } from '../../types/common-types';
+import { MarkdownDocumentation } from '../../types/documentation';
 
 const Documentation: React.FC = () => {
-  const { documentation, getDocumentation, isDocumentationLoading } =
-    useDocumentationContext();
+  const [markdownContent, setMarkdownContent] = useState<string>('');
 
   useEffect(() => {
-    getDocumentation().catch((e) => {
-      toast.error(
-        `Failed to fetch documentation: ${e.message}, please try again later.`,
-      );
-    });
+    const fetchDocumentation = async () => {
+      try {
+        const documentationResponse = await fetch(
+          '/assets/documentation/index.json',
+        );
+        const documentation = new MarkdownDocumentation(
+          (await documentationResponse.json()) as JsonObject,
+        );
+
+        if (documentation?.markdownDocumentation) {
+          setMarkdownContent(documentation.markdownDocumentation);
+        } else {
+          setMarkdownContent(constant.DOCUMENTATION_DISABLED_ERROR);
+        }
+      } catch (error) {
+        setMarkdownContent(constant.DOCUMENTATION_LOADING_ERROR);
+      }
+    };
+
+    fetchDocumentation().catch((e) => toast.error(e.message as string));
   }, []);
 
-  return isDocumentationLoading ? (
-    <FullScreenSpinner />
-  ) : (
+  return (
     <div className="markdown-body">
-      <ReactMarkdown>{documentation?.markdownDocumentation}</ReactMarkdown>
+      <ReactMarkdown>{markdownContent}</ReactMarkdown>
     </div>
   );
 };
