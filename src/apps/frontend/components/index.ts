@@ -10,6 +10,7 @@ import VerticalStackLayout from './layouts/vertical-stack-layout';
 import MenuItem from './menu-item';
 import OTP from './otp';
 import Select from './select';
+import FullScreenSpinner from './spinner/full-screen-spinner';
 import Spinner from './spinner/spinner';
 import H2 from './typography/h2';
 import HeadingLarge from './typography/heading-large';
@@ -24,6 +25,7 @@ export {
   Flex,
   FlexItem,
   FormControl,
+  FullScreenSpinner,
   H2,
   Header,
   HeadingMedium,

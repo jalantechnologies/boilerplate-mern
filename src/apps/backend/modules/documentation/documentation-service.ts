@@ -22,7 +22,9 @@ export default class DocumentationService {
     );
 
     if (!isDocumentationEnabled) {
-      return null;
+      return {
+        markdownDocumentation: '',
+      };
     }
 
     const routes = this.getRoutesWithControllerAndSerializerDetails();

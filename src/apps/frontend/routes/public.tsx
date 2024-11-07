@@ -3,6 +3,7 @@ import { Navigate } from 'react-router-dom';
 
 import routes from '../constants/routes';
 import { ResetPasswordProvider } from '../contexts';
+import { DocumentationProvider } from '../contexts/documentation.provider';
 import {
   About,
   ForgotPassword,
@@ -42,6 +43,13 @@ export const publicRoutes = [
     ),
   },
   { path: routes.ABOUT, element: <About /> },
-  { path: routes.DOCUMENTATION, element: <Documentation /> },
+  {
+    path: routes.DOCUMENTATION,
+    element: (
+      <DocumentationProvider>
+        <Documentation />
+      </DocumentationProvider>
+    ),
+  },
   { path: '*', element: <Navigate to={routes.LOGIN} /> },
 ];
