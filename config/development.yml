@@ -2,11 +2,17 @@ accounts:
   tokenKey: 'dev_auth_token'
   passwordResetEmailEnabled: false
 
+documentation:
+  enabled: false
+
 sms:
   enabled: false
 
 mongoDb:
   uri: 'mongodb://localhost:27017/boilerplate-mern-dev'
 
+# This is added to avoid the error due to dependency of api key. This can be overridden in local.yml file.
+openai:
+  apiKey: 'OPENAI_API_KEY_DEV'
 
 webAppHost: 'http://localhost:3000'
