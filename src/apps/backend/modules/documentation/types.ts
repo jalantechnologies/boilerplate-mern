@@ -18,7 +18,11 @@ export type MarkdownDocumentation = {
   markdownDocumentation: string;
 };
 
-export enum DocumentationErrorCode {
+export type GetRoutesWithControllerAndSerializerDetailsResponse = {
+  expressRoutesList: HttpRouteWithRootFolderPath[];
+};
+
+enum DocumentationErrorCode {
   ERROR_GENERATING_DOCUMENTATION = 'DOCUMENTATION_ERR_01',
   ERROR_READING_FILE = 'DOCUMENTATION_ERR_02',
 }
