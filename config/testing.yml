@@ -2,6 +2,9 @@ accounts:
   tokenKey: 'test_auth_token'
   passwordResetEmailEnabled: true
 
+documentation:
+  enabled: false
+
 mailer:
   defaultEmail: 'DEFAULT_EMAIL'
   defaultEmailName: 'DEFAULT_EMAIL_NAME'
