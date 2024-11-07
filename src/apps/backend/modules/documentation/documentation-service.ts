@@ -15,6 +15,10 @@ import {
 
 export default class DocumentationService {
   public static expressRoutesList: HttpRouteWithRootFolderPath[] = [];
+  public static restApiFolderPath = 'rest-api';
+  public static controllerFileSuffix = '-controller.js';
+  public static routerFileSuffix = '-router.js';
+  public static serializerFileSuffix = '-serializer.js';
 
   public static async getDocumentation(): Promise<MarkdownDocumentation> {
     const isDocumentationEnabled = ConfigService.getValue<boolean>(
@@ -41,7 +45,7 @@ export default class DocumentationService {
     this.expressRoutesList.forEach((routeWithRootFolderPath) => {
       const restApiFolderPath = path.join(
         routeWithRootFolderPath.rootFolderPath,
-        'rest-api',
+        this.restApiFolderPath,
       );
       const routesWithControllerMethods = routeWithRootFolderPath.routes.map(
         (route) => {
@@ -86,7 +90,7 @@ export default class DocumentationService {
     }
 
     return this.extractMethodCodeWithSignature(
-      '-controller.js',
+      this.controllerFileSuffix,
       restApiFolderPath,
       `${controllerMethodName} =`,
     );
@@ -106,7 +110,7 @@ export default class DocumentationService {
     }
 
     return this.extractMethodCodeWithSignature(
-      '-serializer.js',
+      this.serializerFileSuffix,
       restApiFolderPath,
       `const ${serializeMethodName} =`,
     );
@@ -118,7 +122,9 @@ export default class DocumentationService {
   ): string {
     try {
       const files = fs.readdirSync(restApiFolderPath);
-      const routerFileName = files.find((file) => file.endsWith('-router.js'));
+      const routerFileName = files.find((file) =>
+        file.endsWith(this.routerFileSuffix),
+      );
 
       if (!routerFileName) {
         throw new ErrorReadingFile(
