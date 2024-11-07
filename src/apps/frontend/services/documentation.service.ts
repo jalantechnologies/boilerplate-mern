@@ -7,7 +7,7 @@ import APIService from './api.service';
 export default class DocumentationService extends APIService {
   getDocumentation = async (): Promise<ApiResponse<MarkdownDocumentation>> => {
     try {
-      const response = await this.apiClient.get('/documentation');
+      const response = await this.apiClient.get('/get-documentation');
 
       return new ApiResponse(
         new MarkdownDocumentation(response.data as JsonObject),

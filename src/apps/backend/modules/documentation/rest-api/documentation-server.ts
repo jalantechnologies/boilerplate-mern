@@ -7,6 +7,6 @@ export default class DocumentationServer extends ApplicationServer {
     const { server } = this;
     const router = new DocumentationRouter();
 
-    server.use('/documentation', router.router);
+    server.use('/get-documentation', router.router);
   }
 }
