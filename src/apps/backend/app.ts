@@ -50,15 +50,18 @@ export default class App {
 
     try {
       const documentation = await DocumentationService.getDocumentation();
+      Logger.info('app - documentation generated from openai');
       // Create assets directory if it doesn't exist
       const assetsPath = path.join(process.cwd(), 'dist/assets/documentation');
+      Logger.info('app - assets path - %s', assetsPath);
 
       fs.writeFileSync(
         path.join(assetsPath, 'index.json'),
         JSON.stringify(documentation.markdownDocumentation, null, 2),
       );
+      Logger.info('app - documentation file written');
     } catch (error) {
-      Logger.error('app - error generating documentation - %s', error);
+      Logger.error('app - error generating documentation - %s', error.message);
     }
 
     return Promise.resolve(server);
