@@ -1,0 +1,9 @@
+[{
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.picwipal.myapp",
+      "sha256_cert_fingerprints":
+      ["62:BD:F0:E0:FB:6A:AF:37:D9:2D:A3:27:DE:42:92:8C:0A:B5:B9:9C:59:40:26:D3:9F:98:27:98:03:F2:54:9B"]
+    }
+  }]
