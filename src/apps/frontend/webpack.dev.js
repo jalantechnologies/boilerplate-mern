@@ -35,6 +35,7 @@ const config = {
         },
       },
       '/assets': `http://localhost:${devServerAPIProxyPort}`,
+      '/.well-known': `http://localhost:${devServerAPIProxyPort}`,
     },
   },
 };

@@ -121,6 +121,9 @@ export default class App {
 
     app.use('/assets', express.static('dist/assets'));
 
+    // Serve the .well-known directory
+    app.use('/.well-known', express.static('dist/.well-known'));
+
     app.use(express.static('dist/public'));
 
     app.get('/*', (_req, res) => {
