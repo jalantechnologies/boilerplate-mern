@@ -1,9 +1,11 @@
 accounts:
   passwordResetEmailEnabled: true
 
-sms:
+documentation:
   enabled: true
 
 logger:
   transports: [ 'datadog' ]
 
+sms:
+  enabled: true

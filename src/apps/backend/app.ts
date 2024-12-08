@@ -7,14 +7,27 @@ import expressWinston from 'express-winston';
 
 import { AccessTokenServer } from './modules/access-token';
 import { AccountServer } from './modules/account';
+import { ApplicationServer } from './modules/application';
 import { ConfigService } from './modules/config';
+import {
+  DocumentationServer,
+  DocumentationService,
+} from './modules/documentation';
+import { expressListRoutes } from './modules/list-routes';
 import { Logger, CustomLoggerTransport } from './modules/logger';
 import { PasswordResetTokenServer } from './modules/password-reset-token';
 import { TaskServer } from './modules/task';
 
+interface APIMicroserviceService {
+  rootFolderPath: string;
+  serverInstance: ApplicationServer;
+}
+
 const isDevEnv = process.env.NODE_ENV === 'development';
 
 export default class App {
+  public static baseAPIRoutePath = '/api';
+
   private static app: Application;
 
   public static async startServer(): Promise<Server> {
@@ -22,7 +35,7 @@ export default class App {
     this.app.use(App.getRequestLogger());
 
     const restAPIServer = this.createRESTApiServer();
-    this.app.use('/api', restAPIServer);
+    this.app.use(this.baseAPIRoutePath, restAPIServer);
 
     const app = this.createExperienceService();
     this.app.use('/', app);
@@ -39,7 +52,39 @@ export default class App {
       Logger.info('app - server started listening on  - %s', server.address());
     });
 
+    DocumentationService.generateAPIDocumentation().catch((error: Error) => {
+      Logger.error(
+        `app - error generating and injecting documentation: ${error.message}`,
+      );
+    });
+
     return Promise.resolve(server);
+  }
+
+  public static getAPIMicroservices(): APIMicroserviceService[] {
+    // add the new server here to the list
+    return [
+      {
+        serverInstance: new AccountServer(),
+        rootFolderPath: path.join(__dirname, 'modules/account'),
+      },
+      {
+        serverInstance: new AccessTokenServer(),
+        rootFolderPath: path.join(__dirname, 'modules/access-token'),
+      },
+      {
+        serverInstance: new DocumentationServer(),
+        rootFolderPath: path.join(__dirname, 'modules/documentation'),
+      },
+      {
+        serverInstance: new PasswordResetTokenServer(),
+        rootFolderPath: path.join(__dirname, 'modules/password-reset-token'),
+      },
+      {
+        serverInstance: new TaskServer(),
+        rootFolderPath: path.join(__dirname, 'modules/task'),
+      },
+    ];
   }
 
   private static createRESTApiServer(): Application {
@@ -56,16 +101,18 @@ export default class App {
       );
     }
 
-    // add your new server here to the list
-    [
-      new AccountServer(),
-      new AccessTokenServer(),
-      new PasswordResetTokenServer(),
-      new TaskServer(),
-    ].forEach((server) => {
-      app.use('/', server.server);
-    });
+    this.getAPIMicroservices().forEach((server) => {
+      app.use('/', server.serverInstance.server);
 
+      const routes = expressListRoutes(
+        server.serverInstance.server,
+        this.baseAPIRoutePath,
+      );
+      DocumentationService.expressRoutesList.push({
+        rootFolderPath: server.rootFolderPath,
+        routes,
+      });
+    });
     return app;
   }
 

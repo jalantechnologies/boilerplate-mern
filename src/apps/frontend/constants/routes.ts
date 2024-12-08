@@ -1,6 +1,7 @@
 const routes = {
   ABOUT: '/about',
   DASHBOARD: '/',
+  DOCUMENTATION: '/api/documentation',
   FORGOT_PASSWORD: '/forgot-password',
   LOGIN: '/login',
   RESET_PASSWORD: '/accounts/:accountId/reset_password',
