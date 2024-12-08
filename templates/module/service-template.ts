@@ -1,9 +1,8 @@
 import $entityNameReader from './internals/$moduleName-reader';
 import $entityNameWriter from './internals/$moduleName-writer';
-
 import { $entityName, Get$entityNameParams, PaginatedResponse } from './types';
 
-export default class $moduleNameService {
+export default class $entityNameService {
   public static get$entityNames({
     page,
     size,
