@@ -10,7 +10,7 @@ export default class $moduleNameService {
   }: Get$entityNameParams): Promise<PaginatedResponse<$entityName>> {
     return $entityNameReader.get$entityNames({
       page: page || 1,
-      size: size || $pageLimit,
+      size: size || $defaultPageSize,
     });
   }
 

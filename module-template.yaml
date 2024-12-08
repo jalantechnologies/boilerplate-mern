@@ -3,13 +3,13 @@ configs:
   templatesDir: './templates/module'
   defaults:
     filepaths:
-      dbTypeDef: 'dbTypeDef.ts'
-      entityTypeDef: 'entityTypeDef.ts'
-      dbSchema: 'dbSchema.ts'
+      dbTypeDef: 'db-type-def.ts'
+      entityTypeDef: 'entity-type-def.ts'
+      dbSchema: 'db-schema.ts'
     value:
       moduleName: 'test'
       entityName: 'Test'
-      pageLimit: '10'
+      defaultPageSize: '10'
       baseUrl: ''
 
 variables:
@@ -20,7 +20,7 @@ variables:
   value:
     - moduleName
     - entityName
-    - pageLimit
+    - defaultPageSize
     - baseUrl
 
 folders:
