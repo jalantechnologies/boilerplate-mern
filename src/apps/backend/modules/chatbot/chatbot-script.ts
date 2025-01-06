@@ -1,9 +1,9 @@
 import * as readline from 'readline';
 
-import { PromptTemplate } from '@langchain/core/prompts';
+import { ChatPromptTemplate } from '@langchain/core/prompts';
+import { RunnableSequence } from '@langchain/core/runnables';
 import { ChatOpenAI } from '@langchain/openai';
-import { LLMChain } from 'langchain/chains';
-import { ConversationSummaryMemory } from 'langchain/memory';
+import { ConversationTokenBufferMemory } from 'langchain/memory';
 
 import { ConfigService } from '../config';
 import { Logger } from '../logger';
@@ -11,48 +11,49 @@ import { Logger } from '../logger';
 import ConversationRepository from './store/conversation-repository';
 import { ConversationType } from './types';
 
-// Initialize OpenAI and LangChain components
+// Get account ID from command line arguments to replicate multi-account chatbot,
+// the script should look like: "npm run start-chat -- :accountId"
+const accountId = process.argv.slice(2)[0];
+
+// Initialize OpenAI
 const llm = new ChatOpenAI({
   openAIApiKey: ConfigService.getValue('openai.apiKey'),
   modelName: 'gpt-3.5-turbo',
   temperature: 0.7,
 });
 
-// Create a separate chain for generating summaries
-const summaryPrompt = PromptTemplate.fromTemplate(`
-Summarize the following conversation, focusing on key points and context that might be important for future reference:
-
-{conversation}
-
-Concise summary:`);
-
-const summaryChain = new LLMChain({
-  llm,
-  prompt: summaryPrompt,
-});
-
-// Create memory instance
-const memory = new ConversationSummaryMemory({
+// Create memory instance with buffer
+const memory = new ConversationTokenBufferMemory({
   llm,
   memoryKey: 'chat_history',
   inputKey: 'input',
+  returnMessages: true,
 });
 
-// Define conversation prompt template
-const prompt = PromptTemplate.fromTemplate(`
-Context from previous conversations:
+// Define conversation prompt template using ChatPromptTemplate
+const prompt = ChatPromptTemplate.fromMessages([
+  [
+    'system',
+    `Previous conversation history:
 {chat_history}
 
-Current message: {input}
+Provide helpful and relevant responses based on the context above.`,
+  ],
+  ['human', '{input}'],
+]);
 
-Please provide a helpful and relevant response based on the context above.`);
-
-const chain = new LLMChain({
-  llm,
+// Create chain using LCEL
+const chain = RunnableSequence.from([
+  {
+    input: (initialInput) => initialInput.input,
+    chat_history: async () => {
+      const memoryVariables = await memory.loadMemoryVariables({});
+      return memoryVariables.chat_history;
+    },
+  },
   prompt,
-  memory,
-  verbose: false,
-});
+  llm,
+]);
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -62,62 +63,51 @@ const rl = readline.createInterface({
 const saveToDatabase = async (message: string, type: ConversationType) => {
   try {
     await ConversationRepository.create({
-      type,
-      message,
+      accountId,
       active: true,
+      message,
+      type,
     });
   } catch (error) {
     Logger.error('Error saving to MongoDB:', error);
   }
 };
 
-const getLatestSummary = async (): Promise<string> => {
+const loadPreviousConversations = async () => {
   try {
-    const latestSummary = await ConversationRepository.findOne(
-      { type: ConversationType.Summary },
+    const previousMessages = await ConversationRepository.find(
+      {
+        accountId,
+        type: { $in: [ConversationType.Human, ConversationType.AI] },
+      },
       {},
-      { sort: { createdAt: -1 } },
+      { sort: { createdAt: 1 } },
     );
-    return latestSummary?.message || '';
-  } catch (error) {
-    Logger.error('Error retrieving latest summary:', error);
-    return '';
-  }
-};
 
-const generateAndSaveSummary = async () => {
-  try {
-    const memoryState = await memory.loadMemoryVariables({});
-    const chatHistory = memoryState.chat_history || '';
+    // Initialize memory with previous conversations
+    for (const msg of previousMessages) {
+      await memory.saveContext(
+        {
+          input:
+            msg.type === ConversationType.Human ? msg.message : 'AI_RESPONSE',
+        },
+        {
+          output:
+            msg.type === ConversationType.AI ? msg.message : 'HUMAN_MESSAGE',
+        },
+      );
+    }
 
-    if (chatHistory) {
-      // Generate a new summary using the summary chain and save it
-      const summaryResult = await summaryChain.call({
-        conversation: chatHistory,
-      });
-
-      await saveToDatabase(summaryResult.text, ConversationType.Summary);
-      return summaryResult.text;
+    if (previousMessages.length > 0) {
+      Logger.info('Previous conversations loaded.');
     }
   } catch (error) {
-    Logger.error('Error generating/saving summary:', error);
-  }
-};
-
-const initializeMemory = async () => {
-  const previousSummary = await getLatestSummary();
-  if (previousSummary) {
-    await memory.saveContext(
-      { input: 'MEMORY_INITIALIZATION' },
-      { output: previousSummary },
-    );
-    Logger.info('Previous conversation context loaded.');
+    Logger.error('Error loading previous conversations:', error);
   }
 };
 
 const chat = async () => {
-  // Initialize memory with previous context
-  await initializeMemory();
+  await loadPreviousConversations();
 
   Logger.info('Chatbot initialized. Type "exit" to end the conversation.');
 
@@ -127,22 +117,21 @@ const chat = async () => {
     });
 
     if (input.toLowerCase() === 'exit') {
-      // Generate final summary before exiting and save it
-      await generateAndSaveSummary();
       break;
     }
 
     try {
       await saveToDatabase(input, ConversationType.Human);
 
-      const response = await chain.call({ input });
-      const aiResponse = response.text.trim();
+      const response = await chain.invoke({ input });
+      const aiResponse = response.content.toString();
 
       Logger.info('AI:', aiResponse);
 
       await saveToDatabase(aiResponse, ConversationType.AI);
 
-      await generateAndSaveSummary();
+      // Update memory after response
+      await memory.saveContext({ input }, { output: aiResponse });
     } catch (error) {
       Logger.error('Error processing message:', error);
     }
