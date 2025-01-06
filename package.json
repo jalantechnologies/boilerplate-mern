@@ -23,11 +23,14 @@
     "serve:assets": "cpx \"src/assets/**/*.*\" dist/assets --watch",
     "serve:backend": "tsc-watch -p src/apps/backend/tsconfig.json --outDir dist --onsuccess \"node dist/bin/server.js\" --noClear",
     "serve:frontend": "webpack serve --output-path dist/public --config src/apps/frontend/webpack.dev.js --hot --progress",
-    "cy:open": "cypress open"
+    "cy:open": "cypress open",
+    "start-chat": "node dist/modules/chatbot/chatbot-script.js"
   },
   "author": "jalantechnologies",
   "license": "MIT",
   "dependencies": {
+    "@langchain/core": "^0.3.27",
+    "@langchain/openai": "^0.3.16",
     "@sendgrid/mail": "^7.6.1",
     "autoprefixer": "^10.4.13",
     "axios": "^1.0.0",
@@ -46,6 +49,7 @@
     "github-markdown-css": "^5.7.0",
     "google-libphonenumber": "^3.2.27",
     "jsonwebtoken": "^9.0.0",
+    "langchain": "^0.3.9",
     "lodash": "^4.17.21",
     "mini-css-extract-plugin": "^2.5.3",
     "moment": "^2.30.1",
