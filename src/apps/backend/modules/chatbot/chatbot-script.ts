@@ -1,9 +1,5 @@
 import * as readline from 'readline';
-
-import { ChatPromptTemplate } from '@langchain/core/prompts';
-import { RunnableSequence } from '@langchain/core/runnables';
-import { ChatOpenAI } from '@langchain/openai';
-import { ConversationTokenBufferMemory } from 'langchain/memory';
+import { OpenAI } from 'openai';
 
 import { ConfigService } from '../config';
 import { Logger } from '../logger';
@@ -15,52 +11,17 @@ import { ConversationType } from './types';
 // the script should look like: "npm run start-chat -- :accountId"
 const accountId = process.argv.slice(2)[0];
 
-// Initialize OpenAI
-const llm = new ChatOpenAI({
-  openAIApiKey: ConfigService.getValue('openai.apiKey'),
-  modelName: 'gpt-3.5-turbo',
-  temperature: 0.7,
+// Initialize OpenAI client
+const openai = new OpenAI({
+  apiKey: ConfigService.getValue('openai.apiKey'),
 });
-
-// Create memory instance with buffer
-const memory = new ConversationTokenBufferMemory({
-  llm,
-  memoryKey: 'chat_history',
-  inputKey: 'input',
-  returnMessages: true,
-});
-
-// Define conversation prompt template using ChatPromptTemplate
-const prompt = ChatPromptTemplate.fromMessages([
-  [
-    'system',
-    `Previous conversation history:
-{chat_history}
-
-Provide helpful and relevant responses based on the context above.`,
-  ],
-  ['human', '{input}'],
-]);
-
-// Create chain using LCEL
-const chain = RunnableSequence.from([
-  {
-    input: (initialInput) => initialInput.input,
-    chat_history: async () => {
-      const memoryVariables = await memory.loadMemoryVariables({});
-      return memoryVariables.chat_history;
-    },
-  },
-  prompt,
-  llm,
-]);
 
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
 });
 
-const saveToDatabase = async (message: string, type: ConversationType) => {
+const saveToDatabase = async (message, type) => {
   try {
     await ConversationRepository.create({
       accountId,
@@ -81,33 +42,49 @@ const loadPreviousConversations = async () => {
         type: { $in: [ConversationType.Human, ConversationType.AI] },
       },
       {},
-      { sort: { createdAt: 1 } },
+      { sort: { createdAt: 1 } }
     );
 
-    // Initialize memory with previous conversations
-    for (const msg of previousMessages) {
-      await memory.saveContext(
-        {
-          input:
-            msg.type === ConversationType.Human ? msg.message : 'AI_RESPONSE',
-        },
-        {
-          output:
-            msg.type === ConversationType.AI ? msg.message : 'HUMAN_MESSAGE',
-        },
-      );
-    }
-
-    if (previousMessages.length > 0) {
-      Logger.info('Previous conversations loaded.');
-    }
+    return previousMessages.map((msg) => {
+      return msg.type === ConversationType.Human
+        ? { type: ConversationType.Human, message: msg.message }
+        : { type: ConversationType.AI, message: msg.message };
+    });
   } catch (error) {
     Logger.error('Error loading previous conversations:', error);
+    return undefined;
+  }
+};
+
+const generateResponse = async (history: {
+  type: ConversationType;
+  message: string;
+}[], input: string) => {
+  try {
+    const completion = await openai.chat.completions.create({
+      model: 'gpt-3.5-turbo',
+      messages: [
+        { role: 'system' as const, content: 'You are a helpful assistant.' },
+        ...history.map((chat) => {
+          const [role, content] = chat.type === ConversationType.Human
+            ? ['user' as const, chat.message]
+            : ['assistant' as const, chat.message];
+          return { role, content };
+        }),
+        { role: 'user' as const, content: input },
+      ],
+      temperature: 0.7,
+    });
+
+    return completion.choices[0].message.content.trim();
+  } catch (error) {
+    Logger.error('Error generating AI response:', error);
+    throw error;
   }
 };
 
 const chat = async () => {
-  await loadPreviousConversations();
+  const history = await loadPreviousConversations();
 
   Logger.info('Chatbot initialized. Type "exit" to end the conversation.');
 
@@ -123,15 +100,14 @@ const chat = async () => {
     try {
       await saveToDatabase(input, ConversationType.Human);
 
-      const response = await chain.invoke({ input });
-      const aiResponse = response.content.toString();
+      const aiResponse = await generateResponse(history, input);
 
       Logger.info('AI:', aiResponse);
 
       await saveToDatabase(aiResponse, ConversationType.AI);
 
-      // Update memory after response
-      await memory.saveContext({ input }, { output: aiResponse });
+      // Update history after response
+      history.push({ type: ConversationType.Human, message: input });
     } catch (error) {
       Logger.error('Error processing message:', error);
     }
