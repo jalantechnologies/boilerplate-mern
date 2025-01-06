@@ -138,6 +138,8 @@ const chat = async () => {
       const response = await chain.call({ input });
       const aiResponse = response.text.trim();
 
+      Logger.info('AI:', aiResponse);
+
       await saveToDatabase(aiResponse, ConversationType.AI);
 
       await generateAndSaveSummary();
