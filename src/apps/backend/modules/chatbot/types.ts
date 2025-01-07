@@ -1,4 +1,4 @@
-export enum ConversationType {
+export enum ConversationMessageType {
   Human = 'human',
   AI = 'ai',
 }

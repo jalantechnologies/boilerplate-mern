@@ -5,11 +5,12 @@ import { ConfigService } from '../config';
 import { Logger } from '../logger';
 
 import ConversationRepository from './store/conversation-repository';
-import { ConversationType } from './types';
+import { ConversationMessageType } from './types';
+import ConversationMessageRepository from './store/conversation-message-repository';
 
 // Get account ID from command line arguments to replicate multi-account chatbot,
 // the script should look like: "npm run start-chat -- :accountId"
-const accountId = process.argv.slice(2)[0];
+const conversationId = process.argv.slice(2)[0];
 
 // Initialize OpenAI client
 const openai = new OpenAI({
@@ -24,7 +25,7 @@ const rl = readline.createInterface({
 const saveToDatabase = async (message, type) => {
   try {
     await ConversationRepository.create({
-      accountId,
+      conversationId,
       active: true,
       message,
       type,
@@ -36,19 +37,19 @@ const saveToDatabase = async (message, type) => {
 
 const loadPreviousConversations = async () => {
   try {
-    const previousMessages = await ConversationRepository.find(
+    const previousMessages = await ConversationMessageRepository.find(
       {
-        accountId,
-        type: { $in: [ConversationType.Human, ConversationType.AI] },
+        conversationId,
+        type: { $in: [ConversationMessageType.Human, ConversationMessageType.AI] },
       },
       {},
       { sort: { createdAt: 1 } }
     );
 
     return previousMessages.map((msg) => {
-      return msg.type === ConversationType.Human
-        ? { type: ConversationType.Human, message: msg.message }
-        : { type: ConversationType.AI, message: msg.message };
+      return msg.type === ConversationMessageType.Human
+        ? { type: ConversationMessageType.Human, message: msg.message }
+        : { type: ConversationMessageType.AI, message: msg.message };
     });
   } catch (error) {
     Logger.error('Error loading previous conversations:', error);
@@ -57,7 +58,7 @@ const loadPreviousConversations = async () => {
 };
 
 const generateResponse = async (history: {
-  type: ConversationType;
+  type: ConversationMessageType;
   message: string;
 }[], input: string) => {
   try {
@@ -66,10 +67,13 @@ const generateResponse = async (history: {
       messages: [
         { role: 'system' as const, content: 'You are a helpful assistant.' },
         ...history.map((chat) => {
-          const [role, content] = chat.type === ConversationType.Human
-            ? ['user' as const, chat.message]
-            : ['assistant' as const, chat.message];
-          return { role, content };
+          return {
+            role:
+              chat.type === ConversationMessageType.Human
+                ? ('user' as const)
+                : ('assistant' as const),
+            content: chat.message,
+          };
         }),
         { role: 'user' as const, content: input },
       ],
@@ -98,16 +102,16 @@ const chat = async () => {
     }
 
     try {
-      await saveToDatabase(input, ConversationType.Human);
+      await saveToDatabase(input, ConversationMessageType.Human);
 
       const aiResponse = await generateResponse(history, input);
 
       Logger.info('AI:', aiResponse);
 
-      await saveToDatabase(aiResponse, ConversationType.AI);
+      await saveToDatabase(aiResponse, ConversationMessageType.AI);
 
-      // Update history after response
-      history.push({ type: ConversationType.Human, message: input });
+      // Update history after response, this won't be helpful in actual implementation, just added to test through terminal
+      history.push({ type: ConversationMessageType.Human, message: input });
     } catch (error) {
       Logger.error('Error processing message:', error);
     }

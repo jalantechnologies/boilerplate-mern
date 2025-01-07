@@ -1,12 +1,10 @@
 import { Schema, Types } from 'mongoose';
 
-import { ConversationType } from '../types';
-
 export interface ConversationDB {
   _id: Types.ObjectId;
   accountId: string;
-  message: string;
-  type: ConversationType;
+  title: string;
+  description: string;
 }
 
 export const ConversationDbSchema = new Schema<ConversationDB>(
@@ -15,19 +13,19 @@ export const ConversationDbSchema = new Schema<ConversationDB>(
       type: String,
       required: true,
     },
-    message: {
+    title: {
       type: String,
       required: true,
     },
-    type: {
+    description: {
       type: String,
-      required: true,
-      enum: Object.values(ConversationType),
+      default: '',
     },
   },
   {
     timestamps: {
       createdAt: 'createdAt',
+      updatedAt: 'updatedAt',
     },
   },
 );
