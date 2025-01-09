@@ -1,30 +1,43 @@
 import * as readline from 'readline';
 import { OpenAI } from 'openai';
-
 import { ConfigService } from '../config';
 import { Logger } from '../logger';
 
-import ConversationRepository from './store/conversation-repository';
-import { ConversationMessageType } from './types';
 import ConversationMessageRepository from './store/conversation-message-repository';
+import { ConversationMessageType } from './types';
 
-// Get account ID from command line arguments to replicate multi-account chatbot,
-// the script should look like: "npm run start-chat -- :accountId"
-const conversationId = process.argv.slice(2)[0];
+import { Pinecone } from '@pinecone-database/pinecone';
+
 
 // Initialize OpenAI client
 const openai = new OpenAI({
   apiKey: ConfigService.getValue('openai.apiKey'),
 });
 
+// Initialize Pinecone client
+const pinecone = new Pinecone({
+  apiKey: ConfigService.getValue('pinecone.apiKey'),
+});
+const index = pinecone.index(ConfigService.getValue('pinecone.indexName'));
+
+// Get conversation ID from command-line arguments
+// const conversationId = process.argv.slice(2)[0];
+const conversationId = '6674114bd48ba3e4843ff36d';
+
+if (!conversationId) {
+  Logger.error('Conversation ID is required.');
+  process.exit(1);
+}
+
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
 });
 
-const saveToDatabase = async (message, type) => {
+// Save message to MongoDB
+const saveToDatabase = async (message: string, type: ConversationMessageType) => {
   try {
-    await ConversationRepository.create({
+    return await ConversationMessageRepository.create({
       conversationId,
       active: true,
       message,
@@ -32,50 +45,89 @@ const saveToDatabase = async (message, type) => {
     });
   } catch (error) {
     Logger.error('Error saving to MongoDB:', error);
+    return null;
   }
 };
 
-const loadPreviousConversations = async () => {
+// Store embeddings in Pinecone
+const saveToPinecone = async (message, messageId) => {
   try {
-    const previousMessages = await ConversationMessageRepository.find(
-      {
-        conversationId,
-        type: { $in: [ConversationMessageType.Human, ConversationMessageType.AI] },
-      },
-      {},
-      { sort: { createdAt: 1 } }
+    // const embeddingResponse = await openai.embeddings.create({
+    //   model: 'text-embedding-ada-002',
+    //   input: message,
+    // });
+    const embeddingResponse = await pinecone.inference.embed(
+      'multilingual-e5-large',
+      [message],
+      { inputType: 'passage', truncate: 'END' }
     );
 
-    return previousMessages.map((msg) => {
-      return msg.type === ConversationMessageType.Human
-        ? { type: ConversationMessageType.Human, message: msg.message }
-        : { type: ConversationMessageType.AI, message: msg.message };
-    });
+    // const vector = embeddingResponse.data[0].embedding;
+    const vector = embeddingResponse.data[0].values;
+
+    await index.upsert([
+      {
+        id: messageId,
+        values: vector,
+        metadata: { conversationId },
+      },
+    ]);
   } catch (error) {
-    Logger.error('Error loading previous conversations:', error);
-    return undefined;
+    Logger.error('Error saving to Pinecone:', error);
   }
 };
 
-const generateResponse = async (history: {
-  type: ConversationMessageType;
-  message: string;
-}[], input: string) => {
+// Retrieve relevant messages from Pinecone
+const retrieveRelevantMessages = async (input) => {
+  try {
+    const embeddingResponse = await pinecone.inference.embed(
+      'multilingual-e5-large',
+      [input],
+      { inputType: 'query' }
+    );
+    const vector = embeddingResponse.data[0].values;
+
+    const searchResults = await index.query({
+      vector,
+      topK: 5, // Retrieve top 5 most relevant messages
+      includeValues: false,
+      includeMetadata: true,
+    });
+
+    const relevantMessageIds = searchResults.matches.map(
+      (match) => match.id
+    );
+
+    const relevantMessages = await ConversationMessageRepository.find({
+      _id: { $in: relevantMessageIds },
+    });
+
+    return relevantMessages.map((msg) => ({
+      type:
+        msg.type === ConversationMessageType.Human
+          ? ConversationMessageType.Human
+          : ConversationMessageType.AI,
+      message: msg.message,
+    }));
+  } catch (error) {
+    Logger.error('Error retrieving relevant messages:', error);
+    return [];
+  }
+};
+
+// Generate response from OpenAI
+export const generateResponse = async (history, input) => {
   try {
     const completion = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [
-        { role: 'system' as const, content: 'You are a helpful assistant.' },
-        ...history.map((chat) => {
-          return {
-            role:
-              chat.type === ConversationMessageType.Human
-                ? ('user' as const)
-                : ('assistant' as const),
-            content: chat.message,
-          };
-        }),
-        { role: 'user' as const, content: input },
+        { role: 'system', content: 'You are a helpful assistant.' },
+        ...history.map((chat) => ({
+          role:
+            chat.type === ConversationMessageType.Human ? 'user' : 'assistant',
+          content: chat.message,
+        })),
+        { role: 'user', content: input },
       ],
       temperature: 0.7,
     });
@@ -87,9 +139,8 @@ const generateResponse = async (history: {
   }
 };
 
-const chat = async () => {
-  const history = await loadPreviousConversations();
-
+// Chat loop
+export const chat = async () => {
   Logger.info('Chatbot initialized. Type "exit" to end the conversation.');
 
   while (true) {
@@ -102,16 +153,19 @@ const chat = async () => {
     }
 
     try {
-      await saveToDatabase(input, ConversationMessageType.Human);
+      const humanPromptDb = await saveToDatabase(input, ConversationMessageType.Human);
 
-      const aiResponse = await generateResponse(history, input);
+      const relevantMessages = await retrieveRelevantMessages(input);
+      console.log("🚀 ~ chat ~ relevantMessages:", relevantMessages);
+      const aiResponse = await generateResponse(relevantMessages, input);
 
       Logger.info('AI:', aiResponse);
 
-      await saveToDatabase(aiResponse, ConversationMessageType.AI);
+      const aiResponseDb = await saveToDatabase(aiResponse, ConversationMessageType.AI);
 
-      // Update history after response, this won't be helpful in actual implementation, just added to test through terminal
-      history.push({ type: ConversationMessageType.Human, message: input });
+      // Generate and save embeddings
+      await saveToPinecone(input, humanPromptDb._id.toString());
+      await saveToPinecone(aiResponse, aiResponseDb._id.toString());
     } catch (error) {
       Logger.error('Error processing message:', error);
     }
@@ -121,6 +175,8 @@ const chat = async () => {
   process.exit(0);
 };
 
+
+// Main function
 const main = async () => {
   await chat();
 };
