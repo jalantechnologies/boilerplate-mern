@@ -7,7 +7,7 @@ import ConversationMessageRepository from './store/conversation-message-reposito
 import { ConversationMessageType } from './types';
 
 import { Pinecone } from '@pinecone-database/pinecone';
-
+import { encoding_for_model } from 'tiktoken';
 
 // Initialize OpenAI client
 const openai = new OpenAI({
@@ -35,7 +35,10 @@ const rl = readline.createInterface({
 });
 
 // Save message to MongoDB
-const saveToDatabase = async (message: string, type: ConversationMessageType) => {
+const saveToDatabase = async (
+  message: string,
+  type: ConversationMessageType,
+) => {
   try {
     return await ConversationMessageRepository.create({
       conversationId,
@@ -52,18 +55,18 @@ const saveToDatabase = async (message: string, type: ConversationMessageType) =>
 // Store embeddings in Pinecone
 const saveToPinecone = async (message, messageId) => {
   try {
-    // const embeddingResponse = await openai.embeddings.create({
-    //   model: 'text-embedding-ada-002',
-    //   input: message,
-    // });
-    const embeddingResponse = await pinecone.inference.embed(
-      'multilingual-e5-large',
-      [message],
-      { inputType: 'passage', truncate: 'END' }
-    );
+    const embeddingResponse = await openai.embeddings.create({
+      model: 'text-embedding-ada-002',
+      input: message,
+    });
+    // const embeddingResponse = await pinecone.inference.embed(
+    //   'multilingual-e5-large',
+    //   [message],
+    //   { inputType: 'passage' }
+    // );
 
-    // const vector = embeddingResponse.data[0].embedding;
-    const vector = embeddingResponse.data[0].values;
+    const vector = embeddingResponse.data[0].embedding;
+    // const vector = embeddingResponse.data[0].values;
 
     await index.upsert([
       {
@@ -80,23 +83,33 @@ const saveToPinecone = async (message, messageId) => {
 // Retrieve relevant messages from Pinecone
 const retrieveRelevantMessages = async (input) => {
   try {
-    const embeddingResponse = await pinecone.inference.embed(
-      'multilingual-e5-large',
-      [input],
-      { inputType: 'query' }
+    const embeddingResponse = await openai.embeddings.create({
+      model: 'text-embedding-ada-002',
+      input: input,
+    });
+    // const embeddingResponse = await pinecone.inference.embed(
+    //   'multilingual-e5-large',
+    //   [input],
+    //   { inputType: 'query' }
+    // );
+    console.log(
+      '🚀 ~ retrieveRelevantMessages ~ embeddingResponse:',
+      embeddingResponse,
     );
-    const vector = embeddingResponse.data[0].values;
+    const vector = embeddingResponse.data[0].embedding;
+    // const vector = embeddingResponse.data[0].values;
 
     const searchResults = await index.query({
       vector,
-      topK: 5, // Retrieve top 5 most relevant messages
+      topK: 7, // Retrieve top 5 most relevant messages
       includeValues: false,
       includeMetadata: true,
+      filter: {
+        conversationId: { $eq: conversationId },
+      },
     });
 
-    const relevantMessageIds = searchResults.matches.map(
-      (match) => match.id
-    );
+    const relevantMessageIds = searchResults.matches.map((match) => match.id);
 
     const relevantMessages = await ConversationMessageRepository.find({
       _id: { $in: relevantMessageIds },
@@ -153,15 +166,20 @@ export const chat = async () => {
     }
 
     try {
-      const humanPromptDb = await saveToDatabase(input, ConversationMessageType.Human);
-
       const relevantMessages = await retrieveRelevantMessages(input);
-      console.log("🚀 ~ chat ~ relevantMessages:", relevantMessages);
+      console.log('🚀 ~ chat ~ relevantMessages:', relevantMessages);
       const aiResponse = await generateResponse(relevantMessages, input);
 
       Logger.info('AI:', aiResponse);
 
-      const aiResponseDb = await saveToDatabase(aiResponse, ConversationMessageType.AI);
+      const humanPromptDb = await saveToDatabase(
+        input,
+        ConversationMessageType.Human,
+      );
+      const aiResponseDb = await saveToDatabase(
+        aiResponse,
+        ConversationMessageType.AI,
+      );
 
       // Generate and save embeddings
       await saveToPinecone(input, humanPromptDb._id.toString());
@@ -175,10 +193,44 @@ export const chat = async () => {
   process.exit(0);
 };
 
+// Count tokens, for testing purposes
+const countTokens = (text: string, encoding: any): number => {
+  return encoding.encode(text).length;
+};
 
-// Main function
+export const estimateTokens = async () => {
+  const encoder = encoding_for_model('gpt-3.5-turbo');
+  const messages = await ConversationMessageRepository.find({
+    conversationId,
+  });
+  console.log('🚀 ~ estimateTokens ~ messages:', messages.length);
+  let tokens: number = 0;
+  let fullMessages: string = '';
+
+  messages.forEach((message) => {
+    const msg = message.message;
+    tokens += countTokens(msg, encoder);
+    fullMessages += msg;
+  });
+
+  console.log('🚀 ~ estimateTokens ~ tokens:', tokens);
+  // await saveToDatabase(fullMessages, ConversationMessageType.Human);
+  // console.log("🚀 ~ estimateTokens ~ humanPromptDb:", humanPromptDb)
+
+  // await saveToPinecone(fullMessages, humanPromptDb._id.toString());
+  const embed = await openai.embeddings.create({
+    model: 'text-embedding-ada-002',
+    input: fullMessages,
+  });
+  console.log('🚀 ~ estimateTokens ~ embed:', embed, embed.data[0].embedding);
+
+  encoder.free();
+  process.exit(0);
+};
+
 const main = async () => {
-  await chat();
+  // estimateTokens();
+  chat();
 };
 
 main();
