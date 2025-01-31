@@ -6,6 +6,7 @@ export interface TaskDB {
   active: boolean;
   description: string;
   title: string;
+  comments: Types.ObjectId[];
 }
 
 export const TaskDbSchema = new Schema<TaskDB>(
@@ -29,6 +30,12 @@ export const TaskDbSchema = new Schema<TaskDB>(
       type: String,
       required: true,
     },
+    comments: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Comment',
+      },
+    ],
   },
   {
     collection: 'tasks',
@@ -36,5 +43,5 @@ export const TaskDbSchema = new Schema<TaskDB>(
       createdAt: 'createdAt',
       updatedAt: 'updatedAt',
     },
-  },
+  }
 );
