@@ -5,6 +5,7 @@ import {
   useResetPasswordContext,
 } from './reset-password.provider';
 import { TaskProvider, useTaskContext } from './task.provider';
+import { TodoProvider, useTodoContext } from './todo.provider';
 
 export {
   AuthProvider,
@@ -15,4 +16,6 @@ export {
   useTaskContext,
   ResetPasswordProvider,
   useResetPasswordContext,
+  TodoProvider,
+  useTodoContext,
 };

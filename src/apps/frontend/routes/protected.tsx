@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 
 import routes from '../constants/routes';
-import { TaskProvider, useAccountContext } from '../contexts';
-import { Dashboard, NotFound, ProfileSettings, Tasks } from '../pages';
+import { TaskProvider, useAccountContext , TodoProvider } from '../contexts';
+import { Dashboard, NotFound, ProfileSettings, Tasks, Todos } from '../pages';
 import AppLayout from '../pages/app-layout/app-layout';
 
 const App = () => {
@@ -33,6 +33,14 @@ export const protectedRoutes = [
           <TaskProvider>
             <Tasks />
           </TaskProvider>
+        ),
+      },
+      {
+        path: routes.TODOS,
+        element: (
+          <TodoProvider>
+            <Todos />
+          </TodoProvider>
         ),
       },
       {

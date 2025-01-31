@@ -17,6 +17,7 @@ import { expressListRoutes } from './modules/list-routes';
 import { Logger, CustomLoggerTransport } from './modules/logger';
 import { PasswordResetTokenServer } from './modules/password-reset-token';
 import { TaskServer } from './modules/task';
+import { TodoServer } from './modules/todo';
 
 interface APIMicroserviceService {
   rootFolderPath: string;
@@ -83,6 +84,10 @@ export default class App {
       {
         serverInstance: new TaskServer(),
         rootFolderPath: path.join(__dirname, 'modules/task'),
+      },
+      {
+        serverInstance: new TodoServer(),
+        rootFolderPath: path.join(__dirname, 'modules/todo'),
       },
     ];
   }
