@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
+import { Nullable } from '../../../types';
 import { HttpRoute } from '../../list-routes';
 import {
   ErrorReadingFile,
@@ -31,7 +32,7 @@ export default class DocumentGeneratorUtil {
             restApiFolderPath,
             route,
           );
-          let serializerMethod: string;
+          let serializerMethod: Nullable<string> = null;
           if (!excludeSerializerMethodsForRouteMethods.includes(route.method)) {
             serializerMethod = this.getSerializerMethodCode(
               controllerMethod,
@@ -55,7 +56,7 @@ export default class DocumentGeneratorUtil {
   private static getControllerMethodCode(
     restApiFolderPath: string,
     route: HttpRoute,
-  ): string {
+  ): Nullable<string> {
     const controllerMethodName = this.getControllerMethodName(
       restApiFolderPath,
       route,
@@ -75,9 +76,9 @@ export default class DocumentGeneratorUtil {
   }
 
   private static getSerializerMethodCode(
-    controllerMethodCode: string,
+    controllerMethodCode: Nullable<string>,
     restApiFolderPath: string,
-  ): string {
+  ): Nullable<string> {
     const serializeMethodName =
       this.extractSerializeMethodName(controllerMethodCode);
 
@@ -135,8 +136,10 @@ export default class DocumentGeneratorUtil {
   }
 
   private static extractSerializeMethodName(
-    controllerMethodCode: string,
-  ): string | null {
+    controllerMethodCode: Nullable<string>,
+  ): Nullable<string> {
+    if (!controllerMethodCode) return null;
+
     const serializeMethodRegex = /serialize\w+AsJSON/g;
     const match = serializeMethodRegex.exec(controllerMethodCode);
     return match ? match[0] : null;
@@ -159,8 +162,10 @@ export default class DocumentGeneratorUtil {
   }
 
   private static addLeadingSlashesIfNotExistsAndRemoveTrailingSlashes(
-    routePath: string,
-  ): string {
+    routePath: Nullable<string>,
+  ): Nullable<string> {
+    if (!routePath) return null;
+
     const trimmedRoutePath = routePath.replace(/(^\/)|(\/$)/g, '');
     return trimmedRoutePath ? `/${trimmedRoutePath}` : '';
   }
@@ -169,7 +174,7 @@ export default class DocumentGeneratorUtil {
     fileSuffix: string,
     folderPath: string,
     methodSignature: string,
-  ): string {
+  ): Nullable<string> {
     try {
       const fileName = this.findFileWithSuffix(fileSuffix, folderPath);
       if (!fileName) return null;

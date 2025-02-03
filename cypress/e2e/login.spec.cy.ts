@@ -1,9 +1,14 @@
 import { CreateAccountParamsByUsernameAndPassword } from '../../src/apps/backend/modules/account';
 import { setupScenario } from '../helpers/scenario';
+import { Nullable } from '../types/common';
 
 describe('Login', () => {
-  const credentials: CreateAccountParamsByUsernameAndPassword =
+  const credentials: Nullable<CreateAccountParamsByUsernameAndPassword> =
     setupScenario('login');
+
+  if (!credentials) {
+    throw new Error('Failed to setup scenario');
+  }
 
   beforeEach(() => {
     cy.visit('/login');
