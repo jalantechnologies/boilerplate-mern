@@ -7,10 +7,10 @@ export type HttpRouteWithRootFolderPath = {
 };
 
 export type HttpRouteWithControllerAndSerializerDetails = {
-  controllerMethod: string;
+  controllerMethod: Nullable<string>;
   endpoint: string;
   method: string;
-  serializerMethod: string;
+  serializerMethod: Nullable<string>;
 };
 
 export type MarkdownDocumentation = {

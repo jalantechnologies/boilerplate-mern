@@ -1,10 +1,10 @@
+import { Nullable } from '../../../types';
 import {
   Account,
   AccountNotFoundError,
   AccountWithPhoneNumberExistsError,
   AccountWithUserNameExistsError,
   InvalidCredentialsError,
-  Nullable,
   PhoneNumber,
 } from 'backend/modules/account';
 import AccountUtil from 'backend/modules/account/internal/account-util';

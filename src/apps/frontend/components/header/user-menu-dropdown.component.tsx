@@ -20,7 +20,7 @@ const UserMenuDropdown: React.FC<UserMenuDropdownProps> = ({
     onFocus={() => setDropdownOpen(true)}
     onBlur={() => setDropdownOpen(false)}
     className={`absolute right-0 mt-4 flex w-55 flex-col gap-5 rounded-sm border border-stroke bg-white px-6 py-5 shadow-default dark:border-strokedark dark:bg-boxdark ${
-      dropdownOpen === true ? 'block' : 'hidden'
+      dropdownOpen ? 'block' : 'hidden'
     }`}
   >
     {userMenuDropdownItems.map((item, index) => (

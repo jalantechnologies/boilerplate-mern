@@ -15,7 +15,7 @@ import OTPForm from './otp-form';
 export const OTPVerificationPage: React.FC = () => {
   const sendOTPDelayInMilliseconds = 60_000;
 
-  const { startTimer, remaininingSecondsStr, isResendEnabled } = useTimer({
+  const { startTimer, remainingSecondsStr, isResendEnabled } = useTimer({
     delayInMilliseconds: sendOTPDelayInMilliseconds,
   });
 
@@ -53,7 +53,7 @@ export const OTPVerificationPage: React.FC = () => {
             onError={onError}
             onResendOTPSuccess={onResendOTPSuccess}
             onVerifyOTPSuccess={onVerifyOTPSuccess}
-            timerRemainingSeconds={remaininingSecondsStr}
+            timerRemainingSeconds={remainingSecondsStr}
           />
         </VerticalStackLayout>
       </AuthenticationFormLayout>

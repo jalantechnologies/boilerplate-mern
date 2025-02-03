@@ -70,6 +70,10 @@ export default class AccountWriter {
       { new: true }
     );
 
+    if (!dbAccount) {
+      throw new AccountNotFoundError(accountId);
+    }
+
     return AccountUtil.convertAccountDBToAccount(dbAccount);
   }
 
@@ -86,6 +90,10 @@ export default class AccountWriter {
       },
       { new: true }
     );
+
+    if (!dbAccount) {
+      throw new AccountNotFoundError(accountId);
+    }
 
     return AccountUtil.convertAccountDBToAccount(dbAccount);
   }

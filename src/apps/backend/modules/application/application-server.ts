@@ -23,7 +23,7 @@ export default abstract class ApplicationServer {
   }
 
   private handleError = (
-    error: ApplicationError,
+    error: Error,
     _req: Request,
     res: Response,
     next: NextFunction

@@ -194,6 +194,11 @@ describe('Task API', () => {
       expect(res.status).to.eq(204);
 
       const updatedToken = await TaskRepository.findById(task.id);
+
+      if (!updatedToken) {
+        throw new Error('Task not found.');
+      }
+
       expect(updatedToken.active).to.be.false;
     });
   });

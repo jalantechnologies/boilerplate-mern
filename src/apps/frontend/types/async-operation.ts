@@ -1,4 +1,4 @@
-import { JsonObject } from './common-types';
+import { JsonObject } from './common';
 
 export interface AsyncError {
   code: string;

@@ -44,8 +44,8 @@ describe('accessAuthMiddleware', () => {
           authorization: `Bearer ${accessToken.token}`,
         },
       } as unknown as Request,
-      undefined,
-      controller
+      {} as unknown as Response,
+      controller,
     );
 
     sinon.assert.calledOnce(controller);
@@ -64,10 +64,10 @@ describe('accessAuthMiddleware', () => {
               authorization: `Bearer ${accessToken.token}`,
             },
           } as unknown as Request,
-          undefined,
-          controller
+          {} as unknown as Response,
+          controller,
         ),
-      new UnAuthorizedAccessError().message
+      new UnAuthorizedAccessError().message,
     );
 
     sinon.assert.notCalled(controller);
@@ -84,7 +84,7 @@ describe('accessAuthMiddleware', () => {
     const expiredToken =
       await AuthenticationService.createAccessTokenByUsernameAndPassword(
         password,
-        account.username
+        account.username,
       );
 
     assert.throws(
@@ -98,10 +98,10 @@ describe('accessAuthMiddleware', () => {
               authorization: `Bearer ${expiredToken.token}`,
             },
           } as unknown as Request,
-          undefined,
-          controller
+          {} as unknown as Response,
+          controller,
         ),
-      new AccessTokenExpiredError().message
+      new AccessTokenExpiredError().message,
     );
 
     sinon.assert.notCalled(controller);
@@ -117,10 +117,10 @@ describe('accessAuthMiddleware', () => {
             params: { accountId },
             headers: {},
           } as unknown as Request,
-          undefined,
-          controller
+          {} as unknown as Response,
+          controller,
         ),
-      new AuthorizationHeaderNotFound().message
+      new AuthorizationHeaderNotFound().message,
     );
 
     sinon.assert.notCalled(controller);
@@ -138,10 +138,10 @@ describe('accessAuthMiddleware', () => {
               authorization: 'invalidAuthHeader',
             },
           } as unknown as Request,
-          undefined,
-          controller
+          {} as unknown as Response,
+          controller,
         ),
-      new InvalidAuthorizationHeader().message
+      new InvalidAuthorizationHeader().message,
     );
 
     sinon.assert.notCalled(controller);

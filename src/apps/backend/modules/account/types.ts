@@ -1,7 +1,5 @@
 import { ApplicationError, HttpStatusCodes } from 'backend/modules/application';
 
-export type Nullable<T> = T | null;
-
 export class PhoneNumber {
   countryCode: string;
   phoneNumber: string;

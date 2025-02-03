@@ -25,12 +25,19 @@ export default class PasswordResetTokenWriter {
   public static async setPasswordResetTokenAsUsed(
     passwordResetTokenId: string
   ): Promise<PasswordResetToken> {
-    return PasswordResetTokenRepository.findByIdAndUpdate(
+    const updatedToken = await PasswordResetTokenRepository.findByIdAndUpdate(
       passwordResetTokenId,
       {
         isUsed: true,
       },
       { new: true }
+    );
+
+    if (!updatedToken) {
+      throw new PasswordResetTokenNotFoundError(passwordResetTokenId);
+    }
+    return PasswordResetTokenUtil.convertPasswordResetTokenDBToPasswordResetToken(
+      updatedToken,
     );
   }
 }

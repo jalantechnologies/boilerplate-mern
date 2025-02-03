@@ -1,5 +1,5 @@
 import { ApiError, ApiResponse } from '../types';
-import { JsonObject } from '../types/common-types';
+import { JsonObject } from '../types/common';
 import { Task } from '../types/task';
 import { getAccessTokenFromStorage } from '../utils/storage-util';
 
@@ -8,8 +8,8 @@ import APIService from './api.service';
 export default class TaskService extends APIService {
   addTask = async (
     title: string,
-    description: string
-  ): Promise<ApiResponse<Task>> => {
+    description: string,
+  ): Promise<ApiResponse<Task | undefined>> => {
     try {
       const userAccessToken = getAccessTokenFromStorage();
       const response = await this.apiClient.post(
@@ -17,43 +17,43 @@ export default class TaskService extends APIService {
         { title, description },
         {
           headers: {
-            Authorization: `Bearer ${userAccessToken.token}`,
+            Authorization: `Bearer ${userAccessToken?.token}`,
           },
-        }
+        },
       );
       return new ApiResponse(new Task(response.data as JsonObject), undefined);
     } catch (e) {
       return new ApiResponse(
         undefined,
-        new ApiError(e.response.data as JsonObject)
+        new ApiError(e.response.data as JsonObject),
       );
     }
   };
 
-  getTasks = async (): Promise<ApiResponse<Task[]>> => {
+  getTasks = async (): Promise<ApiResponse<Task[] | undefined>> => {
     try {
       const userAccessToken = getAccessTokenFromStorage();
       const response = await this.apiClient.get('/tasks', {
         headers: {
-          Authorization: `Bearer ${userAccessToken.token}`,
+          Authorization: `Bearer ${userAccessToken?.token}`,
         },
       });
       const tasks: Task[] = (response.data as JsonObject[]).map(
-        (taskData) => new Task(taskData)
+        (taskData) => new Task(taskData),
       );
       return new ApiResponse(tasks, undefined);
     } catch (e) {
       return new ApiResponse(
         undefined,
-        new ApiError(e.response.data as JsonObject)
+        new ApiError(e.response.data as JsonObject),
       );
     }
   };
 
   updateTask = async (
     taskId: string,
-    taskData: Task
-  ): Promise<ApiResponse<Task>> => {
+    taskData: Task,
+  ): Promise<ApiResponse<Task | undefined>> => {
     try {
       const userAccessToken = getAccessTokenFromStorage();
       const response = await this.apiClient.patch(
@@ -61,15 +61,15 @@ export default class TaskService extends APIService {
         taskData,
         {
           headers: {
-            Authorization: `Bearer ${userAccessToken.token}`,
+            Authorization: `Bearer ${userAccessToken?.token}`,
           },
-        }
+        },
       );
       return new ApiResponse(new Task(response.data as JsonObject), undefined);
     } catch (e) {
       return new ApiResponse(
         undefined,
-        new ApiError(e.response.data as JsonObject)
+        new ApiError(e.response.data as JsonObject),
       );
     }
   };
@@ -79,14 +79,14 @@ export default class TaskService extends APIService {
       const userAccessToken = getAccessTokenFromStorage();
       await this.apiClient.delete(`/tasks/${taskId}`, {
         headers: {
-          Authorization: `Bearer ${userAccessToken.token}`,
+          Authorization: `Bearer ${userAccessToken?.token}`,
         },
       });
       return new ApiResponse(undefined, undefined);
     } catch (e) {
       return new ApiResponse(
         undefined,
-        new ApiError(e.response.data as JsonObject)
+        new ApiError(e.response.data as JsonObject),
       );
     }
   };

@@ -52,7 +52,7 @@ const expressListRoutes = (
             baseAPIRoutePath,
             method,
             rootRouterPath: stack.routerPath,
-            routerPath: stack.route.path,
+            routerPath: stack.route ? stack.route.path : null,
           });
         }
       });

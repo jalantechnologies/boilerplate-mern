@@ -10,7 +10,20 @@ interface TaskFormProps {
   onError?: (error: AsyncError) => void;
   onSuccess?: () => void;
 }
+
 const useTaskForm = ({ onError, onSuccess }: TaskFormProps) => {
+  const handleError = (error: AsyncError) => {
+    if (onError) {
+      onError(error);
+    }
+  };
+
+  const handleSuccess = () => {
+    if (onSuccess) {
+      onSuccess();
+    }
+  };
+
   const {
     addTask,
     setTasksList,
@@ -29,7 +42,7 @@ const useTaskForm = ({ onError, onSuccess }: TaskFormProps) => {
       .setFieldValue(fieldName, data)
       .then()
       .catch((err) => {
-        onError(err as AsyncError);
+        handleError(err as AsyncError);
       });
   };
 
@@ -62,11 +75,13 @@ const useTaskForm = ({ onError, onSuccess }: TaskFormProps) => {
             }
             return taskData;
           });
-          setTasksList(newUpdatedTasks);
-          onSuccess();
+          setTasksList(newUpdatedTasks as Task[]);
+          handleSuccess();
           updateTaskFormik.resetForm();
         })
-        .catch((error) => onError(error as AsyncError));
+        .catch((error) => {
+          handleError(error as AsyncError);
+        });
     },
   });
 
@@ -90,12 +105,12 @@ const useTaskForm = ({ onError, onSuccess }: TaskFormProps) => {
     onSubmit: (values) => {
       addTask(values.title, values.description)
         .then((newTask) => {
-          setTasksList([...tasksList, newTask]);
-          onSuccess();
+          setTasksList([...tasksList, newTask as Task]);
+          handleSuccess();
           addTaskFormik.resetForm();
         })
         .catch((error) => {
-          onError(error as AsyncError);
+          handleError(error as AsyncError);
         });
     },
   });
