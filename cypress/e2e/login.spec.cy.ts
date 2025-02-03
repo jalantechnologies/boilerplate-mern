@@ -6,10 +6,6 @@ describe('Login', () => {
   const credentials: Nullable<CreateAccountParamsByUsernameAndPassword> =
     setupScenario('login');
 
-  if (!credentials) {
-    throw new Error('Failed to setup scenario');
-  }
-
   beforeEach(() => {
     cy.visit('/login');
   });
@@ -20,8 +16,10 @@ describe('Login', () => {
 
   it('should allow login', () => {
     cy.get('[data-testid="username"]').clear();
+    // @ts-expect-error - credentials might be null and supposed to be that way for the cypress test
     cy.get('[data-testid="username"]').type(credentials.username);
     cy.get('[data-testid="password"]').clear();
+    // @ts-expect-error - credentials might be null and supposed to be that way for the cypress test
     cy.get('[data-testid="password"]').type(credentials.password);
     cy.get('button[data-baseweb="button"]').click();
 
@@ -31,14 +29,18 @@ describe('Login', () => {
   it('should not allow login for removed credentials', () => {
     cy.task('scenario:cleanup', 'login');
     cy.get('[data-testid="username"]').clear();
+    // @ts-expect-error - credentials might be null and supposed to be that way for the cypress test
     cy.get('[data-testid="username"]').type(credentials.username);
     cy.get('[data-testid="password"]').clear();
+    // @ts-expect-error - credentials might be null and supposed to be that way for the cypress test
     cy.get('[data-testid="password"]').type(credentials.password);
     cy.get('button[data-baseweb="button"]').click();
 
     const toaster = () => cy.get('div[data-baseweb="toast"]');
+
     toaster().should(
       'contain',
+      // @ts-expect-error - credentials might be null and supposed to be that way for the cypress test
       `${credentials.username} not found with provided parameters.`,
     );
   });
