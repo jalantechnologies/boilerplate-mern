@@ -63,7 +63,11 @@ export default class AccessTokenService {
       throw new AccessTokenInvalidError();
     }
 
-    if (verifiedToken.exp * 1000 < Date.now()) {
+    if (
+      !verifiedToken ||
+      !verifiedToken.exp ||
+      verifiedToken.exp * 1000 < Date.now()
+    ) {
       throw new AccessTokenExpiredError();
     }
 
@@ -88,7 +92,11 @@ export default class AccessTokenService {
 
     const jwtTokenDecoded = jsonwebtoken.decode(jwtToken);
 
-    if (typeof jwtTokenDecoded === 'string') {
+    if (
+      typeof jwtTokenDecoded === 'string' ||
+      !jwtTokenDecoded ||
+      !jwtTokenDecoded.exp
+    ) {
       throw new AccessTokenInvalidError();
     }
 

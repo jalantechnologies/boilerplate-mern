@@ -1,9 +1,10 @@
+import { Nullable } from '../../../types';
 import { AccessToken } from '../types';
 
 export const serializeAccessTokenAsJSON = (
-  accessToken: AccessToken
+  accessToken: Nullable<AccessToken>,
 ): unknown => ({
-  accountId: accessToken.accountId,
-  expiresAt: accessToken.expiresAt.toUTCString(),
-  token: accessToken.token,
+  accountId: accessToken?.accountId,
+  expiresAt: accessToken?.expiresAt.toUTCString(),
+  token: accessToken?.token,
 });

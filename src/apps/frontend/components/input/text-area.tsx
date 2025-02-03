@@ -7,7 +7,7 @@ import React, {
 interface TextAreaProps {
   cols: number;
   disabled: boolean;
-  error: string;
+  error: string | false | undefined;
   name: string;
   onBlur?: FocusEventHandler<HTMLTextAreaElement>;
   onChange: ChangeEventHandler<HTMLTextAreaElement>;

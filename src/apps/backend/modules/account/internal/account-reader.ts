@@ -1,10 +1,10 @@
+import { Nullable } from '../../../types';
 import {
   Account,
   AccountNotFoundError,
   AccountWithPhoneNumberExistsError,
   AccountWithUserNameExistsError,
   InvalidCredentialsError,
-  Nullable,
   PhoneNumber,
 } from '../types';
 

@@ -7,5 +7,4 @@ import App from './app.component';
 
 const container = document.getElementById('app');
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-call
-ReactDOM.createRoot(container).render(<App />);
+ReactDOM.createRoot(container as ReactDOM.Container).render(<App />);
