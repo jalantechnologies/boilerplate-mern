@@ -49,10 +49,10 @@ export class TaskController {
   getTask = applicationController(
     async (req: Request<GetTaskParams>, res: Response) => {
       const { accountId } = req;
-      const { taskId } = req.params;
+      const { id } = req.params;
       const params: GetTaskParams = {
         accountId: accountId as string,
-        taskId,
+        taskId: id,
       };
       const task = await TaskService.getTaskForAccount(params);
       const taskJSON = serializeTaskAsJSON(task);
