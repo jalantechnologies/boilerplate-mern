@@ -28,7 +28,7 @@ Boilerplate project for NodeJS, React based projects in TypeScript. This README 
 
 **Pre Requirements:**
 
-- Node (v20.11.1) - [Download](https://nodejs.org/download/release/v20.11.1/)
+- Node (v22.13.1) - [Download](https://nodejs.org/download/release/v22.13.1/)
 - MongoDb (v4.4.24) - [Download](https://fastdl.mongodb.org/osx/mongodb-macos-x86_64-4.4.24.tgz)
 
 **Scripts:**

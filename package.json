@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "Boilerplate project for NodeJS based projects in TypeScript",
   "engines": {
-    "node": "20.11.1",
-    "npm": "10.2.4"
+    "node": "22.13.1",
+    "npm": "10.9.2"
   },
   "scripts": {
     "build": "cross-env NODE_ENV=production concurrently --kill-others-on-fail npm:build:*",
