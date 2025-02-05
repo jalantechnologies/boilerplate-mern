@@ -14,6 +14,7 @@ import { ButtonKind, ButtonSize, ButtonType } from '../../types/button';
 import { Task } from '../../types/task';
 
 import useTaskForm from './tasks-form.hook';
+import useCommentForm from './comment-form.hook';
 
 interface TaskModalProps {
   btnText: string;
@@ -33,6 +34,11 @@ const TaskModal: React.FC<TaskModalProps> = ({
   setIsModalOpen,
 }) => {
   const { isAddTaskLoading, isUpdateTaskLoading } = useTaskForm({
+    onSuccess,
+    onError,
+  });
+
+  const { addCommentFormik } = useCommentForm({
     onSuccess,
     onError,
   });
@@ -108,6 +114,39 @@ const TaskModal: React.FC<TaskModalProps> = ({
             }
           >
             {btnText}
+          </Button>
+        </VerticalStackLayout>
+      </form>
+
+      <form onSubmit={addCommentFormik.handleSubmit}>
+        <VerticalStackLayout gap={5}>
+          <FormControl
+            error={addCommentFormik.touched.content && addCommentFormik.errors.content}
+            label={'Add Comment'}
+          >
+            <TextArea
+              cols={30}
+              disabled={false}
+              error={addCommentFormik.touched.content && addCommentFormik.errors.content}
+              name={'content'}
+              onBlur={addCommentFormik.handleBlur}
+              onChange={addCommentFormik.handleChange}
+              placeholder="Enter your comment"
+              rows={3}
+              value={addCommentFormik.values.content}
+            />
+          </FormControl>
+          <Button
+            type={ButtonType.SUBMIT}
+            isLoading={addCommentFormik.isSubmitting}
+            size={ButtonSize.DEFAULT}
+            startEnhancer={
+              !addCommentFormik.isSubmitting && (
+                <img src="assets/svg/plus-icon.svg" alt="Plus Icon" />
+              )
+            }
+          >
+            Add Comment
           </Button>
         </VerticalStackLayout>
       </form>

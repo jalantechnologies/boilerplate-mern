@@ -1,11 +1,13 @@
 import { ApplicationError } from '../application';
 import { HttpStatusCodes } from '../http';
+import { Types } from 'mongoose';
 
 export class Task {
   id: string;
   account: string;
   description: string;
   title: string;
+  comments: string[];
 }
 
 export type GetAllTaskParams = {
@@ -55,3 +57,28 @@ export class TaskNotFoundError extends ApplicationError {
     this.httpStatusCode = HttpStatusCodes.NOT_FOUND;
   }
 }
+
+// Comment Types
+export interface CommentDB {
+  _id: Types.ObjectId;
+  taskId: Types.ObjectId;
+  userId: Types.ObjectId;
+  content: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export type CreateCommentParams = {
+  taskId: string;
+  userId: string;
+  content: string;
+};
+
+export type UpdateCommentParams = {
+  commentId: string;
+  content: string;
+};
+
+export type DeleteCommentParams = {
+  commentId: string;
+};

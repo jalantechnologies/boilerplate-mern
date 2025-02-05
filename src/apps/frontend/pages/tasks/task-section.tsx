@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 
 import {
@@ -13,9 +13,11 @@ import {
 import { AsyncError } from '../../types';
 import { ButtonKind, ButtonSize } from '../../types/button';
 import { Task } from '../../types/task';
+import { Comment } from '../../types/comment';
 
 import TaskModal from './task-modal';
 import useTaskForm from './tasks-form.hook';
+import CommentService from '../../services/comment.service';
 
 interface TaskSectionProps {
   handleDeleteTask: (taskId: string) => void;
@@ -31,6 +33,10 @@ const TaskSection: React.FC<TaskSectionProps> = ({
   tasks,
 }) => {
   const [updateTaskModal, setUpdateTaskModal] = useState(false);
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
+
+  const commentService = new CommentService();
 
   const onSuccess = () => {
     toast.success('Task has been updated successfully');
@@ -48,6 +54,40 @@ const TaskSection: React.FC<TaskSectionProps> = ({
     setFormikFieldValue(updateTaskFormik, 'id', task.id);
     setFormikFieldValue(updateTaskFormik, 'description', task.description);
   };
+
+  const fetchComments = async (taskId: string) => {
+    try {
+      const response = await commentService.getComments(taskId);
+      setComments(response.data);
+      setSelectedTaskId(taskId);
+    } catch (error) {
+      onError && onError(error as AsyncError);
+    }
+  };
+
+  const handleEditComment = async (commentId: string, content: string) => {
+    try {
+      await commentService.updateComment(commentId, content);
+      fetchComments(selectedTaskId!);
+    } catch (error) {
+      onError && onError(error as AsyncError);
+    }
+  };
+
+  const handleDeleteComment = async (commentId: string) => {
+    try {
+      await commentService.deleteComment(commentId);
+      fetchComments(selectedTaskId!);
+    } catch (error) {
+      onError && onError(error as AsyncError);
+    }
+  };
+
+  useEffect(() => {
+    if (selectedTaskId) {
+      fetchComments(selectedTaskId);
+    }
+  }, [selectedTaskId]);
 
   if (isGetTasksLoading) {
     return (
@@ -74,6 +114,36 @@ const TaskSection: React.FC<TaskSectionProps> = ({
           <VerticalStackLayout gap={3}>
             <LabelLarge>{task.title}</LabelLarge>
             <ParagraphSmall>{task.description}</ParagraphSmall>
+            <Button
+              onClick={() => fetchComments(task.id)}
+              kind={ButtonKind.SECONDARY}
+              size={ButtonSize.DEFAULT}
+            >
+              View Comments
+            </Button>
+            {selectedTaskId === task.id && (
+              <div>
+                {comments.map((comment) => (
+                  <div key={comment._id}>
+                    <ParagraphSmall>{comment.content}</ParagraphSmall>
+                    <Button
+                      onClick={() => handleEditComment(comment._id, comment.content)}
+                      kind={ButtonKind.SECONDARY}
+                      size={ButtonSize.DEFAULT}
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      onClick={() => handleDeleteComment(comment._id)}
+                      kind={ButtonKind.SECONDARY}
+                      size={ButtonSize.DEFAULT}
+                    >
+                      Delete
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            )}
           </VerticalStackLayout>
 
           <div className="absolute right-4 top-4">
