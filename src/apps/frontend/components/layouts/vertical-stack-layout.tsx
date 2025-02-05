@@ -6,8 +6,11 @@ interface VerticalStackLayoutProps {
 
 const VerticalStackLayout: React.FC<
   PropsWithChildren<VerticalStackLayoutProps>
-> = ({ children, gap = 0 }) => (
-  <div className={`gap-${gap} flex flex-col justify-center`}>{children}</div>
-);
+> = ({ children, gap = 0 }) => {
+  const gapClass = gap ? `gap-${gap}` : '';
+  return (
+    <div className={`${gapClass} flex flex-col justify-center`}>{children}</div>
+  )
+};
 
 export default VerticalStackLayout;
