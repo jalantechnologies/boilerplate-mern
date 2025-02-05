@@ -12,6 +12,7 @@ import Dashboard from './dashboard';
 import NotFound from './not-found/not-found.page';
 import ProfileSettings from './profile/settings';
 import Tasks from './tasks';
+import Todos from './todos';
 
 export {
   About,
@@ -27,4 +28,5 @@ export {
   ProfileSettings,
   Signup,
   Tasks,
+  Todos,
 };

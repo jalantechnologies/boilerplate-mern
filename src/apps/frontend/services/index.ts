@@ -3,6 +3,7 @@ import APIService from './api.service';
 import AuthService from './auth.service';
 import DocumentationService from './documentation.service';
 import ResetPasswordService from './reset-password.service';
+import TodoService from './todo.service';
 
 export {
   AccountService,
@@ -10,4 +11,5 @@ export {
   APIService,
   DocumentationService,
   ResetPasswordService,
+  TodoService,
 };

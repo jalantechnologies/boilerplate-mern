@@ -67,6 +67,12 @@ const Sidebar: React.FC<SidebarProps> = ({
                 },
               ]}
             />
+            <SidebarMenuItem
+              iconPath="/assets/img/icon/tasks-sidebar-icon.svg"
+              path={routes.TODOS}
+              setIsSidebarOpen={setIsSidebarOpen}
+              title="Todos"
+            />
           </ul>
         </nav>
       </div>

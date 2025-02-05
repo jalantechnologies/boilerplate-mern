@@ -11,6 +11,7 @@ const routes = {
   PROFILE_SETTINGS: '/profile/settings',
   SIGNUP: '/signup',
   TASKS: '/tasks',
+  TODOS: '/todo',
 };
 
 export default routes;
