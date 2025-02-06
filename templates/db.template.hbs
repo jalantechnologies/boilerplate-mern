@@ -1,0 +1,15 @@
+import { Schema, Types } from 'mongoose';
+
+export interface {{pascalCase moduleName}}DB {
+  _id: Types.ObjectId;
+}
+
+export const {{pascalCase moduleName}}DbSchema = new Schema<{{pascalCase moduleName}}DB>(
+  {},
+  {
+    timestamps: {
+      createdAt: 'createdAt',
+      updatedAt: 'updatedAt',
+    },
+  }
+);

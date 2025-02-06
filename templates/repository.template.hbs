@@ -1,0 +1,10 @@
+import { ApplicationRepository } from '../../../application';
+
+import { {{pascalCase moduleName}}DB, {{pascalCase moduleName}}DbSchema } from './{{kebabCase moduleName}}-db';
+
+const {{pascalCase moduleName}}Repository = ApplicationRepository<{{pascalCase moduleName}}DB>(
+  '{{camelCase moduleName}}s',
+  {{pascalCase moduleName}}DbSchema,
+);
+
+export default {{pascalCase moduleName}}Repository;

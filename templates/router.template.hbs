@@ -1,0 +1,11 @@
+import { accessAuthMiddleware } from '../../access-token/rest-api/access-auth-middleware';
+import { ApplicationRouter } from '../../application';
+
+import { {{pascalCase moduleName}}Controller } from './{{kebabCase moduleName}}-controller';
+
+export default class {{pascalCase moduleName}}Router extends ApplicationRouter {
+  configure(): void {
+    const { router } = this;
+    const ctrl = new {{pascalCase moduleName}}Controller();
+  }
+};
