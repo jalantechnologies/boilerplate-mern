@@ -10,7 +10,7 @@ import {
 } from '../../../components';
 import routes from '../../../constants/routes';
 import { AsyncError } from '../../../types';
-import { ButtonKind, ButtonType } from '../../../types/button';
+import { ButtonKind, ButtonSize, ButtonType } from '../../../types/button';
 
 import useOTPForm from './otp-form-hook';
 
@@ -89,8 +89,9 @@ const OTPForm: React.FC<OTPFormProps> = ({
 
         <Button
           type={ButtonType.SUBMIT}
-          isLoading={isVerifyOTPLoading}
           kind={ButtonKind.PRIMARY}
+          isLoading={isVerifyOTPLoading}
+          size={ButtonSize.LARGE}
         >
           Verify
         </Button>
