@@ -1,8 +1,9 @@
 import { CreateAccountParamsByUsernameAndPassword } from '../../src/apps/backend/modules/account';
 import { setupScenario } from '../helpers/scenario';
+import { Nullable } from '../types/common';
 
 describe('Login', () => {
-  const credentials: CreateAccountParamsByUsernameAndPassword =
+  const credentials: Nullable<CreateAccountParamsByUsernameAndPassword> =
     setupScenario('login');
 
   beforeEach(() => {
@@ -15,26 +16,36 @@ describe('Login', () => {
 
   it('should allow login', () => {
     cy.get('[data-testid="username"]').clear();
-    cy.get('[data-testid="username"]').type(credentials.username);
-    cy.get('[data-testid="password"]').clear();
-    cy.get('[data-testid="password"]').type(credentials.password);
-    cy.get('button[data-baseweb="button"]').click();
 
-    cy.url().should('be.equal', `${Cypress.config('baseUrl')}/`);
+    if (credentials) {
+      cy.get('[data-testid="username"]').type(credentials.username);
+      cy.get('[data-testid="password"]').clear();
+      cy.get('[data-testid="password"]').type(credentials.password);
+      cy.get('button[data-baseweb="button"]').click();
+
+      cy.url().should('be.equal', `${Cypress.config('baseUrl')}/`);
+    } else {
+      throw new Error('Credentials are null, test cannot proceed.');
+    }
   });
 
   it('should not allow login for removed credentials', () => {
     cy.task('scenario:cleanup', 'login');
     cy.get('[data-testid="username"]').clear();
-    cy.get('[data-testid="username"]').type(credentials.username);
-    cy.get('[data-testid="password"]').clear();
-    cy.get('[data-testid="password"]').type(credentials.password);
-    cy.get('button[data-baseweb="button"]').click();
 
-    const toaster = () => cy.get('div[data-baseweb="toast"]');
-    toaster().should(
-      'contain',
-      `${credentials.username} not found with provided parameters.`,
-    );
+    if (credentials) {
+      cy.get('[data-testid="username"]').type(credentials.username);
+      cy.get('[data-testid="password"]').clear();
+      cy.get('[data-testid="password"]').type(credentials.password);
+      cy.get('button[data-baseweb="button"]').click();
+
+      const toaster = () => cy.get('div[data-baseweb="toast"]');
+      toaster().should(
+        'contain',
+        `${credentials.username} not found with provided parameters.`,
+      );
+    } else {
+      throw new Error('Credentials are null, test cannot proceed.');
+    }
   });
 });

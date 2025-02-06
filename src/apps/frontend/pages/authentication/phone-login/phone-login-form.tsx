@@ -61,7 +61,9 @@ const PhoneLoginForm: React.FC<PhoneLoginFormProps> = ({
           <Flex gap={4}>
             <FormControl
               label={'Phone'}
-              error={formik.touched.countryCode && formik.errors.countryCode}
+              error={
+                formik.touched.countryCode ? formik.errors.countryCode : ''
+              }
             >
               <Select
                 handleChange={handleChangeSelect}
@@ -73,13 +75,15 @@ const PhoneLoginForm: React.FC<PhoneLoginFormProps> = ({
             <div className="w-full">
               <FormControl
                 label={''}
-                error={formik.touched.phoneNumber && formik.errors.phoneNumber}
+                error={
+                  formik.touched.phoneNumber ? formik.errors.phoneNumber : ''
+                }
               >
                 <Input
                   data-testid="phoneNumber"
                   disabled={isSendOTPLoading}
                   error={
-                    formik.touched.phoneNumber && formik.errors.phoneNumber
+                    formik.touched.phoneNumber ? formik.errors.phoneNumber : ''
                   }
                   name="phoneNumber"
                   onChange={handleChangePhone}
