@@ -1,23 +1,28 @@
-import React, { createContext, PropsWithChildren, useContext } from 'react';
+import React, {
+  createContext,
+  PropsWithChildren,
+  ReactNode,
+  useContext,
+} from 'react';
 
 import { ResetPasswordParams } from '../pages/authentication/reset-password/reset-password-form.hook';
 import { ResetPasswordService } from '../services';
 import { ApiResponse, AsyncError } from '../types';
+import { Nullable } from '../types/common';
 
 import useAsync from './async.hook';
 
 type ResetPasswordContextType = {
   isResetPasswordLoading: boolean;
   isSendForgotPasswordEmailLoading: boolean;
-  resetPassword: (params: ResetPasswordParams) => Promise<void>;
-  resetPasswordError: AsyncError | undefined;
-  sendForgotPasswordEmail: (username: string) => Promise<void>;
-  sendForgotPasswordEmailError: AsyncError | undefined;
+  resetPassword: (params: ResetPasswordParams) => Promise<Nullable<void>>;
+  resetPasswordError: Nullable<AsyncError>;
+  sendForgotPasswordEmail: (username: string) => Promise<Nullable<void>>;
+  sendForgotPasswordEmailError: Nullable<AsyncError>;
 };
 
-const ResetPasswordContext = createContext<ResetPasswordContextType | null>(
-  null
-);
+const ResetPasswordContext =
+  createContext<Nullable<ResetPasswordContextType>>(null);
 
 const resetPasswordService = new ResetPasswordService();
 
@@ -25,17 +30,21 @@ export const useResetPasswordContext = (): ResetPasswordContextType =>
   useContext(ResetPasswordContext) as ResetPasswordContextType;
 
 const resetPasswordFn = async (
-  params: ResetPasswordParams
+  params: ResetPasswordParams,
 ): Promise<ApiResponse<void>> => resetPasswordService.resetPassword(params);
 
 const sendForgotPasswordEmailFn = async (
-  username: string
+  username: string,
 ): Promise<ApiResponse<void>> =>
   resetPasswordService.sendForgotPasswordEmail(username);
 
-export const ResetPasswordProvider: React.FC<PropsWithChildren> = ({
-  children,
-}) => {
+interface ReactPasswordProviderProps {
+  children: ReactNode;
+}
+
+export const ResetPasswordProvider: React.FC<
+  PropsWithChildren<ReactPasswordProviderProps>
+> = ({ children }) => {
   const {
     isLoading: isSendForgotPasswordEmailLoading,
     error: sendForgotPasswordEmailError,
