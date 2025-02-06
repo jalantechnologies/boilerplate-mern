@@ -10,7 +10,7 @@ import {
 } from '../../../components';
 import COUNTRY_SELECT_OPTIONS from '../../../constants/countries';
 import { AsyncError } from '../../../types';
-import { ButtonKind, ButtonType } from '../../../types/button';
+import { ButtonKind, ButtonSize, ButtonType } from '../../../types/button';
 
 import usePhoneLoginForm from './phone-login-form.hook';
 
@@ -93,8 +93,9 @@ const PhoneLoginForm: React.FC<PhoneLoginFormProps> = ({
           </Flex>
           <Button
             type={ButtonType.SUBMIT}
-            isLoading={isSendOTPLoading}
             kind={ButtonKind.PRIMARY}
+            isLoading={isSendOTPLoading}
+            size={ButtonSize.LARGE}
           >
             Get OTP
           </Button>

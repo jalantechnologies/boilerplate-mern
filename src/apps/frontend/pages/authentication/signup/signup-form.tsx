@@ -127,6 +127,12 @@ const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
             Log in
           </Link>
         </p>
+        <p className="self-center font-medium">
+          Signup with{' '}
+          <Link to={routes.PHONE_LOGIN} className="text-primary">
+            OTP
+          </Link>
+        </p>
       </VerticalStackLayout>
     </form>
   );
