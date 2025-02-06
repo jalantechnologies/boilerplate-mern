@@ -63,11 +63,7 @@ export default class AccessTokenService {
       throw new AccessTokenInvalidError();
     }
 
-    if (
-      !verifiedToken ||
-      !verifiedToken.exp ||
-      verifiedToken.exp * 1000 < Date.now()
-    ) {
+    if (!verifiedToken.exp || verifiedToken.exp * 1000 < Date.now()) {
       throw new AccessTokenExpiredError();
     }
 
