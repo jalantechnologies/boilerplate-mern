@@ -1,7 +1,13 @@
-import React, { createContext, PropsWithChildren, useContext } from 'react';
+import React, {
+  createContext,
+  PropsWithChildren,
+  useContext,
+  ReactNode,
+} from 'react';
 
 import { AuthService } from '../services';
 import { AccessToken, ApiResponse, AsyncError, PhoneNumber } from '../types';
+import { Nullable } from '../types/common';
 import {
   getAccessTokenFromStorage,
   removeAccessTokenFromStorage,
@@ -16,31 +22,28 @@ type AuthContextType = {
   isSignupLoading: boolean;
   isUserAuthenticated: () => boolean;
   isVerifyOTPLoading: boolean;
-  login: (
-    username: string,
-    password: string,
-  ) => Promise<AccessToken | undefined>;
-  loginError: AsyncError | undefined;
-  loginResult: AccessToken | undefined;
+  login: (username: string, password: string) => Promise<Nullable<AccessToken>>;
+  loginError: Nullable<AsyncError>;
+  loginResult: Nullable<AccessToken>;
   logout: () => void;
-  sendOTP: (phoneNumber: PhoneNumber) => Promise<void>;
-  sendOTPError: AsyncError | undefined;
+  sendOTP: (phoneNumber: PhoneNumber) => Promise<Nullable<void>>;
+  sendOTPError: Nullable<AsyncError>;
   signup: (
     firstName: string,
     lastName: string,
     username: string,
     password: string,
-  ) => Promise<void>;
-  signupError: AsyncError | undefined;
+  ) => Promise<Nullable<void>>;
+  signupError: Nullable<AsyncError>;
   verifyOTP: (
     phoneNumber: PhoneNumber,
     otp: string,
-  ) => Promise<AccessToken | undefined>;
-  verifyOTPError: AsyncError | undefined;
-  verifyOTPResult: AccessToken | undefined;
+  ) => Promise<Nullable<AccessToken>>;
+  verifyOTPError: Nullable<AsyncError>;
+  verifyOTPResult: Nullable<AccessToken>;
 };
 
-const AuthContext = createContext<AuthContextType | null>(null);
+const AuthContext = createContext<Nullable<AuthContextType>>(null);
 
 const authService = new AuthService();
 
@@ -88,7 +91,13 @@ const verifyOTPFn = async (
   return result;
 };
 
-export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
+interface AuthProviderProps {
+  children: ReactNode;
+}
+
+export const AuthProvider: React.FC<PropsWithChildren<AuthProviderProps>> = ({
+  children,
+}) => {
   const {
     isLoading: isLoginLoading,
     error: loginError,
