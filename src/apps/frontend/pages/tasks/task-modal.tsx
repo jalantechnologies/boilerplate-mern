@@ -62,13 +62,13 @@ const TaskModal: React.FC<TaskModalProps> = ({
       <form onSubmit={formik.handleSubmit}>
         <VerticalStackLayout gap={5}>
           <FormControl
-            error={formik.touched.title && formik.errors.title}
+            error={formik.touched.title ? formik.errors.title : ''}
             label={'Task title'}
           >
             <Input
               data-testid="title"
               disabled={isAddTaskLoading}
-              error={formik.touched.title && formik.errors.title}
+              error={formik.touched.title ? formik.errors.title : ''}
               name="title"
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
@@ -78,13 +78,15 @@ const TaskModal: React.FC<TaskModalProps> = ({
             />
           </FormControl>
           <FormControl
-            error={formik.touched.description && formik.errors.description}
+            error={formik.touched.description ? formik.errors.description : ''}
             label={'Task description'}
           >
             <TextArea
               cols={30}
               disabled={false}
-              error={formik.touched.description && formik.errors.description}
+              error={
+                formik.touched.description ? formik.errors.description : ''
+              }
               name={'description'}
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}

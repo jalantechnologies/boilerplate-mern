@@ -1,7 +1,11 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, ReactNode } from 'react';
 
-const LabelLarge: React.FC<PropsWithChildren> = ({ children }) => (
-  <label className="text-lg font-medium text-black">{children}</label>
-);
+interface LabelLargeProps {
+  children: ReactNode;
+}
+
+const LabelLarge: React.FC<PropsWithChildren<LabelLargeProps>> = ({
+  children,
+}) => <label className="text-lg font-medium text-black">{children}</label>;
 
 export default LabelLarge;

@@ -1,5 +1,5 @@
 import { ApiError, ApiResponse } from '../types';
-import { JsonObject } from '../types/common';
+import { JsonObject, Nullable } from '../types/common';
 import { Task } from '../types/task';
 import { getAccessTokenFromStorage } from '../utils/storage-util';
 
@@ -9,7 +9,7 @@ export default class TaskService extends APIService {
   addTask = async (
     title: string,
     description: string,
-  ): Promise<ApiResponse<Task | undefined>> => {
+  ): Promise<ApiResponse<Nullable<Task>>> => {
     try {
       const userAccessToken = getAccessTokenFromStorage();
       const response = await this.apiClient.post(
@@ -23,14 +23,11 @@ export default class TaskService extends APIService {
       );
       return new ApiResponse(new Task(response.data as JsonObject), undefined);
     } catch (e) {
-      return new ApiResponse(
-        undefined,
-        new ApiError(e.response.data as JsonObject),
-      );
+      return new ApiResponse(null, new ApiError(e.response.data as JsonObject));
     }
   };
 
-  getTasks = async (): Promise<ApiResponse<Task[] | undefined>> => {
+  getTasks = async (): Promise<ApiResponse<Nullable<Task[]>>> => {
     try {
       const userAccessToken = getAccessTokenFromStorage();
       const response = await this.apiClient.get('/tasks', {
@@ -43,17 +40,14 @@ export default class TaskService extends APIService {
       );
       return new ApiResponse(tasks, undefined);
     } catch (e) {
-      return new ApiResponse(
-        undefined,
-        new ApiError(e.response.data as JsonObject),
-      );
+      return new ApiResponse(null, new ApiError(e.response.data as JsonObject));
     }
   };
 
   updateTask = async (
     taskId: string,
     taskData: Task,
-  ): Promise<ApiResponse<Task | undefined>> => {
+  ): Promise<ApiResponse<Nullable<Task>>> => {
     try {
       const userAccessToken = getAccessTokenFromStorage();
       const response = await this.apiClient.patch(
@@ -67,14 +61,11 @@ export default class TaskService extends APIService {
       );
       return new ApiResponse(new Task(response.data as JsonObject), undefined);
     } catch (e) {
-      return new ApiResponse(
-        undefined,
-        new ApiError(e.response.data as JsonObject),
-      );
+      return new ApiResponse(null, new ApiError(e.response.data as JsonObject));
     }
   };
 
-  deleteTask = async (taskId: string): Promise<ApiResponse<void>> => {
+  deleteTask = async (taskId: string): Promise<ApiResponse<Nullable<void>>> => {
     try {
       const userAccessToken = getAccessTokenFromStorage();
       await this.apiClient.delete(`/tasks/${taskId}`, {
@@ -84,10 +75,7 @@ export default class TaskService extends APIService {
       });
       return new ApiResponse(undefined, undefined);
     } catch (e) {
-      return new ApiResponse(
-        undefined,
-        new ApiError(e.response.data as JsonObject),
-      );
+      return new ApiResponse(null, new ApiError(e.response.data as JsonObject));
     }
   };
 }

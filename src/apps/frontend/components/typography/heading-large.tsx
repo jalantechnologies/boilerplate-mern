@@ -1,7 +1,11 @@
-import React, { PropsWithChildren } from 'react';
+import React, { ReactNode, PropsWithChildren } from 'react';
 
-const HeadingLarge: React.FC<PropsWithChildren> = ({ children }) => (
-  <h2 className="text-[28px] font-semibold text-black">{children}</h2>
-);
+interface HeadingLargeProps {
+  children: ReactNode;
+}
+
+const HeadingLarge: React.FC<PropsWithChildren<HeadingLargeProps>> = ({
+  children,
+}) => <h2 className="text-[28px] font-semibold text-black">{children}</h2>;
 
 export default HeadingLarge;
