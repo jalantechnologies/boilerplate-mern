@@ -61,10 +61,6 @@ export default class AccountService {
     return AccountReader.getAccountById(params.accountId);
   }
 
-  public static async getAccountByUsername(username: string): Promise<Account> {
-    return AccountReader.getAccountByUsername(username);
-  }
-
   public static async resetAccountPassword(
     params: ResetPasswordParams
   ): Promise<Account> {
