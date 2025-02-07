@@ -12,7 +12,7 @@ services:
     environment:
       NODE_ENV: 'development'
       NODE_APP_INSTANCE: 'docker'
-    command: 'npm run serve'
+    command: /bin/sh -c "npm install && npm run serve"
     depends_on:
       - db
     ports:
