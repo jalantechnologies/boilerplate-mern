@@ -1,22 +1,25 @@
-import { AccountBadRequestError, AccountService } from '../account';
+import { AccountPasswordResetCommon } from '../../common';
 import { EmailService } from '../communication';
 import { SendEmailParams } from '../communication/types';
 import { ConfigService } from '../config';
 
+
 import PasswordResetTokenReader from './internal/password-reset-token-reader';
 import PasswordResetTokenUtil from './internal/password-reset-token-util';
 import PasswordResetTokenWriter from './internal/password-reset-token-writer';
-import {
+import { PasswordResetAccountBadRequestError ,
   CreatePasswordResetTokenParams,
   PasswordResetToken,
   PasswordResetTokenEmailNotEnabledForTheEnvironmentError,
-} from './types';
+} from "./types";
 
 export default class PasswordResetTokenService {
   public static async createPasswordResetToken(
     params: CreatePasswordResetTokenParams,
   ): Promise<PasswordResetToken> {
-    const account = await AccountService.getAccountByUsername(params.username);
+    const account = await AccountPasswordResetCommon.getAccountByUsername(
+      params.username,
+    );
 
     const token = PasswordResetTokenUtil.generatePasswordResetToken();
 
@@ -60,13 +63,13 @@ export default class PasswordResetTokenService {
       );
 
     if (passwordResetToken.isExpired) {
-      throw new AccountBadRequestError(
+      throw new PasswordResetAccountBadRequestError(
         `Password reset link is expired for accountId ${accountId}. Please retry with new link`,
       );
     }
 
     if (passwordResetToken.isUsed) {
-      throw new AccountBadRequestError(
+      throw new PasswordResetAccountBadRequestError(
         `Password reset is already used for accountId ${accountId}. Please retry with new link`,
       );
     }
@@ -76,7 +79,7 @@ export default class PasswordResetTokenService {
       passwordResetToken.token,
     );
     if (!isTokenValid) {
-      throw new AccountBadRequestError(
+      throw new PasswordResetAccountBadRequestError(
         `Password reset link is invalid for accountId ${accountId}. Please retry with new link.`,
       );
     }

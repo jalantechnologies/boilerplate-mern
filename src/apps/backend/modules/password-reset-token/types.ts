@@ -22,6 +22,7 @@ export type CreatePasswordResetTokenParams = {
 export enum PasswordResetTokenErrorCode {
   PASSWORD_RESET_TOKEN_NOT_FOUND = 'PASSWORD_RESET_TOKEN_ERR_01',
   PASSWORD_RESET_EMAIL_NOT_ENABLED_FOR_THE_ENVIRONMENT = 'PASSWORD_RESET_TOKEN_ERR_02',
+  BAD_REQUEST = 'ACCOUNT_ERR_05',
 }
 export class PasswordResetTokenEmailNotEnabledForTheEnvironmentError extends ApplicationError {
   code: PasswordResetTokenErrorCode;
@@ -41,5 +42,15 @@ export class PasswordResetTokenNotFoundError extends ApplicationError {
     super(`System is unable to find a token with accountId ${account}.`);
     this.code = PasswordResetTokenErrorCode.PASSWORD_RESET_TOKEN_NOT_FOUND;
     this.httpStatusCode = HttpStatusCodes.NOT_FOUND;
+  }
+}
+
+export class PasswordResetAccountBadRequestError extends ApplicationError {
+  code: PasswordResetTokenErrorCode;
+
+  constructor(msg: string) {
+    super(msg);
+    this.code = PasswordResetTokenErrorCode.BAD_REQUEST;
+    this.httpStatusCode = HttpStatusCodes.BAD_REQUEST;
   }
 }
