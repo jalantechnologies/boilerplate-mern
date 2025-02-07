@@ -2,7 +2,7 @@ const styles = {
   kind: {
     primary: {
       base: `
-        active:bg-primary/80
+        active:bg-primary/85
         bg-primary
         border
         flex
