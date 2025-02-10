@@ -1,11 +1,9 @@
 import { OtpService } from '../otp';
-import { PasswordResetTokenService } from '../password-reset-token';
 
 import AccountReader from './internal/account-reader';
 import AccountWriter from './internal/account-writer';
 import {
   Account,
-  ResetPasswordParams,
   GetAccountParams,
   PhoneNumber,
   UpdateAccountDetailsParams,
@@ -61,28 +59,8 @@ export default class AccountService {
     return AccountReader.getAccountById(params.accountId);
   }
 
-  public static async resetAccountPassword(
-    params: ResetPasswordParams,
-  ): Promise<Account> {
-    const { accountId, newPassword, token } = params;
-    await AccountReader.getAccountById(accountId);
-
-    const passwordResetToken =
-      await PasswordResetTokenService.verifyPasswordResetToken(
-        accountId,
-        token,
-      );
-
-    const updatedAccount = await AccountWriter.updatePasswordByAccountId(
-      accountId,
-      newPassword,
-    );
-
-    await PasswordResetTokenService.setPasswordResetTokenAsUsedById(
-      passwordResetToken.id,
-    );
-
-    return updatedAccount;
+  public static async getAccountByUsername(username: string): Promise<Account> {
+    return AccountReader.getAccountByUsername(username);
   }
 
   public static async updateAccountDetails(
@@ -101,5 +79,12 @@ export default class AccountService {
     await AccountReader.getAccountById(accountId);
 
     return AccountWriter.deleteAccountById(accountId);
+  }
+
+  public static async updatePasswordByAccountId(
+    accountId: string,
+    newPassword: string,
+  ): Promise<Account> {
+    return AccountWriter.updatePasswordByAccountId(accountId, newPassword);
   }
 }
