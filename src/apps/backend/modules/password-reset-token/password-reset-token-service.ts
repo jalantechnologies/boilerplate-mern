@@ -1,25 +1,23 @@
-import { AccountPasswordResetCommon } from '../../common';
+import { AccountBadRequestError, AccountService, Account } from '../account';
 import { EmailService } from '../communication';
 import { SendEmailParams } from '../communication/types';
 import { ConfigService } from '../config';
 
-
 import PasswordResetTokenReader from './internal/password-reset-token-reader';
 import PasswordResetTokenUtil from './internal/password-reset-token-util';
 import PasswordResetTokenWriter from './internal/password-reset-token-writer';
-import { PasswordResetAccountBadRequestError ,
+import {
   CreatePasswordResetTokenParams,
   PasswordResetToken,
   PasswordResetTokenEmailNotEnabledForTheEnvironmentError,
-} from "./types";
+  ValidatePasswordResetTokenAndResetPasswordParams,
+} from './types';
 
 export default class PasswordResetTokenService {
   public static async createPasswordResetToken(
     params: CreatePasswordResetTokenParams,
   ): Promise<PasswordResetToken> {
-    const account = await AccountPasswordResetCommon.getAccountByUsername(
-      params.username,
-    );
+    const account = await AccountService.getAccountByUsername(params.username);
 
     const token = PasswordResetTokenUtil.generatePasswordResetToken();
 
@@ -39,18 +37,28 @@ export default class PasswordResetTokenService {
     return passwordResetToken;
   }
 
-  public static async getPasswordResetTokenByAccountId(
-    accountId: string,
-  ): Promise<PasswordResetToken> {
-    return PasswordResetTokenReader.getPasswordResetTokenByAccountId(accountId);
-  }
+  public static async validatePasswordResetTokenAndResetPassword(
+    params: ValidatePasswordResetTokenAndResetPasswordParams,
+  ): Promise<Account> {
+    const { accountId, newPassword, token } = params;
+    await AccountService.getAccountById({ accountId });
 
-  public static async setPasswordResetTokenAsUsedById(
-    passwordResetTokenId: string,
-  ): Promise<PasswordResetToken> {
-    return PasswordResetTokenWriter.setPasswordResetTokenAsUsed(
-      passwordResetTokenId,
+    const passwordResetToken =
+      await PasswordResetTokenService.verifyPasswordResetToken(
+        accountId,
+        token,
+      );
+
+    const updatedAccount = await AccountService.updatePasswordByAccountId(
+      accountId,
+      newPassword,
     );
+
+    await PasswordResetTokenService.setPasswordResetTokenAsUsedById(
+      passwordResetToken.id,
+    );
+
+    return updatedAccount;
   }
 
   public static async verifyPasswordResetToken(
@@ -63,13 +71,13 @@ export default class PasswordResetTokenService {
       );
 
     if (passwordResetToken.isExpired) {
-      throw new PasswordResetAccountBadRequestError(
+      throw new AccountBadRequestError(
         `Password reset link is expired for accountId ${accountId}. Please retry with new link`,
       );
     }
 
     if (passwordResetToken.isUsed) {
-      throw new PasswordResetAccountBadRequestError(
+      throw new AccountBadRequestError(
         `Password reset is already used for accountId ${accountId}. Please retry with new link`,
       );
     }
@@ -79,12 +87,26 @@ export default class PasswordResetTokenService {
       passwordResetToken.token,
     );
     if (!isTokenValid) {
-      throw new PasswordResetAccountBadRequestError(
+      throw new AccountBadRequestError(
         `Password reset link is invalid for accountId ${accountId}. Please retry with new link.`,
       );
     }
 
     return passwordResetToken;
+  }
+
+  public static async getPasswordResetTokenByAccountId(
+    accountId: string,
+  ): Promise<PasswordResetToken> {
+    return PasswordResetTokenReader.getPasswordResetTokenByAccountId(accountId);
+  }
+
+  public static async setPasswordResetTokenAsUsedById(
+    passwordResetTokenId: string,
+  ): Promise<PasswordResetToken> {
+    return PasswordResetTokenWriter.setPasswordResetTokenAsUsed(
+      passwordResetTokenId,
+    );
   }
 
   private static async sendPasswordResetEmail(
