@@ -54,7 +54,7 @@ export default class AccessTokenService {
         ignoreExpiration: true,
       });
 
-      if (typeof decodedToken === 'string') {
+      if (typeof decodedToken === 'string' || !decodedToken.exp) {
         throw new AccessTokenInvalidError();
       }
 
@@ -63,7 +63,7 @@ export default class AccessTokenService {
       throw new AccessTokenInvalidError();
     }
 
-    if (!verifiedToken.exp || verifiedToken.exp * 1000 < Date.now()) {
+    if (verifiedToken.exp! * 1000 < Date.now()) {
       throw new AccessTokenExpiredError();
     }
 
