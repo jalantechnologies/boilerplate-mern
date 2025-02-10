@@ -58,21 +58,13 @@ export type GetAccountParams = {
   accountId: string;
 };
 
-export type ResetPasswordParams = {
-  accountId: string;
-  newPassword: string;
-  token: string;
-};
-
 export type UpdateAccountDetailsParams = {
   accountId: string;
   firstName: string;
   lastName: string;
 };
 
-export type UpdateAccountParams =
-  | UpdateAccountDetailsParams
-  | ResetPasswordParams;
+export type UpdateAccountParams = UpdateAccountDetailsParams;
 
 export type DeleteAccountParams = GetAccountParams;
 
