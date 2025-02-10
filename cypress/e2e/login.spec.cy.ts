@@ -17,35 +17,27 @@ describe('Login', () => {
   it('should allow login', () => {
     cy.get('[data-testid="username"]').clear();
 
-    if (credentials) {
-      cy.get('[data-testid="username"]').type(credentials.username);
-      cy.get('[data-testid="password"]').clear();
-      cy.get('[data-testid="password"]').type(credentials.password);
-      cy.get('button[data-baseweb="button"]').click();
+    cy.get('[data-testid="username"]').type(credentials!.username);
+    cy.get('[data-testid="password"]').clear();
+    cy.get('[data-testid="password"]').type(credentials!.password);
+    cy.get('button[data-baseweb="button"]').click();
 
-      cy.url().should('be.equal', `${Cypress.config('baseUrl')}/`);
-    } else {
-      throw new Error('Credentials are null, test cannot proceed.');
-    }
+    cy.url().should('be.equal', `${Cypress.config('baseUrl')}/`);
   });
 
   it('should not allow login for removed credentials', () => {
     cy.task('scenario:cleanup', 'login');
     cy.get('[data-testid="username"]').clear();
 
-    if (credentials) {
-      cy.get('[data-testid="username"]').type(credentials.username);
-      cy.get('[data-testid="password"]').clear();
-      cy.get('[data-testid="password"]').type(credentials.password);
-      cy.get('button[data-baseweb="button"]').click();
+    cy.get('[data-testid="username"]').type(credentials!.username);
+    cy.get('[data-testid="password"]').clear();
+    cy.get('[data-testid="password"]').type(credentials!.password);
+    cy.get('button[data-baseweb="button"]').click();
 
-      const toaster = () => cy.get('div[data-baseweb="toast"]');
-      toaster().should(
-        'contain',
-        `${credentials.username} not found with provided parameters.`,
-      );
-    } else {
-      throw new Error('Credentials are null, test cannot proceed.');
-    }
+    const toaster = () => cy.get('div[data-baseweb="toast"]');
+    toaster().should(
+      'contain',
+      `${credentials!.username} not found with provided parameters.`,
+    );
   });
 });
