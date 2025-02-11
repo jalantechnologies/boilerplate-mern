@@ -1,7 +1,14 @@
 import React, { createContext, PropsWithChildren, useContext } from 'react';
 
 import { AuthService } from '../services';
-import { AccessToken, ApiResponse, AsyncError, PhoneNumber } from '../types';
+import {
+  AccessToken,
+  ApiResponse,
+  AsyncError,
+  LoginMethod,
+  LoginProps,
+  PhoneNumber,
+} from '../types';
 import {
   getAccessTokenFromStorage,
   removeAccessTokenFromStorage,
@@ -18,10 +25,12 @@ type AuthContextType = {
   isVerifyOTPLoading: boolean;
   login: (username: string, password: string) => Promise<AccessToken>;
   loginError: AsyncError;
+  loginProps: LoginProps;
   loginResult: AccessToken;
   logout: () => void;
   sendOTP: (phoneNumber: PhoneNumber) => Promise<void>;
   sendOTPError: AsyncError;
+  setLoginProps: React.Dispatch<React.SetStateAction<LoginProps>>;
   signup: (
     firstName: string,
     lastName: string,
@@ -80,7 +89,19 @@ const verifyOTPFn = async (
   return result;
 };
 
+const initialLoginProps = {
+  defaultMobileLogin: LoginMethod.PHONE,
+  defaultWebLogin: LoginMethod.EMAIL,
+  displayEmailLoginOnMobile: false,
+  displayPhoneLoginOnWeb: false,
+  displayRegisterAccount: true,
+  currentLoginMethod: null as LoginMethod | null,
+};
+
 export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
+  const [loginProps, setLoginProps] =
+    React.useState<LoginProps>(initialLoginProps);
+
   const {
     isLoading: isLoginLoading,
     error: loginError,
@@ -126,6 +147,8 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
         verifyOTP,
         verifyOTPError,
         verifyOTPResult,
+        loginProps,
+        setLoginProps,
       }}
     >
       {children}
