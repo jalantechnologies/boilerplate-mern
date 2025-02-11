@@ -9,11 +9,11 @@ const devServerPort = 3000;
 const devServerAPIProxyPort = 8080;
 
 const API_SERVER_URL = `http://localhost:${devServerAPIProxyPort}`;
+const FRONTEND_URL = `http://localhost:${devServerPort}`;
 const DOCUMENTATION_PAGE_ROUTE = '/api/documentation';
+const RETRY_INTERVAL_IN_MS = 2000;
 
 function waitForBackend(port, callback) {
-  const retryInterval = 2000;
-
   function check() {
     const req = http.request(
       { method: 'HEAD', host: 'localhost', port },
@@ -23,16 +23,16 @@ function waitForBackend(port, callback) {
           callback();
         } else {
           console.log(`Waiting for backend on port ${port}...`);
-          setTimeout(check, retryInterval);
+          setTimeout(check, RETRY_INTERVAL_IN_MS);
         }
       }
     );
 
     req.on('error', () => {
       console.log(
-        `Backend not ready, retrying in ${retryInterval / 1000} seconds...`
+        `Backend not ready, retrying in ${RETRY_INTERVAL_IN_MS / 1000} seconds...`
       );
-      setTimeout(check, retryInterval);
+      setTimeout(check, RETRY_INTERVAL_IN_MS);
     });
 
     req.end();
@@ -77,7 +77,7 @@ const config = {
       waitForBackend(devServerAPIProxyPort, () => {
         console.log('Starting Webpack Dev Server...');
         if (devServerOpen) {
-          open(`http://localhost:${devServerPort}`);
+          open(FRONTEND_URL);
         }
       });
 
