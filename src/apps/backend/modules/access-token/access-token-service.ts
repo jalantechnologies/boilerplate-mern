@@ -88,11 +88,15 @@ export default class AccessTokenService {
 
     const jwtTokenDecoded = jsonwebtoken.decode(jwtToken);
 
-    if (typeof jwtTokenDecoded === 'string' || !jwtTokenDecoded!.exp) {
+    if (
+      !jwtTokenDecoded ||
+      typeof jwtTokenDecoded === 'string' ||
+      !jwtTokenDecoded.exp
+    ) {
       throw new AccessTokenInvalidError();
     }
 
-    accessToken.expiresAt = new Date(jwtTokenDecoded!.exp * 1000);
+    accessToken.expiresAt = new Date(jwtTokenDecoded.exp * 1000);
 
     return accessToken;
   }
