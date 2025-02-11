@@ -1,4 +1,4 @@
-import { PasswordResetToken, PasswordResetTokenNotFoundError } from '../types';
+import { PasswordResetToken } from '../types';
 
 import PasswordResetTokenUtil from './password-reset-token-util';
 import PasswordResetTokenRepository from './store/password-reset-token-repository';
@@ -34,11 +34,8 @@ export default class PasswordResetTokenWriter {
       { new: true },
     );
 
-    if (!updatedToken) {
-      throw new PasswordResetTokenNotFoundError(passwordResetTokenId);
-    }
     return PasswordResetTokenUtil.convertPasswordResetTokenDBToPasswordResetToken(
-      updatedToken,
+      updatedToken!,
     );
   }
 }
