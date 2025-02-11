@@ -1,4 +1,3 @@
-import { Nullable } from '../../../types';
 import { PhoneNumber } from '../../account/types';
 import { applicationController, Request, Response } from '../../application';
 import AccessTokenService from '../access-token-service';
@@ -14,7 +13,7 @@ import { serializeAccessTokenAsJSON } from './access-token-serializer';
 export class AccessTokenController {
   createAccessToken = applicationController(
     async (req: Request<CreateAccessTokenParams>, res: Response) => {
-      let accessToken: Nullable<AccessToken> = null;
+      let accessToken: AccessToken;
       const { username, password } =
         req.body as EmailBasedAuthAccessTokenRequestParams;
       const { phoneNumber, otpCode } =
@@ -33,7 +32,7 @@ export class AccessTokenController {
         );
       }
 
-      const accessTokenJSON = serializeAccessTokenAsJSON(accessToken);
+      const accessTokenJSON = serializeAccessTokenAsJSON(accessToken!);
 
       res.send(accessTokenJSON);
     }
