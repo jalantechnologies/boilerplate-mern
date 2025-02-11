@@ -123,13 +123,13 @@ const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
         </Button>
         <p className="self-center font-medium">
           Already have an account?{' '}
-          <Link to={routes.LOGIN} className="text-primary">
+          <Link className="text-primary" to={routes.LOGIN}>
             Log in
           </Link>
         </p>
         <p className="self-center font-medium">
           Signup with{' '}
-          <Link to={routes.PHONE_LOGIN} className="text-primary">
+          <Link className="text-primary" to={routes.PHONE_LOGIN}>
             OTP
           </Link>
         </p>

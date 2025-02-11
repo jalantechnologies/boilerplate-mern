@@ -92,10 +92,10 @@ const PhoneLoginForm: React.FC<PhoneLoginFormProps> = ({
             </div>
           </Flex>
           <Button
-            type={ButtonType.SUBMIT}
-            kind={ButtonKind.PRIMARY}
             isLoading={isSendOTPLoading}
+            kind={ButtonKind.PRIMARY}
             size={ButtonSize.LARGE}
+            type={ButtonType.SUBMIT}
           >
             Get OTP
           </Button>

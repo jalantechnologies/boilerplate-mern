@@ -88,10 +88,10 @@ const OTPForm: React.FC<OTPFormProps> = ({
         </Flex>
 
         <Button
-          type={ButtonType.SUBMIT}
-          kind={ButtonKind.PRIMARY}
           isLoading={isVerifyOTPLoading}
+          kind={ButtonKind.PRIMARY}
           size={ButtonSize.LARGE}
+          type={ButtonType.SUBMIT}
         >
           Verify
         </Button>

@@ -93,7 +93,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
         </p>
         <p className="self-center font-medium">
           Login with{' '}
-          <Link to={routes.PHONE_LOGIN} className="text-primary">
+          <Link className="text-primary" to={routes.PHONE_LOGIN}>
             OTP
           </Link>
         </p>
