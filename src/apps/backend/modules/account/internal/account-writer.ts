@@ -72,7 +72,9 @@ export default class AccountWriter {
       { new: true }
     );
 
-    return AccountUtil.convertAccountDBToAccount(dbAccount!);
+    return AccountUtil.convertAccountDBToAccount(
+      dbAccount as NonNullable<typeof dbAccount>,
+    );
   }
 
   public static async updateAccountDetails(
@@ -89,7 +91,9 @@ export default class AccountWriter {
       { new: true }
     );
 
-    return AccountUtil.convertAccountDBToAccount(dbAccount!);
+    return AccountUtil.convertAccountDBToAccount(
+      dbAccount as NonNullable<typeof dbAccount>,
+    );
   }
 
   public static async deleteAccountById(accountId: string): Promise<void> {
