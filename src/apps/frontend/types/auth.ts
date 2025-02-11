@@ -14,6 +14,20 @@ export enum KeyboardKeys {
   BACKSPACE = 'Backspace',
 }
 
+export enum LoginMethod {
+  PHONE = 'PHONE',
+  EMAIL = 'EMAIL',
+}
+
+export type LoginProps = {
+  currentLoginMethod?: LoginMethod;
+  defaultMobileLogin: LoginMethod;
+  defaultWebLogin: LoginMethod;
+  displayEmailLoginOnMobile: boolean;
+  displayPhoneLoginOnWeb: boolean;
+  displayRegisterAccount: boolean;
+};
+
 export class PhoneNumber {
   countryCode: string;
   phoneNumber: string;
