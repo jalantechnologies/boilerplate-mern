@@ -22,7 +22,7 @@ import {
 export class AccountController {
   createAccount = applicationController(
     async (req: Request<CreateAccountParams>, res: Response) => {
-      let account: Nullable<Account> = null;
+      let account: Nullable<Account>;
       const { firstName, lastName, password, username } =
         req.body as CreateAccountParamsByUsernameAndPassword;
       const { phoneNumber } = req.body as CreateAccountParamsByPhoneNumber;
@@ -40,7 +40,7 @@ export class AccountController {
         );
       }
 
-      const accountJSON = serializeAccountAsJSON(account);
+      const accountJSON = serializeAccountAsJSON(account!);
 
       res.status(HttpStatusCodes.CREATED).send(accountJSON);
     }

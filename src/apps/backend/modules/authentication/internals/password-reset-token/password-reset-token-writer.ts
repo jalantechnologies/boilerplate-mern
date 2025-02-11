@@ -33,11 +33,8 @@ export default class PasswordResetTokenWriter {
       { new: true }
     );
 
-    if (!updatedToken) {
-      throw new PasswordResetTokenNotFoundError(passwordResetTokenId);
-    }
     return PasswordResetTokenUtil.convertPasswordResetTokenDBToPasswordResetToken(
-      updatedToken,
+      updatedToken!,
     );
   }
 }

@@ -51,7 +51,7 @@ const expressListRoutes = (
             baseAPIRoutePath,
             method: route.method.toUpperCase(),
             rootRouterPath: stack.routerPath,
-            routerPath: stack.route ? stack.route.path : null,
+            routerPath: stack.route!.path,
           });
         }
       });

@@ -1,10 +1,8 @@
-import { Nullable } from '../../types';
-
 export type HttpRoute = {
   baseAPIRoutePath: string;
   method: string;
   rootRouterPath: string;
-  routerPath: Nullable<string>;
+  routerPath: string;
 };
 
 export interface NestedStack {
