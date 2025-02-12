@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
 import { Button, H2, VerticalStackLayout } from '../../../components';
 import routes from '../../../constants/routes';
+import { useAccountContext } from '../../../contexts';
 import { AsyncError } from '../../../types';
 import { ButtonKind } from '../../../types/button';
 import useTimer from '../../../utils/use-timer.hook';
@@ -19,10 +20,19 @@ export const OTPPage: React.FC = () => {
     delayInMilliseconds: sendOTPDelayInMilliseconds,
   });
 
+  const onError = (error: AsyncError) => {
+    toast.error(error.message);
+  };
+
+  const { accountDetails, getAccountDetails } = useAccountContext();
+  useEffect(() => {
+    getAccountDetails().catch((error) => onError(error as AsyncError));
+  }, [getAccountDetails]);
+
   const navigate = useNavigate();
 
   const onVerifyOTPSuccess = () => {
-    navigate(routes.DASHBOARD);
+    navigate(accountDetails?.username ? routes.DASHBOARD : routes.SIGNUP);
   };
 
   const onResendOTPSuccess = () => {
@@ -30,10 +40,6 @@ export const OTPPage: React.FC = () => {
     toast.success(
       'OTP has been successfully re-sent. Please check your messages.'
     );
-  };
-
-  const onError = (error: AsyncError) => {
-    toast.error(error.message);
   };
 
   const handleBackButtonClick = () => {
