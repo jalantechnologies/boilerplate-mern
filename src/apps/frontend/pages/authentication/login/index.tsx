@@ -3,6 +3,7 @@ import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
 import { H2, VerticalStackLayout } from '../../../components';
+import constant from '../../../constants';
 import routes from '../../../constants/routes';
 import { useAuthContext } from '../../../contexts';
 import { AsyncError } from '../../../types';
@@ -26,7 +27,7 @@ export const Login: React.FC = () => {
 
   useEffect(() => {
     const updateLoginMethod = () => {
-      const isMobile = window.innerWidth <= 768;
+      const isMobile = window.innerWidth <= constant.MOBILE_BREAKPOINT;
       const newLoginMethod = isMobile ? defaultMobileLogin : defaultWebLogin;
 
       setLoginProps((prev) => {
@@ -39,9 +40,13 @@ export const Login: React.FC = () => {
 
     updateLoginMethod();
     window.addEventListener('resize', updateLoginMethod);
-
     return () => window.removeEventListener('resize', updateLoginMethod);
-  }, [defaultMobileLogin, defaultWebLogin, setLoginProps]);
+  }, [
+    defaultMobileLogin,
+    defaultWebLogin,
+    loginProps.currentLoginMethod,
+    setLoginProps,
+  ]);
 
   return (
     <AuthenticationPageLayout>
