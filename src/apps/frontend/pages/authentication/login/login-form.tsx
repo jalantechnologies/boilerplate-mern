@@ -28,10 +28,17 @@ const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (loginProps.currentLoginMethod === LoginMethod.PHONE) {
+    if (
+      loginProps.currentLoginMethod === LoginMethod.PHONE &&
+      loginProps.displayEmailLoginOnMobile === false
+    ) {
       navigate(routes.PHONE_LOGIN);
     }
-  }, [loginProps.currentLoginMethod, navigate]);
+  }, [
+    loginProps.currentLoginMethod,
+    loginProps.displayEmailLoginOnMobile,
+    navigate,
+  ]);
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -94,12 +101,22 @@ const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
         >
           Log In
         </Button>
-        <p className="self-center font-medium">
-          Don’t have any account?{' '}
-          <Link to={routes.SIGNUP} className="text-primary">
-            Sign Up
-          </Link>
-        </p>
+        {loginProps.displayRegisterAccount && (
+          <p className="self-center font-medium">
+            Don’t have any account?{' '}
+            <Link to={routes.SIGNUP} className="text-primary">
+              Sign Up
+            </Link>
+          </p>
+        )}
+        {loginProps.displayPhoneLoginOnWeb && (
+          <p className="self-center font-medium">
+            Login with{' '}
+            <Link className="text-primary" to={routes.PHONE_LOGIN}>
+              Phone
+            </Link>
+          </p>
+        )}
       </VerticalStackLayout>
     </form>
   );

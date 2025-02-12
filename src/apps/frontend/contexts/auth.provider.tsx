@@ -1,5 +1,6 @@
 import React, { createContext, PropsWithChildren, useContext } from 'react';
 
+import constant from '../constants';
 import { AuthService } from '../services';
 import {
   AccessToken,
@@ -92,10 +93,10 @@ const verifyOTPFn = async (
 const initialLoginProps = {
   defaultMobileLogin: LoginMethod.PHONE,
   defaultWebLogin: LoginMethod.EMAIL,
-  displayEmailLoginOnMobile: false,
-  displayPhoneLoginOnWeb: false,
-  displayRegisterAccount: true,
-  currentLoginMethod: null as LoginMethod | null,
+  displayEmailLoginOnMobile: constant.DISPLAY_EMAIL_LOGIN_ON_MOBILE,
+  displayPhoneLoginOnWeb: constant.DISPLAY_PHONE_LOGIN_ON_WEB,
+  displayRegisterAccount: constant.DISPLAY_REGISTER_ACCOUNT,
+  currentLoginMethod: constant.DEFAULT_LOGIN_METHOD as LoginMethod,
 };
 
 export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
@@ -139,16 +140,16 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
         login,
         loginError,
         loginResult,
+        loginProps,
         logout: logoutFn,
         sendOTP,
         sendOTPError,
+        setLoginProps,
         signup,
         signupError,
         verifyOTP,
         verifyOTPError,
         verifyOTPResult,
-        loginProps,
-        setLoginProps,
       }}
     >
       {children}
