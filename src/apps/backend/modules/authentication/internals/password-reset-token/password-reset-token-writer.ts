@@ -34,7 +34,7 @@ export default class PasswordResetTokenWriter {
     );
 
     return PasswordResetTokenUtil.convertPasswordResetTokenDBToPasswordResetToken(
-      updatedToken as NonNullable<typeof updatedToken>,
+      updatedToken!,
     );
   }
 }
