@@ -6,7 +6,7 @@ Boilerplate project for NodeJS, React based projects in TypeScript. This README 
 
 | Build | Tests | Code Coverage |
 |--------|--------|--------|
-| [![Build Status](https://img.shields.io/github/actions/workflow/status/jalantechnologies/boilerplate-mern/.github/workflows/preview_on_pr_update.yml?branch=main&label=Build&job=build)] | [![Test Status](https://img.shields.io/github/actions/workflow/status/jalantechnologies/boilerplate-mern/.github/workflows/preview_on_pr_update.yml?branch=main&label=Tests&job=checks)] | [![Code Coverage](https://img.shields.io/badge/Code%20Coverage-90%25-success?style=flat)] |
+| ![Build](https://img.shields.io/github/actions/workflow/status/jalantechnologies/boilerplate-mern/preview_on_pr_update.yml)| [![Tests](https://img.shields.io/github/actions/workflow/status/jalantechnologies/boilerplate-mern/preview_on_pr_update.yml)] | [![Code Coverage](https://img.shields.io/badge/Code%20Coverage-90%25-success?style=flat)] |
 
 
 ## Table of Contents
