@@ -95,7 +95,8 @@ const initialLoginProps = {
   defaultWebLogin: LoginMethod.EMAIL,
   displayEmailLoginOnMobile: constant.DISPLAY_EMAIL_LOGIN_ON_MOBILE,
   displayPhoneLoginOnWeb: constant.DISPLAY_PHONE_LOGIN_ON_WEB,
-  displayRegisterAccount: constant.DISPLAY_REGISTER_ACCOUNT,
+  displayRegisterAccountWeb: constant.DISPLAY_REGISTER_ACCOUNT_WEB,
+  displayRegisterAccountMobile: constant.DISPLAY_REGISTER_ACCOUNT_MOBILE,
   currentLoginMethod: constant.DEFAULT_LOGIN_METHOD as LoginMethod,
 };
 

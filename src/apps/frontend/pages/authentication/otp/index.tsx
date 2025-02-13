@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
@@ -24,15 +24,15 @@ export const OTPPage: React.FC = () => {
     toast.error(error.message);
   };
 
-  const { accountDetails, getAccountDetails } = useAccountContext();
-  useEffect(() => {
-    getAccountDetails().catch((error) => onError(error as AsyncError));
-  }, [getAccountDetails]);
-
+  const { accountDetails } = useAccountContext();
   const navigate = useNavigate();
 
   const onVerifyOTPSuccess = () => {
-    navigate(accountDetails?.username ? routes.DASHBOARD : routes.SIGNUP);
+    if (accountDetails?.username) {
+      navigate(routes.DASHBOARD);
+    } else {
+      navigate(routes.SIGNUP);
+    }
   };
 
   const onResendOTPSuccess = () => {

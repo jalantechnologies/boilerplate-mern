@@ -3,9 +3,10 @@ const constant = {
   DESCRIPTION_VALIDATION_ERROR:
     'Description should be at least 10 characters long',
   DEFAULT_LOGIN_METHOD: 'EMAIL',
-  DISPLAY_EMAIL_LOGIN_ON_MOBILE: false,
-  DISPLAY_PHONE_LOGIN_ON_WEB: false,
-  DISPLAY_REGISTER_ACCOUNT: true,
+  DISPLAY_EMAIL_LOGIN_ON_MOBILE: true,
+  DISPLAY_PHONE_LOGIN_ON_WEB: true,
+  DISPLAY_REGISTER_ACCOUNT_WEB: true,
+  DISPLAY_REGISTER_ACCOUNT_MOBILE: true,
   DOCUMENTATION_DISABLED_ERROR:
     'Documentation is not available or disabled for the current environment, please reach out to the team.',
   DOCUMENTATION_LOADING_ERROR:

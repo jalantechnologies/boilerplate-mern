@@ -10,9 +10,9 @@ import {
   VerticalStackLayout,
 } from '../../../components';
 import routes from '../../../constants/routes';
-import { useAuthContext } from '../../../contexts';
 import { AsyncError, LoginMethod } from '../../../types';
 import { ButtonKind, ButtonSize, ButtonType } from '../../../types/button';
+import { useLoginMethod } from '../useLoginMethod.hook';
 
 import LoginFormCheckbox from './login-form-checkbox';
 import useLoginForm from './login-form.hook';
@@ -24,13 +24,12 @@ interface LoginFormProps {
 
 const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
   const { formik, isLoginLoading } = useLoginForm({ onSuccess, onError });
-  const { loginProps } = useAuthContext();
+  const { loginProps } = useLoginMethod();
   const navigate = useNavigate();
-
   useEffect(() => {
     if (
-      loginProps.currentLoginMethod === LoginMethod.PHONE &&
-      loginProps.displayEmailLoginOnMobile === false
+      !loginProps.displayEmailLoginOnMobile &&
+      loginProps.currentLoginMethod === LoginMethod.PHONE
     ) {
       navigate(routes.PHONE_LOGIN);
     }
@@ -101,7 +100,10 @@ const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
         >
           Log In
         </Button>
-        {loginProps.displayRegisterAccount && (
+        {((loginProps.currentLoginMethod === LoginMethod.EMAIL &&
+          loginProps.displayRegisterAccountWeb) ||
+          (loginProps.displayRegisterAccountMobile &&
+            loginProps.currentLoginMethod === LoginMethod.PHONE)) && (
           <p className="self-center font-medium">
             Don’t have any account?{' '}
             <Link to={routes.SIGNUP} className="text-primary">
@@ -109,7 +111,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
             </Link>
           </p>
         )}
-        {loginProps.displayPhoneLoginOnWeb && (
+        {(loginProps.displayPhoneLoginOnWeb ||
+          loginProps.currentLoginMethod === LoginMethod.PHONE) && (
           <p className="self-center font-medium">
             Login with{' '}
             <Link className="text-primary" to={routes.PHONE_LOGIN}>
