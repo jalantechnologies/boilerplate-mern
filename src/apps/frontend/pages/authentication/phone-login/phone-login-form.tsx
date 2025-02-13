@@ -35,8 +35,8 @@ const PhoneLoginForm: React.FC<PhoneLoginFormProps> = ({
 
   useEffect(() => {
     if (
-      loginProps.currentLoginMethod === LoginMethod.EMAIL &&
-      loginProps.displayPhoneLoginOnWeb === false
+      !loginProps.displayPhoneLoginOnWeb &&
+      loginProps.currentLoginMethod === LoginMethod.EMAIL
     ) {
       navigate(routes.LOGIN);
     }
@@ -117,11 +117,23 @@ const PhoneLoginForm: React.FC<PhoneLoginFormProps> = ({
           >
             Get OTP
           </Button>
-          {loginProps.displayEmailLoginOnMobile && (
+          {(loginProps.displayEmailLoginOnMobile ||
+            loginProps.currentLoginMethod === LoginMethod.EMAIL) && (
             <p className="self-center font-medium">
               Login with{' '}
               <Link className="text-primary" to={routes.LOGIN}>
                 Email
+              </Link>
+            </p>
+          )}
+          {((loginProps.currentLoginMethod === LoginMethod.EMAIL &&
+            loginProps.displayRegisterAccountWeb) ||
+            (loginProps.displayRegisterAccountMobile &&
+              loginProps.currentLoginMethod === LoginMethod.PHONE)) && (
+            <p className="self-center font-medium">
+              Don’t have any account?{' '}
+              <Link to={routes.SIGNUP} className="text-primary">
+                Sign Up
               </Link>
             </p>
           )}

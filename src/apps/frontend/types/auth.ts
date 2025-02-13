@@ -25,7 +25,8 @@ export type LoginProps = {
   defaultWebLogin: LoginMethod;
   displayEmailLoginOnMobile: boolean;
   displayPhoneLoginOnWeb: boolean;
-  displayRegisterAccount: boolean;
+  displayRegisterAccountMobile: boolean;
+  displayRegisterAccountWeb: boolean;
 };
 
 export class PhoneNumber {
