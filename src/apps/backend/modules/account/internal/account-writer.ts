@@ -14,7 +14,7 @@ export default class AccountWriter {
     firstName: string,
     lastName: string,
     password: string,
-    username: string
+    username: string,
   ): Promise<Account> {
     // check if account already exists
     // this will throw an error if it does
@@ -33,13 +33,13 @@ export default class AccountWriter {
   }
 
   public static async createAccountByPhoneNumber(
-    phoneNumber: PhoneNumber
+    phoneNumber: PhoneNumber,
   ): Promise<Account> {
     const phoneUtil = <PhoneUtilInterface>(
       (<PhoneUtilInstance>PhoneNumberUtil).getInstance()
     );
     const isValidPhoneNumber = phoneUtil.isValidNumber(
-      phoneUtil.parse(phoneNumber.toString())
+      phoneUtil.parse(phoneNumber.toString()),
     );
 
     if (!isValidPhoneNumber) {
@@ -59,35 +59,37 @@ export default class AccountWriter {
 
   public static async updatePasswordByAccountId(
     accountId: string,
-    newPassword: string
+    newPassword: string,
   ): Promise<Account> {
     const accountHashedPassword = await AccountUtil.hashPassword(newPassword);
-    const dbAccount = await AccountRepository.findByIdAndUpdate(
+    // Type assertion for AccountDB because accountId is already validated to be present in the db
+    const dbAccount = (await AccountRepository.findByIdAndUpdate(
       accountId,
       {
         hashedPassword: accountHashedPassword,
       },
-      { new: true }
-    );
+      { new: true },
+    )) as AccountDB;
 
-    return AccountUtil.convertAccountDBToAccount(dbAccount!);
+    return AccountUtil.convertAccountDBToAccount(dbAccount);
   }
 
   public static async updateAccountDetails(
     accountId: string,
     firstName: string,
-    lastName: string
+    lastName: string,
   ): Promise<Account> {
-    const dbAccount = await AccountRepository.findByIdAndUpdate(
+    // Type assertion for AccountDB because accountId is already validated to be present in the db
+    const dbAccount = (await AccountRepository.findByIdAndUpdate(
       accountId,
       {
         firstName,
         lastName,
       },
-      { new: true }
-    );
+      { new: true },
+    )) as AccountDB;
 
-    return AccountUtil.convertAccountDBToAccount(dbAccount!);
+    return AccountUtil.convertAccountDBToAccount(dbAccount);
   }
 
   public static async deleteAccountById(accountId: string): Promise<void> {
