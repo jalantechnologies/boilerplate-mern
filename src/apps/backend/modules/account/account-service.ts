@@ -40,6 +40,24 @@ export default class AccountService {
     return account;
   }
 
+  public static async getOrCreateAccountByPhoneNumberAndName(
+    firstName: string,
+    lastName: string,
+    phoneNumber: PhoneNumber,
+  ): Promise<Account> {
+    let account =
+      await AccountReader.getAccountByPhoneNumberOptional(phoneNumber);
+    if (!account) {
+      account = await AccountWriter.createAccountByPhoneNumberAndName(
+        firstName,
+        lastName,
+        phoneNumber,
+      );
+    }
+    await OtpService.createOtp(phoneNumber);
+    return account;
+  }
+
   public static async getAccountByUsernameAndPassword(
     password: string,
     username: string
