@@ -16,7 +16,7 @@ export default class AccountWriter {
     firstName: string,
     lastName: string,
     password: string,
-    username: string
+    username: string,
   ): Promise<Account> {
     // check if account already exists
     // this will throw an error if it does
@@ -35,23 +35,26 @@ export default class AccountWriter {
   }
 
   public static async createAccountByPhoneNumber(
-    phoneNumber: PhoneNumber
+    phoneNumber: PhoneNumber,
   ): Promise<Account> {
-    const phoneUtil = <PhoneUtilInterface>(
-      (<PhoneUtilInstance>PhoneNumberUtil).getInstance()
-    );
-    const isValidPhoneNumber = phoneUtil.isValidNumber(
-      phoneUtil.parse(phoneNumber.toString())
-    );
-
-    if (!isValidPhoneNumber) {
-      throw new OtpRequestError('Please provide a valid phone number.');
-    }
-    // check if account already exists with the given phone number
-    // this will throw an error if it does
-    await AccountReader.checkPhoneNumberNotExists(phoneNumber);
-
+    await this.validateAndCheckPhoneNumberExists(phoneNumber);
     const accountDb = await AccountRepository.create({
+      phoneNumber,
+      active: true,
+    });
+
+    return AccountUtil.convertAccountDBToAccount(accountDb);
+  }
+
+  public static async createAccountByPhoneNumberAndName(
+    firstName: string,
+    lastName: string,
+    phoneNumber: PhoneNumber,
+  ): Promise<Account> {
+    await this.validateAndCheckPhoneNumberExists(phoneNumber);
+    const accountDb = await AccountRepository.create({
+      firstName,
+      lastName,
       phoneNumber,
       active: true,
     });
@@ -61,7 +64,7 @@ export default class AccountWriter {
 
   public static async updatePasswordByAccountId(
     accountId: string,
-    newPassword: string
+    newPassword: string,
   ): Promise<Account> {
     const accountHashedPassword = await AccountUtil.hashPassword(newPassword);
     const dbAccount = await AccountRepository.findByIdAndUpdate(
@@ -69,7 +72,7 @@ export default class AccountWriter {
       {
         hashedPassword: accountHashedPassword,
       },
-      { new: true }
+      { new: true },
     );
 
     return AccountUtil.convertAccountDBToAccount(dbAccount);
@@ -78,7 +81,7 @@ export default class AccountWriter {
   public static async updateAccountDetails(
     accountId: string,
     firstName: string,
-    lastName: string
+    lastName: string,
   ): Promise<Account> {
     const dbAccount = await AccountRepository.findByIdAndUpdate(
       accountId,
@@ -86,7 +89,7 @@ export default class AccountWriter {
         firstName,
         lastName,
       },
-      { new: true }
+      { new: true },
     );
 
     return AccountUtil.convertAccountDBToAccount(dbAccount);
@@ -94,5 +97,23 @@ export default class AccountWriter {
 
   public static async deleteAccountById(accountId: string): Promise<void> {
     await AccountRepository.findByIdAndDelete(accountId);
+  }
+
+  private static async validateAndCheckPhoneNumberExists(
+    phoneNumber: PhoneNumber,
+  ): Promise<void> {
+    const phoneUtil = <PhoneUtilInterface>(
+      (<PhoneUtilInstance>PhoneNumberUtil).getInstance()
+    );
+    const isValidPhoneNumber = phoneUtil.isValidNumber(
+      phoneUtil.parse(phoneNumber.toString()),
+    );
+
+    if (!isValidPhoneNumber) {
+      throw new OtpRequestError('Please provide a valid phone number.');
+    }
+    // check if account already exists with the given phone number
+    // this will throw an error if it does
+    await AccountReader.checkPhoneNumberNotExists(phoneNumber);
   }
 }
