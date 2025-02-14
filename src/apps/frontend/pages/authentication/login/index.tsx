@@ -7,6 +7,7 @@ import routes from '../../../constants/routes';
 import { AsyncError } from '../../../types';
 import AuthenticationFormLayout from '../authentication-form-layout';
 import AuthenticationPageLayout from '../authentication-page-layout';
+import { useLoginMethod } from '../useLoginMethod.hook';
 
 import LoginForm from './login-form';
 
@@ -19,6 +20,8 @@ export const Login: React.FC = () => {
   const onError = (error: AsyncError) => {
     toast.error(error.message);
   };
+
+  useLoginMethod();
 
   return (
     <AuthenticationPageLayout>
