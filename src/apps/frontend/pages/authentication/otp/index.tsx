@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 
 import { Button, H2, VerticalStackLayout } from '../../../components';
 import routes from '../../../constants/routes';
-import { useAccountContext } from '../../../contexts';
 import { AsyncError } from '../../../types';
 import { ButtonKind } from '../../../types/button';
 import useTimer from '../../../utils/use-timer.hook';
@@ -24,15 +23,10 @@ export const OTPPage: React.FC = () => {
     toast.error(error.message);
   };
 
-  const { accountDetails } = useAccountContext();
   const navigate = useNavigate();
 
   const onVerifyOTPSuccess = () => {
-    if (accountDetails?.username) {
-      navigate(routes.DASHBOARD);
-    } else {
-      navigate(routes.SIGNUP);
-    }
+    navigate(routes.DASHBOARD);
   };
 
   const onResendOTPSuccess = () => {
