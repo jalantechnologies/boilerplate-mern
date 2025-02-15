@@ -1,0 +1,12 @@
+import { ApplicationServer } from '../../application';
+
+import {{pascalCase moduleName}}Router from './{{kebabCase moduleName}}-router';
+
+export default class {{pascalCase moduleName}}Server extends ApplicationServer {
+  configure(): void {
+    const { server } = this;
+    const router = new {{pascalCase moduleName}}Router();
+
+    server.use('/{{baseUrl}}', router.router);
+  }
+};
