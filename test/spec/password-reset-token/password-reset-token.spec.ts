@@ -6,7 +6,6 @@ import {
   Account,
   AccountBadRequestError,
   AccountNotFoundError,
-  ResetPasswordParams,
 } from '../../../src/apps/backend/modules/account';
 import AccountUtil from '../../../src/apps/backend/modules/account/internal/account-util';
 import AccountRepository from '../../../src/apps/backend/modules/account/internal/store/account-repository';
@@ -14,6 +13,7 @@ import { EmailService } from '../../../src/apps/backend/modules/communication';
 import {
   PasswordResetTokenNotFoundError,
   PasswordResetTokenService,
+  ValidatePasswordResetTokenAndResetPasswordParams,
 } from '../../../src/apps/backend/modules/password-reset-token';
 import PasswordResetTokenUtil from '../../../src/apps/backend/modules/password-reset-token/internal/password-reset-token-util';
 import PasswordResetTokenRepository from '../../../src/apps/backend/modules/password-reset-token/internal/store/password-reset-token-repository';
@@ -101,8 +101,8 @@ describe('Account Password Reset', () => {
     });
   });
 
-  describe('PATCH /account/:accountId', () => {
-    it('should reset the account password to the new password', async () => {
+  describe('PATCH /password-reset-tokens/validate', () => {
+    it('should validate the password reset token and reset the account password to the new password', async () => {
       sinonSandbox.stub(EmailService, 'sendEmail').returns(Promise.resolve());
 
       const resetToken = faker.random.alphaNumeric();
@@ -115,23 +115,22 @@ describe('Account Password Reset', () => {
       });
 
       const newPassword = faker.internet.password();
-      const passwordResetTokenParams: ResetPasswordParams = {
-        accountId: account.id,
-        newPassword,
-        token: resetToken,
-      };
+      const passwordResetTokenParams: ValidatePasswordResetTokenAndResetPasswordParams =
+        {
+          accountId: account.id,
+          newPassword,
+          token: resetToken,
+        };
 
       const res = await chai
         .request(app)
-        .patch(`/api/accounts/${account.id}`)
+        .patch('/api/password-reset-tokens/validate')
         .set('content-type', 'application/json')
         .send(passwordResetTokenParams);
 
-      expect(res).to.have.status(200);
-      expect(res.body).to.have.property('id');
-      expect(res.body).to.have.property('username');
-      expect(res.body.id).to.eq(account.id);
-      expect(res.body.username).to.eq(account.username);
+      expect(res).to.have.status(201);
+      expect(res.body).to.have.property('message');
+      expect(res.body.message).to.eq('Password reset successfully');
 
       // Check if account password reset successfully
       const updatedAccount = await AccountRepository.findById(account.id);
@@ -156,19 +155,20 @@ describe('Account Password Reset', () => {
       });
     });
 
-    it('should throw 404 if account does not exist', async () => {
+    it('should throw error if account does not exist', async () => {
       const accountId = faker.database.mongodbObjectId();
       const resetToken = faker.random.alphaNumeric();
       const newPassword = faker.internet.password();
-      const passwordResetTokenParams: ResetPasswordParams = {
-        accountId,
-        newPassword,
-        token: resetToken,
-      };
+      const passwordResetTokenParams: ValidatePasswordResetTokenAndResetPasswordParams =
+        {
+          accountId,
+          newPassword,
+          token: resetToken,
+        };
 
       const res = await chai
         .request(app)
-        .patch(`/api/accounts/${accountId}`)
+        .patch('/api/password-reset-tokens/validate')
         .set('content-type', 'application/json')
         .send(passwordResetTokenParams);
 
@@ -178,7 +178,7 @@ describe('Account Password Reset', () => {
       );
     });
 
-    it("should throw 404 if the account's password reset token is not found", async () => {
+    it("should throw error if the account's password reset token is not found", async () => {
       sinonSandbox.stub(EmailService, 'sendEmail').returns(Promise.resolve());
 
       const resetToken = faker.random.alphaNumeric();
@@ -203,11 +203,12 @@ describe('Account Password Reset', () => {
       ).to.exist;
 
       const newPassword = faker.internet.password();
-      const passwordResetTokenParams: ResetPasswordParams = {
-        accountId: account.id,
-        newPassword,
-        token: resetToken,
-      };
+      const passwordResetTokenParams: ValidatePasswordResetTokenAndResetPasswordParams =
+        {
+          accountId: account.id,
+          newPassword,
+          token: resetToken,
+        };
 
       await PasswordResetTokenRepository.deleteOne({
         account: account.id,
@@ -221,7 +222,7 @@ describe('Account Password Reset', () => {
 
       const res = await chai
         .request(app)
-        .patch(`/api/accounts/${account.id}`)
+        .patch('/api/password-reset-tokens/validate')
         .set('content-type', 'application/json')
         .send(passwordResetTokenParams);
 
@@ -229,81 +230,6 @@ describe('Account Password Reset', () => {
       expect(res.body.message).to.eq(
         new PasswordResetTokenNotFoundError(account.id).message,
       );
-    });
-
-    it('should throw error if the password reset token is already used', async () => {
-      sinonSandbox.stub(EmailService, 'sendEmail').returns(Promise.resolve());
-
-      const resetToken = faker.random.alphaNumeric();
-      sinonSandbox
-        .stub(PasswordResetTokenUtil, 'generatePasswordResetToken')
-        .returns(resetToken);
-
-      const passwordResetToken =
-        await PasswordResetTokenService.createPasswordResetToken({
-          username: account.username,
-        });
-
-      // Setting Token as used
-      await PasswordResetTokenService.setPasswordResetTokenAsUsedById(
-        passwordResetToken.id,
-      );
-
-      const newPassword = faker.internet.password();
-      const passwordResetTokenParams: ResetPasswordParams = {
-        accountId: account.id,
-        newPassword,
-        token: resetToken,
-      };
-
-      const res = await chai
-        .request(app)
-        .patch(`/api/accounts/${account.id}`)
-        .set('content-type', 'application/json')
-        .send(passwordResetTokenParams);
-
-      expect(res).to.have.status(400);
-      expect(res.body.message).to.eq(
-        new AccountBadRequestError(
-          `Password reset is already used for accountId ${account.id}. Please retry with new link`,
-        ).message,
-      );
-
-      await PasswordResetTokenRepository.deleteOne({
-        account: account.id,
-      });
-    });
-
-    it('should throw error if the password reset token does not match with the token passed in the payload', async () => {
-      sinonSandbox.stub(EmailService, 'sendEmail').returns(Promise.resolve());
-      const resetToken = faker.random.alphaNumeric();
-      await PasswordResetTokenService.createPasswordResetToken({
-        username: account.username,
-      });
-
-      const newPassword = faker.internet.password();
-      const passwordResetTokenParams: ResetPasswordParams = {
-        accountId: account.id,
-        newPassword,
-        token: resetToken,
-      };
-
-      const res = await chai
-        .request(app)
-        .patch(`/api/accounts/${account.id}`)
-        .set('content-type', 'application/json')
-        .send(passwordResetTokenParams);
-
-      expect(res).to.have.status(400);
-      expect(res.body.message).to.eq(
-        new AccountBadRequestError(
-          `Password reset link is invalid for accountId ${account.id}. Please retry with new link.`,
-        ).message,
-      );
-
-      await PasswordResetTokenRepository.deleteOne({
-        account: account.id,
-      });
     });
 
     it('should throw error if the password reset token is expired', async () => {
@@ -327,15 +253,16 @@ describe('Account Password Reset', () => {
       );
 
       const newPassword = faker.internet.password();
-      const passwordResetTokenParams: ResetPasswordParams = {
-        accountId: account.id,
-        newPassword,
-        token: resetToken,
-      };
+      const passwordResetTokenParams: ValidatePasswordResetTokenAndResetPasswordParams =
+        {
+          accountId: account.id,
+          newPassword,
+          token: resetToken,
+        };
 
       const res = await chai
         .request(app)
-        .patch(`/api/accounts/${account.id}`)
+        .patch('/api/password-reset-tokens/validate')
         .set('content-type', 'application/json')
         .send(passwordResetTokenParams);
 
@@ -343,6 +270,83 @@ describe('Account Password Reset', () => {
       expect(res.body.message).to.eq(
         new AccountBadRequestError(
           `Password reset link is expired for accountId ${account.id}. Please retry with new link`,
+        ).message,
+      );
+
+      await PasswordResetTokenRepository.deleteOne({
+        account: account.id,
+      });
+    });
+
+    it('should throw error if the password reset token is already used', async () => {
+      sinonSandbox.stub(EmailService, 'sendEmail').returns(Promise.resolve());
+
+      const resetToken = faker.random.alphaNumeric();
+      sinonSandbox
+        .stub(PasswordResetTokenUtil, 'generatePasswordResetToken')
+        .returns(resetToken);
+
+      const passwordResetToken =
+        await PasswordResetTokenService.createPasswordResetToken({
+          username: account.username,
+        });
+
+      // Setting Token as used
+      await PasswordResetTokenService.setPasswordResetTokenAsUsedById(
+        passwordResetToken.id,
+      );
+
+      const newPassword = faker.internet.password();
+      const passwordResetTokenParams: ValidatePasswordResetTokenAndResetPasswordParams =
+        {
+          accountId: account.id,
+          newPassword,
+          token: resetToken,
+        };
+
+      const res = await chai
+        .request(app)
+        .patch('/api/password-reset-tokens/validate')
+        .set('content-type', 'application/json')
+        .send(passwordResetTokenParams);
+
+      expect(res).to.have.status(400);
+      expect(res.body.message).to.eq(
+        new AccountBadRequestError(
+          `Password reset is already used for accountId ${account.id}. Please retry with new link`,
+        ).message,
+      );
+
+      await PasswordResetTokenRepository.deleteOne({
+        account: account.id,
+      });
+    });
+
+    it('should throw error if the password reset token does not match with the token passed in the payload', async () => {
+      sinonSandbox.stub(EmailService, 'sendEmail').returns(Promise.resolve());
+      const resetToken = faker.random.alphaNumeric();
+      await PasswordResetTokenService.createPasswordResetToken({
+        username: account.username,
+      });
+
+      const newPassword = faker.internet.password();
+      const passwordResetTokenParams: ValidatePasswordResetTokenAndResetPasswordParams =
+        {
+          accountId: account.id,
+          newPassword,
+          token: resetToken,
+        };
+
+      const res = await chai
+        .request(app)
+        .patch('/api/password-reset-tokens/validate')
+        .set('content-type', 'application/json')
+        .send(passwordResetTokenParams);
+
+      expect(res).to.have.status(400);
+      expect(res.body.message).to.eq(
+        new AccountBadRequestError(
+          `Password reset link is invalid for accountId ${account.id}. Please retry with new link.`,
         ).message,
       );
 
