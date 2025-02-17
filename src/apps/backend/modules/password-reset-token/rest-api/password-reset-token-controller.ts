@@ -23,23 +23,22 @@ export class PasswordResetTokenController {
     }
   );
 
-  validatePasswordResetTokenAndResetPassword = applicationController(
+  validateTokenAndResetPassword = applicationController(
     async (
       req: Request<ValidatePasswordResetTokenAndResetPasswordParams>,
       res: Response,
     ) => {
       const passwordResetToken =
-        await PasswordResetTokenService.validatePasswordResetTokenAndResetPassword(
-          {
-            newPassword: req.body.newPassword,
-            accountId: req.body.accountId,
-            token: req.body.token,
-          },
-        );
+        await PasswordResetTokenService.validateTokenAndResetPassword({
+          newPassword: req.body.newPassword,
+          accountId: req.body.accountId,
+          token: req.body.token,
+        });
+
       if (passwordResetToken) {
-        res
-          .status(HttpStatusCodes.CREATED)
-          .send({ message: 'Password reset successfully' });
+        const passwordResetTokenJSON =
+          serializePasswordResetTokenAsJSON(passwordResetToken);
+        res.status(HttpStatusCodes.CREATED).send(passwordResetTokenJSON);
       }
     },
   );

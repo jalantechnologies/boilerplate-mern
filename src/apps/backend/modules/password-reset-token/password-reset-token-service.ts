@@ -1,4 +1,4 @@
-import { AccountBadRequestError, AccountService, Account } from '../account';
+import { AccountBadRequestError, AccountService } from '../account';
 import { EmailService } from '../communication';
 import { SendEmailParams } from '../communication/types';
 import { ConfigService } from '../config';
@@ -37,9 +37,9 @@ export default class PasswordResetTokenService {
     return passwordResetToken;
   }
 
-  public static async validatePasswordResetTokenAndResetPassword(
+  public static async validateTokenAndResetPassword(
     params: ValidatePasswordResetTokenAndResetPasswordParams,
-  ): Promise<Account> {
+  ): Promise<PasswordResetToken> {
     const { accountId, newPassword, token } = params;
     await AccountService.getAccountById({ accountId });
 
@@ -49,16 +49,13 @@ export default class PasswordResetTokenService {
         token,
       );
 
-    const updatedAccount = await AccountService.updatePasswordByAccountId(
-      accountId,
-      newPassword,
-    );
+    await AccountService.updatePasswordByAccountId(accountId, newPassword);
 
     await PasswordResetTokenService.setPasswordResetTokenAsUsedById(
       passwordResetToken.id,
     );
 
-    return updatedAccount;
+    return passwordResetToken;
   }
 
   public static async verifyPasswordResetToken(
