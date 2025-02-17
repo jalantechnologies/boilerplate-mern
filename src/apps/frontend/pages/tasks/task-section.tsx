@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
-<<<<<<< HEAD
-//import CommentModal from '../comments/comment-modal';
-
-=======
+// import CommentModal from '../comments/comment-modal';
 import { useNavigate } from 'react-router-dom';
 // import { MessageCircle } from "lucide-react";
->>>>>>> 683548a (comment button and task clickable functionality)
 
 import {
   Button,
