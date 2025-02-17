@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
+// import CommentModal from '../comments/comment-modal';
+import { useNavigate } from 'react-router-dom';
+// import { MessageCircle } from "lucide-react";
 
 import {
   Button,
@@ -31,6 +34,7 @@ const TaskSection: React.FC<TaskSectionProps> = ({
   tasks,
 }) => {
   const [updateTaskModal, setUpdateTaskModal] = useState(false);
+  const navigate = useNavigate();
 
   const onSuccess = () => {
     toast.success('Task has been updated successfully');
@@ -49,6 +53,11 @@ const TaskSection: React.FC<TaskSectionProps> = ({
     setFormikFieldValue(updateTaskFormik, 'description', task.description);
   };
 
+  // 🔹 Ensure only clicking the title navigates
+  const handleCardClick = (taskId: string) => {
+    navigate(`/tasks/${taskId}`);
+  };
+
   if (isGetTasksLoading) {
     return (
       <div className="flex h-96 w-full items-center justify-center">
@@ -56,7 +65,7 @@ const TaskSection: React.FC<TaskSectionProps> = ({
       </div>
     );
   }
-
+  console.log({ tasks });
   return (
     <VerticalStackLayout gap={7}>
       {tasks.length > 0 && (
@@ -68,18 +77,31 @@ const TaskSection: React.FC<TaskSectionProps> = ({
 
       {tasks.map((task) => (
         <div
-          className="relative rounded-sm border border-stroke bg-white p-9 shadow-default"
+          className="relative cursor-pointer rounded-sm border border-stroke bg-white p-9 shadow-default"
           key={task.id}
         >
           <VerticalStackLayout gap={3}>
-            <LabelLarge>{task.title}</LabelLarge>
+            {/* 🔹 Only the title acts as a link */}
+            <div
+              onClick={(e: React.MouseEvent<HTMLDivElement>) => {
+                e.stopPropagation(); // Prevent navigation when clicking the title
+                handleCardClick(task.id); // Perform navigation here
+              }}
+              className="cursor-pointer text-blue-600"
+            >
+              <LabelLarge>{task.title}</LabelLarge>
+            </div>
+
             <ParagraphSmall>{task.description}</ParagraphSmall>
           </VerticalStackLayout>
 
           <div className="absolute right-4 top-4">
             <MenuItem>
               <Button
-                onClick={() => handleTaskOperation(task)}
+                onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                  e.stopPropagation(); // Prevent navigation when clicking button
+                  handleTaskOperation(task);
+                }}
                 kind={ButtonKind.SECONDARY}
                 size={ButtonSize.DEFAULT}
                 startEnhancer={
@@ -88,8 +110,12 @@ const TaskSection: React.FC<TaskSectionProps> = ({
               >
                 Edit
               </Button>
+
               <Button
-                onClick={() => handleDeleteTask(task.id)}
+                onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                  e.stopPropagation(); // Prevent navigation when clicking button
+                  handleDeleteTask(task.id); // Pass task.id to delete handler
+                }}
                 kind={ButtonKind.SECONDARY}
                 size={ButtonSize.DEFAULT}
                 startEnhancer={
@@ -97,6 +123,26 @@ const TaskSection: React.FC<TaskSectionProps> = ({
                 }
               >
                 Delete
+              </Button>
+
+              {/* New Comment Button */}
+              <Button
+                onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                  e.stopPropagation(); // Prevent navigation when clicking button
+                  handleCardClick(task.id); // Navigate to task page when clicking comment
+                }}
+                kind={ButtonKind.SECONDARY}
+                size={ButtonSize.DEFAULT}
+                startEnhancer={
+                  <img
+                    src="assets/svg/comment-icon.svg"
+                    alt="Comment task"
+                    width="16" // Match with Edit/Delete icon size
+                    height="16"
+                  />
+                }
+              >
+                Comment
               </Button>
             </MenuItem>
           </div>

@@ -4,11 +4,14 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
 @layer base {
   body {
-    @apply relative z-1 bg-whiten font-satoshi text-base font-normal text-body;
+    @apply relative z-1 bg-black font-satoshi text-base font-normal text-body;
   }
 }
+
 
 @layer utilities {
   /* Chrome, Safari and Opera */
@@ -39,7 +42,7 @@
 }
 
 .apexcharts-legend-text {
-  @apply !text-body dark:!text-bodydark;
+  @apply !text-bodydark dark:!text-body;
 }
 .apexcharts-text {
   @apply !fill-body dark:!fill-bodydark;
@@ -73,7 +76,7 @@
   @apply !border-b-gray dark:!border-b-meta-4;
 }
 .apexcharts-xaxistooltip-bottom {
-  @apply !rounded !border-none !bg-gray !text-xs !font-medium !text-black dark:!text-white;
+  @apply !rounded !border-none !bg-gray !text-xs !font-medium !text-white dark:!text-black;
 }
 .apexcharts-tooltip-series-group {
   @apply !pl-1.5;
@@ -196,11 +199,17 @@ span.flatpickr-weekday,
   @apply border-primary bg-primary dark:border-primary;
 }
 
+.task-list, .todo-items {
+  @apply text-white;
+}
+
+
 .custom-input-date::-webkit-calendar-picker-indicator {
   background-position: center;
   background-repeat: no-repeat;
   background-size: 20px;
 }
+
 
 [x-cloak] {
   display: none !important;

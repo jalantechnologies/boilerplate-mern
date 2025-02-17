@@ -6,7 +6,7 @@ import {
   CreateTaskParams,
   GetAllTaskParams,
   DeleteTaskParams,
-  GetTaskParams,
+  // GetTaskParams,
   UpdateTaskParams,
 } from '../types';
 
@@ -37,6 +37,7 @@ export class TaskController {
     },
   );
 
+  /* for specific task
   getTask = applicationController(
     async (req: Request<GetTaskParams>, res: Response) => {
       const task = await TaskService.getTaskForAccount({
@@ -59,6 +60,19 @@ export class TaskController {
     };
 
     const tasks = await TaskService.getTasksForAccount(params);
+    const tasksJSON = tasks.map((task) => serializeTaskAsJSON(task));
+
+    res.status(HttpStatusCodes.OK).send(tasksJSON);
+  }); */
+
+  // for all task display
+  // For all tasks (remove accountId to fetch all tasks)
+  getTasks = applicationController(async (req: Request, res: Response) => {
+    const page = +req.query.page;
+    const size = +req.query.size;
+    const params: GetAllTaskParams = { page, size };
+
+    const tasks = await TaskService.getAllTasks(params);
     const tasksJSON = tasks.map((task) => serializeTaskAsJSON(task));
 
     res.status(HttpStatusCodes.OK).send(tasksJSON);

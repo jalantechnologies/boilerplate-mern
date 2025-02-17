@@ -11,8 +11,8 @@ export default class TaskRouter extends ApplicationRouter {
     router.use(accessAuthMiddleware);
 
     router.post('/', ctrl.createTask);
+    // router.get('/', ctrl.getTask);
     router.get('/', ctrl.getTasks);
-    router.get('/:id', ctrl.getTask);
     router.patch('/:id', ctrl.updateTask);
     router.delete('/:id', ctrl.deleteTask);
   }

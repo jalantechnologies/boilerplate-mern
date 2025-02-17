@@ -4,7 +4,7 @@ import {
   CreateTaskParams,
   DeleteTaskParams,
   GetAllTaskParams,
-  GetTaskParams,
+  // GetTaskParams,
   Task,
   UpdateTaskParams,
 } from './types';
@@ -22,6 +22,7 @@ export default class TaskService {
     return TaskWriter.updateTask(params);
   }
 
+  /* specific user task
   public static async getTaskForAccount(params: GetTaskParams): Promise<Task> {
     return TaskReader.getTaskForAccount(params);
   }
@@ -30,5 +31,11 @@ export default class TaskService {
     params: GetAllTaskParams,
   ): Promise<Task[]> {
     return TaskReader.getTasksForAccount(params);
+  } */
+
+  // all user tasks
+  // This fetches all tasks (created by any user)
+  public static async getAllTasks(params: GetAllTaskParams): Promise<Task[]> {
+    return TaskReader.getAllTasks(params);
   }
 }

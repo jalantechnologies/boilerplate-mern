@@ -58,10 +58,10 @@ const UserProfileSnippet: React.FC<DropdownUserProps> = ({
         to="#"
       >
         <span className="hidden text-right lg:block">
-          <span className="block text-sm font-medium text-black dark:text-white">
+          <span className="block text-sm font-medium text-white dark:text-white">
             {account.displayName()}
           </span>
-          <span className="block text-xs">User</span>
+          <span className="block text-xs text-white">User</span>
         </span>
 
         <span className="size-12 rounded-full">

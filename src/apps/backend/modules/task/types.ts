@@ -9,7 +9,7 @@ export class Task {
 }
 
 export type GetAllTaskParams = {
-  accountId: string;
+  accountId?: string;
   page?: number;
   size?: number;
 };
