@@ -10,6 +10,7 @@ import {
   CreatePasswordResetTokenParams,
   PasswordResetToken,
   PasswordResetTokenEmailNotEnabledForTheEnvironmentError,
+  ValidatePasswordResetTokenAndResetPasswordParams,
 } from './types';
 
 export default class PasswordResetTokenService {
@@ -36,18 +37,25 @@ export default class PasswordResetTokenService {
     return passwordResetToken;
   }
 
-  public static async getPasswordResetTokenByAccountId(
-    accountId: string,
+  public static async validateTokenAndResetPassword(
+    params: ValidatePasswordResetTokenAndResetPasswordParams,
   ): Promise<PasswordResetToken> {
-    return PasswordResetTokenReader.getPasswordResetTokenByAccountId(accountId);
-  }
+    const { accountId, newPassword, token } = params;
+    await AccountService.getAccountById({ accountId });
 
-  public static async setPasswordResetTokenAsUsedById(
-    passwordResetTokenId: string,
-  ): Promise<PasswordResetToken> {
-    return PasswordResetTokenWriter.setPasswordResetTokenAsUsed(
-      passwordResetTokenId,
+    const passwordResetToken =
+      await PasswordResetTokenService.verifyPasswordResetToken(
+        accountId,
+        token,
+      );
+
+    await AccountService.updatePasswordByAccountId(accountId, newPassword);
+
+    await PasswordResetTokenService.setPasswordResetTokenAsUsedById(
+      passwordResetToken.id,
     );
+
+    return passwordResetToken;
   }
 
   public static async verifyPasswordResetToken(
@@ -82,6 +90,20 @@ export default class PasswordResetTokenService {
     }
 
     return passwordResetToken;
+  }
+
+  public static async getPasswordResetTokenByAccountId(
+    accountId: string,
+  ): Promise<PasswordResetToken> {
+    return PasswordResetTokenReader.getPasswordResetTokenByAccountId(accountId);
+  }
+
+  public static async setPasswordResetTokenAsUsedById(
+    passwordResetTokenId: string,
+  ): Promise<PasswordResetToken> {
+    return PasswordResetTokenWriter.setPasswordResetTokenAsUsed(
+      passwordResetTokenId,
+    );
   }
 
   private static async sendPasswordResetEmail(
