@@ -1,6 +1,6 @@
 import { ApiError, ApiResponse } from '../types';
 import { JsonObject } from '../types/common-types';
-import { Task } from '../types/task';
+import { Task as TaskType, Comment as CommentType } from '../types/task';
 import { getAccessTokenFromStorage } from '../utils/storage-util';
 
 import APIService from './api.service';
@@ -9,7 +9,7 @@ export default class TaskService extends APIService {
   addTask = async (
     title: string,
     description: string,
-  ): Promise<ApiResponse<Task>> => {
+  ): Promise<ApiResponse<TaskType>> => {
     try {
       const userAccessToken = getAccessTokenFromStorage();
       const response = await this.apiClient.post(
@@ -21,7 +21,7 @@ export default class TaskService extends APIService {
           },
         },
       );
-      return new ApiResponse(new Task(response.data as JsonObject), undefined);
+      return new ApiResponse(response.data as TaskType, undefined);
     } catch (e) {
       return new ApiResponse(
         undefined,
@@ -30,7 +30,7 @@ export default class TaskService extends APIService {
     }
   };
 
-  getTasks = async (): Promise<ApiResponse<Task[]>> => {
+  getTasks = async (): Promise<ApiResponse<TaskType[]>> => {
     try {
       const userAccessToken = getAccessTokenFromStorage();
       const response = await this.apiClient.get('/tasks', {
@@ -38,10 +38,7 @@ export default class TaskService extends APIService {
           Authorization: `Bearer ${userAccessToken.token}`,
         },
       });
-      const tasks: Task[] = (response.data as JsonObject[]).map(
-        (taskData) => new Task(taskData),
-      );
-      return new ApiResponse(tasks, undefined);
+      return new ApiResponse(response.data as TaskType[], undefined);
     } catch (e) {
       return new ApiResponse(
         undefined,
@@ -52,8 +49,8 @@ export default class TaskService extends APIService {
 
   updateTask = async (
     taskId: string,
-    taskData: Task,
-  ): Promise<ApiResponse<Task>> => {
+    taskData: TaskType,
+  ): Promise<ApiResponse<TaskType>> => {
     try {
       const userAccessToken = getAccessTokenFromStorage();
       const response = await this.apiClient.patch(
@@ -65,7 +62,7 @@ export default class TaskService extends APIService {
           },
         },
       );
-      return new ApiResponse(new Task(response.data as JsonObject), undefined);
+      return new ApiResponse(response.data as TaskType, undefined);
     } catch (e) {
       return new ApiResponse(
         undefined,
@@ -83,6 +80,49 @@ export default class TaskService extends APIService {
         },
       });
       return new ApiResponse(undefined, undefined);
+    } catch (e) {
+      return new ApiResponse(
+        undefined,
+        new ApiError(e.response.data as JsonObject),
+      );
+    }
+  };
+
+  // 🔹 Fetch comments for a task
+  getComments = async (taskId: string): Promise<ApiResponse<CommentType[]>> => {
+    try {
+      const userAccessToken = getAccessTokenFromStorage();
+      const response = await this.apiClient.get(`/tasks/${taskId}/comments`, {
+        headers: {
+          Authorization: `Bearer ${userAccessToken.token}`,
+        },
+      });
+      return new ApiResponse(response.data as CommentType[], undefined);
+    } catch (e) {
+      return new ApiResponse(
+        undefined,
+        new ApiError(e.response.data as JsonObject),
+      );
+    }
+  };
+
+  // 🔹 Add a comment to a task
+  addComment = async (
+    taskId: string,
+    commentText: string,
+  ): Promise<ApiResponse<CommentType>> => {
+    try {
+      const userAccessToken = getAccessTokenFromStorage();
+      const response = await this.apiClient.post(
+        `/tasks/${taskId}/comments`,
+        { text: commentText },
+        {
+          headers: {
+            Authorization: `Bearer ${userAccessToken.token}`,
+          },
+        },
+      );
+      return new ApiResponse(response.data as CommentType, undefined);
     } catch (e) {
       return new ApiResponse(
         undefined,
