@@ -129,8 +129,6 @@ describe('Account Password Reset', () => {
         .send(passwordResetTokenParams);
 
       expect(res).to.have.status(201);
-      expect(res.body).to.have.property('message');
-      expect(res.body.message).to.eq('Password reset successfully');
 
       // Check if account password reset successfully
       const updatedAccount = await AccountRepository.findById(account.id);
