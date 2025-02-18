@@ -26,12 +26,12 @@ export default class AccountReader {
 
   public static async getAccountByUsernameAndPassword(
     password: string,
-    username: string,
+    username: string
   ): Promise<Account> {
     const account = await AccountReader.getAccountByUsername(username);
     const isPasswordValid = await AccountUtil.comparePassword(
       password,
-      account.hashedPassword,
+      account.hashedPassword
     );
     if (!isPasswordValid) {
       throw new InvalidCredentialsError(username);
@@ -53,7 +53,7 @@ export default class AccountReader {
   }
 
   public static async getAccountByPhoneNumber(
-    phoneNumber: PhoneNumber,
+    phoneNumber: PhoneNumber
   ): Promise<Account> {
     const account = await this.getAccountByPhoneNumberOptional(phoneNumber);
 
@@ -65,7 +65,7 @@ export default class AccountReader {
   }
 
   public static async getAccountByPhoneNumberOptional(
-    phoneNumber: PhoneNumber,
+    phoneNumber: PhoneNumber
   ): Promise<Nullable<Account>> {
     const accountDb = await AccountRepository.findOne({
       'phoneNumber.countryCode': phoneNumber.countryCode,
@@ -81,7 +81,7 @@ export default class AccountReader {
   }
 
   public static async checkUsernameNotExists(
-    username: string,
+    username: string
   ): Promise<boolean> {
     const accountDb = await AccountRepository.findOne({
       username,
@@ -96,7 +96,7 @@ export default class AccountReader {
   }
 
   public static async checkPhoneNumberNotExists(
-    phoneNumber: PhoneNumber,
+    phoneNumber: PhoneNumber
   ): Promise<boolean> {
     const accountDb = await AccountRepository.findOne({
       'phoneNumber.countryCode': phoneNumber.countryCode,

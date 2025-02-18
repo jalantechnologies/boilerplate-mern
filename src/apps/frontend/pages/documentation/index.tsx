@@ -16,10 +16,10 @@ const Documentation: React.FC = () => {
     const fetchDocumentation = async () => {
       try {
         const documentationResponse = await fetch(
-          '/assets/documentation/index.json',
+          '/assets/documentation/index.json'
         );
         const documentation = new MarkdownDocumentation(
-          (await documentationResponse.json()) as JsonObject,
+          (await documentationResponse.json()) as JsonObject
         );
 
         if (documentation?.markdownDocumentation) {

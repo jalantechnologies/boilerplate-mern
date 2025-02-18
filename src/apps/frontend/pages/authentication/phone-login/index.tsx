@@ -11,7 +11,7 @@ import PhoneLoginForm from './phone-login-form';
 export const PhoneLogin: React.FC = () => {
   const onSendOTPSuccess = () => {
     toast.success(
-      'OTP has been sent successfully. Please check your messages.',
+      'OTP has been sent successfully. Please check your messages.'
     );
   };
 

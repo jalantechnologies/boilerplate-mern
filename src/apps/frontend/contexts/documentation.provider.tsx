@@ -14,7 +14,7 @@ type DocumentationContextType = {
 };
 
 const DocumentationContext = createContext<DocumentationContextType | null>(
-  null,
+  null
 );
 
 const documentationService = new DocumentationService();

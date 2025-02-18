@@ -20,17 +20,17 @@ describe('ConfigService', () => {
 
       assert.throws(
         () => ConfigService.getValue(missingKey),
-        `Configuration property "${missingKey}" is not defined`,
+        `Configuration property "${missingKey}" is not defined`
       );
 
       assert.throws(
         () => ConfigService.getValue(missingKey),
-        `Configuration property "${missingKey}" is not defined`,
+        `Configuration property "${missingKey}" is not defined`
       );
 
       assert.throws(
         () => ConfigService.getValue(missingKey),
-        `Configuration property "${missingKey}" is not defined`,
+        `Configuration property "${missingKey}" is not defined`
       );
     });
   });

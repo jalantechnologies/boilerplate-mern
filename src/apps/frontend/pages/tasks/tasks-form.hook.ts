@@ -23,7 +23,7 @@ const useTaskForm = ({ onError, onSuccess }: TaskFormProps) => {
   const setFormikFieldValue = (
     formik: FormikProps<Task>,
     fieldName: string,
-    data: string,
+    data: string
   ) => {
     formik
       .setFieldValue(fieldName, data)
@@ -46,7 +46,7 @@ const useTaskForm = ({ onError, onSuccess }: TaskFormProps) => {
       description: Yup.string()
         .min(
           constant.DESCRIPTION_MIN_LENGTH,
-          constant.DESCRIPTION_VALIDATION_ERROR,
+          constant.DESCRIPTION_VALIDATION_ERROR
         )
         .required(constant.DESCRIPTION_VALIDATION_ERROR),
     }),
@@ -83,7 +83,7 @@ const useTaskForm = ({ onError, onSuccess }: TaskFormProps) => {
       description: Yup.string()
         .min(
           constant.DESCRIPTION_MIN_LENGTH,
-          constant.DESCRIPTION_VALIDATION_ERROR,
+          constant.DESCRIPTION_VALIDATION_ERROR
         )
         .required(constant.DESCRIPTION_VALIDATION_ERROR),
     }),

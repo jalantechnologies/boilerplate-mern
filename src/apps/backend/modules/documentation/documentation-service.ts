@@ -14,7 +14,7 @@ export default class DocumentationService {
 
   public static async getDocumentation(): Promise<MarkdownDocumentation> {
     const isDocumentationEnabled = ConfigService.getValue<boolean>(
-      'documentation.enabled',
+      'documentation.enabled'
     );
 
     if (!isDocumentationEnabled) {
@@ -47,7 +47,7 @@ export default class DocumentationService {
       await fs.promises.writeFile(
         path.join(assetsPath, 'index.json'),
         JSON.stringify(documentation, null, 2),
-        { encoding: 'utf8', flag: 'w' },
+        { encoding: 'utf8', flag: 'w' }
       );
     } catch (error) {
       Logger.error('Error generating and injecting documentation:', error);

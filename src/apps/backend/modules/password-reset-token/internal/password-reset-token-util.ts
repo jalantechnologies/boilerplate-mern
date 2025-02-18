@@ -10,7 +10,7 @@ import { PasswordResetTokenDB } from './store/password-reset-token-db';
 
 export default class PasswordResetTokenUtil {
   public static convertPasswordResetTokenDBToPasswordResetToken(
-    passwordResetTokenDb: PasswordResetTokenDB,
+    passwordResetTokenDb: PasswordResetTokenDB
   ): PasswordResetToken {
     const passwordResetToken = new PasswordResetToken();
     passwordResetToken.id = passwordResetTokenDb._id.toString();
@@ -19,7 +19,7 @@ export default class PasswordResetTokenUtil {
     passwordResetToken.token = passwordResetTokenDb.token;
     passwordResetToken.isUsed = passwordResetTokenDb.isUsed;
     passwordResetToken.isExpired = !moment(
-      passwordResetTokenDb.expiresAt,
+      passwordResetTokenDb.expiresAt
     ).isAfter(moment());
     return passwordResetToken;
   }
@@ -30,7 +30,7 @@ export default class PasswordResetTokenUtil {
 
   public static async comparePasswordResetToken(
     password: string,
-    hashedPassword: string,
+    hashedPassword: string
   ): Promise<boolean> {
     return bcrypt.compare(password, hashedPassword);
   }
@@ -40,19 +40,19 @@ export default class PasswordResetTokenUtil {
   }
 
   public static async hashPasswordResetToken(
-    resetToken: string,
+    resetToken: string
   ): Promise<string> {
     return bcrypt.hash(resetToken, 10);
   }
 
   public static getTokenExpiresAt(): Moment {
     const defaultTokenExpireTimeInSeconds = ConfigService.getValue<string>(
-      'passwordResetToken.expiresInSeconds',
+      'passwordResetToken.expiresInSeconds'
     );
 
     return moment().add(
       parseInt(defaultTokenExpireTimeInSeconds, 10),
-      'seconds',
+      'seconds'
     );
   }
 }

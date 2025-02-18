@@ -56,7 +56,7 @@ describe('Account API', () => {
         params.firstName,
         params.lastName,
         params.password,
-        params.username,
+        params.username
       );
       const res = await chai
         .request(app)
@@ -66,7 +66,7 @@ describe('Account API', () => {
 
       expect(res.status).to.be.eq(409);
       expect(res.body.message).to.eq(
-        new AccountWithUserNameExistsError(params.username).message,
+        new AccountWithUserNameExistsError(params.username).message
       );
     });
 
@@ -97,7 +97,7 @@ describe('Account API', () => {
       };
 
       const account = await AccountWriter.createAccountByPhoneNumber(
-        new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber),
+        new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber)
       );
 
       const createAccountByPhoneNumberStub = sinonSandbox
@@ -145,7 +145,7 @@ describe('Account API', () => {
         faker.name.firstName(),
         faker.name.lastName(),
         'password',
-        faker.internet.userName(),
+        faker.internet.userName()
       );
 
       const updateAccountDetailsParams = {
@@ -181,7 +181,7 @@ describe('Account API', () => {
 
       expect(res.status).to.be.eq(404);
       expect(res.body.message).to.eq(
-        new AccountNotFoundError(accountId).message,
+        new AccountNotFoundError(accountId).message
       );
     });
   });
@@ -192,7 +192,7 @@ describe('Account API', () => {
         faker.name.firstName(),
         faker.name.lastName(),
         'password',
-        faker.internet.userName(),
+        faker.internet.userName()
       );
 
       const res = await chai
@@ -213,7 +213,7 @@ describe('Account API', () => {
 
       expect(res.status).to.be.eq(404);
       expect(res.body.message).to.eq(
-        new AccountNotFoundError(accountId).message,
+        new AccountNotFoundError(accountId).message
       );
     });
   });

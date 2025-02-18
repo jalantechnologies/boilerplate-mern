@@ -35,7 +35,7 @@ describe('SMSService', () => {
 
     return expect(SMSService.sendSMS(params))
       .to.eventually.be.rejectedWith(
-        'SMS cannot be send, please check the params validity.',
+        'SMS cannot be send, please check the params validity.'
       )
       .then((error) => {
         expect(error).to.have.property('code');
@@ -57,7 +57,7 @@ describe('SMSService', () => {
 
     return expect(SMSService.sendSMS(params))
       .to.eventually.be.rejectedWith(
-        'SMS cannot be send, please check the params validity.',
+        'SMS cannot be send, please check the params validity.'
       )
       .then((error) => {
         expect(error).to.have.property('code');

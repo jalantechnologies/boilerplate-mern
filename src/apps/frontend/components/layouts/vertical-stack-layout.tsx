@@ -10,7 +10,7 @@ const VerticalStackLayout: React.FC<
   const gapClass = gap ? `gap-${gap}` : '';
   return (
     <div className={`${gapClass} flex flex-col justify-center`}>{children}</div>
-  )
+  );
 };
 
 export default VerticalStackLayout;

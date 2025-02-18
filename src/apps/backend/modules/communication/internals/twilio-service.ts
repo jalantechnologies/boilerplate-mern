@@ -17,7 +17,7 @@ export default class TwilioService {
       await client.messages.create({
         to: SMSParams.phoneNumberToString(params.recipientPhone),
         messagingServiceSid: ConfigService.getValue(
-          'twilio.messaging.messagingServiceSid',
+          'twilio.messaging.messagingServiceSid'
         ),
         body: params.messageBody,
       });
@@ -33,7 +33,7 @@ export default class TwilioService {
 
     this.client = new Twilio(
       ConfigService.getValue('twilio.verify.accountSid'),
-      ConfigService.getValue('twilio.verify.authToken'),
+      ConfigService.getValue('twilio.verify.authToken')
     );
     return this.client;
   }

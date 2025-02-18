@@ -5,7 +5,7 @@ import PasswordResetTokenRepository from './store/password-reset-token-repositor
 
 export default class PasswordResetTokenReader {
   public static async getPasswordResetTokenByAccountId(
-    accountId: string,
+    accountId: string
   ): Promise<PasswordResetToken> {
     const tokenDB = await PasswordResetTokenRepository.findOne({
       account: accountId,
@@ -16,7 +16,7 @@ export default class PasswordResetTokenReader {
     }
 
     return PasswordResetTokenUtil.convertPasswordResetTokenDBToPasswordResetToken(
-      tokenDB,
+      tokenDB
     );
   }
 }

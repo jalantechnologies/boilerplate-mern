@@ -12,6 +12,6 @@ export class DocumentationController {
       const documentationJSON = serializeDocumentationAsJSON(documentation);
 
       res.status(HttpStatusCodes.OK).send(documentationJSON);
-    },
+    }
   );
 }
