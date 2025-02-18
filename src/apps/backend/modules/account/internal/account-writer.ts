@@ -1,9 +1,3 @@
-import { PhoneNumberUtil } from 'google-libphonenumber';
-
-import {
-  PhoneUtilInstance,
-  PhoneUtilInterface,
-} from '../../communication/types';
 import { OtpRequestError } from '../../otp/types';
 import { Account, PhoneNumber } from '../types';
 
@@ -37,7 +31,11 @@ export default class AccountWriter {
   public static async createAccountByPhoneNumber(
     phoneNumber: PhoneNumber,
   ): Promise<Account> {
-    await this.validateAndCheckPhoneNumberExists(phoneNumber);
+    AccountUtil.validatePhoneNumber(phoneNumber);
+    const account = await AccountReader.getAccountByPhoneNumber(phoneNumber);
+    if (account) {
+      throw new OtpRequestError('Phone number already exists');
+    }
     const accountDb = await AccountRepository.create({
       phoneNumber,
       active: true,
@@ -47,18 +45,16 @@ export default class AccountWriter {
   }
 
   public static async createAccountByPhoneNumberAndName(
-    firstName: string,
-    lastName: string,
     phoneNumber: PhoneNumber,
+    firstName?: string,
+    lastName?: string,
   ): Promise<Account> {
-    await this.validateAndCheckPhoneNumberExists(phoneNumber);
     const accountDb = await AccountRepository.create({
       firstName,
       lastName,
       phoneNumber,
       active: true,
     });
-
     return AccountUtil.convertAccountDBToAccount(accountDb);
   }
 
@@ -97,23 +93,5 @@ export default class AccountWriter {
 
   public static async deleteAccountById(accountId: string): Promise<void> {
     await AccountRepository.findByIdAndDelete(accountId);
-  }
-
-  private static async validateAndCheckPhoneNumberExists(
-    phoneNumber: PhoneNumber,
-  ): Promise<void> {
-    const phoneUtil = <PhoneUtilInterface>(
-      (<PhoneUtilInstance>PhoneNumberUtil).getInstance()
-    );
-    const isValidPhoneNumber = phoneUtil.isValidNumber(
-      phoneUtil.parse(phoneNumber.toString()),
-    );
-
-    if (!isValidPhoneNumber) {
-      throw new OtpRequestError('Please provide a valid phone number.');
-    }
-    // check if account already exists with the given phone number
-    // this will throw an error if it does
-    await AccountReader.checkPhoneNumberNotExists(phoneNumber);
   }
 }

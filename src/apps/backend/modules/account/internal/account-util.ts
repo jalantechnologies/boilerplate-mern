@@ -1,6 +1,12 @@
 import * as bcrypt from 'bcrypt';
+import { PhoneNumberUtil } from 'google-libphonenumber';
 
-import { Account } from '../types';
+import {
+  PhoneUtilInstance,
+  PhoneUtilInterface,
+} from '../../communication/types';
+import { OtpRequestError } from '../../otp/types';
+import { Account, PhoneNumber } from '../types';
 
 import { AccountDB } from './store/account-db';
 
@@ -25,5 +31,18 @@ export default class AccountUtil {
     hashedPassword: string
   ): Promise<boolean> {
     return bcrypt.compare(password, hashedPassword);
+  }
+
+  public static validatePhoneNumber(phoneNumber: PhoneNumber): void {
+    const phoneUtil = <PhoneUtilInterface>(
+      (<PhoneUtilInstance>PhoneNumberUtil).getInstance()
+    );
+    const isValidPhoneNumber = phoneUtil.isValidNumber(
+      phoneUtil.parse(phoneNumber.toString()),
+    );
+
+    if (!isValidPhoneNumber) {
+      throw new OtpRequestError('Please provide a valid phone number.');
+    }
   }
 }
