@@ -28,8 +28,7 @@ export default class AccountService {
   public static async getOrCreateAccountByPhoneNumber(
     phoneNumber: PhoneNumber
   ): Promise<Account> {
-    let account =
-      await AccountReader.getAccountByPhoneNumberOptional(phoneNumber);
+    let account = await AccountReader.getAccountByPhoneNumber(phoneNumber);
 
     if (!account) {
       account = await AccountWriter.createAccountByPhoneNumber(phoneNumber);
@@ -40,22 +39,26 @@ export default class AccountService {
     return account;
   }
 
-  public static async getOrCreateAccountByPhoneNumberAndName(
-    firstName: string,
-    lastName: string,
+  public static async createAccountByPhoneNumberAndName(
     phoneNumber: PhoneNumber,
+    firstName?: string,
+    lastName?: string,
   ): Promise<Account> {
-    let account =
-      await AccountReader.getAccountByPhoneNumberOptional(phoneNumber);
-    if (!account) {
-      account = await AccountWriter.createAccountByPhoneNumberAndName(
-        firstName,
-        lastName,
-        phoneNumber,
-      );
+    if (!firstName && !lastName) {
+      throw new OtpRequestError('Please provide first name or last name');
     }
+    AccountUtil.validatePhoneNumber(phoneNumber);
+    const account = await AccountReader.getAccountByPhoneNumber(phoneNumber);
+    if (account) {
+      throw new OtpRequestError('Phone number already exists');
+    }
+    const accountNew = await AccountWriter.createAccountByPhoneNumberAndName(
+      phoneNumber,
+      firstName,
+      lastName,
+    );
     await OtpService.createOtp(phoneNumber);
-    return account;
+    return accountNew;
   }
 
   public static async getAccountByUsernameAndPassword(
