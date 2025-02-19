@@ -5,11 +5,10 @@ import {
   PhoneUtilInterface,
 } from '../../communication/types';
 import { OtpRequestError } from '../../otp';
-import { Account, PhoneNumber } from '../types';
+import { Account, AccountNotFoundError, PhoneNumber } from '../types';
 
 import AccountReader from './account-reader';
 import AccountUtil from './account-util';
-import { AccountDB } from './store/account-db';
 import AccountRepository from './store/account-repository';
 
 export default class AccountWriter {
@@ -65,14 +64,17 @@ export default class AccountWriter {
     newPassword: string,
   ): Promise<Account> {
     const accountHashedPassword = await AccountUtil.hashPassword(newPassword);
-    // Type assertion for AccountDB because accountId is already validated to be present in the db
-    const dbAccount = (await AccountRepository.findByIdAndUpdate(
+    const dbAccount = await AccountRepository.findByIdAndUpdate(
       accountId,
       {
         hashedPassword: accountHashedPassword,
       },
       { new: true },
-    )) as AccountDB;
+    );
+
+    if (!dbAccount) {
+      throw new AccountNotFoundError(`Account with id ${accountId} not found`);
+    }
 
     return AccountUtil.convertAccountDBToAccount(dbAccount);
   }
@@ -82,15 +84,18 @@ export default class AccountWriter {
     firstName: string,
     lastName: string,
   ): Promise<Account> {
-    // Type assertion for AccountDB because accountId is already validated to be present in the db
-    const dbAccount = (await AccountRepository.findByIdAndUpdate(
+    const dbAccount = await AccountRepository.findByIdAndUpdate(
       accountId,
       {
         firstName,
         lastName,
       },
       { new: true },
-    )) as AccountDB;
+    );
+
+    if (!dbAccount) {
+      throw new AccountNotFoundError(`Account with id ${accountId} not found`);
+    }
 
     return AccountUtil.convertAccountDBToAccount(dbAccount);
   }
