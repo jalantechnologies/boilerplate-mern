@@ -1,7 +1,6 @@
-import { PasswordResetToken } from '../types';
+import { PasswordResetToken, PasswordResetTokenNotFoundError } from '../types';
 
 import PasswordResetTokenUtil from './password-reset-token-util';
-import { PasswordResetTokenDB } from './store/password-reset-token-db';
 import PasswordResetTokenRepository from './store/password-reset-token-repository';
 
 export default class PasswordResetTokenWriter {
@@ -27,13 +26,19 @@ export default class PasswordResetTokenWriter {
   public static async setPasswordResetTokenAsUsed(
     passwordResetTokenId: string,
   ): Promise<PasswordResetToken> {
-    const updatedToken = (await PasswordResetTokenRepository.findByIdAndUpdate(
+    const updatedToken = await PasswordResetTokenRepository.findByIdAndUpdate(
       passwordResetTokenId,
       {
         isUsed: true,
       },
       { new: true },
-    )) as PasswordResetTokenDB;
+    );
+
+    if (!updatedToken) {
+      throw new PasswordResetTokenNotFoundError(
+        `Password reset token with id ${passwordResetTokenId} not found`,
+      );
+    }
 
     return PasswordResetTokenUtil.convertPasswordResetTokenDBToPasswordResetToken(
       updatedToken,
