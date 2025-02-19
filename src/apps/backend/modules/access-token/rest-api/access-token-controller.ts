@@ -32,7 +32,7 @@ export class AccessTokenController {
         );
       }
 
-      const accessTokenJSON = serializeAccessTokenAsJSON(accessToken);
+      const accessTokenJSON = serializeAccessTokenAsJSON(accessToken!);
 
       res.send(accessTokenJSON);
     },

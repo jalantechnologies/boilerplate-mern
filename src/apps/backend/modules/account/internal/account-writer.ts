@@ -4,8 +4,8 @@ import {
   PhoneUtilInstance,
   PhoneUtilInterface,
 } from '../../communication/types';
-import { OtpRequestError } from '../../otp/types';
-import { Account, PhoneNumber } from '../types';
+import { OtpRequestError } from '../../otp';
+import { Account, AccountNotFoundError, PhoneNumber } from '../types';
 
 import AccountReader from './account-reader';
 import AccountUtil from './account-util';
@@ -72,6 +72,10 @@ export default class AccountWriter {
       { new: true },
     );
 
+    if (!dbAccount) {
+      throw new AccountNotFoundError(`Account with id ${accountId} not found`);
+    }
+
     return AccountUtil.convertAccountDBToAccount(dbAccount);
   }
 
@@ -88,6 +92,10 @@ export default class AccountWriter {
       },
       { new: true },
     );
+
+    if (!dbAccount) {
+      throw new AccountNotFoundError(`Account with id ${accountId} not found`);
+    }
 
     return AccountUtil.convertAccountDBToAccount(dbAccount);
   }
