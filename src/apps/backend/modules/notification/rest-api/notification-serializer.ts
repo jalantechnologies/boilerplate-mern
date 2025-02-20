@@ -1,9 +1,14 @@
-import { Notification } from '../types';
+import { NotificationResponse } from '../types';
 
 export const serializeNotificationtAsJSON = (
-  notification: Notification
-): unknown => ({
-  id: notification.id,
-  account: notification.account,
-  preferences: notification.preferences,
-});
+  notification: NotificationResponse
+): unknown => {
+  if ('message' in notification) {
+    return { message: notification.message };
+  }
+  return {
+    id: notification.id,
+    account: notification.account,
+    preferences: notification.preferences,
+  };
+};

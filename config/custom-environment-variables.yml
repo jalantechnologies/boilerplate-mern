@@ -12,6 +12,7 @@ mailer:
   defaultEmail: 'DEFAULT_EMAIL'
   defaultEmailName: 'DEFAULT_EMAIL_NAME'
   forgetPasswordMailTemplateId: 'FORGOT_PASSWORD_MAIL_TEMPLATE_ID'
+  notificationMailTemplateId: 'NOTIFICATION_MAIL_TEMPLATE_ID'
 
 mongoDb:
   uri: 'MONGODB_URI'
