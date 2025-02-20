@@ -1,0 +1,41 @@
+import TaskReader from './internal/task-reader';
+import TaskWriter from './internal/task-writer';
+import {
+  CreateTaskParams,
+  DeleteTaskParams,
+  GetAllTaskParams,
+  // GetTaskParams,
+  Task,
+  UpdateTaskParams,
+} from './types';
+
+export default class TaskService {
+  public static async createTask(params: CreateTaskParams): Promise<Task> {
+    return TaskWriter.createTask(params);
+  }
+
+  public static async deleteTask(params: DeleteTaskParams): Promise<void> {
+    return TaskWriter.deleteTask(params);
+  }
+
+  public static async updateTask(params: UpdateTaskParams): Promise<Task> {
+    return TaskWriter.updateTask(params);
+  }
+
+  /* specific user task
+  public static async getTaskForAccount(params: GetTaskParams): Promise<Task> {
+    return TaskReader.getTaskForAccount(params);
+  }
+
+  public static async getTasksForAccount(
+    params: GetAllTaskParams,
+  ): Promise<Task[]> {
+    return TaskReader.getTasksForAccount(params);
+  } */
+
+  // all user tasks
+  // This fetches all tasks (created by any user)
+  public static async getAllTasks(params: GetAllTaskParams): Promise<Task[]> {
+    return TaskReader.getAllTasks(params);
+  }
+}

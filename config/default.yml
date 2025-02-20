@@ -1,0 +1,18 @@
+accounts:
+  tokenExpiry: '1d' # default token expire time 1 day. Examples - https://github.com/vercel/ms#examples
+
+datadog:
+  app_name: 'boilerplate-mern'
+  region: 'us5'
+
+logger:
+  transports: [ 'console' ]
+
+mongoDb:
+  connCaching: true
+
+passwordResetToken:
+  expiresInSeconds: '3600'
+
+server:
+  port: '8080'

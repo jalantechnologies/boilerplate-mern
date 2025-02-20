@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  app:
+    image: 'boilerplate-mern'
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NODE_ENV: 'development'
+    environment:
+      NODE_APP_INSTANCE: 'docker'
+    command: 'npm run test:e2e'
+    depends_on:
+      - db
+
+  db:
+    image: mongo:5.0
+    command: mongod --quiet --logpath /dev/null
+    ports:
+      - '27017:27017'

@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+  app:
+    platform: 'linux/amd64'
+    image: 'boilerplate-mern'
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NODE_ENV: 'development'
+    environment:
+      NODE_ENV: 'development'
+      NODE_APP_INSTANCE: 'docker'
+    command: /bin/sh -c "npm install && npm run serve"
+    depends_on:
+      - db
+    ports:
+      - '3000:3000'
+      - '8080:8080'
+    volumes:
+      - './:/app:delegated'
+      - node_modules:/app/node_modules
+    working_dir: /app
+
+  db:
+    image: mongo:5.0
+    command:
+      - '--logpath'
+      - '/var/log/mongod.log'
+    ports:
+      - '27017:27017'
+    volumes:
+      - './data/mongodb:/data/db'
+      - './logs:/var/log'
+
+volumes:
+  node_modules:
