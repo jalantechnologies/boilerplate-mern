@@ -10,6 +10,7 @@ export default class NotificationReader {
     const notificationPreference = await NotificationRepository.findOne({
       account: accountId,
     });
+    if (!notificationPreference) return null;
     return NotificationUtil.convertNotificationDBToNotification(
       notificationPreference
     );
@@ -19,10 +20,9 @@ export default class NotificationReader {
     Notification[]
   > {
     const notificationPreferences = await NotificationRepository.find({});
-    return notificationPreferences.map((notificationPreference) =>
-      NotificationUtil.convertNotificationDBToNotification(
-        notificationPreference
-      )
+    if (!notificationPreferences) return null;
+    return NotificationUtil.convertNotificationDBToNotificationMultiple(
+      notificationPreferences
     );
   }
 
@@ -32,10 +32,9 @@ export default class NotificationReader {
     const notificationPreferences = await NotificationRepository.find({
       preferences,
     });
-    return notificationPreferences.map((notificationPreference) =>
-      NotificationUtil.convertNotificationDBToNotification(
-        notificationPreference
-      )
+    if (!notificationPreferences) return null;
+    return NotificationUtil.convertNotificationDBToNotificationMultiple(
+      notificationPreferences
     );
   }
 }

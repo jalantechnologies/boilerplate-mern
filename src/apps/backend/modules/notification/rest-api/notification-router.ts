@@ -7,6 +7,7 @@ export default class NotificationRouter extends ApplicationRouter {
     const { router } = this;
     const ctrl = new NotificationController();
 
-    router.patch('/:accountId', ctrl.updateNotificationPreference);
+    router.patch('/:accountId', ctrl.updateAccountNotificationPreference);
+    router.post('/email', ctrl.sendEmailNotification);
   }
 }
