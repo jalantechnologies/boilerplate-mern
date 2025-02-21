@@ -47,6 +47,20 @@ export type UpdateNotificationPrefrenceParams = {
   preferences: Partial<Preferences>;
 };
 
+export interface PhoneUtilInterface {
+  isValidNumber: (a: string) => boolean;
+  parse: (a: string) => string;
+}
+
+export interface PhoneUtilInstance {
+  getInstance: () => unknown;
+}
+
+export type PhoneNumber = {
+  countryCode: string;
+  phoneNumber: string;
+};
+
 export type SendEmailParams = {
   recipient: EmailRecipient;
   sender: EmailSender;
@@ -54,7 +68,16 @@ export type SendEmailParams = {
   templateId: string;
 };
 
+export type SendSMSParams = {
+  messageBody: string;
+  recipientPhone: PhoneNumber;
+};
+
 export type SendEmailNotificationParams = {
+  content: string;
+};
+
+export type SendSmsNotificationParams = {
   content: string;
 };
 

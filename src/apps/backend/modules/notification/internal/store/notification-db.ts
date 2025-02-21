@@ -23,15 +23,15 @@ export const NotificationDbSchema = new Schema<NotificationDB>(
     preferences: {
       email: {
         type: Boolean,
-        default: false,
+        default: true,
       },
       sms: {
         type: Boolean,
-        default: false,
+        default: true,
       },
       push: {
         type: Boolean,
-        default: false,
+        default: true,
       },
     },
   },

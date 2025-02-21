@@ -3,6 +3,7 @@ import { HttpStatusCodes } from '../../http';
 import NotificationService from '../notification-service';
 import {
   SendEmailNotificationParams,
+  SendSmsNotificationParams,
   UpdateNotificationPrefrenceParams,
 } from '../types';
 
@@ -28,7 +29,18 @@ export class NotificationController {
       const { content } = req.body;
       await NotificationService.sendEmailNotification({ content });
       const messageJSON = serializeNotificationtAsJSON({
-        message: 'Email notifications sent successfully',
+        message: 'Email notification sent successfully',
+      });
+      res.status(HttpStatusCodes.OK).send(messageJSON);
+    }
+  );
+
+  sendSmsNotification = applicationController(
+    async (req: Request<SendSmsNotificationParams>, res: Response) => {
+      const { content } = req.body;
+      await NotificationService.sendSmsNotification({ content });
+      const messageJSON = serializeNotificationtAsJSON({
+        message: 'Sms notification sent successfully',
       });
       res.status(HttpStatusCodes.OK).send(messageJSON);
     }

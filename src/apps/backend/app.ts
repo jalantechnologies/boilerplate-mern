@@ -15,6 +15,7 @@ import {
 } from './modules/documentation';
 import { expressListRoutes } from './modules/list-routes';
 import { Logger, CustomLoggerTransport } from './modules/logger';
+import { NotificationServer } from './modules/notification';
 import { PasswordResetTokenServer } from './modules/password-reset-token';
 import { TaskServer } from './modules/task';
 
@@ -83,6 +84,10 @@ export default class App {
       {
         serverInstance: new TaskServer(),
         rootFolderPath: path.join(__dirname, 'modules/task'),
+      },
+      {
+        serverInstance: new NotificationServer(),
+        rootFolderPath: path.join(__dirname, 'modules/notification'),
       },
     ];
   }

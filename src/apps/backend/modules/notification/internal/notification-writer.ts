@@ -22,10 +22,18 @@ export default class NotificationWriter {
     accountId: string,
     preferences: Partial<Preferences>
   ): Promise<Notification | null> {
+    const updateQuery = Object.entries(preferences).reduce(
+      (acc, [key, value]) => {
+        acc[`preferences.${key}`] = value;
+        return acc;
+      },
+      {} as Record<string, boolean>
+    );
+
     const notificationPreferencesUpdated =
       await NotificationRepository.findOneAndUpdate(
         { account: accountId },
-        { $set: { preferences } },
+        { $set: updateQuery },
         { new: true }
       );
 

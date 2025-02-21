@@ -40,6 +40,9 @@ export default class AccountService {
 
     if (!account) {
       account = await AccountWriter.createAccountByPhoneNumber(phoneNumber);
+      await NotificationService.createNotificationPreference({
+        accountId: account.id,
+      });
     }
 
     await OtpService.createOtp(phoneNumber);

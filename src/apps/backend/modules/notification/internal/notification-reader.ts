@@ -29,9 +29,15 @@ export default class NotificationReader {
   public static async getAccountsWithParticularNotificationPreferences(
     preferences: Partial<Preferences>
   ): Promise<Notification[]> {
-    const notificationPreferences = await NotificationRepository.find({
-      preferences,
-    });
+    const dbQuery = Object.entries(preferences).reduce(
+      (acc, [key, value]) => {
+        acc[`preferences.${key}`] = value;
+        return acc;
+      },
+      {} as Record<string, boolean>
+    );
+    const notificationPreferences = await NotificationRepository.find(dbQuery);
+
     if (!notificationPreferences) return null;
     return NotificationUtil.convertNotificationDBToNotificationMultiple(
       notificationPreferences
