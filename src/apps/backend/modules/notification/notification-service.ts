@@ -1,9 +1,11 @@
 import mail, { MailDataRequired } from '@sendgrid/mail';
 import { MailService } from '@sendgrid/mail/src/mail';
 import _ from 'lodash';
+import { Twilio } from 'twilio';
 
 import { AccountService } from '../account';
 import { ConfigService } from '../config';
+import { Logger } from '../logger';
 
 import NotificationReader from './internal/notification-reader';
 import NotificationUtil from './internal/notification-util';
@@ -18,12 +20,15 @@ import {
   NotificationPrefrenceTypeNotFoundError,
   SendEmailParams,
   SendEmailNotificationParams,
+  SendSMSParams,
+  SendSmsNotificationParams,
   ServiceError,
   UpdateNotificationPrefrenceParams,
 } from './types';
 
 export default class NotificationService {
-  private static client: MailService;
+  private static emailClient: MailService;
+  private static smsClient: Twilio;
 
   public static async createNotificationPreference(
     params: CreateNotificationPrefrenceParams
@@ -83,6 +88,7 @@ export default class NotificationService {
   public static async sendEmailNotification(
     params: SendEmailNotificationParams
   ): Promise<void> {
+    const { content } = params;
     const accountIdsWithEmailNotificationEnabled =
       await NotificationService.getAccountsWithParticularNotificationPreferences(
         { preferences: { email: true } }
@@ -113,7 +119,7 @@ export default class NotificationService {
           const { firstName, username } = accountReference;
           const templateData = {
             firstName,
-            content: params.content,
+            content,
             username,
           };
           const NotificationEmailParams: SendEmailParams = {
@@ -153,21 +159,91 @@ export default class NotificationService {
     }
 
     try {
-      const client = this.getClient();
+      const client = this.getEmailClient();
       await client.send(msg);
     } catch (err) {
       throw new ServiceError(err as Error);
     }
   }
 
-  private static getClient(): MailService {
-    if (this.client) {
-      return this.client;
+  public static async sendSmsNotification(
+    params: SendSmsNotificationParams
+  ): Promise<void> {
+    const { content } = params;
+
+    const isSmsEnabled = ConfigService.getValue('sms.enabled');
+
+    if (!isSmsEnabled) {
+      Logger.warn(`SMS not enabled. Could not send message - ${content}`);
+      return;
+    }
+
+    const accountIdsWithSmsNotificationEnabled =
+      await NotificationService.getAccountsWithParticularNotificationPreferences(
+        { preferences: { sms: true } }
+      );
+
+    if (!accountIdsWithSmsNotificationEnabled) {
+      throw new AccountsWithParticularNotificationPreferencesNotFoundError();
+    }
+
+    const accountReferences = await Promise.all(
+      accountIdsWithSmsNotificationEnabled.map((accountId) =>
+        AccountService.getAccountById({ accountId })
+      )
+    );
+    await Promise.all(
+      accountReferences
+        .filter((accountReference) => accountReference.phoneNumber)
+        .map((accountReference) => {
+          const { phoneNumber } = accountReference;
+          const NotificationSmsParams: SendSMSParams = {
+            messageBody: content,
+            recipientPhone: phoneNumber,
+          };
+          return NotificationService.sendSMS(NotificationSmsParams);
+        })
+    );
+  }
+
+  public static async sendSMS(params: SendSMSParams): Promise<void> {
+    NotificationUtil.validateSms(params);
+
+    try {
+      const client = this.getSmsClient();
+
+      await client.messages.create({
+        to: NotificationUtil.phoneNumberToString(params.recipientPhone),
+        messagingServiceSid: ConfigService.getValue(
+          'twilio.messaging.messagingServiceSid'
+        ),
+        body: params.messageBody,
+      });
+    } catch (err) {
+      throw new ServiceError(err as Error);
+    }
+  }
+
+  private static getEmailClient(): MailService {
+    if (this.emailClient) {
+      return this.emailClient;
     }
 
     mail.setApiKey(ConfigService.getValue('sendgrid.apiKey'));
-    this.client = mail;
+    this.emailClient = mail;
 
-    return this.client;
+    return this.emailClient;
+  }
+
+  private static getSmsClient(): Twilio {
+    if (this.smsClient) {
+      return this.smsClient;
+    }
+
+    this.smsClient = new Twilio(
+      ConfigService.getValue('twilio.verify.accountSid'),
+      ConfigService.getValue('twilio.verify.authToken')
+    );
+    return this.smsClient;
   }
 }

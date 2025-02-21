@@ -1,5 +1,5 @@
 import { PhoneNumber } from '../account/types';
-import { SMSService } from '../communication';
+import { NotificationService } from '../notification';
 import { isDefaultPhoneNumber } from '../util/phone-number-util';
 
 import OtpWriter from './internal/otp-writer';
@@ -10,7 +10,7 @@ export default class OtpService {
     const otp = await OtpWriter.expirePreviousOtpAndCreateNewOtp(phoneNumber);
 
     if (!isDefaultPhoneNumber(phoneNumber.phoneNumber)) {
-      await SMSService.sendSMS({
+      await NotificationService.sendSMS({
         messageBody: `${otp.otpCode} is your one time password to login.`,
         recipientPhone: phoneNumber,
       });
@@ -21,7 +21,7 @@ export default class OtpService {
 
   public static async verifyOTP(
     otpCode: string,
-    phoneNumber: PhoneNumber,
+    phoneNumber: PhoneNumber
   ): Promise<Otp> {
     return OtpWriter.verifyOTP(phoneNumber, otpCode);
   }

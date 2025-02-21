@@ -15,6 +15,7 @@ import {
 } from './modules/documentation';
 import { expressListRoutes } from './modules/list-routes';
 import { Logger, CustomLoggerTransport } from './modules/logger';
+import { NotificationServer } from './modules/notification';
 import { PasswordResetTokenServer } from './modules/password-reset-token';
 import { TaskServer } from './modules/task';
 
@@ -54,7 +55,7 @@ export default class App {
 
     DocumentationService.generateAPIDocumentation().catch((error: Error) => {
       Logger.error(
-        `app - error generating and injecting documentation: ${error.message}`,
+        `app - error generating and injecting documentation: ${error.message}`
       );
     });
 
@@ -84,6 +85,10 @@ export default class App {
         serverInstance: new TaskServer(),
         rootFolderPath: path.join(__dirname, 'modules/task'),
       },
+      {
+        serverInstance: new NotificationServer(),
+        rootFolderPath: path.join(__dirname, 'modules/notification'),
+      },
     ];
   }
 
@@ -97,7 +102,7 @@ export default class App {
       app.use(
         cors({
           origin: 'http://localhost:3000',
-        }),
+        })
       );
     }
 
@@ -106,7 +111,7 @@ export default class App {
 
       const routes = expressListRoutes(
         server.serverInstance.server,
-        this.baseAPIRoutePath,
+        this.baseAPIRoutePath
       );
       DocumentationService.expressRoutesList.push({
         rootFolderPath: server.rootFolderPath,

@@ -9,5 +9,6 @@ export default class NotificationRouter extends ApplicationRouter {
 
     router.patch('/:accountId', ctrl.updateAccountNotificationPreference);
     router.post('/email', ctrl.sendEmailNotification);
+    router.post('/sms', ctrl.sendSmsNotification);
   }
 }

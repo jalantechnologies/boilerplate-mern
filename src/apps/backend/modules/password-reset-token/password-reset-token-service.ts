@@ -1,7 +1,6 @@
 import { AccountBadRequestError, AccountService } from '../account';
-import { EmailService } from '../communication';
-import { SendEmailParams } from '../communication/types';
 import { ConfigService } from '../config';
+import { NotificationService, SendEmailParams } from '../notification';
 
 import PasswordResetTokenReader from './internal/password-reset-token-reader';
 import PasswordResetTokenUtil from './internal/password-reset-token-util';
@@ -14,7 +13,7 @@ import {
 
 export default class PasswordResetTokenService {
   public static async createPasswordResetToken(
-    params: CreatePasswordResetTokenParams,
+    params: CreatePasswordResetTokenParams
   ): Promise<PasswordResetToken> {
     const account = await AccountService.getAccountByUsername(params.username);
 
@@ -23,61 +22,61 @@ export default class PasswordResetTokenService {
     const passwordResetToken =
       await PasswordResetTokenWriter.createPasswordResetToken(
         account.id,
-        token,
+        token
       );
 
     await this.sendPasswordResetEmail(
       account.id,
       account.firstName,
       account.username,
-      token,
+      token
     );
 
     return passwordResetToken;
   }
 
   public static async getPasswordResetTokenByAccountId(
-    accountId: string,
+    accountId: string
   ): Promise<PasswordResetToken> {
     return PasswordResetTokenReader.getPasswordResetTokenByAccountId(accountId);
   }
 
   public static async setPasswordResetTokenAsUsedById(
-    passwordResetTokenId: string,
+    passwordResetTokenId: string
   ): Promise<PasswordResetToken> {
     return PasswordResetTokenWriter.setPasswordResetTokenAsUsed(
-      passwordResetTokenId,
+      passwordResetTokenId
     );
   }
 
   public static async verifyPasswordResetToken(
     accountId: string,
-    token: string,
+    token: string
   ): Promise<PasswordResetToken> {
     const passwordResetToken =
       await PasswordResetTokenService.getPasswordResetTokenByAccountId(
-        accountId,
+        accountId
       );
 
     if (passwordResetToken.isExpired) {
       throw new AccountBadRequestError(
-        `Password reset link is expired for accountId ${accountId}. Please retry with new link`,
+        `Password reset link is expired for accountId ${accountId}. Please retry with new link`
       );
     }
 
     if (passwordResetToken.isUsed) {
       throw new AccountBadRequestError(
-        `Password reset is already used for accountId ${accountId}. Please retry with new link`,
+        `Password reset is already used for accountId ${accountId}. Please retry with new link`
       );
     }
 
     const isTokenValid = await PasswordResetTokenUtil.comparePasswordResetToken(
       token,
-      passwordResetToken.token,
+      passwordResetToken.token
     );
     if (!isTokenValid) {
       throw new AccountBadRequestError(
-        `Password reset link is invalid for accountId ${accountId}. Please retry with new link.`,
+        `Password reset link is invalid for accountId ${accountId}. Please retry with new link.`
       );
     }
 
@@ -88,10 +87,10 @@ export default class PasswordResetTokenService {
     accountId: string,
     firstName: string,
     username: string,
-    passwordResetToken: string,
+    passwordResetToken: string
   ): Promise<void> {
     const passwordResetEmailEnabled = ConfigService.getValue<boolean>(
-      'accounts.passwordResetEmailEnabled',
+      'accounts.passwordResetEmailEnabled'
     );
 
     if (!passwordResetEmailEnabled) {
@@ -101,16 +100,16 @@ export default class PasswordResetTokenService {
     const webAppHost = ConfigService.getValue<string>('webAppHost');
     const defaultEmail = ConfigService.getValue<string>('mailer.defaultEmail');
     const defaultEmailName = ConfigService.getValue<string>(
-      'mailer.defaultEmailName',
+      'mailer.defaultEmailName'
     );
     const forgetPasswordMailTemplateId = ConfigService.getValue<string>(
-      'mailer.forgetPasswordMailTemplateId',
+      'mailer.forgetPasswordMailTemplateId'
     );
 
     const templateData = {
       firstName,
       passwordResetLink: `${webAppHost}/accounts/${accountId}/reset_password?token=${encodeURIComponent(
-        passwordResetToken,
+        passwordResetToken
       )}`,
       username,
     };
@@ -126,6 +125,6 @@ export default class PasswordResetTokenService {
       templateId: forgetPasswordMailTemplateId,
     };
 
-    return EmailService.sendEmail(passwordResetEmailParams);
+    return NotificationService.sendEmail(passwordResetEmailParams);
   }
 }

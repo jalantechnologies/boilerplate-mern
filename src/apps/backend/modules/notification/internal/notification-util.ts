@@ -1,9 +1,15 @@
+import { PhoneNumberUtil } from 'google-libphonenumber';
+
 import { emailRegex } from '../constants';
 import {
   Notification,
   Preferences,
+  PhoneNumber,
+  PhoneUtilInstance,
+  PhoneUtilInterface,
   NotificationPreferenceType,
   SendEmailParams,
+  SendSMSParams,
   ValidationError,
   ValidationFailure,
 } from '../types';
@@ -77,5 +83,41 @@ export default class NotificationUtil {
 
   public static validateEmailRegex(email: string): boolean {
     return emailRegex.test(String(email).toLowerCase());
+  }
+
+  public static validateSms(params: SendSMSParams): void {
+    const failures: ValidationFailure[] = [];
+    const phoneUtil = <PhoneUtilInterface>(
+      (<PhoneUtilInstance>PhoneNumberUtil).getInstance()
+    );
+
+    const isRecipientPhoneValid: boolean = phoneUtil.isValidNumber(
+      phoneUtil.parse(this.phoneNumberToString(params.recipientPhone))
+    );
+
+    const isMessageValid = !!params.messageBody;
+    if (!isRecipientPhoneValid) {
+      failures.push({
+        field: 'recipientPhone',
+        message:
+          'Please specify valid recipient phone number in format +12124567890.',
+      });
+    }
+    if (!isMessageValid) {
+      failures.push({
+        field: 'messageBody',
+        message: 'Please specify a non empty message body.',
+      });
+    }
+    if (failures.length) {
+      throw new ValidationError(
+        'SMS cannot be send, please check the params validity.',
+        failures
+      );
+    }
+  }
+
+  public static phoneNumberToString(phoneNumber: PhoneNumber): string {
+    return `${phoneNumber.countryCode}${phoneNumber.phoneNumber}`;
   }
 }
