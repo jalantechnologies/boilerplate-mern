@@ -10,5 +10,9 @@ export default class NotificationRouter extends ApplicationRouter {
     router.patch('/:accountId', ctrl.updateAccountNotificationPreference);
     router.post('/email', ctrl.sendEmailNotification);
     router.post('/sms', ctrl.sendSmsNotification);
+    router.post('/fcm/:accountId', ctrl.registerFcmToken);
+    router.patch('/fcm/:accountId', ctrl.updateFcmToken);
+    router.delete('/fcm/:accountId', ctrl.deleteFcmToken);
+    router.post('/push', ctrl.sendPushNotification);
   }
 }

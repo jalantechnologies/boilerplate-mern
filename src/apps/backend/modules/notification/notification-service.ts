@@ -7,6 +7,7 @@ import { AccountService } from '../account';
 import { ConfigService } from '../config';
 import { Logger } from '../logger';
 
+import FcmUtil from './fcm-util';
 import NotificationReader from './internal/notification-reader';
 import NotificationUtil from './internal/notification-util';
 import NotificationWriter from './internal/notification-writer';
@@ -22,8 +23,12 @@ import {
   SendEmailNotificationParams,
   SendSMSParams,
   SendSmsNotificationParams,
+  SendPushNotificationParams,
   ServiceError,
   UpdateNotificationPrefrenceParams,
+  RegisterFcmTokenParams,
+  UpdateFcmTokenParams,
+  DeleteFcmTokenParams,
 } from './types';
 
 export default class NotificationService {
@@ -67,6 +72,17 @@ export default class NotificationService {
   public static async getAccountsWithParticularNotificationPreferences(
     params: GetAccountsWithParticularPreferenceParams
   ): Promise<string[]> {
+    const notificationPreferences =
+      await NotificationService.getNotificationInstancesWithParticularNotificationPreferences(
+        params
+      );
+
+    return notificationPreferences.map((notification) => notification.account);
+  }
+
+  public static async getNotificationInstancesWithParticularNotificationPreferences(
+    params: GetAccountsWithParticularPreferenceParams
+  ): Promise<Notification[]> {
     const { preferences } = params;
 
     const isValid = NotificationUtil.validatePreferences(preferences);
@@ -82,7 +98,7 @@ export default class NotificationService {
       throw new AccountsWithParticularNotificationPreferencesNotFoundError();
     }
 
-    return notificationPreferences.map((notification) => notification.account);
+    return notificationPreferences;
   }
 
   public static async sendEmailNotification(
@@ -222,6 +238,54 @@ export default class NotificationService {
     } catch (err) {
       throw new ServiceError(err as Error);
     }
+  }
+
+  public static async registerFcmToken(
+    params: RegisterFcmTokenParams
+  ): Promise<Notification> {
+    const { accountId, fcmToken } = params;
+    return NotificationWriter.registerFcmToken(accountId, fcmToken);
+  }
+
+  public static async updateFcmToken(
+    params: UpdateFcmTokenParams
+  ): Promise<Notification> {
+    const { accountId, newFcmToken } = params;
+    return NotificationWriter.updateFcmToken(accountId, newFcmToken);
+  }
+
+  public static async deleteFcmToken(
+    params: DeleteFcmTokenParams
+  ): Promise<void> {
+    const { accountId } = params;
+    await NotificationWriter.deleteFcmToken(accountId);
+  }
+
+  public static async sendPushNotification(
+    params: SendPushNotificationParams
+  ): Promise<void> {
+    const { title, body } = params;
+
+    const NotificationInstancesWithPushNotificationEnabled =
+      await NotificationService.getNotificationInstancesWithParticularNotificationPreferences(
+        { preferences: { push: true } }
+      );
+
+    const notifcationInstances =
+      NotificationInstancesWithPushNotificationEnabled.filter(
+        (notification) => notification.fcmToken !== ''
+      );
+
+    await Promise.all(
+      notifcationInstances.map((notification) => {
+        const PushNotifcationParams = {
+          fcmToken: notification.fcmToken,
+          title,
+          body,
+        };
+        return FcmUtil.sendPushNotification(PushNotifcationParams);
+      })
+    );
   }
 
   private static getEmailClient(): MailService {

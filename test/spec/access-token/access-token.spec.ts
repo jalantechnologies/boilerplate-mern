@@ -5,7 +5,7 @@ import sinon from 'sinon';
 import { PhoneNumber } from '../../../src/apps/backend/modules/account';
 import AccountWriter from '../../../src/apps/backend/modules/account/internal/account-writer';
 import AccountRepository from '../../../src/apps/backend/modules/account/internal/store/account-repository';
-import { SMSService } from '../../../src/apps/backend/modules/communication';
+import { NotificationService } from '../../../src/apps/backend/modules/notification';
 import { OtpService } from '../../../src/apps/backend/modules/otp';
 import { app } from '../../helpers/app';
 
@@ -15,7 +15,9 @@ describe('AccessToken API', () => {
   beforeEach(() => {
     sinonSandbox = sinon.createSandbox();
 
-    sinonSandbox.stub(SMSService, 'sendSMS').returns(Promise.resolve());
+    sinonSandbox
+      .stub(NotificationService, 'sendSMS')
+      .returns(Promise.resolve());
   });
 
   afterEach(async () => {

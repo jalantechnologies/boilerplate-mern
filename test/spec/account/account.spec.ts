@@ -8,7 +8,7 @@ import {
   PhoneNumber,
 } from '../../../src/apps/backend/modules/account';
 import AccountWriter from '../../../src/apps/backend/modules/account/internal/account-writer';
-import { SMSService } from '../../../src/apps/backend/modules/communication';
+import { NotificationService } from '../../../src/apps/backend/modules/notification';
 import { app } from '../../helpers/app';
 
 describe('Account API', () => {
@@ -19,7 +19,7 @@ describe('Account API', () => {
     sinonSandbox = sinon.createSandbox();
 
     sendSMSStub = sinonSandbox
-      .stub(SMSService, 'sendSMS')
+      .stub(NotificationService, 'sendSMS')
       .returns(Promise.resolve());
   });
 

@@ -9,6 +9,7 @@ export class Notification {
   account: string;
   id: string;
   preferences: Preferences;
+  fcmToken: string;
 }
 
 export enum NotificationPreferenceType {
@@ -73,8 +74,19 @@ export type SendSMSParams = {
   recipientPhone: PhoneNumber;
 };
 
+export type PushNotifcationParams = {
+  body: string;
+  fcmToken: string;
+  title: string;
+};
+
 export type SendEmailNotificationParams = {
   content: string;
+};
+
+export type SendPushNotificationParams = {
+  body: string;
+  title: string;
 };
 
 export type SendSmsNotificationParams = {
@@ -86,12 +98,31 @@ export type ValidationFailure = {
   message: string;
 };
 
+export type FcmTokenParams = {
+  fcmToken: string;
+};
+
+export type RegisterFcmTokenParams = {
+  accountId: string;
+  fcmToken: string;
+};
+
+export type UpdateFcmTokenParams = {
+  accountId: string;
+  newFcmToken: string;
+};
+
+export type DeleteFcmTokenParams = {
+  accountId: string;
+};
+
 export enum NotificationErrorCode {
   NOTIFICATION_PREFERENCE_TYPE_NOT_FOUND = 'NOTIFICATION_ERR_01',
   ACCOUNTID_NOT_FOUND = 'NOTIFICATION_ERR_02',
   ACCOUNTS_WITH_PARTICULAR_NOTIFICATIONS_NOT_FOUND = 'NOTIFICATION_ERR_03',
   VALIDATION_ERROR = 'NOTIFICATION_ERR_04',
   SERVICE_ERROR = 'NOTIFICATION_ERR_05',
+  INVALID_FIREBASE_SERVICE_ACCOUNT_PATH = 'NOTIFICATION_ERR_06',
 }
 
 export class AccountsWithParticularNotificationPreferencesNotFoundError extends ApplicationError {
@@ -147,5 +178,15 @@ export class ServiceError extends ApplicationError {
     this.stack = err.stack;
     this.code = NotificationErrorCode.SERVICE_ERROR;
     this.httpStatusCode = HttpStatusCodes.SERVICE_UNAVAILABLE;
+  }
+}
+
+export class InvalidFirebaseServiceAccountPathError extends ApplicationError {
+  code: NotificationErrorCode;
+
+  constructor() {
+    super();
+    this.code = NotificationErrorCode.INVALID_FIREBASE_SERVICE_ACCOUNT_PATH;
+    this.httpStatusCode = HttpStatusCodes.SERVER_ERROR;
   }
 }
