@@ -41,4 +41,41 @@ export default class NotificationWriter {
       notificationPreferencesUpdated
     );
   }
+
+  public static async registerFcmToken(
+    accountId: string,
+    fcmToken: string
+  ): Promise<Notification> {
+    const notificationFcmRegistered =
+      await NotificationRepository.findOneAndUpdate(
+        { account: accountId },
+        { fcmToken },
+        { upsert: true, new: true }
+      );
+    return NotificationUtil.convertNotificationDBToNotification(
+      notificationFcmRegistered
+    );
+  }
+
+  public static async updateFcmToken(
+    accountId: string,
+    newFcmToken: string
+  ): Promise<Notification> {
+    const notificationFcmUpdated =
+      await NotificationRepository.findOneAndUpdate(
+        { account: accountId },
+        { fcmToken: newFcmToken },
+        { new: true }
+      );
+    return NotificationUtil.convertNotificationDBToNotification(
+      notificationFcmUpdated
+    );
+  }
+
+  public static async deleteFcmToken(accountId: string): Promise<void> {
+    await NotificationRepository.findOneAndUpdate(
+      { account: accountId },
+      { fcmToken: '' }
+    );
+  }
 }

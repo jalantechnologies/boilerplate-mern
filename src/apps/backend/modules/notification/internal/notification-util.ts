@@ -7,6 +7,7 @@ import {
   PhoneNumber,
   PhoneUtilInstance,
   PhoneUtilInterface,
+  PushNotifcationParams,
   NotificationPreferenceType,
   SendEmailParams,
   SendSMSParams,
@@ -119,5 +120,42 @@ export default class NotificationUtil {
 
   public static phoneNumberToString(phoneNumber: PhoneNumber): string {
     return `${phoneNumber.countryCode}${phoneNumber.phoneNumber}`;
+  }
+
+  public static validatePushNotificationParams(
+    params: PushNotifcationParams
+  ): void {
+    const failures: ValidationFailure[] = [];
+    const isFcmTokenValid = !!params.fcmToken && params.fcmToken.trim() !== '';
+    const isTitleValid = !!params.title && params.title.trim() !== '';
+    const isBodyValid = !!params.body && params.body.trim() !== '';
+
+    if (!isFcmTokenValid) {
+      failures.push({
+        field: 'fcmToken',
+        message: 'Please provide a valid FCM token.',
+      });
+    }
+
+    if (!isTitleValid) {
+      failures.push({
+        field: 'title',
+        message: 'Push notification title cannot be empty.',
+      });
+    }
+
+    if (!isBodyValid) {
+      failures.push({
+        field: 'body',
+        message: 'Push notification body cannot be empty.',
+      });
+    }
+
+    if (failures.length) {
+      throw new ValidationError(
+        'Push notification cannot be sent, please check the params validity.',
+        failures
+      );
+    }
   }
 }

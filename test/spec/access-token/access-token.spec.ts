@@ -5,7 +5,7 @@ import sinon from 'sinon';
 import { PhoneNumber } from '../../../src/apps/backend/modules/account';
 import AccountWriter from '../../../src/apps/backend/modules/account/internal/account-writer';
 import AccountRepository from '../../../src/apps/backend/modules/account/internal/store/account-repository';
-import { SMSService } from '../../../src/apps/backend/modules/communication';
+import { NotificationService } from '../../../src/apps/backend/modules/notification';
 import { OtpService } from '../../../src/apps/backend/modules/otp';
 import { app } from '../../helpers/app';
 
@@ -15,7 +15,9 @@ describe('AccessToken API', () => {
   beforeEach(() => {
     sinonSandbox = sinon.createSandbox();
 
-    sinonSandbox.stub(SMSService, 'sendSMS').returns(Promise.resolve());
+    sinonSandbox
+      .stub(NotificationService, 'sendSMS')
+      .returns(Promise.resolve());
   });
 
   afterEach(async () => {
@@ -36,7 +38,7 @@ describe('AccessToken API', () => {
         params.firstName,
         params.lastName,
         params.password,
-        params.username,
+        params.username
       );
 
       const res = await chai
@@ -55,11 +57,11 @@ describe('AccessToken API', () => {
       };
 
       await AccountWriter.createAccountByPhoneNumber(
-        new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber),
+        new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber)
       );
 
       const otp = await OtpService.createOtp(
-        new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber),
+        new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber)
       );
 
       const res = await chai
@@ -81,11 +83,11 @@ describe('AccessToken API', () => {
       };
 
       await AccountWriter.createAccountByPhoneNumber(
-        new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber),
+        new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber)
       );
 
       await OtpService.createOtp(
-        new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber),
+        new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber)
       );
 
       const res = await chai
@@ -99,7 +101,7 @@ describe('AccessToken API', () => {
 
       expect(res.status).to.be.eq(400);
       expect(res.body.message).to.be.eq(
-        'Please provide the correct OTP to login.',
+        'Please provide the correct OTP to login.'
       );
     });
 
@@ -110,16 +112,16 @@ describe('AccessToken API', () => {
       };
 
       await AccountWriter.createAccountByPhoneNumber(
-        new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber),
+        new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber)
       );
 
       const otp = await OtpService.createOtp(
-        new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber),
+        new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber)
       );
 
       await OtpService.verifyOTP(
         otp.otpCode,
-        new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber),
+        new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber)
       );
 
       const res = await chai
@@ -133,7 +135,7 @@ describe('AccessToken API', () => {
 
       expect(res.status).to.be.eq(400);
       expect(res.body.message).to.be.eq(
-        'OTP has expired. Please request a new OTP.',
+        'OTP has expired. Please request a new OTP.'
       );
     });
   });

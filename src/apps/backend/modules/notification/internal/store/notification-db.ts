@@ -10,6 +10,7 @@ export interface NotificationDB {
   _id: Types.ObjectId;
   account: Types.ObjectId;
   preferences: NotificationPreferences;
+  fcmToken: string;
 }
 
 export const NotificationDbSchema = new Schema<NotificationDB>(
@@ -34,6 +35,7 @@ export const NotificationDbSchema = new Schema<NotificationDB>(
         default: true,
       },
     },
+    fcmToken: { default: '', type: String },
   },
   {
     timestamps: {

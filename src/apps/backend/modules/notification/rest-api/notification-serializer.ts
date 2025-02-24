@@ -1,6 +1,6 @@
 import { NotificationResponse } from '../types';
 
-export const serializeNotificationtAsJSON = (
+export const serializeNotificationAsJSON = (
   notification: NotificationResponse
 ): unknown => {
   if ('message' in notification) {
