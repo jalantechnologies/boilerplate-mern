@@ -6,7 +6,7 @@ import OtpRepository from './store/otp-repository';
 
 export default class OtpWriter {
   public static async expirePreviousOtpAndCreateNewOtp(
-    phoneNumber: PhoneNumber,
+    phoneNumber: PhoneNumber
   ): Promise<Otp> {
     const previousOtpDb = await OtpRepository.findOne({
       'phoneNumber.countryCode': phoneNumber.countryCode,
@@ -34,7 +34,7 @@ export default class OtpWriter {
 
   public static async verifyOTP(
     phoneNumber: PhoneNumber,
-    otpCode: string,
+    otpCode: string
   ): Promise<Otp> {
     const otpDb = await OtpRepository.findOne({
       'phoneNumber.countryCode': phoneNumber.countryCode,

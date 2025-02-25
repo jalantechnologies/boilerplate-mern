@@ -44,7 +44,7 @@ export const OtpDbSchema = new Schema<OtpDB>(
       createdAt: 'createdAt',
       updatedAt: 'updatedAt',
     },
-  },
+  }
 );
 
 OtpDbSchema.index({ phoneNumber: 1, active: 1 });

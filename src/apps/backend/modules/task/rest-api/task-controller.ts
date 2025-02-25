@@ -23,7 +23,7 @@ export class TaskController {
       const taskJSON = serializeTaskAsJSON(task);
 
       res.status(HttpStatusCodes.CREATED).send(taskJSON);
-    },
+    }
   );
 
   deleteTask = applicationController(
@@ -34,7 +34,7 @@ export class TaskController {
       });
 
       res.status(HttpStatusCodes.NO_CONTENT).send();
-    },
+    }
   );
 
   getTask = applicationController(
@@ -46,7 +46,7 @@ export class TaskController {
       const taskJSON = serializeTaskAsJSON(task);
 
       res.status(HttpStatusCodes.OK).send(taskJSON);
-    },
+    }
   );
 
   getTasks = applicationController(async (req: Request, res: Response) => {
@@ -75,6 +75,6 @@ export class TaskController {
       const taskJSON = serializeTaskAsJSON(updatedTask);
 
       res.status(HttpStatusCodes.OK).send(taskJSON);
-    },
+    }
   );
 }

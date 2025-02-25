@@ -38,5 +38,5 @@ export const accessAuthMiddleware = applicationController(
 
     req.accountId = authPayload.accountId;
     next();
-  },
+  }
 );

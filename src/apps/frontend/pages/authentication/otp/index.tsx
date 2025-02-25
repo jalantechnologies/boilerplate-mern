@@ -28,7 +28,7 @@ export const OTPPage: React.FC = () => {
   const onResendOTPSuccess = () => {
     startTimer();
     toast.success(
-      'OTP has been successfully re-sent. Please check your messages.',
+      'OTP has been successfully re-sent. Please check your messages.'
     );
   };
 

@@ -10,7 +10,7 @@ export default class SMSService {
 
     if (!isSmsEnabled) {
       Logger.warn(
-        `SMS not enabled. Could not send message - ${params.messageBody}`,
+        `SMS not enabled. Could not send message - ${params.messageBody}`
       );
       return;
     }

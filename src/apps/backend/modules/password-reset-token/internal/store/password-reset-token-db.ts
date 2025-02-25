@@ -27,5 +27,5 @@ export const passwordResetTokenDbSchema = new Schema<PasswordResetTokenDB>(
       createdAt: 'createdAt',
       updatedAt: 'updatedAt',
     },
-  },
+  }
 );

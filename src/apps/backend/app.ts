@@ -54,7 +54,7 @@ export default class App {
 
     DocumentationService.generateAPIDocumentation().catch((error: Error) => {
       Logger.error(
-        `app - error generating and injecting documentation: ${error.message}`,
+        `app - error generating and injecting documentation: ${error.message}`
       );
     });
 
@@ -97,7 +97,7 @@ export default class App {
       app.use(
         cors({
           origin: 'http://localhost:3000',
-        }),
+        })
       );
     }
 
@@ -106,7 +106,7 @@ export default class App {
 
       const routes = expressListRoutes(
         server.serverInstance.server,
-        this.baseAPIRoutePath,
+        this.baseAPIRoutePath
       );
       DocumentationService.expressRoutesList.push({
         rootFolderPath: server.rootFolderPath,

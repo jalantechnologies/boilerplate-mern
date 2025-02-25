@@ -5,7 +5,7 @@ import APIService from './api.service';
 export default class AuthService extends APIService {
   login = async (
     username: string,
-    password: string,
+    password: string
   ): Promise<ApiResponse<AccessToken>> =>
     this.apiClient.post('/access-tokens', {
       username,
@@ -16,7 +16,7 @@ export default class AuthService extends APIService {
     firstName: string,
     lastName: string,
     username: string,
-    password: string,
+    password: string
   ): Promise<ApiResponse<void>> =>
     this.apiClient.post('/accounts', {
       firstName,
@@ -32,7 +32,7 @@ export default class AuthService extends APIService {
 
   verifyOTP = async (
     phoneNumber: PhoneNumber,
-    otp: string,
+    otp: string
   ): Promise<ApiResponse<AccessToken>> =>
     this.apiClient.post('/access-tokens', {
       phoneNumber,

@@ -5,7 +5,7 @@ import { Logger } from '../logger';
 
 const getDatabaseConnection = (): mongoose.Connection => {
   const mongoConnCaching: boolean = ConfigService.getValue(
-    'mongoDb.connCaching',
+    'mongoDb.connCaching'
   );
   const mongoURI: string = ConfigService.getValue('mongoDb.uri');
 
@@ -23,7 +23,7 @@ const getDatabaseConnection = (): mongoose.Connection => {
 export default function ApplicationRepository<T>(
   name: string,
   schema: mongoose.Schema<T>,
-  collection?: string,
+  collection?: string
 ): mongoose.Model<T> {
   const connection = getDatabaseConnection();
 

@@ -11,12 +11,12 @@ export default class DocumentationService extends APIService {
 
       return new ApiResponse(
         new MarkdownDocumentation(response.data as JsonObject),
-        undefined,
+        undefined
       );
     } catch (e) {
       return new ApiResponse(
         undefined,
-        new ApiError(e.response.data as JsonObject),
+        new ApiError(e.response.data as JsonObject)
       );
     }
   };

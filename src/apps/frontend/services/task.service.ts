@@ -8,7 +8,7 @@ import APIService from './api.service';
 export default class TaskService extends APIService {
   addTask = async (
     title: string,
-    description: string,
+    description: string
   ): Promise<ApiResponse<Task>> => {
     try {
       const userAccessToken = getAccessTokenFromStorage();
@@ -19,13 +19,13 @@ export default class TaskService extends APIService {
           headers: {
             Authorization: `Bearer ${userAccessToken.token}`,
           },
-        },
+        }
       );
       return new ApiResponse(new Task(response.data as JsonObject), undefined);
     } catch (e) {
       return new ApiResponse(
         undefined,
-        new ApiError(e.response.data as JsonObject),
+        new ApiError(e.response.data as JsonObject)
       );
     }
   };
@@ -39,20 +39,20 @@ export default class TaskService extends APIService {
         },
       });
       const tasks: Task[] = (response.data as JsonObject[]).map(
-        (taskData) => new Task(taskData),
+        (taskData) => new Task(taskData)
       );
       return new ApiResponse(tasks, undefined);
     } catch (e) {
       return new ApiResponse(
         undefined,
-        new ApiError(e.response.data as JsonObject),
+        new ApiError(e.response.data as JsonObject)
       );
     }
   };
 
   updateTask = async (
     taskId: string,
-    taskData: Task,
+    taskData: Task
   ): Promise<ApiResponse<Task>> => {
     try {
       const userAccessToken = getAccessTokenFromStorage();
@@ -63,13 +63,13 @@ export default class TaskService extends APIService {
           headers: {
             Authorization: `Bearer ${userAccessToken.token}`,
           },
-        },
+        }
       );
       return new ApiResponse(new Task(response.data as JsonObject), undefined);
     } catch (e) {
       return new ApiResponse(
         undefined,
-        new ApiError(e.response.data as JsonObject),
+        new ApiError(e.response.data as JsonObject)
       );
     }
   };
@@ -86,7 +86,7 @@ export default class TaskService extends APIService {
     } catch (e) {
       return new ApiResponse(
         undefined,
-        new ApiError(e.response.data as JsonObject),
+        new ApiError(e.response.data as JsonObject)
       );
     }
   };

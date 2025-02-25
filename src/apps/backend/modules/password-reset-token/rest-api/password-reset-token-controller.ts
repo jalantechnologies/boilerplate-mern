@@ -17,6 +17,6 @@ export class PasswordResetTokenController {
         serializePasswordResetTokenAsJSON(passwordResetToken);
 
       res.status(HttpStatusCodes.CREATED).send(passwordResetTokenJSON);
-    },
+    }
   );
 }
