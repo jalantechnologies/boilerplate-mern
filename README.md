@@ -2,6 +2,13 @@
 
 Boilerplate project for NodeJS, React based projects in TypeScript. This README documents whatever steps are necessary to get your application up and running.
 
+## Badge Reports
+
+| Build | Tests | Code Coverage |
+|--------|--------|--------|
+| ![Build](https://img.shields.io/github/actions/workflow/status/jalantechnologies/boilerplate-mern/preview_on_pr_update.yml)| [![Tests](https://img.shields.io/github/actions/workflow/status/jalantechnologies/boilerplate-mern/preview_on_pr_update.yml)] |
+
+
 ## Table of Contents
 
 - [Getting Started](#getting-started)
