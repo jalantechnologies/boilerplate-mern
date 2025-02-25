@@ -1,7 +1,8 @@
-import { OtpService } from '../otp';
+import { OtpService, OtpRequestError } from '../otp';
 import { PasswordResetTokenService } from '../password-reset-token';
 
 import AccountReader from './internal/account-reader';
+import AccountUtil from './internal/account-util';
 import AccountWriter from './internal/account-writer';
 import {
   Account,
@@ -30,8 +31,7 @@ export default class AccountService {
   public static async getOrCreateAccountByPhoneNumber(
     phoneNumber: PhoneNumber,
   ): Promise<Account> {
-    let account =
-      await AccountReader.getAccountByPhoneNumberOptional(phoneNumber);
+    let account = await AccountReader.getAccountByPhoneNumber(phoneNumber);
 
     if (!account) {
       account = await AccountWriter.createAccountByPhoneNumber(phoneNumber);
@@ -40,6 +40,28 @@ export default class AccountService {
     await OtpService.createOtp(phoneNumber);
 
     return account;
+  }
+
+  public static async createAccountByPhoneNumberAndName(
+    phoneNumber: PhoneNumber,
+    firstName?: string,
+    lastName?: string,
+  ): Promise<Account> {
+    if (!firstName && !lastName) {
+      throw new OtpRequestError('Please provide first name or last name');
+    }
+    AccountUtil.validatePhoneNumber(phoneNumber);
+    const account = await AccountReader.getAccountByPhoneNumber(phoneNumber);
+    if (account) {
+      throw new OtpRequestError('Phone number already exists');
+    }
+    const accountNew = await AccountWriter.createAccountByPhoneNumberAndName(
+      phoneNumber,
+      firstName,
+      lastName,
+    );
+    await OtpService.createOtp(phoneNumber);
+    return accountNew;
   }
 
   public static async getAccountByUsernameAndPassword(

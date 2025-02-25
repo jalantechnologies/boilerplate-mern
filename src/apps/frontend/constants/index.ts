@@ -2,6 +2,11 @@ const constant = {
   DESCRIPTION_MIN_LENGTH: 10,
   DESCRIPTION_VALIDATION_ERROR:
     'Description should be at least 10 characters long',
+  DEFAULT_LOGIN_METHOD: 'EMAIL',
+  DISPLAY_EMAIL_LOGIN_ON_MOBILE: true,
+  DISPLAY_PHONE_LOGIN_ON_WEB: true,
+  DISPLAY_REGISTER_ACCOUNT_WEB: true,
+  DISPLAY_REGISTER_ACCOUNT_MOBILE: true,
   DOCUMENTATION_DISABLED_ERROR:
     'Documentation is not available or disabled for the current environment, please reach out to the team.',
   DOCUMENTATION_LOADING_ERROR:
@@ -11,6 +16,7 @@ const constant = {
   FIRST_NAME_VALIDATION_ERROR: 'Please specify your first name',
   LAST_NAME_MIN_LENGTH: 1,
   LAST_NAME_VALIDATION_ERROR: 'Please specify your last name',
+  MOBILE_BREAKPOINT: 768,
   OTP_INPUT_MAX_LENGTH: 2,
   OTP_LENGTH: 4,
   PASSWORD_MATCH_VALIDATION_ERROR:

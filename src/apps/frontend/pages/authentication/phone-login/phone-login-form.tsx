@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 import {
   Button,
@@ -9,8 +10,10 @@ import {
   VerticalStackLayout,
 } from '../../../components';
 import COUNTRY_SELECT_OPTIONS from '../../../constants/countries';
-import { AsyncError } from '../../../types';
-import { ButtonKind, ButtonType } from '../../../types/button';
+import routes from '../../../constants/routes';
+import { useAuthContext } from '../../../contexts';
+import { AsyncError, LoginMethod } from '../../../types';
+import { ButtonKind, ButtonSize, ButtonType } from '../../../types/button';
 
 import usePhoneLoginForm from './phone-login-form.hook';
 
@@ -27,6 +30,21 @@ const PhoneLoginForm: React.FC<PhoneLoginFormProps> = ({
     onSendOTPSuccess,
     onError,
   });
+  const { loginProps } = useAuthContext();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (
+      !loginProps.displayPhoneLoginOnWeb &&
+      loginProps.currentLoginMethod === LoginMethod.EMAIL
+    ) {
+      navigate(routes.LOGIN);
+    }
+  }, [
+    loginProps.currentLoginMethod,
+    loginProps.displayPhoneLoginOnWeb,
+    navigate,
+  ]);
 
   const setFormikFieldValue = (fieldName: string, data: string) => {
     formik
@@ -92,12 +110,33 @@ const PhoneLoginForm: React.FC<PhoneLoginFormProps> = ({
             </div>
           </Flex>
           <Button
-            type={ButtonType.SUBMIT}
             isLoading={isSendOTPLoading}
             kind={ButtonKind.PRIMARY}
+            size={ButtonSize.LARGE}
+            type={ButtonType.SUBMIT}
           >
             Get OTP
           </Button>
+          {(loginProps.displayEmailLoginOnMobile ||
+            loginProps.currentLoginMethod === LoginMethod.EMAIL) && (
+            <p className="self-center font-medium">
+              Login with{' '}
+              <Link className="text-primary" to={routes.LOGIN}>
+                Email
+              </Link>
+            </p>
+          )}
+          {((loginProps.currentLoginMethod === LoginMethod.EMAIL &&
+            loginProps.displayRegisterAccountWeb) ||
+            (loginProps.displayRegisterAccountMobile &&
+              loginProps.currentLoginMethod === LoginMethod.PHONE)) && (
+            <p className="self-center font-medium">
+              Don’t have any account?{' '}
+              <Link to={routes.SIGNUP} className="text-primary">
+                Sign Up
+              </Link>
+            </p>
+          )}
         </VerticalStackLayout>
       </form>
     </>

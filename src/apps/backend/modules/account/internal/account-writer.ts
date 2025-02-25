@@ -1,9 +1,3 @@
-import { PhoneNumberUtil } from 'google-libphonenumber';
-
-import {
-  PhoneUtilInstance,
-  PhoneUtilInterface,
-} from '../../communication/types';
 import { OtpRequestError } from '../../otp/types';
 import { Account, PhoneNumber } from '../types';
 
@@ -37,25 +31,30 @@ export default class AccountWriter {
   public static async createAccountByPhoneNumber(
     phoneNumber: PhoneNumber,
   ): Promise<Account> {
-    const phoneUtil = <PhoneUtilInterface>(
-      (<PhoneUtilInstance>PhoneNumberUtil).getInstance()
-    );
-    const isValidPhoneNumber = phoneUtil.isValidNumber(
-      phoneUtil.parse(phoneNumber.toString()),
-    );
-
-    if (!isValidPhoneNumber) {
-      throw new OtpRequestError('Please provide a valid phone number.');
+    AccountUtil.validatePhoneNumber(phoneNumber);
+    const account = await AccountReader.getAccountByPhoneNumber(phoneNumber);
+    if (account) {
+      throw new OtpRequestError('Phone number already exists');
     }
-    // check if account already exists with the given phone number
-    // this will throw an error if it does
-    await AccountReader.checkPhoneNumberNotExists(phoneNumber);
-
     const accountDb = await AccountRepository.create({
       phoneNumber,
       active: true,
     });
 
+    return AccountUtil.convertAccountDBToAccount(accountDb);
+  }
+
+  public static async createAccountByPhoneNumberAndName(
+    phoneNumber: PhoneNumber,
+    firstName?: string,
+    lastName?: string,
+  ): Promise<Account> {
+    const accountDb = await AccountRepository.create({
+      firstName,
+      lastName,
+      phoneNumber,
+      active: true,
+    });
     return AccountUtil.convertAccountDBToAccount(accountDb);
   }
 
