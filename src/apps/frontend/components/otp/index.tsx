@@ -45,7 +45,7 @@ const OTP: React.FC<OTPProps> = ({ error, isLoading, onBlur, onChange }) => {
 
   const handleOnKeyDown = (
     { key }: React.KeyboardEvent<HTMLInputElement>,
-    index: number,
+    index: number
   ) => {
     if (key === KeyboardKeys.BACKSPACE.toString()) {
       inputRef.current[index - 1]?.focus();
@@ -55,7 +55,7 @@ const OTP: React.FC<OTPProps> = ({ error, isLoading, onBlur, onChange }) => {
   return (
     <Flex gap={6}>
       {otp.map((_, index) => (
-        <FlexItem flex="flex1" key={index}>
+        <FlexItem flex="1" key={index}>
           <OTPInput
             disabled={isLoading}
             index={index}
