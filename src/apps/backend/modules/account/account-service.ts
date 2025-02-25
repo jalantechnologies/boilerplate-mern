@@ -1,3 +1,4 @@
+import { NotificationService } from '../notification';
 import { OtpService } from '../otp';
 import { PasswordResetTokenService } from '../password-reset-token';
 
@@ -19,12 +20,16 @@ export default class AccountService {
     password: string,
     username: string
   ): Promise<Account> {
-    return AccountWriter.createAccountByUsernameAndPassword(
+    const account = await AccountWriter.createAccountByUsernameAndPassword(
       firstName,
       lastName,
       password,
       username
     );
+    await NotificationService.createNotificationPreference({
+      accountId: account.id,
+    });
+    return account;
   }
 
   public static async getOrCreateAccountByPhoneNumber(
@@ -35,6 +40,9 @@ export default class AccountService {
 
     if (!account) {
       account = await AccountWriter.createAccountByPhoneNumber(phoneNumber);
+      await NotificationService.createNotificationPreference({
+        accountId: account.id,
+      });
     }
 
     await OtpService.createOtp(phoneNumber);
