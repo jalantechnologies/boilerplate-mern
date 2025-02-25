@@ -13,6 +13,7 @@ import NotificationUtil from './internal/notification-util';
 import NotificationWriter from './internal/notification-writer';
 import {
   AccountsWithParticularNotificationPreferencesNotFoundError,
+  BadRequestError,
   CreateNotificationPrefrenceParams,
   GetUserNotificationPreferencesParams,
   GetAccountsWithParticularPreferenceParams,
@@ -76,7 +77,9 @@ export default class NotificationService {
       await NotificationService.getNotificationInstancesWithParticularNotificationPreferences(
         params
       );
-
+    if (!notificationPreferences) {
+      return null;
+    }
     return notificationPreferences.map((notification) => notification.account);
   }
 
@@ -90,15 +93,9 @@ export default class NotificationService {
       throw new NotificationPrefrenceTypeNotFoundError();
     }
 
-    const notificationPreferences =
-      await NotificationReader.getAccountsWithParticularNotificationPreferences(
-        preferences
-      );
-    if (!notificationPreferences) {
-      throw new AccountsWithParticularNotificationPreferencesNotFoundError();
-    }
-
-    return notificationPreferences;
+    return NotificationReader.getAccountsWithParticularNotificationPreferences(
+      preferences
+    );
   }
 
   public static async sendEmailNotification(
@@ -244,6 +241,15 @@ export default class NotificationService {
     params: RegisterFcmTokenParams
   ): Promise<Notification> {
     const { accountId, fcmToken } = params;
+    const isFcmTokenValid = !!fcmToken && fcmToken.trim() !== '';
+    if (!isFcmTokenValid) {
+      throw new BadRequestError('Invalid FCM token provided.');
+    }
+    const notificationPreference =
+      await NotificationReader.getAccountNotificationPreferences(accountId);
+    if (!notificationPreference) {
+      throw new NotificationPreferencesNotFoundError(accountId);
+    }
     return NotificationWriter.registerFcmToken(accountId, fcmToken);
   }
 
@@ -251,6 +257,15 @@ export default class NotificationService {
     params: UpdateFcmTokenParams
   ): Promise<Notification> {
     const { accountId, newFcmToken } = params;
+    const isFcmTokenValid = !!newFcmToken && newFcmToken.trim() !== '';
+    if (!isFcmTokenValid) {
+      throw new BadRequestError('Invalid FCM token provided.');
+    }
+    const notificationPreference =
+      await NotificationReader.getAccountNotificationPreferences(accountId);
+    if (!notificationPreference) {
+      throw new NotificationPreferencesNotFoundError(accountId);
+    }
     return NotificationWriter.updateFcmToken(accountId, newFcmToken);
   }
 
@@ -258,6 +273,11 @@ export default class NotificationService {
     params: DeleteFcmTokenParams
   ): Promise<void> {
     const { accountId } = params;
+    const notificationPreference =
+      await NotificationReader.getAccountNotificationPreferences(accountId);
+    if (!notificationPreference) {
+      throw new NotificationPreferencesNotFoundError(accountId);
+    }
     await NotificationWriter.deleteFcmToken(accountId);
   }
 
@@ -270,6 +290,10 @@ export default class NotificationService {
       await NotificationService.getNotificationInstancesWithParticularNotificationPreferences(
         { preferences: { push: true } }
       );
+
+    if (!NotificationInstancesWithPushNotificationEnabled) {
+      throw new AccountsWithParticularNotificationPreferencesNotFoundError();
+    }
 
     const notifcationInstances =
       NotificationInstancesWithPushNotificationEnabled.filter(

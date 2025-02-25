@@ -123,6 +123,7 @@ export enum NotificationErrorCode {
   VALIDATION_ERROR = 'NOTIFICATION_ERR_04',
   SERVICE_ERROR = 'NOTIFICATION_ERR_05',
   INVALID_FIREBASE_SERVICE_ACCOUNT_PATH = 'NOTIFICATION_ERR_06',
+  BAD_REQUEST = 'NOTIFICATION_ERR_07',
 }
 
 export class AccountsWithParticularNotificationPreferencesNotFoundError extends ApplicationError {
@@ -150,9 +151,7 @@ export class NotificationPreferencesNotFoundError extends ApplicationError {
   code: NotificationErrorCode;
 
   constructor(accountId: string) {
-    super(
-      `System is unable to find notifiaction preferences for accountId ${accountId}.`
-    );
+    super(`Notifiaction preferences for accountId ${accountId} not found.`);
     this.code = NotificationErrorCode.ACCOUNTID_NOT_FOUND;
     this.httpStatusCode = HttpStatusCodes.NOT_FOUND;
   }
@@ -188,5 +187,15 @@ export class InvalidFirebaseServiceAccountPathError extends ApplicationError {
     super();
     this.code = NotificationErrorCode.INVALID_FIREBASE_SERVICE_ACCOUNT_PATH;
     this.httpStatusCode = HttpStatusCodes.SERVER_ERROR;
+  }
+}
+
+export class BadRequestError extends ApplicationError {
+  code: NotificationErrorCode;
+
+  constructor(msg: string) {
+    super(msg);
+    this.code = NotificationErrorCode.BAD_REQUEST;
+    this.httpStatusCode = HttpStatusCodes.BAD_REQUEST;
   }
 }

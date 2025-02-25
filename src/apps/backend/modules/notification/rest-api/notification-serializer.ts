@@ -10,5 +10,6 @@ export const serializeNotificationAsJSON = (
     id: notification.id,
     account: notification.account,
     preferences: notification.preferences,
+    fcmToken: notification.fcmToken,
   };
 };

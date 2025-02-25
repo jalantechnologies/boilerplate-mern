@@ -38,7 +38,8 @@ export default class NotificationReader {
     );
     const notificationPreferences = await NotificationRepository.find(dbQuery);
 
-    if (!notificationPreferences) return null;
+    if (!notificationPreferences || notificationPreferences.length === 0)
+      return null;
     return NotificationUtil.convertNotificationDBToNotificationMultiple(
       notificationPreferences
     );
