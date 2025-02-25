@@ -23,18 +23,18 @@ export class AccessTokenController {
         accessToken =
           await AccessTokenService.createAccessTokenByUsernameAndPassword(
             password,
-            username,
+            username
           );
       } else if (phoneNumber && otpCode) {
         accessToken = await AccessTokenService.createAccessTokenByPhoneNumber(
           otpCode,
-          new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber),
+          new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber)
         );
       }
 
       const accessTokenJSON = serializeAccessTokenAsJSON(accessToken);
 
       res.send(accessTokenJSON);
-    },
+    }
   );
 }

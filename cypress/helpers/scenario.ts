@@ -1,6 +1,6 @@
 export const setupScenario = <T = unknown>(
   name: string,
-  params?: unknown,
+  params?: unknown
 ): T => {
   let result: T;
 

@@ -24,7 +24,7 @@ export default class TaskReader {
   }
 
   public static async getTasksForAccount(
-    params: GetAllTaskParams,
+    params: GetAllTaskParams
   ): Promise<Task[]> {
     const totalTasksCount = await TaskRepository.countDocuments({
       account: params.accountId,

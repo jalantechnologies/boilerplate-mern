@@ -36,7 +36,7 @@ describe('AccessToken API', () => {
         params.firstName,
         params.lastName,
         params.password,
-        params.username,
+        params.username
       );
 
       const res = await chai
@@ -55,11 +55,11 @@ describe('AccessToken API', () => {
       };
 
       await AccountWriter.createAccountByPhoneNumber(
-        new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber),
+        new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber)
       );
 
       const otp = await OtpService.createOtp(
-        new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber),
+        new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber)
       );
 
       const res = await chai
@@ -81,11 +81,11 @@ describe('AccessToken API', () => {
       };
 
       await AccountWriter.createAccountByPhoneNumber(
-        new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber),
+        new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber)
       );
 
       await OtpService.createOtp(
-        new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber),
+        new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber)
       );
 
       const res = await chai
@@ -99,7 +99,7 @@ describe('AccessToken API', () => {
 
       expect(res.status).to.be.eq(400);
       expect(res.body.message).to.be.eq(
-        'Please provide the correct OTP to login.',
+        'Please provide the correct OTP to login.'
       );
     });
 
@@ -110,16 +110,16 @@ describe('AccessToken API', () => {
       };
 
       await AccountWriter.createAccountByPhoneNumber(
-        new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber),
+        new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber)
       );
 
       const otp = await OtpService.createOtp(
-        new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber),
+        new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber)
       );
 
       await OtpService.verifyOTP(
         otp.otpCode,
-        new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber),
+        new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber)
       );
 
       const res = await chai
@@ -133,7 +133,7 @@ describe('AccessToken API', () => {
 
       expect(res.status).to.be.eq(400);
       expect(res.body.message).to.be.eq(
-        'OTP has expired. Please request a new OTP.',
+        'OTP has expired. Please request a new OTP.'
       );
     });
   });

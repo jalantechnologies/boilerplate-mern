@@ -19,13 +19,13 @@ export const connectDatabase = async (): Promise<void> => {
 
   if (dbPingResult?.ok !== 1) {
     throw new Error(
-      `Connection to database failed - ${JSON.stringify(dbPingResult)}`,
+      `Connection to database failed - ${JSON.stringify(dbPingResult)}`
     );
   }
 };
 
 export const disconnectDatabase = async (): Promise<void> => {
   await Promise.all(
-    mongoose.connections.map((connection) => connection.close()),
+    mongoose.connections.map((connection) => connection.close())
   );
 };

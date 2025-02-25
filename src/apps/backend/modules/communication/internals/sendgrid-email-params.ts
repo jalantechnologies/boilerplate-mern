@@ -34,7 +34,7 @@ export default class EmailParams {
     if (failures.length) {
       throw new ValidationError(
         'Email cannot be send, please check the params validity.',
-        failures,
+        failures
       );
     }
   }

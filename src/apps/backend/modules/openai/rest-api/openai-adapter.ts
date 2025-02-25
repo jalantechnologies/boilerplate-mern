@@ -33,7 +33,7 @@ export default class OpenAIAdapter {
       return response.data.choices[0].message.content as string;
     } catch (error) {
       Logger.error(
-        `Error getting chat completion response from OpenAI: ${error}`,
+        `Error getting chat completion response from OpenAI: ${error}`
       );
       throw new ErrorGettingChatCompletionResponse();
     }

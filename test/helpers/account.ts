@@ -31,13 +31,13 @@ export const createAccount = async (params?: {
     accountCreateParams.firstName,
     accountCreateParams.lastName,
     accountCreateParams.password,
-    accountCreateParams.username,
+    accountCreateParams.username
   );
 
   const accessToken =
     await AccessTokenService.createAccessTokenByUsernameAndPassword(
       accountCreateParams.password,
-      accountCreateParams.username,
+      accountCreateParams.username
     );
 
   return {

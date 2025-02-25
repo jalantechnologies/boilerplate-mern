@@ -34,7 +34,7 @@ export const ForgotPassword: React.FC = () => {
   const onResendEmailSuccess = () => {
     startTimer();
     toast.success(
-      'A password reset link has been re-sent. Please check your inbox',
+      'A password reset link has been re-sent. Please check your inbox'
     );
   };
 

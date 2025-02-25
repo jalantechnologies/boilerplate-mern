@@ -4,7 +4,7 @@ import { UseAsyncResponse, AsyncResult, AsyncError } from '../types';
 import { AsyncOperationError } from '../types/async-operation';
 
 const useAsync = <T>(
-  asyncFn: (...args: unknown[]) => Promise<AsyncResult<T>>,
+  asyncFn: (...args: unknown[]) => Promise<AsyncResult<T>>
 ): UseAsyncResponse<T> => {
   const [result, setResult] = useState<T | undefined>(undefined);
   const [isLoading, setLoading] = useState(false);
@@ -34,7 +34,7 @@ const useAsync = <T>(
         setLoading(false);
       }
     },
-    [asyncFn],
+    [asyncFn]
   );
 
   return {

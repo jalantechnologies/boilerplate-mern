@@ -32,7 +32,7 @@ describe('EmailService', () => {
 
     return expect(EmailService.sendEmail(params))
       .to.eventually.be.rejectedWith(
-        'Email cannot be send, please check the params validity.',
+        'Email cannot be send, please check the params validity.'
       )
       .then((error) => {
         expect(error).to.have.property('code');
@@ -57,7 +57,7 @@ describe('EmailService', () => {
 
     return expect(EmailService.sendEmail(params))
       .to.eventually.be.rejectedWith(
-        'Email cannot be send, please check the params validity.',
+        'Email cannot be send, please check the params validity.'
       )
       .then((error) => {
         expect(error).to.have.property('code');
@@ -82,7 +82,7 @@ describe('EmailService', () => {
 
     return expect(EmailService.sendEmail(params))
       .to.eventually.be.rejectedWith(
-        'Email cannot be send, please check the params validity.',
+        'Email cannot be send, please check the params validity.'
       )
       .then((error) => {
         expect(error).to.have.property('code');

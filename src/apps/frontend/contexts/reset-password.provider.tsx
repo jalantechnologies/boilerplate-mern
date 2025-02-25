@@ -16,7 +16,7 @@ type ResetPasswordContextType = {
 };
 
 const ResetPasswordContext = createContext<ResetPasswordContextType | null>(
-  null,
+  null
 );
 
 const resetPasswordService = new ResetPasswordService();
@@ -25,11 +25,11 @@ export const useResetPasswordContext = (): ResetPasswordContextType =>
   useContext(ResetPasswordContext);
 
 const resetPasswordFn = async (
-  params: ResetPasswordParams,
+  params: ResetPasswordParams
 ): Promise<ApiResponse<void>> => resetPasswordService.resetPassword(params);
 
 const sendForgotPasswordEmailFn = async (
-  username: string,
+  username: string
 ): Promise<ApiResponse<void>> =>
   resetPasswordService.sendForgotPasswordEmail(username);
 

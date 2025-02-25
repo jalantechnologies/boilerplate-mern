@@ -21,7 +21,7 @@ export default class OtpService {
 
   public static async verifyOTP(
     otpCode: string,
-    phoneNumber: PhoneNumber,
+    phoneNumber: PhoneNumber
   ): Promise<Otp> {
     return OtpWriter.verifyOTP(phoneNumber, otpCode);
   }

@@ -29,7 +29,7 @@ export default abstract class ApplicationServer {
     error: ApplicationError,
     _req: Request,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ) => {
     Logger.error(error.toString());
     if (error instanceof ApplicationError) {
