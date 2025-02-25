@@ -9,8 +9,6 @@ import {
   DeleteAccountParams,
   GetAccountParams,
   PhoneNumber,
-  ResetPasswordParams,
-  UpdateAccountDetailsParams,
   UpdateAccountParams,
 } from '../types';
 
@@ -57,24 +55,13 @@ export class AccountController {
   updateAccount = applicationController(
     async (req: Request<UpdateAccountParams>, res: Response) => {
       const { accountId } = req.params;
-      let account: Account;
-      const { firstName, lastName } = req.body as UpdateAccountDetailsParams;
+      const { firstName, lastName } = req.body;
 
-      const { newPassword, token } = req.body as ResetPasswordParams;
-
-      if (newPassword && token) {
-        account = await AccountService.resetAccountPassword({
-          accountId,
-          newPassword,
-          token,
-        });
-      } else {
-        account = await AccountService.updateAccountDetails({
-          accountId,
-          firstName,
-          lastName,
-        });
-      }
+      const account = await AccountService.updateAccountDetails({
+        accountId,
+        firstName,
+        lastName,
+      });
 
       const accountJSON = serializeAccountAsJSON(account);
 
