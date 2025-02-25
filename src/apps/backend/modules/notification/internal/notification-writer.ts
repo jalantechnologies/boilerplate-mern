@@ -36,7 +36,9 @@ export default class NotificationWriter {
         { $set: updateQuery },
         { new: true }
       );
-
+    if (!notificationPreferencesUpdated) {
+      return null;
+    }
     return NotificationUtil.convertNotificationDBToNotification(
       notificationPreferencesUpdated
     );
@@ -49,7 +51,7 @@ export default class NotificationWriter {
     const notificationFcmRegistered =
       await NotificationRepository.findOneAndUpdate(
         { account: accountId },
-        { fcmToken },
+        { $set: { fcmToken } },
         { upsert: true, new: true }
       );
     return NotificationUtil.convertNotificationDBToNotification(
@@ -64,7 +66,7 @@ export default class NotificationWriter {
     const notificationFcmUpdated =
       await NotificationRepository.findOneAndUpdate(
         { account: accountId },
-        { fcmToken: newFcmToken },
+        { $set: { fcmToken: newFcmToken } },
         { new: true }
       );
     return NotificationUtil.convertNotificationDBToNotification(
@@ -75,7 +77,7 @@ export default class NotificationWriter {
   public static async deleteFcmToken(accountId: string): Promise<void> {
     await NotificationRepository.findOneAndUpdate(
       { account: accountId },
-      { fcmToken: '' }
+      { $set: { fcmToken: '' } }
     );
   }
 }

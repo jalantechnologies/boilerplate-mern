@@ -7,12 +7,17 @@ import {
   CreateAccountParams,
   AccountService,
 } from '../../src/apps/backend/modules/account';
+import {
+  Notification,
+  NotificationService,
+} from '../../src/apps/backend/modules/notification';
 
 export const createAccount = async (params?: {
   accountParams?: Partial<CreateAccountParams>;
 }): Promise<{
   accessToken: AccessToken;
   account: Account;
+  accountNotificationPreferences: Notification;
 }> => {
   const firstName = faker.name.firstName();
   const lastName = faker.name.lastName();
@@ -31,17 +36,23 @@ export const createAccount = async (params?: {
     accountCreateParams.firstName,
     accountCreateParams.lastName,
     accountCreateParams.password,
-    accountCreateParams.username,
+    accountCreateParams.username
   );
 
   const accessToken =
     await AccessTokenService.createAccessTokenByUsernameAndPassword(
       accountCreateParams.password,
-      accountCreateParams.username,
+      accountCreateParams.username
     );
+
+  const accountNotificationPreferences =
+    await NotificationService.createNotificationPreference({
+      accountId: account.id,
+    });
 
   return {
     account,
     accessToken,
+    accountNotificationPreferences,
   };
 };

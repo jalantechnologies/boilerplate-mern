@@ -25,6 +25,7 @@ export default class NotificationUtil {
     notification.id = notificationDb._id.toString();
     notification.account = notificationDb.account.toString();
     notification.preferences = notificationDb.preferences;
+    notification.fcmToken = notificationDb.fcmToken.toString();
 
     return notification;
   }
