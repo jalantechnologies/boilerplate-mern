@@ -3,8 +3,6 @@ import * as React from 'react';
 
 import HorizontalStackLayout from '../layouts/horizontal-stack-layout';
 
-import styles from './input.styles';
-
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   disabled?: boolean;
   endEnhancer?: React.ReactElement | string;
@@ -30,11 +28,11 @@ const Input: React.FC<InputProps> = ({
   ...props
 }) => (
   <div
-    className={clsx([
-      styles.inputContainer,
-      error ? styles.border.errorState : styles.border.normalState,
-      disabled ? styles.disabled : '',
-    ])}
+    className={clsx(
+      'w-full rounded-lg border bg-white p-4 outline-none focus:border-primary focus-visible:shadow-none',
+      error ? 'border-red-500' : 'border-stroke',
+      disabled ? 'cursor-not-allowed text-slate-500' : ''
+    )}
   >
     <HorizontalStackLayout gap={2}>
       {startEnhancer && (
@@ -45,11 +43,12 @@ const Input: React.FC<InputProps> = ({
       <input
         {...props}
         autoComplete="off"
-        className={clsx([
-          styles.input,
-          disabled ? styles.disabled : '',
-          textAlign ? styles.textAlign[textAlign] : '',
-        ])}
+        className={clsx(
+          'w-full flex-1 appearance-none outline-none',
+          textAlign === 'center' ? 'text-center' : '',
+          textAlign === 'right' ? 'text-right' : 'text-left',
+          disabled ? 'cursor-not-allowed text-slate-500' : ''
+        )}
         data-testid={testId}
         type={type || 'text'}
         ref={handleInputRef ? (ref) => handleInputRef(ref) : null}
