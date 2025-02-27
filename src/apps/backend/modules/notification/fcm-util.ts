@@ -39,8 +39,8 @@ export default class FcmUtil {
   public static async sendPushNotification(
     params: PushNotifcationParams
   ): Promise<void> {
+    NotificationUtil.validatePushNotificationParams(params);
     try {
-      NotificationUtil.validatePushNotificationParams(params);
       const { fcmToken, body, title } = params;
       this.getFirebaseApp();
       const message = {

@@ -2,13 +2,13 @@ import faker from '@faker-js/faker';
 import chai, { expect } from 'chai';
 import sinon from 'sinon';
 
-// import { Account, AccountService, PhoneNumber } from '../../../src/apps/backend/modules/account';
 import {
   Account,
   AccountService,
+  PhoneNumber,
 } from '../../../src/apps/backend/modules/account';
 import AccountRepository from '../../../src/apps/backend/modules/account/internal/store/account-repository';
-// import { ConfigService } from '../../../src/apps/backend/modules/config';
+import { ConfigService } from '../../../src/apps/backend/modules/config';
 import {
   NotificationService,
   NotificationPreferencesNotFoundError,
@@ -18,7 +18,7 @@ import NotificationReader from '../../../src/apps/backend/modules/notification/i
 import { createAccount } from '../../helpers/account';
 import { app } from '../../helpers/app';
 
-describe.only('Notification API', () => {
+describe('Notification API', () => {
   let sinonSandbox: sinon.SinonSandbox;
   let account: Account;
   let accountWithPhoneNumber: Account;
@@ -26,11 +26,14 @@ describe.only('Notification API', () => {
   beforeEach(async () => {
     sinonSandbox = sinon.createSandbox();
     ({ account } = await createAccount());
-    // const phoneNumber = {
-    //     countryCode: '+91',
-    //     phoneNumber: '7895586769',
-    // };
-    // accountWithPhoneNumber = await AccountService.getOrCreateAccountByPhoneNumber(new PhoneNumber(phoneNumber.countryCode,phoneNumber.phoneNumber));
+    const phoneNumber = {
+      countryCode: '+91',
+      phoneNumber: '7895586769',
+    };
+    account.phoneNumber = new PhoneNumber(
+      phoneNumber.countryCode,
+      phoneNumber.phoneNumber
+    );
   });
 
   afterEach(async () => {
@@ -94,47 +97,112 @@ describe.only('Notification API', () => {
     });
   });
 
-  // describe('POST /notifications/sms', () => {
-  //     let sendSmsStub: sinon.SinonStub;
-  //     beforeEach(() => {
-  //         sinonSandbox.stub(ConfigService, 'getValue')
-  //             .withArgs('sms.enabled').returns(true);
+  describe('POST /notifications/sms', () => {
+    it('should send sms notifications successfully', async () => {
+      const content = 'Test notification sms content';
+      sinonSandbox
+        .stub(ConfigService, 'getValue')
+        .withArgs('sms.enabled')
+        .returns(true);
+      sinonSandbox
+        .stub(
+          NotificationService,
+          'getAccountsWithParticularNotificationPreferences'
+        )
+        .resolves([account.id]);
+      sinonSandbox.stub(AccountService, 'getAccountById').resolves(account);
+      const sendSmsStub = sinonSandbox
+        .stub(NotificationService, 'sendSMS')
+        .resolves();
+      const res = await chai
+        .request(app)
+        .post('/api/notifications/sms')
+        .set('content-type', 'application/json')
+        .send({ content });
+      expect(res.status).to.be.eq(200);
+      expect(res.body.message).to.eq('Sms notifications sent successfully');
+      expect(
+        sendSmsStub.calledWithMatch({
+          messageBody: content,
+          recipientPhone: account.phoneNumber,
+        })
+      ).to.be.true;
+    });
+    it('should return 404 if no accounts have sms notifications enabled', async () => {
+      const content = 'Test notification sms content';
+      sinonSandbox
+        .stub(ConfigService, 'getValue')
+        .withArgs('sms.enabled')
+        .returns(true);
+      sinonSandbox
+        .stub(
+          NotificationService,
+          'getAccountsWithParticularNotificationPreferences'
+        )
+        .resolves(null);
+      const res = await chai
+        .request(app)
+        .post('/api/notifications/sms')
+        .set('content-type', 'application/json')
+        .send({ content });
+      expect(res.status).to.be.eq(404);
+      expect(res.body.message).to.eq(
+        new AccountsWithParticularNotificationPreferencesNotFoundError().message
+      );
+    });
+  });
 
-  //         sendSmsStub = sinonSandbox.stub(NotificationService, 'sendSMS').resolves();
-  //     });
-  //     it('should send sms notifications successfully', async () => {
-  //         const content = 'Test notification sms content';
-  //         sinonSandbox.stub(NotificationService, 'getAccountsWithParticularNotificationPreferences').resolves([
-  //             accountWithPhoneNumber.id
-  //         ]);
-  //         sinonSandbox.stub(AccountService, 'getAccountById').resolves(accountWithPhoneNumber);
+  describe('POST /notifications/push', () => {
+    it('should send push notifications successfully', async () => {
+      const title = 'Test Push Notification';
+      const body = 'This is a test push notification';
+      const fcmToken = faker.random.alphaNumeric(32);
 
-  //         const res = await chai
-  //             .request(app)
-  //             .post('/api/notifications/sms')
-  //             .set('content-type', 'application/json')
-  //             .send({ content });
-  //         expect(res.status).to.be.eq(200);
-  //         expect(res.body.message).to.eq('Sms notifications sent successfully');
-  //         sinon.assert.calledOnce(sendSmsStub);
-  //         sinon.assert.calledWithMatch(sendSmsStub, {
-  //             messageBody: content,
-  //             recipientPhone: accountWithPhoneNumber.phoneNumber
-  //         });
-  //     });
-  //     it('should return 404 if no accounts have sms notifications enabled', async () => {
-  //         const content = 'Test notification sms content';
-  //         sinonSandbox.stub(NotificationService, 'getAccountsWithParticularNotificationPreferences').resolves(null);
-  //         const res = await chai
-  //             .request(app)
-  //             .post('/api/notifications/sms')
-  //             .set('content-type', 'application/json')
-  //             .send({ content });
-  //         expect(res.status).to.be.eq(404);
-  //         expect(res.body.message).to.eq(new AccountsWithParticularNotificationPreferencesNotFoundError().message);
-  //         sinon.assert.notCalled(sendSmsStub);
-  //     });
-  // });
+      const RegisterFcmToken = {
+        accountId: account.id,
+        fcmToken,
+      };
+      const notificationInstance =
+        await NotificationService.registerFcmToken(RegisterFcmToken);
+      sinonSandbox
+        .stub(
+          NotificationService,
+          'getNotificationInstancesWithParticularNotificationPreferences'
+        )
+        .resolves([notificationInstance]);
+      const sendPushNotificationStub = sinonSandbox
+        .stub(NotificationService, 'sendPushNotification')
+        .resolves();
+      const res = await chai
+        .request(app)
+        .post('/api/notifications/push')
+        .set('content-type', 'application/json')
+        .send({ title, body });
+      expect(res.status).to.be.eq(200);
+      expect(res.body.message).to.eq('push notifications sent successfully');
+      expect(sendPushNotificationStub.calledWithMatch({ title, body })).to.be
+        .true;
+    });
+    it('should return 404 if no accounts have push notifications enabled', async () => {
+      const title = 'Test Push Notification';
+      const body = 'This is a test push notification';
+      sinonSandbox
+        .stub(
+          NotificationService,
+          'getNotificationInstancesWithParticularNotificationPreferences'
+        )
+        .resolves(null);
+      const res = await chai
+        .request(app)
+        .post('/api/notifications/push')
+        .set('content-type', 'application/json')
+        .send({ title, body });
+      expect(res.status).to.be.eq(404);
+      expect(res.body.message).to.eq(
+        new AccountsWithParticularNotificationPreferencesNotFoundError().message
+      );
+    });
+  });
 
   describe('PATCH /notifications/:accountId', () => {
     it('should update the notification preferences of the accountId to the new notification preferences', async () => {
@@ -151,7 +219,7 @@ describe.only('Notification API', () => {
         .send(updateNotificationPreferenceParams);
 
       expect(res.status).to.be.eq(200);
-      expect(res.body.accountId).to.eq(account.id);
+      expect(res.body.account).to.eq(account.id);
       expect(res.body.preferences.email).to.eq(newPreferences.email);
     });
     it('should throw an error when updating notification preferences with an account ID that does not exist', async () => {

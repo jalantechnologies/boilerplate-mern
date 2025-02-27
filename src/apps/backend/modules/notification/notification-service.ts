@@ -122,7 +122,7 @@ export default class NotificationService {
       'mailer.defaultEmailName'
     );
     const notificationEmailTemplateId = ConfigService.getValue<string>(
-      'mailer.notificationEmailTemplateId'
+      'mailer.notificationMailTemplateId'
     );
 
     await Promise.all(
