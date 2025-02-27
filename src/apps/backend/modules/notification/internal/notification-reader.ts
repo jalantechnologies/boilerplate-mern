@@ -28,7 +28,7 @@ export default class NotificationReader {
 
   public static async getAccountsWithParticularNotificationPreferences(
     preferences: Partial<Preferences>
-  ): Promise<Notification[]> {
+  ): Promise<Notification[] | null> {
     const dbQuery = Object.entries(preferences).reduce(
       (acc, [key, value]) => {
         acc[`preferences.${key}`] = value;
