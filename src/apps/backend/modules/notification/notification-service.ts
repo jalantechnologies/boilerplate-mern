@@ -1,16 +1,13 @@
-import mail, { MailDataRequired } from '@sendgrid/mail';
-import { MailService } from '@sendgrid/mail/src/mail';
-import _ from 'lodash';
-import { Twilio } from 'twilio';
-
 import { AccountService } from '../account';
 import { ConfigService } from '../config';
 import { Logger } from '../logger';
 
+import EmailUtil from './email-util';
 import FcmUtil from './fcm-util';
 import NotificationReader from './internal/notification-reader';
 import NotificationUtil from './internal/notification-util';
 import NotificationWriter from './internal/notification-writer';
+import SmsUtil from './sms-util';
 import {
   AccountsWithParticularNotificationPreferencesNotFoundError,
   BadRequestError,
@@ -25,7 +22,6 @@ import {
   SendSMSParams,
   SendSmsNotificationParams,
   SendPushNotificationParams,
-  ServiceError,
   UpdateNotificationPrefrenceParams,
   RegisterFcmTokenParams,
   UpdateFcmTokenParams,
@@ -33,9 +29,6 @@ import {
 } from './types';
 
 export default class NotificationService {
-  private static emailClient: MailService;
-  private static smsClient: Twilio;
-
   public static async createNotificationPreference(
     params: CreateNotificationPrefrenceParams
   ): Promise<Notification> {
@@ -152,31 +145,7 @@ export default class NotificationService {
   }
 
   public static async sendEmail(params: SendEmailParams): Promise<void> {
-    const { recipient, sender, templateId, templateData } = params;
-
-    NotificationUtil.validateEmail(params);
-
-    const msg: MailDataRequired = {
-      to: recipient.email,
-      from: {
-        email: sender.email,
-        name: sender.name,
-      },
-      templateId,
-      dynamicTemplateData: {
-        domain: ConfigService.getValue<string>('webAppHost'),
-      },
-    };
-    if (params.templateData) {
-      _.merge(msg.dynamicTemplateData, templateData);
-    }
-
-    try {
-      const client = this.getEmailClient();
-      await client.send(msg);
-    } catch (err) {
-      throw new ServiceError(err as Error);
-    }
+    return EmailUtil.sendEmail(params);
   }
 
   public static async sendSmsNotification(
@@ -214,27 +183,13 @@ export default class NotificationService {
             messageBody: content,
             recipientPhone: phoneNumber,
           };
-          return NotificationService.sendSMS(NotificationSmsParams);
+          return SmsUtil.sendSMS(NotificationSmsParams);
         })
     );
   }
 
   public static async sendSMS(params: SendSMSParams): Promise<void> {
-    NotificationUtil.validateSms(params);
-
-    try {
-      const client = this.getSmsClient();
-
-      await client.messages.create({
-        to: NotificationUtil.phoneNumberToString(params.recipientPhone),
-        messagingServiceSid: ConfigService.getValue(
-          'twilio.messaging.messagingServiceSid'
-        ),
-        body: params.messageBody,
-      });
-    } catch (err) {
-      throw new ServiceError(err as Error);
-    }
+    return SmsUtil.sendSMS(params);
   }
 
   public static async registerFcmToken(
@@ -310,28 +265,5 @@ export default class NotificationService {
         return FcmUtil.sendPushNotification(PushNotifcationParams);
       })
     );
-  }
-
-  private static getEmailClient(): MailService {
-    if (this.emailClient) {
-      return this.emailClient;
-    }
-
-    mail.setApiKey(ConfigService.getValue('sendgrid.apiKey'));
-    this.emailClient = mail;
-
-    return this.emailClient;
-  }
-
-  private static getSmsClient(): Twilio {
-    if (this.smsClient) {
-      return this.smsClient;
-    }
-
-    this.smsClient = new Twilio(
-      ConfigService.getValue('twilio.verify.accountSid'),
-      ConfigService.getValue('twilio.verify.authToken')
-    );
-    return this.smsClient;
   }
 }
