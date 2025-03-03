@@ -3,16 +3,18 @@ import { PhoneNumberUtil } from 'google-libphonenumber';
 import { emailRegex } from '../constants';
 import {
   Notification,
-  Preferences,
+  NotificationChannelPreferences,
+  NotificationChannelPreferenceEnum,
+  NotificationTypePreferenceEnum,
   PhoneNumber,
   PhoneUtilInstance,
   PhoneUtilInterface,
   PushNotifcationParams,
-  NotificationPreferenceType,
   SendEmailParams,
   SendSMSParams,
   ValidationError,
   ValidationFailure,
+  NotificationTypePreferences,
 } from '../types';
 
 import { NotificationDB } from './store/notification-db';
@@ -24,8 +26,13 @@ export default class NotificationUtil {
     const notification = new Notification();
     notification.id = notificationDb._id.toString();
     notification.account = notificationDb.account.toString();
-    notification.preferences = notificationDb.preferences;
-    notification.fcmToken = notificationDb.fcmToken.toString();
+    notification.notificationChannelPreferences =
+      notificationDb.notificationChannelPreferences;
+    notification.notificationTypePreferences =
+      notificationDb.notificationTypePreferences;
+    notification.fcmTokens = notificationDb.fcmTokens.map((fcmToken) =>
+      fcmToken.toString()
+    );
 
     return notification;
   }
@@ -38,12 +45,29 @@ export default class NotificationUtil {
     );
   }
 
-  public static validatePreferences(
-    preferences: Partial<Preferences>
+  public static validateNotificationChannelPreferences(
+    notificationChannelPreferences: Partial<NotificationChannelPreferences>
   ): boolean {
-    const validPreferences = Object.values(NotificationPreferenceType);
-    return Object.keys(preferences).every((key) =>
-      validPreferences.includes(key as NotificationPreferenceType)
+    const validateChannelPreferences = Object.values(
+      NotificationChannelPreferenceEnum
+    );
+    return Object.keys(notificationChannelPreferences).every((key) =>
+      validateChannelPreferences.includes(
+        key as NotificationChannelPreferenceEnum
+      )
+    );
+  }
+
+  public static validateNotificationTypePreferences(
+    notificationTypePreferences: Partial<NotificationTypePreferences>
+  ): boolean {
+    const validNotificationTypePreferences = Object.values(
+      NotificationTypePreferenceEnum
+    );
+    return Object.keys(notificationTypePreferences).every((key) =>
+      validNotificationTypePreferences.includes(
+        key as NotificationTypePreferenceEnum
+      )
     );
   }
 

@@ -8,19 +8,38 @@ export interface LooseObject {
 export class Notification {
   account: string;
   id: string;
-  preferences: Preferences;
-  fcmToken: string;
+  notificationChannelPreferences: NotificationChannelPreferences;
+  notificationTypePreferences: NotificationTypePreferences;
+  fcmTokens: string[];
 }
 
-export enum NotificationPreferenceType {
+export enum NotificationChannelPreferenceEnum {
   EMAIL = 'email',
   SMS = 'sms',
   PUSH = 'push',
 }
 
+export enum NotificationTypePreferenceEnum {
+  UPDATE = 'update',
+  PROMOTIONAL = 'promotional',
+  TRANSACTIONAL = 'transactional',
+  SECURITY = 'security',
+  REMINDER = 'reminder',
+  SOCIAL = 'social',
+  ALERT = 'alert',
+}
+
 export type NotificationResponse = { message: string } | Notification;
 
-export type Preferences = Record<NotificationPreferenceType, boolean>;
+export type NotificationChannelPreferences = Record<
+  NotificationChannelPreferenceEnum,
+  boolean
+>;
+
+export type NotificationTypePreferences = Record<
+  NotificationTypePreferenceEnum,
+  boolean
+>;
 
 export type EmailSender = {
   email: string;
@@ -39,13 +58,22 @@ export type GetUserNotificationPreferencesParams = {
   accountId: string;
 };
 
-export type GetAccountsWithParticularPreferenceParams = {
-  preferences: Partial<Preferences>;
+export type GetAccountsWithParticularNotificationChannelPreferenceParams = {
+  notificationChannelPreferences: Partial<NotificationChannelPreferences>;
 };
 
-export type UpdateNotificationPrefrenceParams = {
+export type GetAccountsWithParticularNotificationTypePreferenceParams = {
+  notificationTypePreferences: Partial<NotificationTypePreferences>;
+};
+
+export type UpdateNotificationChannelPrefrenceParams = {
   accountId: string;
-  preferences: Partial<Preferences>;
+  notificationChannelPreferences: Partial<NotificationChannelPreferences>;
+};
+
+export type UpdateNotificationTypePrefrenceParams = {
+  accountId: string;
+  notificationTypePreferences: Partial<NotificationTypePreferences>;
 };
 
 export interface PhoneUtilInterface {
@@ -60,6 +88,12 @@ export interface PhoneUtilInstance {
 export type PhoneNumber = {
   countryCode: string;
   phoneNumber: string;
+};
+
+export type SendEmailNotificationToAccountParams = {
+  accountId: string;
+  content: string;
+  notificationType: NotificationTypePreferenceEnum;
 };
 
 export type SendEmailParams = {
@@ -107,13 +141,9 @@ export type RegisterFcmTokenParams = {
   fcmToken: string;
 };
 
-export type UpdateFcmTokenParams = {
-  accountId: string;
-  newFcmToken: string;
-};
-
 export type DeleteFcmTokenParams = {
   accountId: string;
+  fcmToken: string;
 };
 
 export enum NotificationErrorCode {
@@ -151,7 +181,7 @@ export class NotificationPreferencesNotFoundError extends ApplicationError {
   code: NotificationErrorCode;
 
   constructor(accountId: string) {
-    super(`Notifiaction preferences for accountId ${accountId} not found.`);
+    super(`Notification preferences for accountId ${accountId} not found.`);
     this.code = NotificationErrorCode.ACCOUNTID_NOT_FOUND;
     this.httpStatusCode = HttpStatusCodes.NOT_FOUND;
   }
@@ -195,6 +225,16 @@ export class BadRequestError extends ApplicationError {
 
   constructor(msg: string) {
     super(msg);
+    this.code = NotificationErrorCode.BAD_REQUEST;
+    this.httpStatusCode = HttpStatusCodes.BAD_REQUEST;
+  }
+}
+
+export class NotificationPermissionDeniedError extends ApplicationError {
+  code: NotificationErrorCode;
+
+  constructor() {
+    super('Notification Permission denied');
     this.code = NotificationErrorCode.BAD_REQUEST;
     this.httpStatusCode = HttpStatusCodes.BAD_REQUEST;
   }

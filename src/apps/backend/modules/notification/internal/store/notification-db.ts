@@ -1,16 +1,27 @@
 import { Schema, Types } from 'mongoose';
 
-interface NotificationPreferences {
+interface NotificationChannelPreferences {
   email: boolean;
   sms: boolean;
   push: boolean;
 }
 
+interface NotificationTypePreferences {
+  update: boolean;
+  promotional: boolean;
+  transactional: boolean;
+  security: boolean;
+  reminder: boolean;
+  social: boolean;
+  alert: boolean;
+}
+
 export interface NotificationDB {
   _id: Types.ObjectId;
   account: Types.ObjectId;
-  preferences: NotificationPreferences;
-  fcmToken: string;
+  notificationChannelPreferences: NotificationChannelPreferences;
+  notificationTypePreferences: NotificationTypePreferences;
+  fcmTokens: string[];
 }
 
 export const NotificationDbSchema = new Schema<NotificationDB>(
@@ -21,7 +32,7 @@ export const NotificationDbSchema = new Schema<NotificationDB>(
       required: true,
       index: true,
     },
-    preferences: {
+    notificationChannelPreferences: {
       email: {
         type: Boolean,
         default: true,
@@ -35,7 +46,40 @@ export const NotificationDbSchema = new Schema<NotificationDB>(
         default: true,
       },
     },
-    fcmToken: { default: '', type: String },
+    notificationTypePreferences: {
+      update: {
+        type: Boolean,
+        default: true,
+      },
+      promotional: {
+        type: Boolean,
+        default: true,
+      },
+      transactional: {
+        type: Boolean,
+        default: true,
+      },
+      security: {
+        type: Boolean,
+        default: true,
+      },
+      reminder: {
+        type: Boolean,
+        default: true,
+      },
+      social: {
+        type: Boolean,
+        default: true,
+      },
+      alert: {
+        type: Boolean,
+        default: true,
+      },
+    },
+    fcmTokens: {
+      type: [String],
+      default: [],
+    },
   },
   {
     timestamps: {
