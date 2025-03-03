@@ -1,4 +1,8 @@
-import { Notification, Preferences } from '../types';
+import {
+  Notification,
+  NotificationChannelPreferences,
+  NotificationTypePreferences,
+} from '../types';
 
 import NotificationUtil from './notification-util';
 import NotificationRepository from './store/notification-repository';
@@ -18,13 +22,13 @@ export default class NotificationWriter {
     return NotificationUtil.convertNotificationDBToNotification(notification);
   }
 
-  public static async updateAccountNotificationPreferences(
+  public static async updateAccountNotificationChannelPreferences(
     accountId: string,
-    preferences: Partial<Preferences>
+    notificationChannelPreferences: Partial<NotificationChannelPreferences>
   ): Promise<Notification | null> {
-    const updateQuery = Object.entries(preferences).reduce(
+    const updateQuery = Object.entries(notificationChannelPreferences).reduce(
       (acc, [key, value]) => {
-        acc[`preferences.${key}`] = value;
+        acc[`notificationChannelPreferences.${key}`] = value;
         return acc;
       },
       {} as Record<string, boolean>
@@ -44,6 +48,32 @@ export default class NotificationWriter {
     );
   }
 
+  public static async updateAccountNotificationTypePreferences(
+    accountId: string,
+    notificationTypePreferences: Partial<NotificationTypePreferences>
+  ): Promise<Notification | null> {
+    const updateQuery = Object.entries(notificationTypePreferences).reduce(
+      (acc, [key, value]) => {
+        acc[`notificationTypePreferences.${key}`] = value;
+        return acc;
+      },
+      {} as Record<string, boolean>
+    );
+
+    const notificationTypePreferencesUpdated =
+      await NotificationRepository.findOneAndUpdate(
+        { account: accountId },
+        { $set: updateQuery },
+        { new: true }
+      );
+    if (!notificationTypePreferencesUpdated) {
+      return null;
+    }
+    return NotificationUtil.convertNotificationDBToNotification(
+      notificationTypePreferencesUpdated
+    );
+  }
+
   public static async registerFcmToken(
     accountId: string,
     fcmToken: string
@@ -51,7 +81,7 @@ export default class NotificationWriter {
     const notificationFcmRegistered =
       await NotificationRepository.findOneAndUpdate(
         { account: accountId },
-        { $set: { fcmToken } },
+        { $addToSet: { fcmTokens: fcmToken } },
         { upsert: true, new: true }
       );
     return NotificationUtil.convertNotificationDBToNotification(
@@ -59,25 +89,13 @@ export default class NotificationWriter {
     );
   }
 
-  public static async updateFcmToken(
+  public static async deleteFcmToken(
     accountId: string,
-    newFcmToken: string
-  ): Promise<Notification> {
-    const notificationFcmUpdated =
-      await NotificationRepository.findOneAndUpdate(
-        { account: accountId },
-        { $set: { fcmToken: newFcmToken } },
-        { new: true }
-      );
-    return NotificationUtil.convertNotificationDBToNotification(
-      notificationFcmUpdated
-    );
-  }
-
-  public static async deleteFcmToken(accountId: string): Promise<void> {
+    fcmToken: string
+  ): Promise<void> {
     await NotificationRepository.findOneAndUpdate(
       { account: accountId },
-      { $set: { fcmToken: '' } }
+      { $pull: { fcmTokens: fcmToken } }
     );
   }
 }

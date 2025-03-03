@@ -13,18 +13,21 @@ import {
   BadRequestError,
   CreateNotificationPrefrenceParams,
   GetUserNotificationPreferencesParams,
-  GetAccountsWithParticularPreferenceParams,
+  GetAccountsWithParticularNotificationChannelPreferenceParams,
+  GetAccountsWithParticularNotificationTypePreferenceParams,
   Notification,
   NotificationPreferencesNotFoundError,
+  NotificationPermissionDeniedError,
   NotificationPrefrenceTypeNotFoundError,
+  SendEmailNotificationToAccountParams,
   SendEmailParams,
   SendEmailNotificationParams,
   SendSMSParams,
   SendSmsNotificationParams,
   SendPushNotificationParams,
-  UpdateNotificationPrefrenceParams,
+  UpdateNotificationChannelPrefrenceParams,
+  UpdateNotificationTypePrefrenceParams,
   RegisterFcmTokenParams,
-  UpdateFcmTokenParams,
   DeleteFcmTokenParams,
 } from './types';
 
@@ -36,14 +39,29 @@ export default class NotificationService {
     return NotificationWriter.createNotificationPreferences(accountId);
   }
 
-  public static async updateAccountNotificationPreferences(
-    params: UpdateNotificationPrefrenceParams
+  public static async updateAccountNotificationChannelPreferences(
+    params: UpdateNotificationChannelPrefrenceParams
   ): Promise<Notification> {
-    const { accountId, preferences } = params;
+    const { accountId, notificationChannelPreferences } = params;
     const notificationUpdated =
-      await NotificationWriter.updateAccountNotificationPreferences(
+      await NotificationWriter.updateAccountNotificationChannelPreferences(
         accountId,
-        preferences
+        notificationChannelPreferences
+      );
+    if (!notificationUpdated) {
+      throw new NotificationPreferencesNotFoundError(accountId);
+    }
+    return notificationUpdated;
+  }
+
+  public static async updateAccountNotificationTypePreferences(
+    params: UpdateNotificationTypePrefrenceParams
+  ): Promise<Notification> {
+    const { accountId, notificationTypePreferences } = params;
+    const notificationUpdated =
+      await NotificationWriter.updateAccountNotificationTypePreferences(
+        accountId,
+        notificationTypePreferences
       );
     if (!notificationUpdated) {
       throw new NotificationPreferencesNotFoundError(accountId);
@@ -63,11 +81,11 @@ export default class NotificationService {
     return notificationPreferences;
   }
 
-  public static async getAccountsWithParticularNotificationPreferences(
-    params: GetAccountsWithParticularPreferenceParams
+  public static async getAccountsWithParticularNotificationChannelPreferences(
+    params: GetAccountsWithParticularNotificationChannelPreferenceParams
   ): Promise<string[]> {
     const notificationPreferences =
-      await NotificationService.getNotificationInstancesWithParticularNotificationPreferences(
+      await NotificationService.getNotificationInstancesWithParticularNotificationChannelPreferences(
         params
       );
     if (!notificationPreferences) {
@@ -76,19 +94,90 @@ export default class NotificationService {
     return notificationPreferences.map((notification) => notification.account);
   }
 
-  public static async getNotificationInstancesWithParticularNotificationPreferences(
-    params: GetAccountsWithParticularPreferenceParams
+  public static async getNotificationInstancesWithParticularNotificationChannelPreferences(
+    params: GetAccountsWithParticularNotificationChannelPreferenceParams
   ): Promise<Notification[]> {
-    const { preferences } = params;
+    const { notificationChannelPreferences } = params;
 
-    const isValid = NotificationUtil.validatePreferences(preferences);
+    const isValid = NotificationUtil.validateNotificationChannelPreferences(
+      notificationChannelPreferences
+    );
     if (!isValid) {
       throw new NotificationPrefrenceTypeNotFoundError();
     }
 
-    return NotificationReader.getAccountsWithParticularNotificationPreferences(
-      preferences
+    return NotificationReader.getAccountsWithParticularNotificationChannelPreferences(
+      notificationChannelPreferences
     );
+  }
+
+  public static async getAccountsWithParticularNotificationTypePreferences(
+    params: GetAccountsWithParticularNotificationTypePreferenceParams
+  ): Promise<string[]> {
+    const notificationPreferences =
+      await NotificationService.getNotificationInstancesWithParticularNotificationTypePreferences(
+        params
+      );
+    if (!notificationPreferences) {
+      return null;
+    }
+    return notificationPreferences.map((notification) => notification.account);
+  }
+
+  public static async getNotificationInstancesWithParticularNotificationTypePreferences(
+    params: GetAccountsWithParticularNotificationTypePreferenceParams
+  ): Promise<Notification[]> {
+    const { notificationTypePreferences } = params;
+
+    const isValid = NotificationUtil.validateNotificationTypePreferences(
+      notificationTypePreferences
+    );
+    if (!isValid) {
+      throw new NotificationPrefrenceTypeNotFoundError();
+    }
+
+    return NotificationReader.getAccountsWithParticularNotificationTypePreferences(
+      notificationTypePreferences
+    );
+  }
+
+  public static async sendEmailNotificationToAccount(
+    params: SendEmailNotificationToAccountParams
+  ): Promise<void> {
+    const { accountId, content, notificationType } = params;
+    const notificationPreference =
+      await NotificationReader.getAccountNotificationPreferences(accountId);
+    if (!notificationPreference) {
+      throw new NotificationPreferencesNotFoundError(accountId);
+    }
+    if (
+      !notificationPreference.notificationChannelPreferences.email ||
+      !notificationPreference.notificationTypePreferences[notificationType]
+    ) {
+      throw new NotificationPermissionDeniedError();
+    }
+    const accountReference = await AccountService.getAccountById({ accountId });
+    if (!accountReference || !accountReference.username) {
+      throw new BadRequestError(
+        `No valid email found for accountId ${accountId}`
+      );
+    }
+    const defaultEmail = ConfigService.getValue<string>('mailer.defaultEmail');
+    const defaultEmailName = ConfigService.getValue<string>(
+      'mailer.defaultEmailName'
+    );
+    const notificationEmailTemplateId = ConfigService.getValue<string>(
+      'mailer.notificationMailTemplateId'
+    );
+
+    const emailParams: SendEmailParams = {
+      recipient: { email: accountReference.username },
+      sender: { email: defaultEmail, name: defaultEmailName },
+      templateData: { firstName: accountReference.firstName, content },
+      templateId: notificationEmailTemplateId,
+    };
+
+    await NotificationService.sendEmail(emailParams);
   }
 
   public static async sendEmailNotification(
@@ -96,8 +185,8 @@ export default class NotificationService {
   ): Promise<void> {
     const { content } = params;
     const accountIdsWithEmailNotificationEnabled =
-      await NotificationService.getAccountsWithParticularNotificationPreferences(
-        { preferences: { email: true } }
+      await NotificationService.getAccountsWithParticularNotificationChannelPreferences(
+        { notificationChannelPreferences: { email: true } }
       );
 
     if (!accountIdsWithEmailNotificationEnabled) {
@@ -161,8 +250,8 @@ export default class NotificationService {
     }
 
     const accountIdsWithSmsNotificationEnabled =
-      await NotificationService.getAccountsWithParticularNotificationPreferences(
-        { preferences: { sms: true } }
+      await NotificationService.getAccountsWithParticularNotificationChannelPreferences(
+        { notificationChannelPreferences: { sms: true } }
       );
 
     if (!accountIdsWithSmsNotificationEnabled) {
@@ -208,32 +297,16 @@ export default class NotificationService {
     return NotificationWriter.registerFcmToken(accountId, fcmToken);
   }
 
-  public static async updateFcmToken(
-    params: UpdateFcmTokenParams
-  ): Promise<Notification> {
-    const { accountId, newFcmToken } = params;
-    const isFcmTokenValid = !!newFcmToken && newFcmToken.trim() !== '';
-    if (!isFcmTokenValid) {
-      throw new BadRequestError('Invalid FCM token provided.');
-    }
-    const notificationPreference =
-      await NotificationReader.getAccountNotificationPreferences(accountId);
-    if (!notificationPreference) {
-      throw new NotificationPreferencesNotFoundError(accountId);
-    }
-    return NotificationWriter.updateFcmToken(accountId, newFcmToken);
-  }
-
   public static async deleteFcmToken(
     params: DeleteFcmTokenParams
   ): Promise<void> {
-    const { accountId } = params;
+    const { accountId, fcmToken } = params;
     const notificationPreference =
       await NotificationReader.getAccountNotificationPreferences(accountId);
     if (!notificationPreference) {
       throw new NotificationPreferencesNotFoundError(accountId);
     }
-    await NotificationWriter.deleteFcmToken(accountId);
+    await NotificationWriter.deleteFcmToken(accountId, fcmToken);
   }
 
   public static async sendPushNotification(
@@ -242,8 +315,8 @@ export default class NotificationService {
     const { title, body } = params;
 
     const NotificationInstancesWithPushNotificationEnabled =
-      await NotificationService.getNotificationInstancesWithParticularNotificationPreferences(
-        { preferences: { push: true } }
+      await NotificationService.getNotificationInstancesWithParticularNotificationChannelPreferences(
+        { notificationChannelPreferences: { push: true } }
       );
 
     if (!NotificationInstancesWithPushNotificationEnabled) {
@@ -252,18 +325,16 @@ export default class NotificationService {
 
     const notifcationInstances =
       NotificationInstancesWithPushNotificationEnabled.filter(
-        (notification) => notification.fcmToken !== ''
+        (notification) =>
+          notification.fcmTokens && notification.fcmTokens.length > 0
       );
 
     await Promise.all(
-      notifcationInstances.map((notification) => {
-        const PushNotifcationParams = {
-          fcmToken: notification.fcmToken,
-          title,
-          body,
-        };
-        return FcmUtil.sendPushNotification(PushNotifcationParams);
-      })
+      notifcationInstances.flatMap((notification) =>
+        notification.fcmTokens.map((fcmToken) =>
+          FcmUtil.sendPushNotification({ fcmToken, title, body })
+        )
+      )
     );
   }
 }
