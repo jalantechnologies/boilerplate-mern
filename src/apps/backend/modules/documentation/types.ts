@@ -1,3 +1,4 @@
+import { Nullable } from '../../types';
 import { ApplicationError } from '../application';
 import { HttpStatusCodes } from '../http';
 import { HttpRoute } from '../list-routes';
@@ -8,10 +9,10 @@ export type HttpRouteWithRootFolderPath = {
 };
 
 export type HttpRouteWithControllerAndSerializerDetails = {
-  controllerMethod: string;
+  controllerMethod: Nullable<string>;
   endpoint: string;
   method: string;
-  serializerMethod: string;
+  serializerMethod: Nullable<string>;
 };
 
 export type MarkdownDocumentation = {
