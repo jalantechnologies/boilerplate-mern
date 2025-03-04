@@ -55,7 +55,7 @@ export default class DocumentGeneratorUtil {
   private static getControllerMethodCode(
     restApiFolderPath: string,
     route: HttpRoute,
-  ): Nullable<string> {
+  ): string {
     const controllerMethodName = this.getControllerMethodName(
       restApiFolderPath,
       route,
@@ -161,10 +161,8 @@ export default class DocumentGeneratorUtil {
   }
 
   private static addLeadingSlashesIfNotExistsAndRemoveTrailingSlashes(
-    routePath: Nullable<string>,
-  ): Nullable<string> {
-    if (!routePath) return null;
-
+    routePath: string,
+  ): string {
     const trimmedRoutePath = routePath.replace(/(^\/)|(\/$)/g, '');
     return trimmedRoutePath ? `/${trimmedRoutePath}` : '';
   }
@@ -173,10 +171,9 @@ export default class DocumentGeneratorUtil {
     fileSuffix: string,
     folderPath: string,
     methodSignature: string,
-  ): Nullable<string> {
+  ): string {
     try {
       const fileName = this.findFileWithSuffix(fileSuffix, folderPath);
-      if (!fileName) return null;
 
       const fileContent = this.readFileContent(fileName, folderPath);
       const methodCode = this.extractMethodFromContent(
