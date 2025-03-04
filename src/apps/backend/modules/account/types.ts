@@ -58,13 +58,11 @@ export type GetAccountParams = {
   accountId: string;
 };
 
-export type UpdateAccountDetailsParams = {
+export type UpdateAccountParams = {
   accountId: string;
   firstName: string;
   lastName: string;
 };
-
-export type UpdateAccountParams = UpdateAccountDetailsParams;
 
 export type DeleteAccountParams = GetAccountParams;
 
