@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
 import {
@@ -12,8 +12,9 @@ import {
 } from '../../components';
 import { AsyncError } from '../../types';
 import { ButtonKind, ButtonSize } from '../../types/button';
-import { Task } from '../../types/task';
+import { Comment, Task } from '../../types/task';
 
+import TaskComments from './task-comments';
 import TaskModal from './task-modal';
 import useTaskForm from './tasks-form.hook';
 
@@ -31,6 +32,31 @@ const TaskSection: React.FC<TaskSectionProps> = ({
   tasks,
 }) => {
   const [updateTaskModal, setUpdateTaskModal] = useState(false);
+
+  const dummyComments: Comment[] = [
+    {
+      username: 'Pat cummins',
+      profilePicture: '/assets/img/user.png',
+      createdAt: '2023-10-01T12:00:00Z',
+      content: 'This is the first comment.',
+    },
+    {
+      username: 'Maxwell',
+      profilePicture: '/assets/img/user.png',
+      createdAt: '2023-10-02T12:00:00Z',
+      content: 'This is the second comment.',
+    },
+    {
+      username: 'Travis head',
+      profilePicture: '/assets/img/user.png',
+      createdAt: '2023-10-02T12:00:00Z',
+      content: 'This is the second comment.',
+    },
+  ];
+  const [comments, setComments] = useState<Comment[]>(dummyComments);
+  useEffect(() => {
+    setComments(dummyComments);
+  }, []);
 
   const onSuccess = () => {
     toast.success('Task has been updated successfully');
@@ -100,6 +126,7 @@ const TaskSection: React.FC<TaskSectionProps> = ({
               </Button>
             </MenuItem>
           </div>
+          <TaskComments comments={comments} />
         </div>
       ))}
 

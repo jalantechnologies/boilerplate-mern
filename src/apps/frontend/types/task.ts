@@ -15,3 +15,10 @@ export class Task {
     this.title = json.title as string;
   }
 }
+
+export interface Comment {
+  username: string;
+  profilePicture: string;
+  createdAt: string;
+  content: string;
+}
