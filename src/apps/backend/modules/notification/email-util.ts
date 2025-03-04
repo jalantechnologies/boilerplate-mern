@@ -38,6 +38,37 @@ export default class EmailUtil {
     }
   }
 
+  public static async sendBatchEmail(params: {
+    emails: SendEmailParams[];
+  }): Promise<void> {
+    const { emails } = params;
+    if (emails.length === 0) return;
+
+    NotificationUtil.validateBatchEmails(emails);
+
+    const messages: MailDataRequired = {
+      from: {
+        email: ConfigService.getValue<string>('mailer.defaultEmail'),
+        name: ConfigService.getValue<string>('mailer.defaultEmailName'),
+      },
+      personalizations: emails.map(({ recipient, templateData }) => ({
+        to: [{ email: recipient.email }],
+        dynamicTemplateData: {
+          ...templateData,
+          domain: ConfigService.getValue<string>('webAppHost'),
+        },
+      })),
+      templateId: emails[0].templateId,
+    };
+
+    try {
+      const client = this.getEmailClient();
+      await client.sendMultiple(messages);
+    } catch (err) {
+      throw new ServiceError(err as Error);
+    }
+  }
+
   private static getEmailClient(): MailService {
     if (this.emailClient) {
       return this.emailClient;

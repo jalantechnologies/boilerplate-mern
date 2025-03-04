@@ -96,6 +96,72 @@ export type SendEmailNotificationToAccountParams = {
   notificationType: NotificationTypePreferenceEnum;
 };
 
+export type SendEmailNotificationToGroupParams = {
+  accountIds: string[];
+  content: string;
+  notificationType: NotificationTypePreferenceEnum;
+};
+
+export type SendEmailNotificationToAllParams = {
+  content: string;
+  notificationType: NotificationTypePreferenceEnum;
+};
+
+export type SendSmsNotificationToAccountParams = {
+  accountId: string;
+  content: string;
+  notificationType: NotificationTypePreferenceEnum;
+};
+
+export type SendSmsNotificationToGroupParams = {
+  accountIds: string[];
+  content: string;
+  notificationType: NotificationTypePreferenceEnum;
+};
+
+export type SendSmsNotificationToAllParams = {
+  content: string;
+  notificationType: NotificationTypePreferenceEnum;
+};
+
+export type SendPushNotificationToAccountParams = {
+  accountId: string;
+  body: string;
+  notificationType: NotificationTypePreferenceEnum;
+  title: string;
+};
+
+export type SendPushNotificationToGroupParams = {
+  accountIds: string[];
+  body: string;
+  notificationType: NotificationTypePreferenceEnum;
+  title: string;
+};
+
+export type SendPushNotificationToAllParams = {
+  body: string;
+  notificationType: NotificationTypePreferenceEnum;
+  title: string;
+};
+
+export type SendBroadcastNotificationParams = {
+  body: string;
+  notificationType: NotificationTypePreferenceEnum;
+  title: string;
+};
+
+export type BatchPushNotificationsParams = {
+  body: string;
+  fcmTokens: string[];
+  title: string;
+};
+export type BatchSMSNotificationsParams = {
+  smsList: {
+    accountId: string;
+    smsParams: SendSMSParams;
+  }[];
+};
+
 export type SendEmailParams = {
   recipient: EmailRecipient;
   sender: EmailSender;

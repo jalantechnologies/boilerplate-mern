@@ -6,6 +6,7 @@ import { ConfigService } from '../config';
 
 import NotificationUtil from './internal/notification-util';
 import {
+  BatchPushNotificationsParams,
   InvalidFirebaseServiceAccountPathError,
   ServiceError,
   PushNotifcationParams,
@@ -26,6 +27,29 @@ export default class FcmUtil {
         notification: { title, body },
       };
       await admin.messaging().send(message);
+    } catch (err) {
+      throw new ServiceError(err as Error);
+    }
+  }
+
+  public static async sendBatchPushNotifications(
+    params: BatchPushNotificationsParams
+  ): Promise<void> {
+    const { fcmTokens, title, body } = params;
+
+    if (fcmTokens.length === 0) {
+      throw new Error('No FCM tokens provided.');
+    }
+
+    this.getFirebaseApp();
+
+    const message = {
+      tokens: fcmTokens,
+      notification: { title, body },
+    };
+
+    try {
+      await admin.messaging().sendMulticast(message);
     } catch (err) {
       throw new ServiceError(err as Error);
     }

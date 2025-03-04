@@ -2,6 +2,7 @@ import { AccountService } from '../account';
 import { ConfigService } from '../config';
 import { Logger } from '../logger';
 
+import { batchSize } from './constants';
 import EmailUtil from './email-util';
 import FcmUtil from './fcm-util';
 import NotificationReader from './internal/notification-reader';
@@ -20,11 +21,17 @@ import {
   NotificationPermissionDeniedError,
   NotificationPrefrenceTypeNotFoundError,
   SendEmailNotificationToAccountParams,
+  SendEmailNotificationToGroupParams,
+  SendEmailNotificationToAllParams,
+  SendSmsNotificationToAccountParams,
+  SendSmsNotificationToGroupParams,
+  SendSmsNotificationToAllParams,
+  SendPushNotificationToAccountParams,
+  SendPushNotificationToGroupParams,
+  SendPushNotificationToAllParams,
+  SendBroadcastNotificationParams,
   SendEmailParams,
-  SendEmailNotificationParams,
   SendSMSParams,
-  SendSmsNotificationParams,
-  SendPushNotificationParams,
   UpdateNotificationChannelPrefrenceParams,
   UpdateNotificationTypePrefrenceParams,
   RegisterFcmTokenParams,
@@ -180,101 +187,249 @@ export default class NotificationService {
     await NotificationService.sendEmail(emailParams);
   }
 
-  public static async sendEmailNotification(
-    params: SendEmailNotificationParams
-  ): Promise<void> {
-    const { content } = params;
-    const accountIdsWithEmailNotificationEnabled =
-      await NotificationService.getAccountsWithParticularNotificationChannelPreferences(
-        { notificationChannelPreferences: { email: true } }
-      );
+  public static async sendEmailNotificationToGroup(
+    params: SendEmailNotificationToGroupParams
+  ): Promise<{ unsuccessful: string[] }> {
+    const { accountIds, content, notificationType } = params;
+    const unsuccessful: string[] = [];
+    const emailBatches: SendEmailParams[][] = [];
 
-    if (!accountIdsWithEmailNotificationEnabled) {
-      throw new AccountsWithParticularNotificationPreferencesNotFoundError();
-    }
+    await Promise.all(
+      accountIds.map(async (accountId) => {
+        try {
+          const notificationPreference =
+            await NotificationReader.getAccountNotificationPreferences(
+              accountId
+            );
+          if (
+            !notificationPreference ||
+            !notificationPreference.notificationChannelPreferences.email ||
+            !notificationPreference.notificationTypePreferences[
+              notificationType
+            ]
+          ) {
+            unsuccessful.push(accountId);
+            return;
+          }
+          const accountReference = await AccountService.getAccountById({
+            accountId,
+          });
 
-    const accountReferences = await Promise.all(
-      accountIdsWithEmailNotificationEnabled.map((accountId) =>
-        AccountService.getAccountById({ accountId })
-      )
-    );
+          if (!accountReference || !accountReference.username) {
+            unsuccessful.push(accountId);
+            return;
+          }
+          const defaultEmail = ConfigService.getValue<string>(
+            'mailer.defaultEmail'
+          );
+          const defaultEmailName = ConfigService.getValue<string>(
+            'mailer.defaultEmailName'
+          );
+          const notificationEmailTemplateId = ConfigService.getValue<string>(
+            'mailer.notificationMailTemplateId'
+          );
 
-    const defaultEmail = ConfigService.getValue<string>('mailer.defaultEmail');
-    const defaultEmailName = ConfigService.getValue<string>(
-      'mailer.defaultEmailName'
-    );
-    const notificationEmailTemplateId = ConfigService.getValue<string>(
-      'mailer.notificationMailTemplateId'
+          const emailParams: SendEmailParams = {
+            recipient: { email: accountReference.username },
+            sender: { email: defaultEmail, name: defaultEmailName },
+            templateData: { firstName: accountReference.firstName, content },
+            templateId: notificationEmailTemplateId,
+          };
+
+          if (
+            !emailBatches.length ||
+            emailBatches[emailBatches.length - 1].length >= batchSize
+          ) {
+            emailBatches.push([]);
+          }
+          emailBatches[emailBatches.length - 1].push(emailParams);
+        } catch (error) {
+          unsuccessful.push(accountId);
+        }
+      })
     );
 
     await Promise.all(
-      accountReferences
-        .filter((accountReference) => accountReference.username)
-        .map((accountReference) => {
-          const { firstName, username } = accountReference;
-          const templateData = {
-            firstName,
-            content,
-            username,
-          };
-          const NotificationEmailParams: SendEmailParams = {
-            recipient: {
-              email: username,
-            },
-            sender: {
-              email: defaultEmail,
-              name: defaultEmailName,
-            },
-            templateData,
-            templateId: notificationEmailTemplateId,
-          };
-          return NotificationService.sendEmail(NotificationEmailParams);
-        })
+      emailBatches.map(async (batch, i) => {
+        try {
+          await EmailUtil.sendBatchEmail({ emails: batch });
+          Logger.info(
+            `Successfully sent batch email notifications at batch index: ${i}:`
+          );
+        } catch (error) {
+          Logger.error(
+            `Failed to send batch email notifications at batch index: ${i}:`,
+            error
+          );
+        }
+      })
     );
+
+    Logger.info(
+      `Batch email notifications completed. Unsuccessful accounts: ${unsuccessful.length}`
+    );
+    return { unsuccessful };
+  }
+
+  public static async sendEmailNotificationToAll(
+    params: SendEmailNotificationToAllParams
+  ): Promise<{ unsuccessful: string[] }> {
+    const { content, notificationType } = params;
+    const getChannelPreferencesParams = {
+      notificationChannelPreferences: { email: true },
+    };
+    const accountIdsWithEmailNotificationEnabled =
+      await NotificationService.getAccountsWithParticularNotificationChannelPreferences(
+        getChannelPreferencesParams
+      );
+    if (!accountIdsWithEmailNotificationEnabled) {
+      throw new AccountsWithParticularNotificationPreferencesNotFoundError();
+    }
+    return NotificationService.sendEmailNotificationToGroup({
+      accountIds: accountIdsWithEmailNotificationEnabled,
+      content,
+      notificationType,
+    });
   }
 
   public static async sendEmail(params: SendEmailParams): Promise<void> {
     return EmailUtil.sendEmail(params);
   }
 
-  public static async sendSmsNotification(
-    params: SendSmsNotificationParams
+  public static async sendSmsNotificationToAccount(
+    params: SendSmsNotificationToAccountParams
   ): Promise<void> {
-    const { content } = params;
-
+    const { accountId, content, notificationType } = params;
     const isSmsEnabled = ConfigService.getValue('sms.enabled');
 
     if (!isSmsEnabled) {
       Logger.warn(`SMS not enabled. Could not send message - ${content}`);
       return;
     }
+    const notificationPreference =
+      await NotificationReader.getAccountNotificationPreferences(accountId);
+    if (!notificationPreference) {
+      throw new NotificationPreferencesNotFoundError(accountId);
+    }
+    if (
+      !notificationPreference.notificationChannelPreferences.sms ||
+      !notificationPreference.notificationTypePreferences[notificationType]
+    ) {
+      throw new NotificationPermissionDeniedError();
+    }
+    const accountReference = await AccountService.getAccountById({ accountId });
+    if (!accountReference || !accountReference.phoneNumber) {
+      throw new BadRequestError(
+        `No valid phone number found for accountId ${accountId}`
+      );
+    }
+    const NotificationSmsParams: SendSMSParams = {
+      messageBody: content,
+      recipientPhone: accountReference.phoneNumber,
+    };
+    await NotificationService.sendSMS(NotificationSmsParams);
+  }
 
+  public static async sendSmsNotificationToGroup(
+    params: SendSmsNotificationToGroupParams
+  ): Promise<{ unsuccessful: string[] }> {
+    const { accountIds, content, notificationType } = params;
+    const unsuccessful: string[] = [];
+    const smsBatches: SendSMSParams[][] = [];
+
+    await Promise.all(
+      accountIds.map(async (accountId) => {
+        try {
+          const notificationPreference =
+            await NotificationReader.getAccountNotificationPreferences(
+              accountId
+            );
+          if (
+            !notificationPreference ||
+            !notificationPreference.notificationChannelPreferences.sms ||
+            !notificationPreference.notificationTypePreferences[
+              notificationType
+            ]
+          ) {
+            unsuccessful.push(accountId);
+            return;
+          }
+
+          const accountReference = await AccountService.getAccountById({
+            accountId,
+          });
+          if (!accountReference || !accountReference.phoneNumber) {
+            unsuccessful.push(accountId);
+            return;
+          }
+
+          const smsParams: SendSMSParams = {
+            messageBody: content,
+            recipientPhone: accountReference.phoneNumber,
+          };
+
+          if (
+            !smsBatches.length ||
+            smsBatches[smsBatches.length - 1].length >= batchSize
+          ) {
+            smsBatches.push([]);
+          }
+          smsBatches[smsBatches.length - 1].push(smsParams);
+        } catch (error) {
+          unsuccessful.push(accountId);
+        }
+      })
+    );
+
+    // Since Twilio does not support batch SMS sending, we process each batch sequentially
+    // and send individual SMS messages within each batch.
+    await Promise.all(
+      smsBatches.map(async (batch, i) => {
+        try {
+          await Promise.all(batch.map(SmsUtil.sendSMS));
+          Logger.info(
+            `Successfully sent batch SMS notifications at batch index: ${i}`
+          );
+        } catch (error) {
+          Logger.error(
+            `Failed to send batch SMS notifications at batch index ${i}:`,
+            error
+          );
+        }
+      })
+    );
+
+    Logger.info(
+      `Batch SMS notifications completed. Unsuccessful accounts: ${unsuccessful.length}`
+    );
+    return { unsuccessful };
+  }
+
+  public static async sendSmsNotificationToAll(
+    params: SendSmsNotificationToAllParams
+  ): Promise<{ unsuccessful: string[] }> {
+    const { content, notificationType } = params;
+    const isSmsEnabled = ConfigService.getValue('sms.enabled');
+
+    if (!isSmsEnabled) {
+      Logger.warn(`SMS not enabled. Could not send message - ${content}`);
+      return { unsuccessful: [] };
+    }
+    const getChannelPreferencesParams = {
+      notificationChannelPreferences: { sms: true },
+    };
     const accountIdsWithSmsNotificationEnabled =
       await NotificationService.getAccountsWithParticularNotificationChannelPreferences(
-        { notificationChannelPreferences: { sms: true } }
+        getChannelPreferencesParams
       );
-
     if (!accountIdsWithSmsNotificationEnabled) {
       throw new AccountsWithParticularNotificationPreferencesNotFoundError();
     }
-
-    const accountReferences = await Promise.all(
-      accountIdsWithSmsNotificationEnabled.map((accountId) =>
-        AccountService.getAccountById({ accountId })
-      )
-    );
-    await Promise.all(
-      accountReferences
-        .filter((accountReference) => accountReference.phoneNumber)
-        .map((accountReference) => {
-          const { phoneNumber } = accountReference;
-          const NotificationSmsParams: SendSMSParams = {
-            messageBody: content,
-            recipientPhone: phoneNumber,
-          };
-          return SmsUtil.sendSMS(NotificationSmsParams);
-        })
-    );
+    return NotificationService.sendSmsNotificationToGroup({
+      accountIds: accountIdsWithSmsNotificationEnabled,
+      content,
+      notificationType,
+    });
   }
 
   public static async sendSMS(params: SendSMSParams): Promise<void> {
@@ -309,32 +464,150 @@ export default class NotificationService {
     await NotificationWriter.deleteFcmToken(accountId, fcmToken);
   }
 
-  public static async sendPushNotification(
-    params: SendPushNotificationParams
+  public static async sendPushNotificationToAccount(
+    params: SendPushNotificationToAccountParams
   ): Promise<void> {
-    const { title, body } = params;
+    const { accountId, title, body, notificationType } = params;
+    const notificationPreference =
+      await NotificationReader.getAccountNotificationPreferences(accountId);
+    if (!notificationPreference) {
+      throw new NotificationPreferencesNotFoundError(accountId);
+    }
+    if (
+      !notificationPreference.notificationChannelPreferences.push ||
+      !notificationPreference.notificationTypePreferences[notificationType]
+    ) {
+      throw new NotificationPermissionDeniedError();
+    }
+    if (
+      !notificationPreference.fcmTokens ||
+      notificationPreference.fcmTokens.length === 0
+    ) {
+      throw new BadRequestError(
+        `No valid FCM tokens found for accountId ${accountId}`
+      );
+    }
+    await Promise.all(
+      notificationPreference.fcmTokens.map((fcmToken) =>
+        FcmUtil.sendPushNotification({ fcmToken, title, body })
+      )
+    );
+  }
 
-    const NotificationInstancesWithPushNotificationEnabled =
-      await NotificationService.getNotificationInstancesWithParticularNotificationChannelPreferences(
-        { notificationChannelPreferences: { push: true } }
+  public static async sendPushNotificationToGroup(
+    params: SendPushNotificationToGroupParams
+  ): Promise<{ unsuccessful: string[] }> {
+    const { accountIds, title, body, notificationType } = params;
+    const unsuccessful: string[] = [];
+    const pushBatches: { body: string; fcmTokens: string[]; title: string }[] =
+      [];
+
+    await Promise.all(
+      accountIds.map(async (accountId) => {
+        try {
+          const notificationPreference =
+            await NotificationReader.getAccountNotificationPreferences(
+              accountId
+            );
+          if (
+            !notificationPreference ||
+            !notificationPreference.notificationChannelPreferences.push ||
+            !notificationPreference.notificationTypePreferences[
+              notificationType
+            ] ||
+            !notificationPreference.fcmTokens ||
+            notificationPreference.fcmTokens.length === 0
+          ) {
+            unsuccessful.push(accountId);
+            return;
+          }
+
+          if (
+            !pushBatches.length ||
+            pushBatches[pushBatches.length - 1].fcmTokens.length >= batchSize
+          ) {
+            pushBatches.push({ fcmTokens: [], title, body });
+          }
+          pushBatches[pushBatches.length - 1].fcmTokens.push(
+            ...notificationPreference.fcmTokens
+          );
+        } catch (error) {
+          unsuccessful.push(accountId);
+        }
+      })
+    );
+
+    await Promise.all(
+      pushBatches.map(async (batch, i) => {
+        try {
+          await FcmUtil.sendBatchPushNotifications(batch);
+          Logger.info(
+            `Successfully sent batch push notifications at batch index: ${i}:`
+          );
+        } catch (error) {
+          Logger.error(
+            `Failed to send batch push notifications at index ${i}:`,
+            error
+          );
+        }
+      })
+    );
+
+    Logger.info(
+      `Batch push notifications completed. Unsuccessful accounts: ${unsuccessful.length}`
+    );
+    return { unsuccessful };
+  }
+
+  public static async sendPushNotificationToAll(
+    params: SendPushNotificationToAllParams
+  ): Promise<{ unsuccessful: string[] }> {
+    const { title, body, notificationType } = params;
+    const getChannelPreferencesParams = {
+      notificationChannelPreferences: { push: true },
+    };
+    const accountIdsWithPushNotificationEnabled =
+      await NotificationService.getAccountsWithParticularNotificationChannelPreferences(
+        getChannelPreferencesParams
       );
 
-    if (!NotificationInstancesWithPushNotificationEnabled) {
+    if (!accountIdsWithPushNotificationEnabled) {
       throw new AccountsWithParticularNotificationPreferencesNotFoundError();
     }
 
-    const notifcationInstances =
-      NotificationInstancesWithPushNotificationEnabled.filter(
-        (notification) =>
-          notification.fcmTokens && notification.fcmTokens.length > 0
-      );
+    return NotificationService.sendPushNotificationToGroup({
+      accountIds: accountIdsWithPushNotificationEnabled,
+      title,
+      body,
+      notificationType,
+    });
+  }
 
-    await Promise.all(
-      notifcationInstances.flatMap((notification) =>
-        notification.fcmTokens.map((fcmToken) =>
-          FcmUtil.sendPushNotification({ fcmToken, title, body })
-        )
-      )
-    );
+  public static async sendBroadcastNotification(
+    params: SendBroadcastNotificationParams
+  ): Promise<{
+    email: { unsuccessful: string[] };
+    push: { unsuccessful: string[] };
+    sms: { unsuccessful: string[] };
+  }> {
+    const { title, body, notificationType } = params;
+    const emailResult = await NotificationService.sendEmailNotificationToAll({
+      content: body,
+      notificationType,
+    });
+    const smsResult = await NotificationService.sendSmsNotificationToAll({
+      content: body,
+      notificationType,
+    });
+    const pushResult = await NotificationService.sendPushNotificationToAll({
+      title,
+      body,
+      notificationType,
+    });
+    return {
+      email: emailResult,
+      sms: smsResult,
+      push: pushResult,
+    };
   }
 }
