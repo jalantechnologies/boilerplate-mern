@@ -41,7 +41,7 @@ describe('Account Password Reset', () => {
       expect(
         await PasswordResetTokenRepository.findOne({
           account: account.id,
-        }),
+        })
       ).to.not.exist;
 
       const passwordResetTokenparams = {
@@ -68,14 +68,14 @@ describe('Account Password Reset', () => {
       expect(res.body.isUsed).to.eq(false);
       expect(stubEmailService.calledOnce).to.be.true;
       expect(stubEmailService.getCall(0).args[0].templateData).to.have.property(
-        'passwordResetLink',
+        'passwordResetLink'
       );
       expect(res.body.account).to.eq(account.id);
 
       expect(
         await PasswordResetTokenRepository.findOne({
           account: account.id,
-        }),
+        })
       ).to.exist;
 
       await PasswordResetTokenRepository.deleteOne({
@@ -96,7 +96,7 @@ describe('Account Password Reset', () => {
         .send(passwordResetTokenparams);
 
       expect(res.body.message).to.eq(
-        new AccountNotFoundError(passwordResetTokenparams.username).message,
+        new AccountNotFoundError(passwordResetTokenparams.username).message
       );
     });
   });
@@ -136,14 +136,14 @@ describe('Account Password Reset', () => {
       expect(
         await AccountUtil.comparePassword(
           newPassword,
-          updatedAccount.hashedPassword,
-        ),
+          updatedAccount.hashedPassword
+        )
       ).to.eq(true);
 
       // Check if password reset token is marked as used.
       const updatedPasswordResetToken =
         await PasswordResetTokenService.getPasswordResetTokenByAccountId(
-          account.id,
+          account.id
         );
 
       expect(updatedPasswordResetToken.isUsed).to.eq(true);
@@ -172,7 +172,7 @@ describe('Account Password Reset', () => {
 
       expect(res).to.have.status(404);
       expect(res.body.message).to.eq(
-        new AccountNotFoundError(accountId).message,
+        new AccountNotFoundError(accountId).message
       );
     });
 
@@ -187,7 +187,7 @@ describe('Account Password Reset', () => {
       expect(
         await PasswordResetTokenRepository.findOne({
           account: account.id,
-        }),
+        })
       ).to.not.exist;
 
       await PasswordResetTokenService.createPasswordResetToken({
@@ -197,7 +197,7 @@ describe('Account Password Reset', () => {
       expect(
         await PasswordResetTokenRepository.findOne({
           account: account.id,
-        }),
+        })
       ).to.exist;
 
       const newPassword = faker.internet.password();
@@ -215,7 +215,7 @@ describe('Account Password Reset', () => {
       expect(
         await PasswordResetTokenRepository.findOne({
           account: account.id,
-        }),
+        })
       ).to.not.exist;
 
       const res = await chai
@@ -226,7 +226,7 @@ describe('Account Password Reset', () => {
 
       expect(res).to.have.status(404);
       expect(res.body.message).to.eq(
-        new PasswordResetTokenNotFoundError(account.id).message,
+        new PasswordResetTokenNotFoundError(account.id).message
       );
     });
 
@@ -247,7 +247,7 @@ describe('Account Password Reset', () => {
         passwordResetToken.id,
         {
           expiresAt: new Date('2024-03-12'),
-        },
+        }
       );
 
       const newPassword = faker.internet.password();
@@ -267,8 +267,8 @@ describe('Account Password Reset', () => {
       expect(res).to.have.status(400);
       expect(res.body.message).to.eq(
         new AccountBadRequestError(
-          `Password reset link is expired for accountId ${account.id}. Please retry with new link`,
-        ).message,
+          `Password reset link is expired for accountId ${account.id}. Please retry with new link`
+        ).message
       );
 
       await PasswordResetTokenRepository.deleteOne({
@@ -291,7 +291,7 @@ describe('Account Password Reset', () => {
 
       // Setting Token as used
       await PasswordResetTokenService.setPasswordResetTokenAsUsedById(
-        passwordResetToken.id,
+        passwordResetToken.id
       );
 
       const newPassword = faker.internet.password();
@@ -311,8 +311,8 @@ describe('Account Password Reset', () => {
       expect(res).to.have.status(400);
       expect(res.body.message).to.eq(
         new AccountBadRequestError(
-          `Password reset is already used for accountId ${account.id}. Please retry with new link`,
-        ).message,
+          `Password reset is already used for accountId ${account.id}. Please retry with new link`
+        ).message
       );
 
       await PasswordResetTokenRepository.deleteOne({
@@ -344,8 +344,8 @@ describe('Account Password Reset', () => {
       expect(res).to.have.status(400);
       expect(res.body.message).to.eq(
         new AccountBadRequestError(
-          `Password reset link is invalid for accountId ${account.id}. Please retry with new link.`,
-        ).message,
+          `Password reset link is invalid for accountId ${account.id}. Please retry with new link.`
+        ).message
       );
 
       await PasswordResetTokenRepository.deleteOne({

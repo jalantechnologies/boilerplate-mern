@@ -26,7 +26,7 @@ export class PasswordResetTokenController {
   validateTokenAndResetPassword = applicationController(
     async (
       req: Request<ValidatePasswordResetTokenAndResetPasswordParams>,
-      res: Response,
+      res: Response
     ) => {
       const passwordResetToken =
         await PasswordResetTokenService.validateTokenAndResetPassword({
@@ -40,6 +40,6 @@ export class PasswordResetTokenController {
           serializePasswordResetTokenAsJSON(passwordResetToken);
         res.status(HttpStatusCodes.CREATED).send(passwordResetTokenJSON);
       }
-    },
+    }
   );
 }
