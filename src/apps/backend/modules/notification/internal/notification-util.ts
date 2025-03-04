@@ -107,6 +107,32 @@ export default class NotificationUtil {
     }
   }
 
+  public static validateBatchEmails(emails: SendEmailParams[]): void {
+    const failures: ValidationFailure[] = [];
+
+    emails.forEach((email, index) => {
+      try {
+        this.validateEmail(email);
+      } catch (error) {
+        if (error instanceof ValidationError) {
+          error.failures.forEach((failure) => {
+            failures.push({
+              field: `batch[${index}].${failure.field}`,
+              message: failure.message,
+            });
+          });
+        }
+      }
+    });
+
+    if (failures.length) {
+      throw new ValidationError(
+        'Batch email validation failed. Please check the email parameters.',
+        failures
+      );
+    }
+  }
+
   public static validateEmailRegex(email: string): boolean {
     return emailRegex.test(String(email).toLowerCase());
   }
