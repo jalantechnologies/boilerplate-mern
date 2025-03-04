@@ -16,7 +16,7 @@ export default class DocumentGeneratorUtil {
   public static restApiFolderPath = 'rest-api';
 
   public static getRoutesWithControllerAndSerializerDetails(
-    params: GetRoutesWithControllerAndSerializerDetailsResponse,
+    params: GetRoutesWithControllerAndSerializerDetailsResponse
   ): HttpRouteWithControllerAndSerializerDetails[] {
     const routesList: HttpRouteWithControllerAndSerializerDetails[] = [];
     const excludeSerializerMethodsForRouteMethods = ['DELETE'];
@@ -24,19 +24,19 @@ export default class DocumentGeneratorUtil {
     params.expressRoutesList.forEach((routeWithRootFolderPath) => {
       const restApiFolderPath = path.join(
         routeWithRootFolderPath.rootFolderPath,
-        this.restApiFolderPath,
+        this.restApiFolderPath
       );
       const routesWithControllerMethods = routeWithRootFolderPath.routes.map(
         (route) => {
           const controllerMethod = this.getControllerMethodCode(
             restApiFolderPath,
-            route,
+            route
           );
           let serializerMethod: Nullable<string> = null;
           if (!excludeSerializerMethodsForRouteMethods.includes(route.method)) {
             serializerMethod = this.getSerializerMethodCode(
               controllerMethod,
-              restApiFolderPath,
+              restApiFolderPath
             );
           }
           return {
@@ -45,7 +45,7 @@ export default class DocumentGeneratorUtil {
             method: route.method,
             serializerMethod,
           };
-        },
+        }
       );
       routesList.push(...routesWithControllerMethods);
     });
@@ -55,59 +55,59 @@ export default class DocumentGeneratorUtil {
 
   private static getControllerMethodCode(
     restApiFolderPath: string,
-    route: HttpRoute,
+    route: HttpRoute
   ): string {
     const controllerMethodName = this.getControllerMethodName(
       restApiFolderPath,
-      route,
+      route
     );
 
     if (!controllerMethodName) {
       throw new ErrorReadingFile(
-        'Controller method name could not be determined',
+        'Controller method name could not be determined'
       );
     }
 
     return this.extractMethodCodeWithSignature(
       this.controllerFileSuffix,
       restApiFolderPath,
-      `${controllerMethodName} =`,
+      `${controllerMethodName} =`
     );
   }
 
   private static getSerializerMethodCode(
     controllerMethodCode: Nullable<string>,
-    restApiFolderPath: string,
+    restApiFolderPath: string
   ): Nullable<string> {
     const serializeMethodName =
       this.extractSerializeMethodName(controllerMethodCode);
 
     if (!serializeMethodName) {
       throw new ErrorReadingFile(
-        'No serialize method found in the controller method code',
+        'No serialize method found in the controller method code'
       );
     }
 
     return this.extractMethodCodeWithSignature(
       this.serializerFileSuffix,
       restApiFolderPath,
-      `const ${serializeMethodName} =`,
+      `const ${serializeMethodName} =`
     );
   }
 
   private static getControllerMethodName(
     restApiFolderPath: string,
-    route: HttpRoute,
+    route: HttpRoute
   ): string {
     try {
       const files = fs.readdirSync(restApiFolderPath);
       const routerFileName = files.find((file) =>
-        file.endsWith(this.routerFileSuffix),
+        file.endsWith(this.routerFileSuffix)
       );
 
       if (!routerFileName) {
         throw new ErrorReadingFile(
-          `No router file found in the rest-api folder at path: ${restApiFolderPath}`,
+          `No router file found in the rest-api folder at path: ${restApiFolderPath}`
         );
       }
 
@@ -116,7 +116,7 @@ export default class DocumentGeneratorUtil {
 
       const routeRegex = new RegExp(
         `router\\.${route.method.toLowerCase()}\\(['"]${route.routerPath}['"],\\s*ctrl\\.(\\w+)\\)`,
-        'g',
+        'g'
       );
       const match = routeRegex.exec(routerFileContent);
 
@@ -126,17 +126,17 @@ export default class DocumentGeneratorUtil {
       }
 
       throw new ErrorReadingFile(
-        `No matching route found for method: ${route.method.toUpperCase()} and path: ${route.routerPath}`,
+        `No matching route found for method: ${route.method.toUpperCase()} and path: ${route.routerPath}`
       );
     } catch (error) {
       throw new ErrorReadingFile(
-        `Error reading or writing router file: ${error.message}`,
+        `Error reading or writing router file: ${error.message}`
       );
     }
   }
 
   private static extractSerializeMethodName(
-    controllerMethodCode: Nullable<string>,
+    controllerMethodCode: Nullable<string>
   ): Nullable<string> {
     if (!controllerMethodCode) return null;
 
@@ -148,21 +148,21 @@ export default class DocumentGeneratorUtil {
   private static getEndpoint(route: HttpRoute): string {
     const baseApiRoutePath =
       this.addLeadingSlashesIfNotExistsAndRemoveTrailingSlashes(
-        route.baseAPIRoutePath,
+        route.baseAPIRoutePath
       );
     const rootRouterPath =
       this.addLeadingSlashesIfNotExistsAndRemoveTrailingSlashes(
-        route.rootRouterPath,
+        route.rootRouterPath
       );
     const routerPath =
       this.addLeadingSlashesIfNotExistsAndRemoveTrailingSlashes(
-        route.routerPath,
+        route.routerPath
       );
     return `${baseApiRoutePath}${rootRouterPath}${routerPath}`;
   }
 
   private static addLeadingSlashesIfNotExistsAndRemoveTrailingSlashes(
-    routePath: string,
+    routePath: string
   ): string {
     const trimmedRoutePath = routePath.replace(/(^\/)|(\/$)/g, '');
     return trimmedRoutePath ? `/${trimmedRoutePath}` : '';
@@ -171,7 +171,7 @@ export default class DocumentGeneratorUtil {
   private static extractMethodCodeWithSignature(
     fileSuffix: string,
     folderPath: string,
-    methodSignature: string,
+    methodSignature: string
   ): string {
     try {
       const fileName = this.findFileWithSuffix(fileSuffix, folderPath);
@@ -179,7 +179,7 @@ export default class DocumentGeneratorUtil {
       const fileContent = this.readFileContent(fileName, folderPath);
       const methodCode = this.extractMethodFromContent(
         fileContent,
-        methodSignature,
+        methodSignature
       );
 
       if (methodCode) {
@@ -187,7 +187,7 @@ export default class DocumentGeneratorUtil {
       }
 
       throw new ErrorReadingFile(
-        `No matching method found for signature: ${methodSignature}`,
+        `No matching method found for signature: ${methodSignature}`
       );
     } catch (error) {
       throw new ErrorReadingFile(`Error reading file: ${error.message}`);
@@ -196,14 +196,14 @@ export default class DocumentGeneratorUtil {
 
   private static findFileWithSuffix(
     fileSuffix: string,
-    folderPath: string,
+    folderPath: string
   ): string {
     const files = fs.readdirSync(folderPath);
     const fileName = files.find((file) => file.endsWith(fileSuffix));
 
     if (!fileName) {
       throw new ErrorReadingFile(
-        `No file found with suffix ${fileSuffix} in folder: ${folderPath}`,
+        `No file found with suffix ${fileSuffix} in folder: ${folderPath}`
       );
     }
 
@@ -217,7 +217,7 @@ export default class DocumentGeneratorUtil {
 
   private static extractMethodFromContent(
     fileContent: string,
-    methodSignature: string,
+    methodSignature: string
   ): string {
     const codebaseLines = fileContent.split('\n');
     let methodCode = '';

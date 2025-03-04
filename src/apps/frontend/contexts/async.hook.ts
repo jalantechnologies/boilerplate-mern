@@ -5,7 +5,7 @@ import { AsyncOperationError } from '../types/async-operation';
 import { Nullable } from '../types/common';
 
 const useAsync = <T>(
-  asyncFn: (...args: unknown[]) => Promise<AsyncResult<T>>,
+  asyncFn: (...args: unknown[]) => Promise<AsyncResult<T>>
 ): UseAsyncResponse<T> => {
   const [result, setResult] = useState<Nullable<T>>(null);
   const [isLoading, setLoading] = useState(false);
@@ -35,7 +35,7 @@ const useAsync = <T>(
         setLoading(false);
       }
     },
-    [asyncFn],
+    [asyncFn]
   );
 
   return {

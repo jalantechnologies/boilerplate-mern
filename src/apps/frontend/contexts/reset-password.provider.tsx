@@ -30,11 +30,11 @@ export const useResetPasswordContext = (): ResetPasswordContextType =>
   useContext(ResetPasswordContext) as ResetPasswordContextType;
 
 const resetPasswordFn = async (
-  params: ResetPasswordParams,
+  params: ResetPasswordParams
 ): Promise<ApiResponse<void>> => resetPasswordService.resetPassword(params);
 
 const sendForgotPasswordEmailFn = async (
-  username: string,
+  username: string
 ): Promise<ApiResponse<void>> =>
   resetPasswordService.sendForgotPasswordEmail(username);
 

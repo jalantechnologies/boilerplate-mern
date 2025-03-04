@@ -30,7 +30,7 @@ type TaskContextType = {
   tasksList: Task[];
   updateTask: (
     taskId: string,
-    taskData: Partial<Task>,
+    taskData: Partial<Task>
   ) => Promise<Nullable<Task>>;
   updateTaskError: Nullable<AsyncError>;
   updatedTask: Nullable<Task>;
@@ -45,18 +45,18 @@ export const useTaskContext = (): TaskContextType =>
 
 const addTaskFn = async (
   title: string,
-  description: string,
+  description: string
 ): Promise<ApiResponse<Nullable<Task>>> =>
   taskService.addTask(title, description);
 
 const updateTaskFn = async (
   taskId: string,
-  taskData: Task,
+  taskData: Task
 ): Promise<ApiResponse<Nullable<Task>>> =>
   taskService.updateTask(taskId, taskData);
 
 const deleteTaskFn = async (
-  taskId: string,
+  taskId: string
 ): Promise<ApiResponse<Nullable<void>>> => taskService.deleteTask(taskId);
 
 interface TaskProviderProps {

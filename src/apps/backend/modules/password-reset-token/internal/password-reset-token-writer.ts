@@ -6,7 +6,7 @@ import PasswordResetTokenRepository from './store/password-reset-token-repositor
 export default class PasswordResetTokenWriter {
   public static async createPasswordResetToken(
     accountId: string,
-    token: string,
+    token: string
   ): Promise<PasswordResetToken> {
     const tokenHash =
       await PasswordResetTokenUtil.hashPasswordResetToken(token);
@@ -19,29 +19,29 @@ export default class PasswordResetTokenWriter {
     });
 
     return PasswordResetTokenUtil.convertPasswordResetTokenDBToPasswordResetToken(
-      passwordResetTokenDB,
+      passwordResetTokenDB
     );
   }
 
   public static async setPasswordResetTokenAsUsed(
-    passwordResetTokenId: string,
+    passwordResetTokenId: string
   ): Promise<PasswordResetToken> {
     const updatedToken = await PasswordResetTokenRepository.findByIdAndUpdate(
       passwordResetTokenId,
       {
         isUsed: true,
       },
-      { new: true },
+      { new: true }
     );
 
     if (!updatedToken) {
       throw new PasswordResetTokenNotFoundError(
-        `Password reset token with id ${passwordResetTokenId} not found`,
+        `Password reset token with id ${passwordResetTokenId} not found`
       );
     }
 
     return PasswordResetTokenUtil.convertPasswordResetTokenDBToPasswordResetToken(
-      updatedToken,
+      updatedToken
     );
   }
 }
