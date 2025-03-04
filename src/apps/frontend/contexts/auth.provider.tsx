@@ -32,12 +32,12 @@ type AuthContextType = {
     firstName: string,
     lastName: string,
     username: string,
-    password: string,
+    password: string
   ) => Promise<Nullable<void>>;
   signupError: Nullable<AsyncError>;
   verifyOTP: (
     phoneNumber: PhoneNumber,
-    otp: string,
+    otp: string
   ) => Promise<Nullable<AccessToken>>;
   verifyOTPError: Nullable<AsyncError>;
   verifyOTPResult: Nullable<AccessToken>;
@@ -52,7 +52,7 @@ export const useAuthContext = (): AuthContextType =>
 
 const loginFn = async (
   username: string,
-  password: string,
+  password: string
 ): Promise<ApiResponse<AccessToken>> => {
   const result = await authService.login(username, password);
   if (result.data) {
@@ -65,7 +65,7 @@ const signupFn = async (
   firstName: string,
   lastName: string,
   username: string,
-  password: string,
+  password: string
 ): Promise<ApiResponse<void>> =>
   authService.signup(firstName, lastName, username, password);
 
@@ -77,12 +77,12 @@ const getAccessToken = (): AccessToken =>
 const isUserAuthenticated = () => !!getAccessToken();
 
 const sendOTPFn = async (
-  phoneNumber: PhoneNumber,
+  phoneNumber: PhoneNumber
 ): Promise<ApiResponse<void>> => authService.sendOTP(phoneNumber);
 
 const verifyOTPFn = async (
   phoneNumber: PhoneNumber,
-  otp: string,
+  otp: string
 ): Promise<ApiResponse<AccessToken>> => {
   const result = await authService.verifyOTP(phoneNumber, otp);
   if (result.data) {

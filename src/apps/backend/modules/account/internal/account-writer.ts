@@ -14,7 +14,7 @@ export default class AccountWriter {
     firstName: string,
     lastName: string,
     password: string,
-    username: string,
+    username: string
   ): Promise<Account> {
     // check if account already exists
     // this will throw an error if it does
@@ -33,13 +33,13 @@ export default class AccountWriter {
   }
 
   public static async createAccountByPhoneNumber(
-    phoneNumber: PhoneNumber,
+    phoneNumber: PhoneNumber
   ): Promise<Account> {
     const phoneUtil = <PhoneUtilInterface>(
       (<PhoneUtilInstance>PhoneNumberUtil).getInstance()
     );
     const isValidPhoneNumber = phoneUtil.isValidNumber(
-      phoneUtil.parse(phoneNumber.toString()),
+      phoneUtil.parse(phoneNumber.toString())
     );
 
     if (!isValidPhoneNumber) {
@@ -59,7 +59,7 @@ export default class AccountWriter {
 
   public static async updatePasswordByAccountId(
     accountId: string,
-    newPassword: string,
+    newPassword: string
   ): Promise<Account> {
     const accountHashedPassword = await AccountUtil.hashPassword(newPassword);
     const dbAccount = await AccountRepository.findByIdAndUpdate(
@@ -67,7 +67,7 @@ export default class AccountWriter {
       {
         hashedPassword: accountHashedPassword,
       },
-      { new: true },
+      { new: true }
     );
 
     if (!dbAccount) {
@@ -80,7 +80,7 @@ export default class AccountWriter {
   public static async updateAccountDetails(
     accountId: string,
     firstName: string,
-    lastName: string,
+    lastName: string
   ): Promise<Account> {
     const dbAccount = await AccountRepository.findByIdAndUpdate(
       accountId,
@@ -88,7 +88,7 @@ export default class AccountWriter {
         firstName,
         lastName,
       },
-      { new: true },
+      { new: true }
     );
 
     if (!dbAccount) {

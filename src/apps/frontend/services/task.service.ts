@@ -8,7 +8,7 @@ import APIService from './api.service';
 export default class TaskService extends APIService {
   addTask = async (
     title: string,
-    description: string,
+    description: string
   ): Promise<ApiResponse<Nullable<Task>>> => {
     try {
       const userAccessToken = getAccessTokenFromStorage();
@@ -19,7 +19,7 @@ export default class TaskService extends APIService {
           headers: {
             Authorization: `Bearer ${userAccessToken?.token}`,
           },
-        },
+        }
       );
       return new ApiResponse(new Task(response.data as JsonObject), undefined);
     } catch (e) {
@@ -36,7 +36,7 @@ export default class TaskService extends APIService {
         },
       });
       const tasks: Task[] = (response.data as JsonObject[]).map(
-        (taskData) => new Task(taskData),
+        (taskData) => new Task(taskData)
       );
       return new ApiResponse(tasks, undefined);
     } catch (e) {
@@ -46,7 +46,7 @@ export default class TaskService extends APIService {
 
   updateTask = async (
     taskId: string,
-    taskData: Task,
+    taskData: Task
   ): Promise<ApiResponse<Nullable<Task>>> => {
     try {
       const userAccessToken = getAccessTokenFromStorage();
@@ -57,7 +57,7 @@ export default class TaskService extends APIService {
           headers: {
             Authorization: `Bearer ${userAccessToken?.token}`,
           },
-        },
+        }
       );
       return new ApiResponse(new Task(response.data as JsonObject), undefined);
     } catch (e) {

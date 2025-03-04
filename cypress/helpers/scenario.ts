@@ -2,7 +2,7 @@ import { Nullable } from '../types/common';
 
 export const setupScenario = <T = unknown>(
   name: string,
-  params?: unknown,
+  params?: unknown
 ): Nullable<T> => {
   let result: Nullable<T> = null;
 

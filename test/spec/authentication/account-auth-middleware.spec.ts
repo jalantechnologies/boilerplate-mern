@@ -45,7 +45,7 @@ describe('accessAuthMiddleware', () => {
         },
       } as unknown as Request,
       {} as unknown as Response,
-      controller,
+      controller
     );
 
     sinon.assert.calledOnce(controller);
@@ -65,9 +65,9 @@ describe('accessAuthMiddleware', () => {
             },
           } as unknown as Request,
           {} as unknown as Response,
-          controller,
+          controller
         ),
-      new UnAuthorizedAccessError().message,
+      new UnAuthorizedAccessError().message
     );
 
     sinon.assert.notCalled(controller);
@@ -84,7 +84,7 @@ describe('accessAuthMiddleware', () => {
     const expiredToken =
       await AuthenticationService.createAccessTokenByUsernameAndPassword(
         password,
-        account.username,
+        account.username
       );
 
     assert.throws(
@@ -99,9 +99,9 @@ describe('accessAuthMiddleware', () => {
             },
           } as unknown as Request,
           {} as unknown as Response,
-          controller,
+          controller
         ),
-      new AccessTokenExpiredError().message,
+      new AccessTokenExpiredError().message
     );
 
     sinon.assert.notCalled(controller);
@@ -118,9 +118,9 @@ describe('accessAuthMiddleware', () => {
             headers: {},
           } as unknown as Request,
           {} as unknown as Response,
-          controller,
+          controller
         ),
-      new AuthorizationHeaderNotFound().message,
+      new AuthorizationHeaderNotFound().message
     );
 
     sinon.assert.notCalled(controller);
@@ -139,9 +139,9 @@ describe('accessAuthMiddleware', () => {
             },
           } as unknown as Request,
           {} as unknown as Response,
-          controller,
+          controller
         ),
-      new InvalidAuthorizationHeader().message,
+      new InvalidAuthorizationHeader().message
     );
 
     sinon.assert.notCalled(controller);
