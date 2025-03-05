@@ -93,60 +93,60 @@ export type PhoneNumber = {
 export type SendEmailNotificationToAccountParams = {
   accountId: string;
   content: string;
-  notificationType: NotificationTypePreferenceEnum;
+  notificationType: string;
 };
 
 export type SendEmailNotificationToGroupParams = {
   accountIds: string[];
   content: string;
-  notificationType: NotificationTypePreferenceEnum;
+  notificationType: string;
 };
 
 export type SendEmailNotificationToAllParams = {
   content: string;
-  notificationType: NotificationTypePreferenceEnum;
+  notificationType: string;
 };
 
 export type SendSmsNotificationToAccountParams = {
   accountId: string;
   content: string;
-  notificationType: NotificationTypePreferenceEnum;
+  notificationType: string;
 };
 
 export type SendSmsNotificationToGroupParams = {
   accountIds: string[];
   content: string;
-  notificationType: NotificationTypePreferenceEnum;
+  notificationType: string;
 };
 
 export type SendSmsNotificationToAllParams = {
   content: string;
-  notificationType: NotificationTypePreferenceEnum;
+  notificationType: string;
 };
 
 export type SendPushNotificationToAccountParams = {
   accountId: string;
   body: string;
-  notificationType: NotificationTypePreferenceEnum;
+  notificationType: string;
   title: string;
 };
 
 export type SendPushNotificationToGroupParams = {
   accountIds: string[];
   body: string;
-  notificationType: NotificationTypePreferenceEnum;
+  notificationType: string;
   title: string;
 };
 
 export type SendPushNotificationToAllParams = {
   body: string;
-  notificationType: NotificationTypePreferenceEnum;
+  notificationType: string;
   title: string;
 };
 
 export type SendBroadcastNotificationParams = {
   body: string;
-  notificationType: NotificationTypePreferenceEnum;
+  notificationType: string;
   title: string;
 };
 

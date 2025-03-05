@@ -1,4 +1,3 @@
-/*
 import { expect } from 'chai';
 import admin from 'firebase-admin';
 import sinon from 'sinon';
@@ -98,4 +97,47 @@ describe('sendPushNotification', () => {
     );
   });
 });
-*/
+describe('sendBatchPushNotifications', () => {
+  let firebaseSendMulticastStub: sinon.SinonStub;
+  beforeEach(() => {
+    firebaseSendMulticastStub = sinon
+      .stub()
+      .resolves({ successCount: 1, failureCount: 0 });
+
+    const mockApp = {
+      messaging: () => ({
+        sendMulticast: firebaseSendMulticastStub,
+      }),
+    } as unknown as admin.app.App;
+
+    sinon.stub(admin, 'initializeApp').returns(mockApp);
+    sinon.stub(admin, 'app').returns(mockApp);
+    sinon.stub(FcmUtil, 'getFirebaseApp').returns(mockApp);
+
+    sinon
+      .stub(ConfigService, 'getValue')
+      .withArgs('firebase.serviceAccountPath')
+      .returns('/path/to/fake/service-account.json');
+  });
+  afterEach(() => {
+    sinon.restore();
+  });
+
+  it('should throw error when fcmTokens array is empty', async () => {
+    const params = { fcmTokens: [], title: 'Test', body: 'Test body' };
+    await expect(FcmUtil.sendBatchPushNotifications(params)).to.be.rejectedWith(
+      'No FCM tokens provided.'
+    );
+    sinon.assert.notCalled(firebaseSendMulticastStub);
+  });
+
+  it('should send batch push notifications successfully', async () => {
+    const params = {
+      fcmTokens: ['token1', 'token2'],
+      title: 'Batch Test',
+      body: 'Batch Test Body',
+    };
+    await expect(FcmUtil.sendBatchPushNotifications(params)).to.be.fulfilled;
+    sinon.assert.calledOnce(firebaseSendMulticastStub);
+  });
+});

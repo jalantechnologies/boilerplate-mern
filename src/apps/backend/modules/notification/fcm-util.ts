@@ -55,7 +55,7 @@ export default class FcmUtil {
     }
   }
 
-  private static getFirebaseApp(): admin.app.App {
+  public static getFirebaseApp(): admin.app.App {
     if (!this.firebaseApp) {
       try {
         const serviceAccountPath = ConfigService.getValue<string>(
