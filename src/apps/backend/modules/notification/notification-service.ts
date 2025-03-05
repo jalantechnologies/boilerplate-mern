@@ -17,6 +17,7 @@ import {
   GetAccountsWithParticularNotificationChannelPreferenceParams,
   GetAccountsWithParticularNotificationTypePreferenceParams,
   Notification,
+  NotificationTypePreferenceEnum,
   NotificationPreferencesNotFoundError,
   NotificationPermissionDeniedError,
   NotificationPrefrenceTypeNotFoundError,
@@ -151,7 +152,17 @@ export default class NotificationService {
   public static async sendEmailNotificationToAccount(
     params: SendEmailNotificationToAccountParams
   ): Promise<void> {
-    const { accountId, content, notificationType } = params;
+    const { accountId, content } = params;
+    let { notificationType } = params;
+    notificationType = notificationType.toLowerCase();
+    if (
+      !Object.values(NotificationTypePreferenceEnum).includes(
+        notificationType as NotificationTypePreferenceEnum
+      )
+    ) {
+      throw new NotificationPrefrenceTypeNotFoundError();
+    }
+
     const notificationPreference =
       await NotificationReader.getAccountNotificationPreferences(accountId);
     if (!notificationPreference) {
@@ -185,12 +196,24 @@ export default class NotificationService {
     };
 
     await NotificationService.sendEmail(emailParams);
+    Logger.info(
+      `Successfully sent email notification to accountId: ${accountId}:`
+    );
   }
 
   public static async sendEmailNotificationToGroup(
     params: SendEmailNotificationToGroupParams
   ): Promise<{ unsuccessful: string[] }> {
-    const { accountIds, content, notificationType } = params;
+    const { accountIds, content } = params;
+    let { notificationType } = params;
+    notificationType = notificationType.toLowerCase();
+    if (
+      !Object.values(NotificationTypePreferenceEnum).includes(
+        notificationType as NotificationTypePreferenceEnum
+      )
+    ) {
+      throw new NotificationPrefrenceTypeNotFoundError();
+    }
     const unsuccessful: string[] = [];
     const emailBatches: SendEmailParams[][] = [];
 
@@ -274,7 +297,16 @@ export default class NotificationService {
   public static async sendEmailNotificationToAll(
     params: SendEmailNotificationToAllParams
   ): Promise<{ unsuccessful: string[] }> {
-    const { content, notificationType } = params;
+    const { content } = params;
+    let { notificationType } = params;
+    notificationType = notificationType.toLowerCase();
+    if (
+      !Object.values(NotificationTypePreferenceEnum).includes(
+        notificationType as NotificationTypePreferenceEnum
+      )
+    ) {
+      throw new NotificationPrefrenceTypeNotFoundError();
+    }
     const getChannelPreferencesParams = {
       notificationChannelPreferences: { email: true },
     };
@@ -282,11 +314,20 @@ export default class NotificationService {
       await NotificationService.getAccountsWithParticularNotificationChannelPreferences(
         getChannelPreferencesParams
       );
-    if (!accountIdsWithEmailNotificationEnabled) {
+    const accountsWithNotificationTypeEnabled =
+      await NotificationService.getAccountsWithParticularNotificationTypePreferences(
+        {
+          notificationTypePreferences: { [notificationType]: true },
+        }
+      );
+    const filteredAccountIds = accountIdsWithEmailNotificationEnabled.filter(
+      (accountId) => accountsWithNotificationTypeEnabled.includes(accountId)
+    );
+    if (filteredAccountIds.length === 0) {
       throw new AccountsWithParticularNotificationPreferencesNotFoundError();
     }
     return NotificationService.sendEmailNotificationToGroup({
-      accountIds: accountIdsWithEmailNotificationEnabled,
+      accountIds: filteredAccountIds,
       content,
       notificationType,
     });
@@ -299,7 +340,16 @@ export default class NotificationService {
   public static async sendSmsNotificationToAccount(
     params: SendSmsNotificationToAccountParams
   ): Promise<void> {
-    const { accountId, content, notificationType } = params;
+    const { accountId, content } = params;
+    let { notificationType } = params;
+    notificationType = notificationType.toLowerCase();
+    if (
+      !Object.values(NotificationTypePreferenceEnum).includes(
+        notificationType as NotificationTypePreferenceEnum
+      )
+    ) {
+      throw new NotificationPrefrenceTypeNotFoundError();
+    }
     const isSmsEnabled = ConfigService.getValue('sms.enabled');
 
     if (!isSmsEnabled) {
@@ -328,12 +378,24 @@ export default class NotificationService {
       recipientPhone: accountReference.phoneNumber,
     };
     await NotificationService.sendSMS(NotificationSmsParams);
+    Logger.info(
+      `Successfully sent sms notification to accountId: ${accountId}:`
+    );
   }
 
   public static async sendSmsNotificationToGroup(
     params: SendSmsNotificationToGroupParams
   ): Promise<{ unsuccessful: string[] }> {
-    const { accountIds, content, notificationType } = params;
+    const { accountIds, content } = params;
+    let { notificationType } = params;
+    notificationType = notificationType.toLowerCase();
+    if (
+      !Object.values(NotificationTypePreferenceEnum).includes(
+        notificationType as NotificationTypePreferenceEnum
+      )
+    ) {
+      throw new NotificationPrefrenceTypeNotFoundError();
+    }
     const unsuccessful: string[] = [];
     const smsBatches: SendSMSParams[][] = [];
 
@@ -386,7 +448,9 @@ export default class NotificationService {
     await Promise.all(
       smsBatches.map(async (batch, i) => {
         try {
-          await Promise.all(batch.map(SmsUtil.sendSMS));
+          await Promise.all(
+            batch.map((smsparams) => NotificationService.sendSMS(smsparams))
+          );
           Logger.info(
             `Successfully sent batch SMS notifications at batch index: ${i}`
           );
@@ -408,7 +472,16 @@ export default class NotificationService {
   public static async sendSmsNotificationToAll(
     params: SendSmsNotificationToAllParams
   ): Promise<{ unsuccessful: string[] }> {
-    const { content, notificationType } = params;
+    const { content } = params;
+    let { notificationType } = params;
+    notificationType = notificationType.toLowerCase();
+    if (
+      !Object.values(NotificationTypePreferenceEnum).includes(
+        notificationType as NotificationTypePreferenceEnum
+      )
+    ) {
+      throw new NotificationPrefrenceTypeNotFoundError();
+    }
     const isSmsEnabled = ConfigService.getValue('sms.enabled');
 
     if (!isSmsEnabled) {
@@ -422,11 +495,20 @@ export default class NotificationService {
       await NotificationService.getAccountsWithParticularNotificationChannelPreferences(
         getChannelPreferencesParams
       );
-    if (!accountIdsWithSmsNotificationEnabled) {
+    const accountsWithNotificationTypeEnabled =
+      await NotificationService.getAccountsWithParticularNotificationTypePreferences(
+        {
+          notificationTypePreferences: { [notificationType]: true },
+        }
+      );
+    const filteredAccountIds = accountIdsWithSmsNotificationEnabled.filter(
+      (accountId) => accountsWithNotificationTypeEnabled.includes(accountId)
+    );
+    if (filteredAccountIds.length === 0) {
       throw new AccountsWithParticularNotificationPreferencesNotFoundError();
     }
     return NotificationService.sendSmsNotificationToGroup({
-      accountIds: accountIdsWithSmsNotificationEnabled,
+      accountIds: filteredAccountIds,
       content,
       notificationType,
     });
@@ -466,38 +548,29 @@ export default class NotificationService {
 
   public static async sendPushNotificationToAccount(
     params: SendPushNotificationToAccountParams
-  ): Promise<void> {
+  ): Promise<{ unsuccessful: string[] }> {
     const { accountId, title, body, notificationType } = params;
-    const notificationPreference =
-      await NotificationReader.getAccountNotificationPreferences(accountId);
-    if (!notificationPreference) {
-      throw new NotificationPreferencesNotFoundError(accountId);
-    }
-    if (
-      !notificationPreference.notificationChannelPreferences.push ||
-      !notificationPreference.notificationTypePreferences[notificationType]
-    ) {
-      throw new NotificationPermissionDeniedError();
-    }
-    if (
-      !notificationPreference.fcmTokens ||
-      notificationPreference.fcmTokens.length === 0
-    ) {
-      throw new BadRequestError(
-        `No valid FCM tokens found for accountId ${accountId}`
-      );
-    }
-    await Promise.all(
-      notificationPreference.fcmTokens.map((fcmToken) =>
-        FcmUtil.sendPushNotification({ fcmToken, title, body })
-      )
-    );
+    return NotificationService.sendPushNotificationToGroup({
+      accountIds: [accountId],
+      title,
+      body,
+      notificationType,
+    });
   }
 
   public static async sendPushNotificationToGroup(
     params: SendPushNotificationToGroupParams
   ): Promise<{ unsuccessful: string[] }> {
-    const { accountIds, title, body, notificationType } = params;
+    const { accountIds, title, body } = params;
+    let { notificationType } = params;
+    notificationType = notificationType.toLowerCase();
+    if (
+      !Object.values(NotificationTypePreferenceEnum).includes(
+        notificationType as NotificationTypePreferenceEnum
+      )
+    ) {
+      throw new NotificationPrefrenceTypeNotFoundError();
+    }
     const unsuccessful: string[] = [];
     const pushBatches: { body: string; fcmTokens: string[]; title: string }[] =
       [];
@@ -521,16 +594,15 @@ export default class NotificationService {
             unsuccessful.push(accountId);
             return;
           }
-
-          if (
-            !pushBatches.length ||
-            pushBatches[pushBatches.length - 1].fcmTokens.length >= batchSize
-          ) {
-            pushBatches.push({ fcmTokens: [], title, body });
-          }
-          pushBatches[pushBatches.length - 1].fcmTokens.push(
-            ...notificationPreference.fcmTokens
-          );
+          notificationPreference.fcmTokens.forEach((token) => {
+            if (
+              !pushBatches.length ||
+              pushBatches[pushBatches.length - 1].fcmTokens.length >= batchSize
+            ) {
+              pushBatches.push({ fcmTokens: [], title, body });
+            }
+            pushBatches[pushBatches.length - 1].fcmTokens.push(token);
+          });
         } catch (error) {
           unsuccessful.push(accountId);
         }
@@ -562,7 +634,16 @@ export default class NotificationService {
   public static async sendPushNotificationToAll(
     params: SendPushNotificationToAllParams
   ): Promise<{ unsuccessful: string[] }> {
-    const { title, body, notificationType } = params;
+    const { title, body } = params;
+    let { notificationType } = params;
+    notificationType = notificationType.toLowerCase();
+    if (
+      !Object.values(NotificationTypePreferenceEnum).includes(
+        notificationType as NotificationTypePreferenceEnum
+      )
+    ) {
+      throw new NotificationPrefrenceTypeNotFoundError();
+    }
     const getChannelPreferencesParams = {
       notificationChannelPreferences: { push: true },
     };
@@ -570,13 +651,21 @@ export default class NotificationService {
       await NotificationService.getAccountsWithParticularNotificationChannelPreferences(
         getChannelPreferencesParams
       );
-
-    if (!accountIdsWithPushNotificationEnabled) {
+    const accountsWithNotificationTypeEnabled =
+      await NotificationService.getAccountsWithParticularNotificationTypePreferences(
+        {
+          notificationTypePreferences: { [notificationType]: true },
+        }
+      );
+    const filteredAccountIds = accountIdsWithPushNotificationEnabled.filter(
+      (accountId) => accountsWithNotificationTypeEnabled.includes(accountId)
+    );
+    if (filteredAccountIds.length === 0) {
       throw new AccountsWithParticularNotificationPreferencesNotFoundError();
     }
 
     return NotificationService.sendPushNotificationToGroup({
-      accountIds: accountIdsWithPushNotificationEnabled,
+      accountIds: filteredAccountIds,
       title,
       body,
       notificationType,
