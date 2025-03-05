@@ -17,6 +17,7 @@ import {
 import { expressListRoutes } from './modules/list-routes';
 import { Logger, CustomLoggerTransport } from './modules/logger';
 import { PasswordResetTokenServer } from './modules/password-reset-token';
+import { ShareTaskServer } from './modules/share-task';
 import { TaskServer } from './modules/task';
 
 interface APIMicroserviceService {
@@ -88,6 +89,10 @@ export default class App {
       {
         serverInstance: new CommentServer(),
         rootFolderPath: path.join(__dirname, 'modules/comment'),
+      },
+      {
+        serverInstance: new ShareTaskServer(),
+        rootFolderPath: path.join(__dirname, 'modules/share-task'),
       },
     ];
   }
