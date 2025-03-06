@@ -213,13 +213,14 @@ export type DeleteFcmTokenParams = {
 };
 
 export enum NotificationErrorCode {
-  NOTIFICATION_PREFERENCE_TYPE_NOT_FOUND = 'NOTIFICATION_ERR_01',
+  NOTIFICATION_TYPE_PREFRENCE_INVALID = 'NOTIFICATION_ERR_01',
   ACCOUNTID_NOT_FOUND = 'NOTIFICATION_ERR_02',
   ACCOUNTS_WITH_PARTICULAR_NOTIFICATIONS_NOT_FOUND = 'NOTIFICATION_ERR_03',
   VALIDATION_ERROR = 'NOTIFICATION_ERR_04',
   SERVICE_ERROR = 'NOTIFICATION_ERR_05',
   INVALID_FIREBASE_SERVICE_ACCOUNT_PATH = 'NOTIFICATION_ERR_06',
   BAD_REQUEST = 'NOTIFICATION_ERR_07',
+  NOTIFICATION_CHANNEL_PREFRENCE_INVALID = 'NOTIFICATION_ERR_08',
 }
 
 export class AccountsWithParticularNotificationPreferencesNotFoundError extends ApplicationError {
@@ -233,13 +234,23 @@ export class AccountsWithParticularNotificationPreferencesNotFoundError extends 
   }
 }
 
-export class NotificationPrefrenceTypeNotFoundError extends ApplicationError {
+export class NotificationTypePreferencesInvalidError extends ApplicationError {
   code: NotificationErrorCode;
 
   constructor() {
-    super('Notification Prefrence Type is invalid');
-    this.code = NotificationErrorCode.NOTIFICATION_PREFERENCE_TYPE_NOT_FOUND;
-    this.httpStatusCode = HttpStatusCodes.NOT_FOUND;
+    super('Notification Type Preference is invalid');
+    this.code = NotificationErrorCode.NOTIFICATION_TYPE_PREFRENCE_INVALID;
+    this.httpStatusCode = HttpStatusCodes.BAD_REQUEST;
+  }
+}
+
+export class NotificationChannelPreferencesInvalidError extends ApplicationError {
+  code: NotificationErrorCode;
+
+  constructor() {
+    super('Notification Channel Preference is invalid');
+    this.code = NotificationErrorCode.NOTIFICATION_CHANNEL_PREFRENCE_INVALID;
+    this.httpStatusCode = HttpStatusCodes.BAD_REQUEST;
   }
 }
 

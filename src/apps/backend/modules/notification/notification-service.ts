@@ -20,7 +20,8 @@ import {
   NotificationTypePreferenceEnum,
   NotificationPreferencesNotFoundError,
   NotificationPermissionDeniedError,
-  NotificationPrefrenceTypeNotFoundError,
+  NotificationTypePreferencesInvalidError,
+  NotificationChannelPreferencesInvalidError,
   SendEmailNotificationToAccountParams,
   SendEmailNotificationToGroupParams,
   SendEmailNotificationToAllParams,
@@ -51,6 +52,13 @@ export default class NotificationService {
     params: UpdateNotificationChannelPrefrenceParams
   ): Promise<Notification> {
     const { accountId, notificationChannelPreferences } = params;
+    if (
+      !NotificationUtil.validateNotificationChannelPreferences(
+        notificationChannelPreferences
+      )
+    ) {
+      throw new NotificationChannelPreferencesInvalidError();
+    }
     const notificationUpdated =
       await NotificationWriter.updateAccountNotificationChannelPreferences(
         accountId,
@@ -66,6 +74,13 @@ export default class NotificationService {
     params: UpdateNotificationTypePrefrenceParams
   ): Promise<Notification> {
     const { accountId, notificationTypePreferences } = params;
+    if (
+      !NotificationUtil.validateNotificationTypePreferences(
+        notificationTypePreferences
+      )
+    ) {
+      throw new NotificationTypePreferencesInvalidError();
+    }
     const notificationUpdated =
       await NotificationWriter.updateAccountNotificationTypePreferences(
         accountId,
@@ -111,7 +126,7 @@ export default class NotificationService {
       notificationChannelPreferences
     );
     if (!isValid) {
-      throw new NotificationPrefrenceTypeNotFoundError();
+      throw new NotificationChannelPreferencesInvalidError();
     }
 
     return NotificationReader.getAccountsWithParticularNotificationChannelPreferences(
@@ -141,7 +156,7 @@ export default class NotificationService {
       notificationTypePreferences
     );
     if (!isValid) {
-      throw new NotificationPrefrenceTypeNotFoundError();
+      throw new NotificationTypePreferencesInvalidError();
     }
 
     return NotificationReader.getAccountsWithParticularNotificationTypePreferences(
@@ -160,7 +175,7 @@ export default class NotificationService {
         notificationType as NotificationTypePreferenceEnum
       )
     ) {
-      throw new NotificationPrefrenceTypeNotFoundError();
+      throw new NotificationTypePreferencesInvalidError();
     }
 
     const notificationPreference =
@@ -212,7 +227,7 @@ export default class NotificationService {
         notificationType as NotificationTypePreferenceEnum
       )
     ) {
-      throw new NotificationPrefrenceTypeNotFoundError();
+      throw new NotificationTypePreferencesInvalidError();
     }
     const unsuccessful: string[] = [];
     const emailBatches: SendEmailParams[][] = [];
@@ -305,7 +320,7 @@ export default class NotificationService {
         notificationType as NotificationTypePreferenceEnum
       )
     ) {
-      throw new NotificationPrefrenceTypeNotFoundError();
+      throw new NotificationTypePreferencesInvalidError();
     }
     const getChannelPreferencesParams = {
       notificationChannelPreferences: { email: true },
@@ -348,7 +363,7 @@ export default class NotificationService {
         notificationType as NotificationTypePreferenceEnum
       )
     ) {
-      throw new NotificationPrefrenceTypeNotFoundError();
+      throw new NotificationTypePreferencesInvalidError();
     }
     const isSmsEnabled = ConfigService.getValue('sms.enabled');
 
@@ -394,7 +409,7 @@ export default class NotificationService {
         notificationType as NotificationTypePreferenceEnum
       )
     ) {
-      throw new NotificationPrefrenceTypeNotFoundError();
+      throw new NotificationTypePreferencesInvalidError();
     }
     const unsuccessful: string[] = [];
     const smsBatches: SendSMSParams[][] = [];
@@ -480,7 +495,7 @@ export default class NotificationService {
         notificationType as NotificationTypePreferenceEnum
       )
     ) {
-      throw new NotificationPrefrenceTypeNotFoundError();
+      throw new NotificationTypePreferencesInvalidError();
     }
     const isSmsEnabled = ConfigService.getValue('sms.enabled');
 
@@ -543,7 +558,14 @@ export default class NotificationService {
     if (!notificationPreference) {
       throw new NotificationPreferencesNotFoundError(accountId);
     }
-    await NotificationWriter.deleteFcmToken(accountId, fcmToken);
+    const isFcmTokenValid = !!fcmToken && fcmToken.trim() !== '';
+    if (
+      !isFcmTokenValid ||
+      !notificationPreference.fcmTokens.includes(fcmToken)
+    ) {
+      throw new BadRequestError('FCM token invalid or not found for account.');
+    }
+    return NotificationWriter.deleteFcmToken(accountId, fcmToken);
   }
 
   public static async sendPushNotificationToAccount(
@@ -569,7 +591,7 @@ export default class NotificationService {
         notificationType as NotificationTypePreferenceEnum
       )
     ) {
-      throw new NotificationPrefrenceTypeNotFoundError();
+      throw new NotificationTypePreferencesInvalidError();
     }
     const unsuccessful: string[] = [];
     const pushBatches: { body: string; fcmTokens: string[]; title: string }[] =
@@ -642,7 +664,7 @@ export default class NotificationService {
         notificationType as NotificationTypePreferenceEnum
       )
     ) {
-      throw new NotificationPrefrenceTypeNotFoundError();
+      throw new NotificationTypePreferencesInvalidError();
     }
     const getChannelPreferencesParams = {
       notificationChannelPreferences: { push: true },
