@@ -17,9 +17,9 @@ class ErrorBoundary extends Component<Props, State> {
   };
 
   errorData: JsonObject & {
-    'error-info': string;
-    'error-message': string;
-    'error-name': string;
+    errorInfo: string;
+    errorMessage: string;
+    errorName: string;
   };
 
   public static getDerivedStateFromError(): State {
@@ -28,9 +28,9 @@ class ErrorBoundary extends Component<Props, State> {
 
   public async componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     this.errorData = {
-      'error-name': error.name,
-      'error-message': error.message,
-      'error-info': errorInfo.componentStack,
+      errorName: error.name,
+      errorMessage: error.message,
+      errorInfo: errorInfo.componentStack,
     };
     try {
       await axios.post('http://localhost:8080/api/client_logs', this.errorData);
