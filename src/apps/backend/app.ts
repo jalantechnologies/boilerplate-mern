@@ -32,6 +32,8 @@ export default class App {
 
   public static async startServer(): Promise<Server> {
     this.app = express();
+
+    this.app.use(express.json());
     this.app.use(App.getRequestLogger());
 
     const restAPIServer = this.createRESTApiServer();
@@ -100,6 +102,12 @@ export default class App {
         })
       );
     }
+
+    app.post('/client_logs', (request, response) => {
+      console.log('Hello');
+      console.log(request.body);
+      response.status(200).send({ message: 'Logs Sent' });
+    });
 
     this.getAPIMicroservices().forEach((server) => {
       app.use('/', server.serverInstance.server);

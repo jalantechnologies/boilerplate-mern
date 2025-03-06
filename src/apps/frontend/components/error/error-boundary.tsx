@@ -33,7 +33,7 @@ class ErrorBoundary extends Component<Props, State> {
       'error-info': errorInfo.componentStack,
     };
     try {
-      await axios.post('http://127.0.0.1:8080/client_logs', this.errorData);
+      await axios.post('http://localhost:8080/api/client_logs', this.errorData);
     } catch (err) {
       console.error('Error logging client logs:', err);
     }
