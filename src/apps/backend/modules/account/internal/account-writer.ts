@@ -3,7 +3,7 @@ import { PhoneNumberUtil } from 'google-libphonenumber';
 import {
   PhoneUtilInstance,
   PhoneUtilInterface,
-} from '../../communication/types';
+} from '../../notification/types';
 import { OtpRequestError } from '../../otp/types';
 import { Account, PhoneNumber } from '../types';
 
