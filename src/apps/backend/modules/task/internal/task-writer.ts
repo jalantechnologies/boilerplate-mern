@@ -1,12 +1,14 @@
 import {
+  CreateShareTaskParams,
   CreateTaskParams,
   DeleteTaskParams,
+  ShareTask,
   Task,
   TaskNotFoundError,
   UpdateTaskParams,
 } from '../types';
 
-import TaskRepository from './store/task-repository';
+import { TaskRepository, ShareTaskRepository } from './store/task-repository';
 import TaskReader from './task-reader';
 import TaskUtil from './task-util';
 
@@ -60,5 +62,19 @@ export default class TaskWriter {
         },
       }
     );
+  }
+
+  public static async createShareTask(
+    params: CreateShareTaskParams
+  ): Promise<ShareTask> {
+    const createdShareTask = await ShareTaskRepository.create({
+      sharedWith: params.sharedWith,
+      task: params.taskId,
+    });
+    const populatedShareTask = await createdShareTask.populate('task', [
+      'description',
+      'account',
+    ]);
+    return TaskUtil.convertShareTaskDBToTask(populatedShareTask);
   }
 }

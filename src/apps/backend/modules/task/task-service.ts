@@ -1,10 +1,14 @@
+import AccountReader from '../account/internal/account-reader';
+
 import TaskReader from './internal/task-reader';
 import TaskWriter from './internal/task-writer';
 import {
+  CreateShareTaskParams,
   CreateTaskParams,
   DeleteTaskParams,
   GetAllTaskParams,
   GetTaskParams,
+  ShareTask,
   Task,
   UpdateTaskParams,
 } from './types';
@@ -30,5 +34,13 @@ export default class TaskService {
     params: GetAllTaskParams
   ): Promise<Task[]> {
     return TaskReader.getTasksForAccount(params);
+  }
+
+  public static async createShareTask(
+    params: CreateShareTaskParams
+  ): Promise<ShareTask> {
+    await AccountReader.getAccountById(params.sharedWith);
+    await TaskReader.getTaskForAccount(params);
+    return TaskWriter.createShareTask(params);
   }
 }

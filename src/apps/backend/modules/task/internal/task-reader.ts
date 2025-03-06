@@ -6,7 +6,7 @@ import {
   PaginationParams,
 } from '../types';
 
-import TaskRepository from './store/task-repository';
+import { TaskRepository } from './store/task-repository';
 import TaskUtil from './task-util';
 
 export default class TaskReader {

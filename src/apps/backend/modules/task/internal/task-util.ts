@@ -1,5 +1,6 @@
-import { Task } from '../types';
+import { ShareTask, Task } from '../types';
 
+import { ShareTaskDB } from './store/share-task-db';
 import { TaskDB } from './store/task-db';
 
 export default class TaskUtil {
@@ -10,5 +11,12 @@ export default class TaskUtil {
     task.description = taskDb.description;
     task.title = taskDb.title;
     return task;
+  }
+
+  public static convertShareTaskDBToTask(shareTaskDb: ShareTaskDB): ShareTask {
+    const shareTask = new ShareTask();
+    shareTask.taskId = shareTaskDb.task;
+    shareTask.sharedWith = shareTaskDb.sharedWith.toString();
+    return shareTask;
   }
 }

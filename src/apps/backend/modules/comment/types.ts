@@ -21,8 +21,8 @@ export enum CommentErrorCode {
 export class CommentNotFoundError extends ApplicationError {
   code: CommentErrorCode;
 
-  constructor(taskId: string) {
-    super(`Comment with taskId ${taskId} not found.`);
+  constructor(commentId: string) {
+    super(`Comment with commentId ${commentId} not found.`);
     this.code = CommentErrorCode.NOT_FOUND;
     this.httpStatusCode = HttpStatusCodes.NOT_FOUND;
   }

@@ -8,9 +8,15 @@ import {
   DeleteTaskParams,
   GetTaskParams,
   UpdateTaskParams,
+  CreateShareTaskParams,
+  CantShareTaskError,
+  ShareTask,
 } from '../types';
 
-import { serializeTaskAsJSON } from './task-serializer';
+import {
+  serializeShareTaskAsJSON,
+  serializeTaskAsJSON,
+} from './task-serializer';
 
 export class TaskController {
   createTask = applicationController(
@@ -75,6 +81,23 @@ export class TaskController {
       const taskJSON = serializeTaskAsJSON(updatedTask);
 
       res.status(HttpStatusCodes.OK).send(taskJSON);
+    }
+  );
+
+  createShareTask = applicationController(
+    async (req: Request<CreateShareTaskParams>, res: Response) => {
+      if (req.accountId === req.body.sharedWith) {
+        throw new CantShareTaskError('Cannot share with yourself');
+      } else {
+        const shareTask: ShareTask = await TaskService.createShareTask({
+          accountId: req.accountId,
+          sharedWith: req.body.sharedWith,
+          taskId: req.body.taskId,
+        });
+        const shareTaskJSON = serializeShareTaskAsJSON(shareTask);
+
+        res.status(HttpStatusCodes.CREATED).send(shareTaskJSON);
+      }
     }
   );
 }

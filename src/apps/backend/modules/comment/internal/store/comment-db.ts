@@ -9,14 +9,16 @@ export interface CommentDB {
 
 export const CommentDbSchema = new Schema<CommentDB>(
   {
-    content: {
-      type: String,
-      required: true,
-    },
     account: {
       type: Schema.Types.ObjectId,
       ref: 'Account',
       required: true,
+    },
+    content: {
+      type: String,
+      required: true,
+      trim: true,
+      minlength: 1,
     },
     task: {
       type: Schema.Types.ObjectId,
