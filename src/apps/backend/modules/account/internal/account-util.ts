@@ -38,7 +38,7 @@ export default class AccountUtil {
       (<PhoneUtilInstance>PhoneNumberUtil).getInstance()
     );
     const isValidPhoneNumber = phoneUtil.isValidNumber(
-      phoneUtil.parse(phoneNumber.toString()),
+      phoneUtil.parse(phoneNumber.toString())
     );
 
     if (!isValidPhoneNumber) {
