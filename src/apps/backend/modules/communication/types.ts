@@ -1,5 +1,5 @@
 import { ApplicationError } from '../application';
-import { HttpStatusCodes } from '../http';
+import { HttpStatusCodes } from '../application/common/http';
 
 export interface LooseObject {
   [key: string]: unknown;

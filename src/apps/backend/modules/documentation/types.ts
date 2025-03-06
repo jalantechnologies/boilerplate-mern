@@ -1,6 +1,7 @@
 import { ApplicationError } from '../application';
-import { HttpStatusCodes } from '../http';
-import { HttpRoute } from '../list-routes';
+import { HttpStatusCodes } from '../application/common/http';
+
+import { HttpRoute } from './list-routes';
 
 export type HttpRouteWithRootFolderPath = {
   rootFolderPath: string;

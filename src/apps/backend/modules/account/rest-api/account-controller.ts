@@ -1,5 +1,5 @@
 import { applicationController, Request, Response } from '../../application';
-import { HttpStatusCodes } from '../../http';
+import { HttpStatusCodes } from '../../application/common/http';
 import AccountService from '../account-service';
 import {
   Account,

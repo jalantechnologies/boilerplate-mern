@@ -2,7 +2,7 @@ import chai, { expect } from 'chai';
 
 import { AccessToken } from '../../../src/apps/backend/modules/access-token';
 import { Account } from '../../../src/apps/backend/modules/account';
-import { ObjectIdUtils } from '../../../src/apps/backend/modules/database';
+import { ObjectIdUtils } from '../../../src/apps/backend/modules/application/common/database';
 import TaskRepository from '../../../src/apps/backend/modules/task/internal/store/task-repository';
 import TaskService from '../../../src/apps/backend/modules/task/task-service';
 import { createAccount } from '../../helpers/account';

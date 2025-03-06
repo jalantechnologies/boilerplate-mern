@@ -1,5 +1,5 @@
 import { applicationController, Request, Response } from '../../application';
-import { HttpStatusCodes } from '../../http';
+import { HttpStatusCodes } from '../../application/common/http';
 import PasswordResetTokenService from '../password-reset-token-service';
 import { CreatePasswordResetTokenParams } from '../types';
 
