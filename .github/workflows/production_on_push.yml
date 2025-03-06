@@ -16,7 +16,7 @@ jobs:
       app_env: production
       app_hostname: boilerplate-mern.platform.jalantechnologies.com
       branch: ${{ github.event.ref }}
-      checks: "['npm:lint', 'npm:check:cycles', 'compose:test', 'compose:e2e']"
+      checks: "['npm:lint', 'npm:check:cyclic-dependencies', 'compose:test', 'compose:e2e']"
       docker_registry: ${{ vars.DOCKER_REGISTRY }}
       docker_username: ${{ vars.DOCKER_USERNAME }}
       sonar_host_url: ${{ vars.SONAR_HOST_URL }}

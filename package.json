@@ -18,7 +18,7 @@
     "lint": "eslint .",
     "lint:md": "remark .",
     "lint:fix": "eslint --fix .",
-    "check:cycles": "npx depcruise src",
+    "check:cyclic-dependencies": "npx depcruise src",
     "prepare": "husky install",
     "start": "env-cmd --silent node dist/bin/server.js",
     "serve": "cross-env NODE_ENV=development concurrently --kill-others-on-fail npm:serve:*",

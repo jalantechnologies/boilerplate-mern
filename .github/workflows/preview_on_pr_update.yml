@@ -20,7 +20,7 @@ jobs:
       branch: ${{ github.event.pull_request.head.ref }}
       build_args: |
         NODE_CONFIG_ENV=preview
-      checks: "['npm:lint', 'npm:check:cycles', 'compose:test', 'compose:e2e']"
+      checks: "['npm:lint', 'npm:check:cyclic-dependencies', 'compose:test', 'compose:e2e']"
       docker_registry: ${{ vars.DOCKER_REGISTRY }}
       docker_username: ${{ vars.DOCKER_USERNAME }}
       pull_request_number: ${{ github.event.number }}
