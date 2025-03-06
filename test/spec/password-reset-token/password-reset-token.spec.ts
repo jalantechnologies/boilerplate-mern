@@ -101,7 +101,7 @@ describe('Account Password Reset', () => {
     });
   });
 
-  describe('PATCH /password-reset-tokens/validate', () => {
+  describe('PATCH /password-reset-tokens', () => {
     it('should validate the password reset token and reset the account password to the new password', async () => {
       sinonSandbox.stub(EmailService, 'sendEmail').returns(Promise.resolve());
 
@@ -124,7 +124,7 @@ describe('Account Password Reset', () => {
 
       const res = await chai
         .request(app)
-        .patch('/api/password-reset-tokens/validate')
+        .patch('/api/password-reset-tokens')
         .set('content-type', 'application/json')
         .send(passwordResetTokenParams);
 
@@ -166,7 +166,7 @@ describe('Account Password Reset', () => {
 
       const res = await chai
         .request(app)
-        .patch('/api/password-reset-tokens/validate')
+        .patch('/api/password-reset-tokens')
         .set('content-type', 'application/json')
         .send(passwordResetTokenParams);
 
@@ -220,7 +220,7 @@ describe('Account Password Reset', () => {
 
       const res = await chai
         .request(app)
-        .patch('/api/password-reset-tokens/validate')
+        .patch('/api/password-reset-tokens')
         .set('content-type', 'application/json')
         .send(passwordResetTokenParams);
 
@@ -260,7 +260,7 @@ describe('Account Password Reset', () => {
 
       const res = await chai
         .request(app)
-        .patch('/api/password-reset-tokens/validate')
+        .patch('/api/password-reset-tokens')
         .set('content-type', 'application/json')
         .send(passwordResetTokenParams);
 
@@ -304,7 +304,7 @@ describe('Account Password Reset', () => {
 
       const res = await chai
         .request(app)
-        .patch('/api/password-reset-tokens/validate')
+        .patch('/api/password-reset-tokens')
         .set('content-type', 'application/json')
         .send(passwordResetTokenParams);
 
@@ -337,7 +337,7 @@ describe('Account Password Reset', () => {
 
       const res = await chai
         .request(app)
-        .patch('/api/password-reset-tokens/validate')
+        .patch('/api/password-reset-tokens')
         .set('content-type', 'application/json')
         .send(passwordResetTokenParams);
 
