@@ -8,6 +8,7 @@ export default class CommentUtil {
     comment.id = commentDb._id.toString();
     comment.account = commentDb.account.toString();
     comment.content = commentDb.content.toString();
+    comment.taskId = commentDb.task.toString();
     return comment;
   }
 }

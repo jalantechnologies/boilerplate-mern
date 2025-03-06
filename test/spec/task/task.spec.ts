@@ -3,7 +3,7 @@ import chai, { expect } from 'chai';
 import { AccessToken } from '../../../src/apps/backend/modules/access-token';
 import { Account } from '../../../src/apps/backend/modules/account';
 import { ObjectIdUtils } from '../../../src/apps/backend/modules/database';
-import TaskRepository from '../../../src/apps/backend/modules/task/internal/store/task-repository';
+import { TaskRepository } from '../../../src/apps/backend/modules/task/internal/store/task-repository';
 import TaskService from '../../../src/apps/backend/modules/task/task-service';
 import { createAccount } from '../../helpers/account';
 import { app } from '../../helpers/app';
@@ -194,6 +194,114 @@ describe('Task API', () => {
 
       const updatedToken = await TaskRepository.findById(task.id);
       expect(updatedToken.active).to.be.false;
+    });
+  });
+  describe('POST /tasks/share', () => {
+    describe('Given a task and another account', () => {
+      let task: { description: string; id: string; title: string };
+      let anotherAccount: Account;
+
+      beforeEach(async () => {
+        task = await TaskService.createTask({
+          accountId: account.id,
+          title: 'my-task',
+          description: 'This is a test description.',
+        });
+
+        ({ account: anotherAccount } = await createAccount());
+      });
+
+      describe('When the task is shared', () => {
+        let res: ChaiHttp.Response;
+
+        beforeEach(async () => {
+          res = await chai
+            .request(app)
+            .post('/api/tasks/share')
+            .set('content-type', 'application/json')
+            .set('Authorization', `Bearer ${accessToken.token}`)
+            .send({
+              taskId: task.id,
+              sharedWith: anotherAccount.id,
+            });
+        });
+
+        it('Then it should respond with the shared task details', () => {
+          expect(res.status).to.eq(201);
+          expect(res.body).to.have.property('sharedWith');
+          expect(res.body.sharedWith).to.include(anotherAccount.id);
+        });
+      });
+    });
+
+    describe('Given a task and a non-existent account ID', () => {
+      let task: { description: string; id: string; title: string };
+      const nonExistentAccountId = '60d0fe4f5311236168a109ca';
+
+      beforeEach(async () => {
+        task = await TaskService.createTask({
+          accountId: account.id,
+          title: 'my-task',
+          description: 'This is a test description.',
+        });
+      });
+
+      describe('When the task is shared with the non-existent account ID', () => {
+        let res: ChaiHttp.Response;
+
+        beforeEach(async () => {
+          res = await chai
+            .request(app)
+            .post('/api/tasks/share')
+            .set('content-type', 'application/json')
+            .set('Authorization', `Bearer ${accessToken.token}`)
+            .send({
+              taskId: task.id,
+              sharedWith: nonExistentAccountId,
+            });
+        });
+
+        it(`Then it should respond with a 404 status and an error message, ${nonExistentAccountId} not found with provided parameters.`, () => {
+          expect(res.status).to.eq(404);
+          expect(res.body).to.have.property('code');
+          expect(res.body.message).to.eq(
+            `${nonExistentAccountId} not found with provided parameters.`
+          );
+        });
+      });
+    });
+
+    describe('Given a non-existent task ID and another account', () => {
+      const nonExistentTaskId = '60d0fe4f5311236168a109ca';
+      let anotherAccount: Account;
+
+      beforeEach(async () => {
+        ({ account: anotherAccount } = await createAccount());
+      });
+
+      describe('When the task is shared with the non-existent task ID', () => {
+        let res: ChaiHttp.Response;
+
+        beforeEach(async () => {
+          res = await chai
+            .request(app)
+            .post('/api/tasks/share')
+            .set('content-type', 'application/json')
+            .set('Authorization', `Bearer ${accessToken.token}`)
+            .send({
+              taskId: nonExistentTaskId,
+              sharedWith: anotherAccount.id,
+            });
+        });
+
+        it(`Then it should respond with a 404 status and an error message, Task with taskId ${nonExistentTaskId} not found.`, () => {
+          expect(res.status).to.eq(404);
+          expect(res.body).to.have.property('code');
+          expect(res.body.message).to.eq(
+            `Task with taskId ${nonExistentTaskId} not found.`
+          );
+        });
+      });
     });
   });
 });
