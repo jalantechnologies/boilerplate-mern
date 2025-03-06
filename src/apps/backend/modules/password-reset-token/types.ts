@@ -28,7 +28,7 @@ export type ValidatePasswordResetTokenAndResetPasswordParams = {
 export enum PasswordResetTokenErrorCode {
   PASSWORD_RESET_TOKEN_NOT_FOUND = 'PASSWORD_RESET_TOKEN_ERR_01',
   PASSWORD_RESET_EMAIL_NOT_ENABLED_FOR_THE_ENVIRONMENT = 'PASSWORD_RESET_TOKEN_ERR_02',
-  BAD_REQUEST = 'ACCOUNT_ERR_05',
+  BAD_REQUEST = 'PASSWORD_RESET_TOKEN_ERR_03',
 }
 export class PasswordResetTokenEmailNotEnabledForTheEnvironmentError extends ApplicationError {
   code: PasswordResetTokenErrorCode;
