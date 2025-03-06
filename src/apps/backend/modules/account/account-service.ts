@@ -42,7 +42,7 @@ export default class AccountService {
   public static async createAccountByPhoneNumberAndName(
     phoneNumber: PhoneNumber,
     firstName?: string,
-    lastName?: string,
+    lastName?: string
   ): Promise<Account> {
     if (!firstName && !lastName) {
       throw new OtpRequestError('Please provide first name or last name');
@@ -55,7 +55,7 @@ export default class AccountService {
     const accountNew = await AccountWriter.createAccountByPhoneNumberAndName(
       phoneNumber,
       firstName,
-      lastName,
+      lastName
     );
     await OtpService.createOtp(phoneNumber);
     return accountNew;
