@@ -35,20 +35,23 @@ const TaskSection: React.FC<TaskSectionProps> = ({
 
   const dummyComments: Comment[] = [
     {
-      username: 'Pat cummins',
-      profilePicture: '/assets/img/user.png',
+      id: '1',
+      account: 'user1',
+      task: 'task1',
       createdAt: '2023-10-01T12:00:00Z',
       content: 'This is the first comment.',
     },
     {
-      username: 'Maxwell',
-      profilePicture: '/assets/img/user.png',
+      id: '2',
+      account: 'user2',
+      task: 'task2',
       createdAt: '2023-10-02T12:00:00Z',
       content: 'This is the second comment.',
     },
     {
-      username: 'Travis head',
-      profilePicture: '/assets/img/user.png',
+      id: '3',
+      account: 'user3',
+      task: 'task3',
       createdAt: '2023-10-02T12:00:00Z',
       content: 'This is the second comment.',
     },
@@ -126,7 +129,7 @@ const TaskSection: React.FC<TaskSectionProps> = ({
               </Button>
             </MenuItem>
           </div>
-          <TaskComments comments={comments} />
+          <TaskComments comments={comments} taskId={task.id} />
         </div>
       ))}
 

@@ -16,9 +16,18 @@ export class Task {
   }
 }
 
-export interface Comment {
-  username: string;
-  profilePicture: string;
-  createdAt: string;
+export class Comment {
+  id: string;
+  account: string;
   content: string;
+  task: string;
+  createdAt: string;
+
+  constructor(json: JsonObject) {
+    this.id = (json._id as string) || ''; // Ensure _id is mapped correctly
+    this.account = (json.account as string) || '';
+    this.content = (json.content as string) || '';
+    this.task = (json.task as string) || '';
+    this.createdAt = (json.createdAt as string) || new Date().toISOString();
+  }
 }
