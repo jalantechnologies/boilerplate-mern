@@ -11,5 +11,8 @@ export default class CommentRouter extends ApplicationRouter {
     router.use(accessAuthMiddleware);
 
     router.post('/', ctrl.createComment);
+    router.get('/:taskId', ctrl.getComments);
+    router.patch('/:id', ctrl.updateComment);
+    router.delete('/:id', ctrl.deleteComment);
   }
 }

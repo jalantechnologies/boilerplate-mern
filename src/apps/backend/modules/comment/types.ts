@@ -14,6 +14,27 @@ export type CreateCommentParams = {
   taskId: string;
 };
 
+export type GetCommentsParams = {
+  taskId: string;
+};
+
+export type GetCommentParams = {
+  commentId: string;
+};
+
+export type UpdateCommentParams = {
+  commentId: string;
+  content: string;
+};
+
+export type DeleteCommentParams = {
+  commentId: string;
+};
+
+export type GetTaskParams = {
+  taskId: string;
+};
+
 export enum CommentErrorCode {
   NOT_FOUND = 'COMMENT_ERR_01',
 }
