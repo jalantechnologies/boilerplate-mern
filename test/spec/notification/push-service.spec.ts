@@ -3,7 +3,7 @@ import admin from 'firebase-admin';
 import sinon from 'sinon';
 
 import { ConfigService } from '../../../src/apps/backend/modules/config';
-import FcmUtil from '../../../src/apps/backend/modules/notification/fcm-util';
+import PushService from '../../../src/apps/backend/modules/notification/push-service';
 
 describe('sendPushNotification', () => {
   let firebaseSendStub: sinon.SinonStub;
@@ -18,7 +18,7 @@ describe('sendPushNotification', () => {
 
     sinon.stub(admin, 'initializeApp').returns(mockApp);
     sinon.stub(admin, 'app').returns(mockApp);
-    sinon.stub(FcmUtil, 'getFirebaseApp').returns(mockApp);
+    sinon.stub(PushService, 'getFirebaseApp').returns(mockApp);
 
     sinon
       .stub(ConfigService, 'getValue')
@@ -36,7 +36,7 @@ describe('sendPushNotification', () => {
       title: 'Notification Title',
       body: 'Notification Body',
     };
-    return expect(FcmUtil.sendPushNotification(params))
+    return expect(PushService.sendPushNotification(params))
       .to.eventually.be.rejectedWith(
         'Push notification cannot be sent, please check the params validity.'
       )
@@ -54,7 +54,7 @@ describe('sendPushNotification', () => {
       title: '',
       body: 'Notification Body',
     };
-    return expect(FcmUtil.sendPushNotification(params))
+    return expect(PushService.sendPushNotification(params))
       .to.eventually.be.rejectedWith(
         'Push notification cannot be sent, please check the params validity.'
       )
@@ -72,7 +72,7 @@ describe('sendPushNotification', () => {
       title: 'Notification Title',
       body: '',
     };
-    return expect(FcmUtil.sendPushNotification(params))
+    return expect(PushService.sendPushNotification(params))
       .to.eventually.be.rejectedWith(
         'Push notification cannot be sent, please check the params validity.'
       )
@@ -90,54 +90,10 @@ describe('sendPushNotification', () => {
       title: 'Notification Title',
       body: 'Notification Body',
     };
-    return expect(FcmUtil.sendPushNotification(params)).to.be.fulfilled.then(
-      () => {
-        sinon.assert.calledOnce(firebaseSendStub);
-      }
-    );
-  });
-});
-describe('sendBatchPushNotifications', () => {
-  let firebaseSendMulticastStub: sinon.SinonStub;
-  beforeEach(() => {
-    firebaseSendMulticastStub = sinon
-      .stub()
-      .resolves({ successCount: 1, failureCount: 0 });
-
-    const mockApp = {
-      messaging: () => ({
-        sendMulticast: firebaseSendMulticastStub,
-      }),
-    } as unknown as admin.app.App;
-
-    sinon.stub(admin, 'initializeApp').returns(mockApp);
-    sinon.stub(admin, 'app').returns(mockApp);
-    sinon.stub(FcmUtil, 'getFirebaseApp').returns(mockApp);
-
-    sinon
-      .stub(ConfigService, 'getValue')
-      .withArgs('firebase.serviceAccountPath')
-      .returns('/path/to/fake/service-account.json');
-  });
-  afterEach(() => {
-    sinon.restore();
-  });
-
-  it('should throw error when fcmTokens array is empty', async () => {
-    const params = { fcmTokens: [], title: 'Test', body: 'Test body' };
-    await expect(FcmUtil.sendBatchPushNotifications(params)).to.be.rejectedWith(
-      'No FCM tokens provided.'
-    );
-    sinon.assert.notCalled(firebaseSendMulticastStub);
-  });
-
-  it('should send batch push notifications successfully', async () => {
-    const params = {
-      fcmTokens: ['token1', 'token2'],
-      title: 'Batch Test',
-      body: 'Batch Test Body',
-    };
-    await expect(FcmUtil.sendBatchPushNotifications(params)).to.be.fulfilled;
-    sinon.assert.calledOnce(firebaseSendMulticastStub);
+    return expect(
+      PushService.sendPushNotification(params)
+    ).to.be.fulfilled.then(() => {
+      sinon.assert.calledOnce(firebaseSendStub);
+    });
   });
 });

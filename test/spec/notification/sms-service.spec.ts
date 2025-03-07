@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 
 import { ConfigService } from '../../../src/apps/backend/modules/config';
-import { NotificationService } from '../../../src/apps/backend/modules/notification';
+import SmsService from '../../../src/apps/backend/modules/notification/sms-service';
 
 describe('sendSMS', () => {
   let twilioCreateMessage: sinon.SinonStub;
@@ -33,7 +33,7 @@ describe('sendSMS', () => {
       messageBody: 'simple message.',
     };
 
-    return expect(NotificationService.sendSMS(params))
+    return expect(SmsService.sendSMS(params))
       .to.eventually.be.rejectedWith(
         'SMS cannot be send, please check the params validity.'
       )
@@ -55,7 +55,7 @@ describe('sendSMS', () => {
       messageBody: '',
     };
 
-    return expect(NotificationService.sendSMS(params))
+    return expect(SmsService.sendSMS(params))
       .to.eventually.be.rejectedWith(
         'SMS cannot be send, please check the params validity.'
       )
@@ -78,10 +78,8 @@ describe('sendSMS', () => {
       messageBody: 'simple message',
     };
 
-    return expect(NotificationService.sendSMS(params)).to.be.fulfilled.then(
-      () => {
-        sinon.assert.calledOnce(twilioCreateMessage);
-      }
-    );
+    return expect(SmsService.sendSMS(params)).to.be.fulfilled.then(() => {
+      sinon.assert.calledOnce(twilioCreateMessage);
+    });
   });
 });

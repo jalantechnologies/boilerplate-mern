@@ -12,7 +12,7 @@ import {
   PushNotifcationParams,
 } from './types';
 
-export default class FcmUtil {
+export default class PushService {
   private static firebaseApp: admin.app.App;
 
   public static async sendPushNotification(
@@ -43,16 +43,20 @@ export default class FcmUtil {
 
     this.getFirebaseApp();
 
-    const message = {
-      tokens: fcmTokens,
+    const messages = fcmTokens.map((token) => ({
+      token,
       notification: { title, body },
-    };
+    }));
 
-    try {
-      await admin.messaging().sendMulticast(message);
-    } catch (err) {
-      throw new ServiceError(err as Error);
-    }
+    await Promise.all(
+      messages.map(async (message) => {
+        try {
+          await admin.messaging().send(message);
+        } catch (err) {
+          throw new ServiceError(err as Error);
+        }
+      })
+    );
   }
 
   public static getFirebaseApp(): admin.app.App {

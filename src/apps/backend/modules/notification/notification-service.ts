@@ -3,12 +3,12 @@ import { ConfigService } from '../config';
 import { Logger } from '../logger';
 
 import { batchSize } from './constants';
-import EmailUtil from './email-util';
-import FcmUtil from './fcm-util';
+import EmailService from './email-service';
 import NotificationReader from './internal/notification-reader';
 import NotificationUtil from './internal/notification-util';
 import NotificationWriter from './internal/notification-writer';
-import SmsUtil from './sms-util';
+import PushService from './push-service';
+import SmsService from './sms-service';
 import {
   AccountsWithParticularNotificationPreferencesNotFoundError,
   BadRequestError,
@@ -290,7 +290,7 @@ export default class NotificationService {
     await Promise.all(
       emailBatches.map(async (batch, i) => {
         try {
-          await EmailUtil.sendBatchEmail({ emails: batch });
+          await EmailService.sendBatchEmail({ emails: batch });
           Logger.info(
             `Successfully sent batch email notifications at batch index: ${i}:`
           );
@@ -349,7 +349,7 @@ export default class NotificationService {
   }
 
   public static async sendEmail(params: SendEmailParams): Promise<void> {
-    return EmailUtil.sendEmail(params);
+    return EmailService.sendEmail(params);
   }
 
   public static async sendSmsNotificationToAccount(
@@ -530,7 +530,7 @@ export default class NotificationService {
   }
 
   public static async sendSMS(params: SendSMSParams): Promise<void> {
-    return SmsUtil.sendSMS(params);
+    return SmsService.sendSMS(params);
   }
 
   public static async registerFcmToken(
@@ -552,20 +552,19 @@ export default class NotificationService {
   public static async deleteFcmToken(
     params: DeleteFcmTokenParams
   ): Promise<void> {
-    const { accountId, fcmToken } = params;
+    const { accountId } = params;
     const notificationPreference =
       await NotificationReader.getAccountNotificationPreferences(accountId);
     if (!notificationPreference) {
       throw new NotificationPreferencesNotFoundError(accountId);
     }
-    const isFcmTokenValid = !!fcmToken && fcmToken.trim() !== '';
-    if (
-      !isFcmTokenValid ||
-      !notificationPreference.fcmTokens.includes(fcmToken)
-    ) {
-      throw new BadRequestError('FCM token invalid or not found for account.');
-    }
-    return NotificationWriter.deleteFcmToken(accountId, fcmToken);
+    const updateNotificationChannelPreferenceParams = {
+      accountId,
+      notificationChannelPreferences: { push: false },
+    };
+    await NotificationService.updateAccountNotificationChannelPreferences(
+      updateNotificationChannelPreferenceParams
+    );
   }
 
   public static async sendPushNotificationToAccount(
@@ -634,7 +633,7 @@ export default class NotificationService {
     await Promise.all(
       pushBatches.map(async (batch, i) => {
         try {
-          await FcmUtil.sendBatchPushNotifications(batch);
+          await PushService.sendBatchPushNotifications(batch);
           Logger.info(
             `Successfully sent batch push notifications at batch index: ${i}:`
           );

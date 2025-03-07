@@ -209,7 +209,6 @@ export type RegisterFcmTokenParams = {
 
 export type DeleteFcmTokenParams = {
   accountId: string;
-  fcmToken: string;
 };
 
 export enum NotificationErrorCode {
