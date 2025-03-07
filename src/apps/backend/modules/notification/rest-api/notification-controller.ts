@@ -64,8 +64,7 @@ export class NotificationController {
   deleteFcmToken = applicationController(
     async (req: Request<DeleteFcmTokenParams>, res: Response) => {
       const { accountId } = req.params as DeleteFcmTokenParams;
-      const { fcmToken } = req.body;
-      await NotificationService.deleteFcmToken({ accountId, fcmToken });
+      await NotificationService.deleteFcmToken({ accountId });
       res.status(HttpStatusCodes.NO_CONTENT).send();
     }
   );

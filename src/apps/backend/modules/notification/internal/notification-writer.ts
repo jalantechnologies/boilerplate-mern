@@ -88,14 +88,4 @@ export default class NotificationWriter {
       notificationFcmRegistered
     );
   }
-
-  public static async deleteFcmToken(
-    accountId: string,
-    fcmToken: string
-  ): Promise<void> {
-    await NotificationRepository.findOneAndUpdate(
-      { account: accountId },
-      { $pull: { fcmTokens: fcmToken } }
-    );
-  }
 }

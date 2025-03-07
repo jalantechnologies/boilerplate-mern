@@ -7,7 +7,7 @@ import { ConfigService } from '../config';
 import NotificationUtil from './internal/notification-util';
 import { SendEmailParams, ServiceError } from './types';
 
-export default class EmailUtil {
+export default class EmailService {
   private static emailClient: MailService;
 
   public static async sendEmail(params: SendEmailParams): Promise<void> {

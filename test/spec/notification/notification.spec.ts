@@ -16,9 +16,9 @@ import {
   BadRequestError,
   AccountsWithParticularNotificationPreferencesNotFoundError,
 } from '../../../src/apps/backend/modules/notification';
-import EmailUtil from '../../../src/apps/backend/modules/notification/email-util';
-import FcmUtil from '../../../src/apps/backend/modules/notification/fcm-util';
+import EmailService from '../../../src/apps/backend/modules/notification/email-service';
 import NotificationReader from '../../../src/apps/backend/modules/notification/internal/notification-reader';
+import PushService from '../../../src/apps/backend/modules/notification/push-service';
 import { createAccount } from '../../helpers/account';
 import { app } from '../../helpers/app';
 
@@ -204,21 +204,20 @@ describe('Notification Module', () => {
     });
   });
   describe('DELETE /notifications/fcm/:accountId', () => {
-    it('should delete FCM token successfully', async () => {
-      const fcmToken = faker.random.alphaNumeric(32);
-      await NotificationService.registerFcmToken({
-        accountId: account.id,
-        fcmToken,
-      });
+    it('should change the push notifcation channel preference to false', async () => {
       const res = await chai
         .request(app)
         .delete(`/api/notifications/fcm/${account.id}`)
-        .set('content-type', 'application/json')
-        .send({ fcmToken });
+        .set('content-type', 'application/json');
       expect(res.status).to.be.eq(204);
+      const accountNotificationPreferences =
+        await NotificationService.getAccountNotificationPreference({
+          accountId: account.id,
+        });
+      expect(accountNotificationPreferences.notificationChannelPreferences.push)
+        .to.be.false;
     });
     it('should return 404 if notification preferences are not found for the accountId', async () => {
-      const fcmToken = faker.random.alphaNumeric(32);
       const accountId = faker.database.mongodbObjectId();
       sinonSandbox
         .stub(NotificationReader, 'getAccountNotificationPreferences')
@@ -226,44 +225,10 @@ describe('Notification Module', () => {
       const res = await chai
         .request(app)
         .delete(`/api/notifications/fcm/${accountId}`)
-        .set('content-type', 'application/json')
-        .send({ fcmToken });
+        .set('content-type', 'application/json');
       expect(res.status).to.be.eq(404);
       expect(res.body.message).to.eq(
         new NotificationPreferencesNotFoundError(accountId).message
-      );
-    });
-    it('should return 400 if fcmToken is invalid or not not found for accountId', async () => {
-      const fcmToken = faker.random.alphaNumeric(32);
-      sinonSandbox
-        .stub(NotificationReader, 'getAccountNotificationPreferences')
-        .resolves({
-          id: faker.database.mongodbObjectId(),
-          account: account.id,
-          notificationChannelPreferences: {
-            email: true,
-            sms: true,
-            push: true,
-          },
-          notificationTypePreferences: {
-            transactional: true,
-            promotional: true,
-            update: true,
-            security: true,
-            reminder: true,
-            social: true,
-            alert: true,
-          },
-          fcmTokens: [],
-        });
-      const res = await chai
-        .request(app)
-        .delete(`/api/notifications/fcm/${account.id}`)
-        .set('content-type', 'application/json')
-        .send({ fcmToken });
-      expect(res.status).to.be.eq(400);
-      expect(res.body.message).to.eq(
-        'FCM token invalid or not found for account.'
       );
     });
   });
@@ -417,7 +382,7 @@ describe('Notification Module', () => {
       };
 
       const sendEmailStub = sinonSandbox
-        .stub(EmailUtil, 'sendBatchEmail')
+        .stub(EmailService, 'sendBatchEmail')
         .resolves();
       const result =
         await NotificationService.sendEmailNotificationToGroup(params);
@@ -449,7 +414,7 @@ describe('Notification Module', () => {
         .resolves(null);
 
       const sendEmailStub = sinonSandbox
-        .stub(EmailUtil, 'sendBatchEmail')
+        .stub(EmailService, 'sendBatchEmail')
         .resolves();
       const result =
         await NotificationService.sendEmailNotificationToGroup(params);
@@ -474,7 +439,7 @@ describe('Notification Module', () => {
       });
 
       const sendEmailStub = sinonSandbox
-        .stub(EmailUtil, 'sendBatchEmail')
+        .stub(EmailService, 'sendBatchEmail')
         .resolves();
       const result =
         await NotificationService.sendEmailNotificationToGroup(params);
@@ -865,7 +830,7 @@ describe('Notification Module', () => {
       };
 
       const sendPushStub = sinonSandbox
-        .stub(FcmUtil, 'sendBatchPushNotifications')
+        .stub(PushService, 'sendBatchPushNotifications')
         .resolves();
       sinonSandbox
         .stub(NotificationReader, 'getAccountNotificationPreferences')
@@ -920,7 +885,7 @@ describe('Notification Module', () => {
         .resolves(null);
 
       const sendPushStub = sinonSandbox
-        .stub(FcmUtil, 'sendBatchPushNotifications')
+        .stub(PushService, 'sendBatchPushNotifications')
         .resolves();
       const result =
         await NotificationService.sendPushNotificationToGroup(params);
@@ -959,7 +924,7 @@ describe('Notification Module', () => {
         });
 
       const sendPushStub = sinonSandbox
-        .stub(FcmUtil, 'sendBatchPushNotifications')
+        .stub(PushService, 'sendBatchPushNotifications')
         .resolves();
       const result =
         await NotificationService.sendPushNotificationToGroup(params);
@@ -998,7 +963,7 @@ describe('Notification Module', () => {
         });
 
       const sendPushStub = sinonSandbox
-        .stub(FcmUtil, 'sendBatchPushNotifications')
+        .stub(PushService, 'sendBatchPushNotifications')
         .resolves();
       const result =
         await NotificationService.sendPushNotificationToGroup(params);

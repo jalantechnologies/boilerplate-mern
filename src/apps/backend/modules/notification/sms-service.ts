@@ -5,7 +5,7 @@ import { ConfigService } from '../config';
 import NotificationUtil from './internal/notification-util';
 import { SendSMSParams, ServiceError } from './types';
 
-export default class SmsUtil {
+export default class SMSService {
   private static smsClient: Twilio;
 
   public static async sendSMS(params: SendSMSParams): Promise<void> {

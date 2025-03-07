@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 
 import { ConfigService } from '../../../src/apps/backend/modules/config';
-import EmailUtil from '../../../src/apps/backend/modules/notification/email-util';
+import EmailService from '../../../src/apps/backend/modules/notification/email-service';
 
 describe('sendEmail', () => {
   let sendgridSend: sinon.SinonStub;
@@ -30,7 +30,7 @@ describe('sendEmail', () => {
       templateId: 'someTemplateId',
     };
 
-    return expect(EmailUtil.sendEmail(params))
+    return expect(EmailService.sendEmail(params))
       .to.eventually.be.rejectedWith(
         'Email cannot be send, please check the params validity.'
       )
@@ -55,7 +55,7 @@ describe('sendEmail', () => {
       templateId: '',
     };
 
-    return expect(EmailUtil.sendEmail(params))
+    return expect(EmailService.sendEmail(params))
       .to.eventually.be.rejectedWith(
         'Email cannot be send, please check the params validity.'
       )
@@ -80,7 +80,7 @@ describe('sendEmail', () => {
       templateId: '',
     };
 
-    return expect(EmailUtil.sendEmail(params))
+    return expect(EmailService.sendEmail(params))
       .to.eventually.be.rejectedWith(
         'Email cannot be send, please check the params validity.'
       )
@@ -106,7 +106,7 @@ describe('sendEmail', () => {
       templateData: {},
     };
 
-    return expect(EmailUtil.sendEmail(params)).to.be.fulfilled.then(() => {
+    return expect(EmailService.sendEmail(params)).to.be.fulfilled.then(() => {
       sinon.assert.calledOnce(sendgridSend);
     });
   });
@@ -140,7 +140,7 @@ describe('sendBatchEmail', () => {
         },
       ],
     };
-    return expect(EmailUtil.sendBatchEmail(params))
+    return expect(EmailService.sendBatchEmail(params))
       .to.eventually.be.rejectedWith(
         'Batch email validation failed. Please check the email parameters.'
       )
@@ -165,7 +165,7 @@ describe('sendBatchEmail', () => {
         },
       ],
     };
-    return expect(EmailUtil.sendBatchEmail(params))
+    return expect(EmailService.sendBatchEmail(params))
       .to.eventually.be.rejectedWith(
         'Batch email validation failed. Please check the email parameters.'
       )
@@ -190,7 +190,7 @@ describe('sendBatchEmail', () => {
         },
       ],
     };
-    return expect(EmailUtil.sendBatchEmail(params))
+    return expect(EmailService.sendBatchEmail(params))
       .to.eventually.be.rejectedWith(
         'Batch email validation failed. Please check the email parameters.'
       )
@@ -215,8 +215,10 @@ describe('sendBatchEmail', () => {
         },
       ],
     };
-    return expect(EmailUtil.sendBatchEmail(params)).to.be.fulfilled.then(() => {
-      sinon.assert.calledOnce(sendgridSendMultiple);
-    });
+    return expect(EmailService.sendBatchEmail(params)).to.be.fulfilled.then(
+      () => {
+        sinon.assert.calledOnce(sendgridSendMultiple);
+      }
+    );
   });
 });
