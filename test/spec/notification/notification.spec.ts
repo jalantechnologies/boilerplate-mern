@@ -8,6 +8,7 @@ import {
   PhoneNumber,
 } from '../../../src/apps/backend/modules/account';
 import AccountRepository from '../../../src/apps/backend/modules/account/internal/store/account-repository';
+import { ConfigService } from '../../../src/apps/backend/modules/config';
 import {
   NotificationService,
   NotificationPreferencesNotFoundError,
@@ -37,6 +38,21 @@ describe('Notification Module', () => {
       phoneNumber.countryCode,
       phoneNumber.phoneNumber
     );
+
+    sinonSandbox
+      .stub(ConfigService, 'getValue')
+      .withArgs('mailer.notificationMailTemplateId')
+      .returns('random-template-id')
+      .withArgs('sendgrid.apiKey')
+      .returns('SG.random-key')
+      .withArgs('twilio.verify.accountSid')
+      .returns('AC.random-id')
+      .withArgs('twilio.verify.authToken')
+      .returns('random-token')
+      .withArgs('sms.enabled')
+      .returns(true)
+      .withArgs('firebase.serviceAccountPath')
+      .returns('./sample-firebase.json');
   });
 
   afterEach(async () => {
