@@ -12,7 +12,6 @@ import {
   accessAuthMiddleware,
 } from '../../../src/apps/backend/modules/access-token';
 import { Account } from '../../../src/apps/backend/modules/account';
-import { ObjectIdUtils } from '../../../src/apps/backend/modules/application/common/database';
 import ConfigService from '../../../src/apps/backend/modules/config/config-service';
 import { createAccount } from '../../helpers/account';
 
@@ -57,7 +56,7 @@ describe('accessAuthMiddleware', () => {
         accessAuthMiddleware(
           {
             params: {
-              accountId: ObjectIdUtils.createNew(),
+              accountId: `000000000000000000000000`,
             },
             headers: {
               authorization: `Bearer ${accessToken.token}`,
