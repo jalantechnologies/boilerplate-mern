@@ -39,12 +39,12 @@ export const useTaskContext = (): TaskContextType => useContext(TaskContext);
 
 const addTaskFn = async (
   title: string,
-  description: string,
+  description: string
 ): Promise<ApiResponse<Task>> => taskService.addTask(title, description);
 
 const updateTaskFn = async (
   taskId: string,
-  taskData: Task,
+  taskData: Task
 ): Promise<ApiResponse<Task>> => taskService.updateTask(taskId, taskData);
 
 const deleteTaskFn = async (taskId: string): Promise<ApiResponse<void>> =>

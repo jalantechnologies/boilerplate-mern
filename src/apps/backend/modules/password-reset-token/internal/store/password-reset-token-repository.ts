@@ -8,7 +8,7 @@ import {
 const PasswordResetTokenRepository =
   ApplicationRepository<PasswordResetTokenDB>(
     'password-reset-tokens',
-    passwordResetTokenDbSchema,
+    passwordResetTokenDbSchema
   );
 
 export default PasswordResetTokenRepository;

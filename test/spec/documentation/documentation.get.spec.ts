@@ -89,7 +89,7 @@ describe('GET /api/get-documentation', () => {
       .set('content-type', 'application/json');
 
     const errorInstance = new ErrorReadingFile(
-      `Error reading or writing router file: No router file found in the rest-api folder at path: ${nonExistingJsRouteFilePath}`,
+      `Error reading or writing router file: No router file found in the rest-api folder at path: ${nonExistingJsRouteFilePath}`
     );
 
     expect(res.status).to.be.eq(errorInstance.httpStatusCode);

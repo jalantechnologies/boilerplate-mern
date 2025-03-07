@@ -36,5 +36,5 @@ export const TaskDbSchema = new Schema<TaskDB>(
       createdAt: 'createdAt',
       updatedAt: 'updatedAt',
     },
-  },
+  }
 );

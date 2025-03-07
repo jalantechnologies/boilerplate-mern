@@ -18,7 +18,7 @@ export default defineConfig({
           const scenario = scenarios[name];
           if (!scenario) {
             throw new Error(
-              `Could not run setup - Scenario with name ${name} not found`,
+              `Could not run setup - Scenario with name ${name} not found`
             );
           }
 
@@ -29,7 +29,7 @@ export default defineConfig({
           const scenario = scenarios[name];
           if (!scenario) {
             throw new Error(
-              `Could not run cleanup - Scenario with name ${name} not found`,
+              `Could not run cleanup - Scenario with name ${name} not found`
             );
           }
 

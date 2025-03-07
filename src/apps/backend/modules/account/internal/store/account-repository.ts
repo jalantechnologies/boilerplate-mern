@@ -4,7 +4,7 @@ import { AccountDB, AccountDbSchema } from './account-db';
 
 const AccountRepository = ApplicationRepository<AccountDB>(
   'accounts',
-  AccountDbSchema,
+  AccountDbSchema
 );
 
 export default AccountRepository;

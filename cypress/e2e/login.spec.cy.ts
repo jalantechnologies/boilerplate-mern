@@ -1,11 +1,9 @@
 import { CreateAccountParamsByUsernameAndPassword } from '../../src/apps/backend/modules/account';
-import { setupScenario } from '../helpers/scenario';
 
 describe('Login', () => {
-  const credentials: CreateAccountParamsByUsernameAndPassword =
-    setupScenario('login');
-
   beforeEach(() => {
+    // Set up the scenario and alias the credentials
+    cy.task('scenario:setup', { name: 'login' }).as('credentials');
     cy.visit('/login');
   });
 
@@ -14,27 +12,37 @@ describe('Login', () => {
   });
 
   it('should allow login', () => {
-    cy.get('[data-testid="username"]').clear();
-    cy.get('[data-testid="username"]').type(credentials.username);
-    cy.get('[data-testid="password"]').clear();
-    cy.get('[data-testid="password"]').type(credentials.password);
-    cy.get('button[data-baseweb="button"]').click();
+    // Use the alias to access credentials
+    cy.get<CreateAccountParamsByUsernameAndPassword>('@credentials').then(
+      (credentials) => {
+        cy.get('input[name="username"]').clear();
+        cy.get('input[name="username"]').type(credentials.username);
+        cy.get('input[name="password"]').clear();
+        cy.get('input[name="password"]').type(credentials.password);
+        cy.get('button[type="submit"]').click();
 
-    cy.url().should('be.equal', `${Cypress.config('baseUrl')}/`);
+        cy.url().should('be.equal', `${Cypress.config('baseUrl')}/`);
+      }
+    );
   });
 
   it('should not allow login for removed credentials', () => {
-    cy.task('scenario:cleanup', 'login');
-    cy.get('[data-testid="username"]').clear();
-    cy.get('[data-testid="username"]').type(credentials.username);
-    cy.get('[data-testid="password"]').clear();
-    cy.get('[data-testid="password"]').type(credentials.password);
-    cy.get('button[data-baseweb="button"]').click();
+    cy.get<CreateAccountParamsByUsernameAndPassword>('@credentials').then(
+      (credentials) => {
+        // First remove the account and then try to login
+        cy.task('scenario:cleanup', { name: 'login' }).then(() => {
+          cy.get('input[name="username"]').clear();
+          cy.get('input[name="username"]').type(credentials.username);
+          cy.get('input[name="password"]').clear();
+          cy.get('input[name="password"]').type(credentials.password);
+          cy.get('button[type="submit"]').click();
 
-    const toaster = () => cy.get('div[data-baseweb="toast"]');
-    toaster().should(
-      'contain',
-      `${credentials.username} not found with provided parameters.`,
+          cy.contains(
+            'div',
+            `${credentials.username} not found with provided parameters.`
+          ).should('be.visible');
+        });
+      }
     );
   });
 });

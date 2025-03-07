@@ -26,7 +26,7 @@ type AuthContextType = {
     firstName: string,
     lastName: string,
     username: string,
-    password: string,
+    password: string
   ) => Promise<void>;
   signupError: AsyncError;
   verifyOTP: (phoneNumber: PhoneNumber, otp: string) => Promise<AccessToken>;
@@ -42,7 +42,7 @@ export const useAuthContext = (): AuthContextType => useContext(AuthContext);
 
 const loginFn = async (
   username: string,
-  password: string,
+  password: string
 ): Promise<ApiResponse<AccessToken>> => {
   const result = await authService.login(username, password);
   if (result.data) {
@@ -55,7 +55,7 @@ const signupFn = async (
   firstName: string,
   lastName: string,
   username: string,
-  password: string,
+  password: string
 ): Promise<ApiResponse<void>> =>
   authService.signup(firstName, lastName, username, password);
 
@@ -66,12 +66,12 @@ const getAccessToken = (): AccessToken => getAccessTokenFromStorage();
 const isUserAuthenticated = () => !!getAccessToken();
 
 const sendOTPFn = async (
-  phoneNumber: PhoneNumber,
+  phoneNumber: PhoneNumber
 ): Promise<ApiResponse<void>> => authService.sendOTP(phoneNumber);
 
 const verifyOTPFn = async (
   phoneNumber: PhoneNumber,
-  otp: string,
+  otp: string
 ): Promise<ApiResponse<AccessToken>> => {
   const result = await authService.verifyOTP(phoneNumber, otp);
   if (result.data) {

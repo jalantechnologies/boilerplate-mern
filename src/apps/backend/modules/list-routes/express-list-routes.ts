@@ -35,7 +35,7 @@ const getStacks = (app: Application): Stack[] => {
 
 const expressListRoutes = (
   app: Application,
-  baseAPIRoutePath: string,
+  baseAPIRoutePath: string
 ): HttpRoute[] => {
   const stacks = getStacks(app);
   if (!stacks) {

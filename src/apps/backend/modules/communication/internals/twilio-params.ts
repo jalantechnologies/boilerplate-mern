@@ -21,7 +21,7 @@ export default class SMSParams {
     );
 
     const isRecipientPhoneValid: boolean = phoneUtil.isValidNumber(
-      phoneUtil.parse(this.phoneNumberToString(params.recipientPhone)),
+      phoneUtil.parse(this.phoneNumberToString(params.recipientPhone))
     );
 
     const isMessageValid = !!params.messageBody;
@@ -41,7 +41,7 @@ export default class SMSParams {
     if (failures.length) {
       throw new ValidationError(
         'SMS cannot be send, please check the params validity.',
-        failures,
+        failures
       );
     }
   }

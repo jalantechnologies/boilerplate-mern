@@ -16,11 +16,11 @@ import {
 export default class AccessTokenService {
   public static async createAccessTokenByUsernameAndPassword(
     password: string,
-    username: string,
+    username: string
   ): Promise<AccessToken> {
     const account = await AccountService.getAccountByUsernameAndPassword(
       password,
-      username,
+      username
     );
 
     return AccessTokenService.generateAccessToken(account);
@@ -28,7 +28,7 @@ export default class AccessTokenService {
 
   public static async createAccessTokenByPhoneNumber(
     otpCode: string,
-    phoneNumber: PhoneNumber,
+    phoneNumber: PhoneNumber
   ): Promise<AccessToken> {
     const account = await AccountService.getAccountByPhoneNumber(phoneNumber);
 
@@ -42,7 +42,7 @@ export default class AccessTokenService {
   }
 
   public static verifyAccessToken(
-    params: VerifyAccessTokenParams,
+    params: VerifyAccessTokenParams
   ): AccessTokenPayload {
     const { token } = params;
     let verifiedToken: jsonwebtoken.JwtPayload;
@@ -79,7 +79,7 @@ export default class AccessTokenService {
     const jwtToken = jsonwebtoken.sign(
       { accountId: account.id },
       jwtSigningKey,
-      { expiresIn: jwtExpiry },
+      { expiresIn: jwtExpiry }
     );
 
     const accessToken = new AccessToken();

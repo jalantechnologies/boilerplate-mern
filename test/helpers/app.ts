@@ -12,7 +12,7 @@ export const startApplication = async (): Promise<void> => {
 export const stopApplication = async (): Promise<void> => {
   if (!app) {
     throw new Error(
-      'Application could not be stopped - Application not started yet',
+      'Application could not be stopped - Application not started yet'
     );
   }
 

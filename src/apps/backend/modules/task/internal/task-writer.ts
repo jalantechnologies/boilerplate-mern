@@ -34,7 +34,7 @@ export default class TaskWriter {
           title: params.title,
         },
       },
-      { new: true },
+      { new: true }
     );
 
     if (!task) {
@@ -58,7 +58,7 @@ export default class TaskWriter {
         $set: {
           active: false,
         },
-      },
+      }
     );
   }
 }

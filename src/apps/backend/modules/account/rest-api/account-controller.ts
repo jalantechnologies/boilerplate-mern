@@ -29,18 +29,18 @@ export class AccountController {
           firstName,
           lastName,
           password,
-          username,
+          username
         );
       } else if (phoneNumber) {
         account = await AccountService.getOrCreateAccountByPhoneNumber(
-          new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber),
+          new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber)
         );
       }
 
       const accountJSON = serializeAccountAsJSON(account);
 
       res.status(HttpStatusCodes.CREATED).send(accountJSON);
-    },
+    }
   );
 
   getAccountById = applicationController(
@@ -51,7 +51,7 @@ export class AccountController {
       const accountJSON = serializeAccountAsJSON(account);
 
       res.status(HttpStatusCodes.OK).send(accountJSON);
-    },
+    }
   );
 
   updateAccount = applicationController(
@@ -79,7 +79,7 @@ export class AccountController {
       const accountJSON = serializeAccountAsJSON(account);
 
       res.status(HttpStatusCodes.OK).send(accountJSON);
-    },
+    }
   );
 
   deleteAccount = applicationController(
@@ -90,6 +90,6 @@ export class AccountController {
       });
 
       res.status(HttpStatusCodes.NO_CONTENT).send();
-    },
+    }
   );
 }

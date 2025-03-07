@@ -52,5 +52,5 @@ export const AccountDbSchema = new Schema<AccountDB>(
       createdAt: 'createdAt',
       updatedAt: 'updatedAt',
     },
-  },
+  }
 );
