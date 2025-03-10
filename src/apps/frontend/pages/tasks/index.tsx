@@ -13,8 +13,14 @@ const Tasks: React.FC = () => {
     toast.error(error.message);
   };
 
-  const { deleteTask, getTasks, isGetTasksLoading, setTasksList, tasksList } =
-    useTaskContext();
+  const {
+    deleteTask,
+    getTasks,
+    isGetTasksLoading,
+    setTasksList,
+    tasksList,
+    getCommentsByTaskId,
+  } = useTaskContext();
 
   useEffect(() => {
     getTasks().catch((error) => onError(error as AsyncError));
@@ -37,6 +43,7 @@ const Tasks: React.FC = () => {
           tasks={tasksList}
           isGetTasksLoading={isGetTasksLoading}
           handleDeleteTask={handleDeleteTask}
+          getCommentsByTaskId={getCommentsByTaskId}
         />
       </VerticalStackLayout>
     </div>

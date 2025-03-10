@@ -129,15 +129,19 @@ export default class TaskService extends APIService {
         },
       });
 
-      const comments: Comment[] = (response.data as JsonObject[]).map(
-        (commentData) => new Comment(commentData)
-      );
+      const comments: Comment[] = Array.isArray(response.data)
+        ? (response.data as JsonObject[]).map(
+            (commentData) => new Comment(commentData)
+          )
+        : [];
 
       return new ApiResponse(comments, undefined);
     } catch (e) {
       return new ApiResponse(
         undefined,
-        new ApiError(e.response.data as JsonObject)
+        new ApiError(
+          (e.response?.data as JsonObject) || { message: 'Unknown error' }
+        )
       );
     }
   };

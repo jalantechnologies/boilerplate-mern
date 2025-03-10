@@ -14,7 +14,7 @@ export default class CommentReader {
   ): Promise<Comment[]> {
     const commentsDb = await CommentRepository.find({
       task: params.taskId,
-    }).populate('account');
+    }).populate('account', 'firstName lastName username');
 
     return commentsDb.map((commentDb) =>
       CommentUtil.convertCommentDBToComment(commentDb)

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 
 import {
@@ -23,6 +23,7 @@ interface TaskSectionProps {
   isGetTasksLoading: boolean;
   onError?: (error: AsyncError) => void;
   tasks: Task[];
+  getCommentsByTaskId: (taskId: string) => Promise<Comment[]>;
 }
 
 const TaskSection: React.FC<TaskSectionProps> = ({
@@ -32,34 +33,6 @@ const TaskSection: React.FC<TaskSectionProps> = ({
   tasks,
 }) => {
   const [updateTaskModal, setUpdateTaskModal] = useState(false);
-
-  const dummyComments: Comment[] = [
-    {
-      id: '1',
-      account: 'user1',
-      task: 'task1',
-      createdAt: '2023-10-01T12:00:00Z',
-      content: 'This is the first comment.',
-    },
-    {
-      id: '2',
-      account: 'user2',
-      task: 'task2',
-      createdAt: '2023-10-02T12:00:00Z',
-      content: 'This is the second comment.',
-    },
-    {
-      id: '3',
-      account: 'user3',
-      task: 'task3',
-      createdAt: '2023-10-02T12:00:00Z',
-      content: 'This is the second comment.',
-    },
-  ];
-  const [comments, setComments] = useState<Comment[]>(dummyComments);
-  useEffect(() => {
-    setComments(dummyComments);
-  }, []);
 
   const onSuccess = () => {
     toast.success('Task has been updated successfully');
@@ -129,7 +102,7 @@ const TaskSection: React.FC<TaskSectionProps> = ({
               </Button>
             </MenuItem>
           </div>
-          <TaskComments comments={comments} taskId={task.id} />
+          <TaskComments taskId={task.id} />
         </div>
       ))}
 

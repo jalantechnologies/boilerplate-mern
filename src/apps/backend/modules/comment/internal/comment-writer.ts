@@ -18,7 +18,11 @@ export default class CommentWriter {
       content: params.content,
       task: params.taskId,
     });
-    return CommentUtil.convertCommentDBToComment(createdComment);
+    const populatedComment = await createdComment.populate(
+      'account',
+      'firstName lastName username'
+    );
+    return CommentUtil.convertCommentDBToComment(populatedComment);
   }
 
   public static async updateComment(
@@ -36,7 +40,11 @@ export default class CommentWriter {
       },
       { new: true }
     );
-    return CommentUtil.convertCommentDBToComment(updatedComment);
+    const populatedComment = await updatedComment.populate(
+      'account',
+      'firstName lastName username'
+    );
+    return CommentUtil.convertCommentDBToComment(populatedComment);
   }
 
   public static async deleteComment(

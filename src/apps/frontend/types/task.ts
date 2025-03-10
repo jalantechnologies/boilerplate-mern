@@ -18,16 +18,31 @@ export class Task {
 
 export class Comment {
   id: string;
-  account: string;
+  account: { [key: string]: string };
   content: string;
-  task: string;
+  taskId: string;
   createdAt: string;
 
   constructor(json: JsonObject) {
-    this.id = (json._id as string) || ''; // Ensure _id is mapped correctly
-    this.account = (json.account as string) || '';
+    this.id = (json.id as string) || '';
+
+    try {
+      this.account =
+        typeof json.account === 'string'
+          ? (JSON.parse(
+              json.account
+                .replace(/new ObjectId\("(.*?)"\)/g, '"$1"') // Convert ObjectId to a string
+                .replace(/(\w+):/g, '"$1":') // Add double quotes around keys
+                .replace(/'/g, '"')
+            ) as { [key: string]: string })
+          : (json.account as { [key: string]: string }) || {};
+    } catch (error) {
+      console.error('Error parsing account:', error);
+      this.account = {}; // Fallback in case of error
+    }
+
     this.content = (json.content as string) || '';
-    this.task = (json.task as string) || '';
+    this.taskId = (json.taskId as string) || '';
     this.createdAt = (json.createdAt as string) || new Date().toISOString();
   }
 }
