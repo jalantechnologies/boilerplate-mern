@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
     "target": "es6",
+    "types": ["node", "mocha", "chai"],
+    "skipLibCheck": true,
     "module": "commonjs",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
@@ -17,6 +19,7 @@
     "noImplicitThis": false,
     "strictNullChecks": false,
     "experimentalDecorators": true,
+    "jsx": "react-jsx",
     "resolveJsonModule": true,
     "esModuleInterop": true,
   }

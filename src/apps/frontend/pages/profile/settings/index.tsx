@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
@@ -18,7 +18,7 @@ const ProfileSettings = () => {
   const navigate = useNavigate();
 
   const [isDeleteAccountModalOpen, setIsDeleteAccountModalOpen] =
-    useState(false);
+    React.useState(false);
 
   const handleLogout = () => {
     logout();
