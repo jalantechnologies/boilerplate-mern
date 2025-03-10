@@ -92,4 +92,12 @@ export class AccountController {
       res.status(HttpStatusCodes.NO_CONTENT).send();
     }
   );
+
+  getAccounts = applicationController(async (req: Request, res: Response) => {
+    const params = req.accountId;
+    const accounts = await AccountService.getAllAccounts(params);
+    const accountsJSON = accounts.map(serializeAccountAsJSON);
+
+    res.status(HttpStatusCodes.OK).send(accountsJSON);
+  });
 }

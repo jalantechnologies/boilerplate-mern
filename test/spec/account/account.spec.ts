@@ -1,13 +1,19 @@
 import faker from '@faker-js/faker';
 import chai, { expect } from 'chai';
+import { Types } from 'mongoose';
 import sinon from 'sinon';
 
 import {
+  Account,
   AccountNotFoundError,
   AccountWithUserNameExistsError,
   PhoneNumber,
 } from '../../../src/apps/backend/modules/account';
+import AccountReader from '../../../src/apps/backend/modules/account/internal/account-reader';
+import AccountUtil from '../../../src/apps/backend/modules/account/internal/account-util';
 import AccountWriter from '../../../src/apps/backend/modules/account/internal/account-writer';
+import { AccountDB } from '../../../src/apps/backend/modules/account/internal/store/account-db';
+import AccountRepository from '../../../src/apps/backend/modules/account/internal/store/account-repository';
 import { SMSService } from '../../../src/apps/backend/modules/communication';
 import { app } from '../../helpers/app';
 
@@ -215,6 +221,61 @@ describe('Account API', () => {
       expect(res.body.message).to.eq(
         new AccountNotFoundError(accountId).message
       );
+    });
+  });
+
+  describe('GET /accounts', () => {
+    describe('Given a valid excludeAccountId', () => {
+      let excludeAccountId: string;
+      let accountsDb: AccountDB[];
+      let accounts: Account[];
+
+      beforeEach(() => {
+        excludeAccountId = '60d0fe4f5311236168a109ca';
+        accountsDb = [
+          {
+            _id: new Types.ObjectId('60d0fe4f5311236168a109cb'),
+            active: true,
+            phoneNumber: { countryCode: '+91', phoneNumber: '1234567809' },
+            hashedPassword: 'hashedPassword1',
+            username: 'user1',
+            firstName: 'John',
+            lastName: 'Doe',
+          },
+          {
+            _id: new Types.ObjectId('60d0fe4f5311236168a109cc'),
+            active: true,
+            phoneNumber: { countryCode: '+91', phoneNumber: '1234567890' },
+            hashedPassword: 'hashedPassword2',
+            username: 'user2',
+            firstName: 'Jane',
+            lastName: 'Due',
+          },
+        ];
+        accounts = accountsDb.map((accountDb: AccountDB) =>
+          AccountUtil.convertAccountDBToAccount(accountDb)
+        );
+
+        sinon.stub(AccountRepository, 'find').resolves(accountsDb);
+      });
+
+      afterEach(() => {
+        sinon.restore();
+      });
+
+      describe('When getAllAccounts is called', () => {
+        let result: Account[];
+
+        beforeEach(async () => {
+          result = await AccountReader.getAllAccounts(excludeAccountId);
+        });
+
+        it('Then it should return all active accounts excluding the specified account', () => {
+          expect(result).to.have.lengthOf(2);
+          expect(result).to.deep.equal(accounts);
+          expect(result).to.not.deep.include({ id: excludeAccountId });
+        });
+      });
     });
   });
 });

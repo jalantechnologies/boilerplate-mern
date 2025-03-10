@@ -110,4 +110,17 @@ export default class AccountReader {
 
     return false;
   }
+
+  public static async getAllAccounts(
+    excludeAccountId: string
+  ): Promise<Account[]> {
+    const accountsDb = await AccountRepository.find({
+      active: true,
+      _id: { $ne: excludeAccountId },
+    });
+
+    return accountsDb.map((accountDb) =>
+      AccountUtil.convertAccountDBToAccount(accountDb)
+    );
+  }
 }

@@ -106,4 +106,8 @@ export default class AccountService {
 
     return AccountWriter.deleteAccountById(accountId);
   }
+
+  public static async getAllAccounts(params: string): Promise<Account[]> {
+    return AccountReader.getAllAccounts(params);
+  }
 }

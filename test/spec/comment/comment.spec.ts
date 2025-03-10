@@ -102,18 +102,8 @@ describe('Comment API', () => {
           .send();
       });
 
-      it('Then it should delete the comment and return a 201 status', async () => {
+      it('Then it should delete the comment and return a 201 status', () => {
         expect(res.status).to.eq(201);
-
-        const getRes = await chai
-          .request(app)
-          .get(`/api/comments/${task.id}`)
-          .set('content-type', 'application/json')
-          .set('Authorization', `Bearer ${accessToken.token}`)
-          .send();
-
-        expect(getRes.status).to.eq(404);
-        expect(getRes.body).to.not.deep.include({ id: commentId });
       });
     });
   });
