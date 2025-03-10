@@ -19,7 +19,7 @@
     "noImplicitThis": false,
     "strictNullChecks": false,
     "experimentalDecorators": true,
-    "jsx": "react-jsx",
+    "jsx": "react",
     "resolveJsonModule": true,
     "esModuleInterop": true,
   }
