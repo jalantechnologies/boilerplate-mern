@@ -15,7 +15,7 @@ export const ShareTaskDbSchema = new Schema<ShareTaskDB>(
     },
     sharedWith: {
       type: Schema.Types.ObjectId,
-      ref: 'Account',
+      ref: 'accounts',
       index: true,
       required: true,
     },

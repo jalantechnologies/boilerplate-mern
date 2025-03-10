@@ -11,7 +11,7 @@ export const CommentDbSchema = new Schema<CommentDB>(
   {
     account: {
       type: Schema.Types.ObjectId,
-      ref: 'Account',
+      ref: 'accounts',
       required: true,
     },
     content: {

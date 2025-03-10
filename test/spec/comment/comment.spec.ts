@@ -47,15 +47,19 @@ describe('Comment API', () => {
     describe('Given a valid taskId', () => {
       let task: Task;
       let res: ChaiHttp.Response;
+      let accountId: string;
 
       beforeEach(async () => {
+        const { account } = await createAccount();
+        accountId = account.id;
+
         task = await TaskService.createTask({
-          accountId: '60d0fe4f5311236168a109ca',
+          accountId,
           description: 'This is a test task.',
           title: 'Test Task',
         });
         await CommentService.createComment({
-          accountId: '60d0fe4f5311236168a109ca',
+          accountId,
           content: 'This is a test content.',
           taskId: task.id,
         });
@@ -113,16 +117,20 @@ describe('Comment API', () => {
       let task: Task;
       let commentId: string;
       let res: ChaiHttp.Response;
+      let accountId: string;
 
       beforeEach(async () => {
+        const { account } = await createAccount();
+        accountId = account.id;
+
         task = await TaskService.createTask({
-          accountId: '60d0fe4f5311236168a109ca',
+          accountId,
           description: 'This is a test task.',
           title: 'Test Task',
         });
 
         const comment = await CommentService.createComment({
-          accountId: '60d0fe4f5311236168a109ca',
+          accountId,
           content: 'This is a test content.',
           taskId: task.id,
         });
