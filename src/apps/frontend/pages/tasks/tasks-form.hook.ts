@@ -9,15 +9,22 @@ import { Task } from '../../types/task';
 interface TaskFormProps {
   onError?: (error: AsyncError) => void;
   onSuccess?: () => void;
+  commentInitialValues?: { content: string; taskId: string };
 }
-const useTaskForm = ({ onError, onSuccess }: TaskFormProps) => {
+const useTaskForm = ({
+  onError,
+  onSuccess,
+  commentInitialValues,
+}: TaskFormProps) => {
   const {
     addTask,
+    addComment,
     setTasksList,
     tasksList,
     updateTask,
     isAddTaskLoading,
     isUpdateTaskLoading,
+    isAddCommentLoading,
   } = useTaskContext();
 
   const setFormikFieldValue = (
@@ -100,12 +107,37 @@ const useTaskForm = ({ onError, onSuccess }: TaskFormProps) => {
     },
   });
 
+  const addCommentFormik = useFormik({
+    initialValues: {
+      taskId: commentInitialValues?.taskId ?? '',
+      content: commentInitialValues?.content ?? '',
+    },
+    validationSchema: Yup.object({
+      taskId: Yup.string().trim().required('Please select a valid task.'),
+      content: Yup.string()
+        .trim()
+        .min(1, 'Comment must be at least 1 characters long.')
+        .max(500, 'Comment cannot exceed 500 characters.')
+        .required('Comment cannot be empty.'),
+    }),
+    onSubmit: (values) => {
+      addComment(values.taskId, values.content)
+        .then(() => {
+          onSuccess?.();
+          addCommentFormik.resetForm();
+        })
+        .catch((error) => onError?.(error as AsyncError));
+    },
+  });
+
   return {
     addTaskFormik,
     isAddTaskLoading,
     isUpdateTaskLoading,
     setFormikFieldValue,
     updateTaskFormik,
+    addCommentFormik,
+    isAddCommentLoading,
   };
 };
 

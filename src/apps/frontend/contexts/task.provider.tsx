@@ -7,25 +7,39 @@ import React, {
 
 import TaskService from '../services/task.service';
 import { ApiResponse, AsyncError } from '../types';
-import { Task } from '../types/task';
+import { Task, Comment } from '../types/task';
 
 import useAsync from './async.hook';
 
 type TaskContextType = {
+  addComment: (taskId: string, content: string) => Promise<Comment>;
+  addCommentError: AsyncError;
   addTask: (title: string, description: string) => Promise<Task>;
   addTaskError: AsyncError;
+  comment: Comment;
+  comments: Comment[];
+  deleteComment: (commentId: string) => Promise<void>;
+  deleteCommentError: AsyncError;
   deleteTask: (taskId: string) => Promise<void>;
   deleteTaskError: AsyncError;
+  getCommentsByTaskId: (taskId: string) => Promise<Comment[]>;
+  getCommentsError: AsyncError;
   getTasks: () => Promise<Task[]>;
   getTasksError: AsyncError;
+  isAddCommentLoading: boolean;
   isAddTaskLoading: boolean;
+  isDeleteCommentLoading: boolean;
   isDeleteTaskLoading: boolean;
+  isGetCommentsLoading: boolean;
   isGetTasksLoading: boolean;
+  isUpdateCommentLoading: boolean;
   isUpdateTaskLoading: boolean;
   setTasksList: React.Dispatch<React.SetStateAction<Task[]>>;
   task: Task;
   tasks: Task[];
   tasksList: Task[];
+  updateComment: (commentId: string, content: string) => Promise<Comment>;
+  updateCommentError: AsyncError;
   updateTask: (taskId: string, taskData: Partial<Task>) => Promise<Task>;
   updateTaskError: AsyncError;
   updatedTask: Task;
@@ -49,6 +63,23 @@ const updateTaskFn = async (
 
 const deleteTaskFn = async (taskId: string): Promise<ApiResponse<void>> =>
   taskService.deleteTask(taskId);
+
+const addCommentFn = async (
+  taskId: string,
+  content: string
+): Promise<ApiResponse<Comment>> => taskService.addComment(taskId, content);
+
+const updateCommentFn = async (
+  commentId: string,
+  content: string
+): Promise<ApiResponse<Comment>> =>
+  taskService.updateComment(commentId, content);
+
+const deleteCommentFn = async (commentId: string): Promise<ApiResponse<void>> =>
+  taskService.deleteComment(commentId);
+
+const getCommentsFn = async (taskId: string): Promise<ApiResponse<Comment[]>> =>
+  taskService.getCommentsByTaskId(taskId);
 
 export const TaskProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [tasksList, setTasksList] = useState<Task[]>([]);
@@ -86,6 +117,32 @@ export const TaskProvider: React.FC<PropsWithChildren> = ({ children }) => {
     isLoading: isDeleteTaskLoading,
   } = useAsync(deleteTaskFn);
 
+  const {
+    asyncCallback: addComment,
+    error: addCommentError,
+    isLoading: isAddCommentLoading,
+    result: comment,
+  } = useAsync(addCommentFn);
+
+  const {
+    asyncCallback: updateComment,
+    error: updateCommentError,
+    isLoading: isUpdateCommentLoading,
+  } = useAsync(updateCommentFn);
+
+  const {
+    asyncCallback: deleteComment,
+    error: deleteCommentError,
+    isLoading: isDeleteCommentLoading,
+  } = useAsync(deleteCommentFn);
+
+  const {
+    asyncCallback: getCommentsByTaskId,
+    error: getCommentsError,
+    isLoading: isGetCommentsLoading,
+    result: fetchedComments,
+  } = useAsync(getCommentsFn);
+
   return (
     <TaskContext.Provider
       value={{
@@ -106,6 +163,20 @@ export const TaskProvider: React.FC<PropsWithChildren> = ({ children }) => {
         updateTask,
         updateTaskError,
         updatedTask,
+        addComment,
+        addCommentError,
+        isAddCommentLoading,
+        comment,
+        deleteComment,
+        deleteCommentError,
+        isDeleteCommentLoading,
+        updateComment,
+        updateCommentError,
+        isUpdateCommentLoading,
+        getCommentsByTaskId,
+        isGetCommentsLoading,
+        getCommentsError,
+        comments: fetchedComments || [],
       }}
     >
       {children}
