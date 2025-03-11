@@ -36,27 +36,19 @@ export default class PushService {
     params: BatchPushNotificationsParams
   ): Promise<void> {
     const { fcmTokens, title, body } = params;
-
     if (fcmTokens.length === 0) {
       throw new Error('No FCM tokens provided.');
     }
-
     this.getFirebaseApp();
-
-    const messages = fcmTokens.map((token) => ({
-      token,
+    const message = {
+      tokens: fcmTokens,
       notification: { title, body },
-    }));
-
-    await Promise.all(
-      messages.map(async (message) => {
-        try {
-          await admin.messaging().send(message);
-        } catch (err) {
-          throw new ServiceError(err as Error);
-        }
-      })
-    );
+    };
+    try {
+      await admin.messaging().sendMulticast(message);
+    } catch (err) {
+      throw new ServiceError(err as Error);
+    }
   }
 
   public static getFirebaseApp(): admin.app.App {
