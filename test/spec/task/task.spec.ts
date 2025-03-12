@@ -1,3 +1,4 @@
+import faker from '@faker-js/faker';
 import chai, { expect } from 'chai';
 
 import { AccessToken } from '../../../src/apps/backend/modules/access-token';
@@ -143,9 +144,10 @@ describe('Task API', () => {
     });
 
     it('should return error if requested task does not exists', async () => {
+      const taskId = faker.database.mongodbObjectId();
       const res = await chai
         .request(app)
-        .get(`/api/tasks/000000000000000000000000`)
+        .get(`/api/tasks/${taskId}`)
         .set('content-type', 'application/json')
         .set('Authorization', `Bearer ${accessToken.token}`)
         .send();
