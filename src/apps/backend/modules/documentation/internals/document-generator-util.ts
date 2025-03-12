@@ -114,7 +114,7 @@ export default class DocumentGeneratorUtil {
       const routerFileContent = fs.readFileSync(routerFilePath, 'utf8');
 
       const routeRegex = new RegExp(
-        `router\\.${route.method.toLowerCase()}\\(['"]${route.routerPath}['"],\\s*ctrl\\.(\\w+)\\)`,
+        `router\\.${route.method.toLowerCase()}\\(\\s*['"]${route.routerPath}['"]\\s*,\\s*ctrl\\.(\\w+)\\s*,?\\s*\\)`,
         'g'
       );
       const match = routeRegex.exec(routerFileContent);

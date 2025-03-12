@@ -1,7 +1,6 @@
 import { AccountBadRequestError, AccountService } from '../account';
-import { EmailService } from '../communication';
-import { SendEmailParams } from '../communication/types';
 import { ConfigService } from '../config';
+import { NotificationService, SendEmailParams } from '../notification';
 
 import PasswordResetTokenReader from './internal/password-reset-token-reader';
 import PasswordResetTokenUtil from './internal/password-reset-token-util';
@@ -126,6 +125,6 @@ export default class PasswordResetTokenService {
       templateId: forgetPasswordMailTemplateId,
     };
 
-    return EmailService.sendEmail(passwordResetEmailParams);
+    return NotificationService.sendEmail(passwordResetEmailParams);
   }
 }

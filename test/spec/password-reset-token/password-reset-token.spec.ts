@@ -10,7 +10,7 @@ import {
 } from '../../../src/apps/backend/modules/account';
 import AccountUtil from '../../../src/apps/backend/modules/account/internal/account-util';
 import AccountRepository from '../../../src/apps/backend/modules/account/internal/store/account-repository';
-import { EmailService } from '../../../src/apps/backend/modules/communication';
+import { NotificationService } from '../../../src/apps/backend/modules/notification';
 import {
   PasswordResetTokenNotFoundError,
   PasswordResetTokenService,
@@ -48,7 +48,10 @@ describe('Account Password Reset', () => {
         username: account.username,
       };
 
-      const stubEmailService = sinonSandbox.stub(EmailService, 'sendEmail');
+      const stubEmailService = sinonSandbox.stub(
+        NotificationService,
+        'sendEmail'
+      );
 
       const resetToken = faker.random.alphaNumeric();
       sinonSandbox
@@ -103,7 +106,9 @@ describe('Account Password Reset', () => {
 
   describe('PATCH /account/:accountId', () => {
     it('should reset the account password to the new password', async () => {
-      sinonSandbox.stub(EmailService, 'sendEmail').returns(Promise.resolve());
+      sinonSandbox
+        .stub(NotificationService, 'sendEmail')
+        .returns(Promise.resolve());
 
       const resetToken = faker.random.alphaNumeric();
       sinonSandbox
@@ -179,7 +184,9 @@ describe('Account Password Reset', () => {
     });
 
     it("should throw 404 if the account's password reset token is not found", async () => {
-      sinonSandbox.stub(EmailService, 'sendEmail').returns(Promise.resolve());
+      sinonSandbox
+        .stub(NotificationService, 'sendEmail')
+        .returns(Promise.resolve());
 
       const resetToken = faker.random.alphaNumeric();
       sinonSandbox
@@ -232,7 +239,9 @@ describe('Account Password Reset', () => {
     });
 
     it('should throw error if the password reset token is already used', async () => {
-      sinonSandbox.stub(EmailService, 'sendEmail').returns(Promise.resolve());
+      sinonSandbox
+        .stub(NotificationService, 'sendEmail')
+        .returns(Promise.resolve());
 
       const resetToken = faker.random.alphaNumeric();
       sinonSandbox
@@ -275,7 +284,9 @@ describe('Account Password Reset', () => {
     });
 
     it('should throw error if the password reset token does not match with the token passed in the payload', async () => {
-      sinonSandbox.stub(EmailService, 'sendEmail').returns(Promise.resolve());
+      sinonSandbox
+        .stub(NotificationService, 'sendEmail')
+        .returns(Promise.resolve());
       const resetToken = faker.random.alphaNumeric();
       await PasswordResetTokenService.createPasswordResetToken({
         username: account.username,
@@ -307,7 +318,9 @@ describe('Account Password Reset', () => {
     });
 
     it('should throw error if the password reset token is expired', async () => {
-      sinonSandbox.stub(EmailService, 'sendEmail').returns(Promise.resolve());
+      sinonSandbox
+        .stub(NotificationService, 'sendEmail')
+        .returns(Promise.resolve());
 
       const resetToken = faker.random.alphaNumeric();
       sinonSandbox
