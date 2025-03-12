@@ -45,9 +45,13 @@ export const createAccount = async (params?: {
       accountCreateParams.username
     );
 
+  const channelPreferences = NotificationService.getAllNotificationChannels();
+  const typePreferences = NotificationService.getAllNotificationTypes();
   const accountNotificationPreferences =
     await NotificationService.createNotificationPreference({
       accountId: account.id,
+      notificationChannelPreferences: channelPreferences,
+      notificationTypePreferences: typePreferences,
     });
 
   return {

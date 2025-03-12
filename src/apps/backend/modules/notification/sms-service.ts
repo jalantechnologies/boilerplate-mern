@@ -1,4 +1,5 @@
 import { Twilio } from 'twilio';
+import { MessageInstance } from 'twilio/lib/rest/api/v2010/account/message';
 
 import { ConfigService } from '../config';
 
@@ -8,13 +9,13 @@ import { SendSMSParams, ServiceError } from './types';
 export default class SMSService {
   private static smsClient: Twilio;
 
-  public static async sendSMS(params: SendSMSParams): Promise<void> {
+  public static async sendSMS(params: SendSMSParams): Promise<MessageInstance> {
     NotificationUtil.validateSms(params);
 
     try {
       const client = this.getSmsClient();
 
-      await client.messages.create({
+      return await client.messages.create({
         to: NotificationUtil.phoneNumberToString(params.recipientPhone),
         messagingServiceSid: ConfigService.getValue(
           'twilio.messaging.messagingServiceSid'

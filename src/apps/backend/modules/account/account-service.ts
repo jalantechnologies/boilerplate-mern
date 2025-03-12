@@ -26,8 +26,16 @@ export default class AccountService {
       password,
       username
     );
+
+    const channelPreferences = {
+      ...NotificationService.getAllNotificationChannels(),
+      sms: false,
+    };
+    const typePreferences = NotificationService.getAllNotificationTypes();
     await NotificationService.createNotificationPreference({
       accountId: account.id,
+      notificationChannelPreferences: channelPreferences,
+      notificationTypePreferences: typePreferences,
     });
     return account;
   }
@@ -40,8 +48,16 @@ export default class AccountService {
 
     if (!account) {
       account = await AccountWriter.createAccountByPhoneNumber(phoneNumber);
+
+      const channelPreferences = {
+        ...NotificationService.getAllNotificationChannels(),
+        email: false,
+      };
+      const typePreferences = NotificationService.getAllNotificationTypes();
       await NotificationService.createNotificationPreference({
         accountId: account.id,
+        notificationChannelPreferences: channelPreferences,
+        notificationTypePreferences: typePreferences,
       });
     }
 

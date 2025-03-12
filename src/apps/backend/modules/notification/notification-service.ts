@@ -1,3 +1,5 @@
+import { MessageInstance } from 'twilio/lib/rest/api/v2010/account/message';
+
 import { AccountService } from '../account';
 import { ConfigService } from '../config';
 import { Logger } from '../logger';
@@ -17,6 +19,9 @@ import {
   GetAccountsWithParticularNotificationChannelPreferenceParams,
   GetAccountsWithParticularNotificationTypePreferenceParams,
   Notification,
+  NotificationChannelPreferences,
+  NotificationTypePreferences,
+  NotificationChannelPreferenceEnum,
   NotificationTypePreferenceEnum,
   NotificationPreferencesNotFoundError,
   NotificationPermissionDeniedError,
@@ -44,8 +49,16 @@ export default class NotificationService {
   public static async createNotificationPreference(
     params: CreateNotificationPrefrenceParams
   ): Promise<Notification> {
-    const { accountId } = params;
-    return NotificationWriter.createNotificationPreferences(accountId);
+    const {
+      accountId,
+      notificationChannelPreferences,
+      notificationTypePreferences,
+    } = params;
+    return NotificationWriter.createNotificationPreferences(
+      accountId,
+      notificationChannelPreferences,
+      notificationTypePreferences
+    );
   }
 
   public static async updateAccountNotificationChannelPreferences(
@@ -90,6 +103,23 @@ export default class NotificationService {
       throw new NotificationPreferencesNotFoundError(accountId);
     }
     return notificationUpdated;
+  }
+
+  public static getAllNotificationChannels(): NotificationChannelPreferences {
+    return Object.values(NotificationChannelPreferenceEnum).reduce(
+      (acc, key) => {
+        acc[key] = true;
+        return acc;
+      },
+      {} as NotificationChannelPreferences
+    );
+  }
+
+  public static getAllNotificationTypes(): NotificationTypePreferences {
+    return Object.values(NotificationTypePreferenceEnum).reduce((acc, key) => {
+      acc[key] = true;
+      return acc;
+    }, {} as NotificationTypePreferences);
   }
 
   public static async getAccountNotificationPreference(
@@ -529,7 +559,7 @@ export default class NotificationService {
     });
   }
 
-  public static async sendSMS(params: SendSMSParams): Promise<void> {
+  public static async sendSMS(params: SendSMSParams): Promise<MessageInstance> {
     return SmsService.sendSMS(params);
   }
 

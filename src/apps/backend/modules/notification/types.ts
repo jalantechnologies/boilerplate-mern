@@ -52,6 +52,8 @@ export type EmailRecipient = {
 
 export type CreateNotificationPrefrenceParams = {
   accountId: string;
+  notificationChannelPreferences: NotificationChannelPreferences;
+  notificationTypePreferences: NotificationTypePreferences;
 };
 
 export type GetUserNotificationPreferencesParams = {

@@ -9,10 +9,14 @@ import NotificationRepository from './store/notification-repository';
 
 export default class NotificationWriter {
   public static async createNotificationPreferences(
-    accountId: string
+    accountId: string,
+    notificationChannelPreferences: NotificationChannelPreferences,
+    notificationTypePreferences: NotificationTypePreferences
   ): Promise<Notification> {
     let notification = await NotificationRepository.findOne({
       account: accountId,
+      notificationChannelPreferences,
+      notificationTypePreferences,
     });
     if (!notification) {
       notification = await NotificationRepository.create({
