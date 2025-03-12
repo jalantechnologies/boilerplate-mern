@@ -1,6 +1,7 @@
 import faker from '@faker-js/faker';
 import chai, { expect } from 'chai';
 import sinon from 'sinon';
+import { MessageInstance } from 'twilio/lib/rest/api/v2010/account/message';
 
 import {
   AccountNotFoundError,
@@ -18,9 +19,11 @@ describe('Account API', () => {
   beforeEach(() => {
     sinonSandbox = sinon.createSandbox();
 
-    sendSMSStub = sinonSandbox
-      .stub(NotificationService, 'sendSMS')
-      .returns(Promise.resolve());
+    sendSMSStub = sinonSandbox.stub(NotificationService, 'sendSMS').returns(
+      Promise.resolve({
+        sid: 'mock_sid',
+      } as MessageInstance)
+    );
   });
 
   afterEach(() => {

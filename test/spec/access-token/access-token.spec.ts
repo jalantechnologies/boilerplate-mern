@@ -1,6 +1,7 @@
 import faker from '@faker-js/faker';
 import chai, { expect } from 'chai';
 import sinon from 'sinon';
+import { MessageInstance } from 'twilio/lib/rest/api/v2010/account/message';
 
 import { PhoneNumber } from '../../../src/apps/backend/modules/account';
 import AccountWriter from '../../../src/apps/backend/modules/account/internal/account-writer';
@@ -15,9 +16,11 @@ describe('AccessToken API', () => {
   beforeEach(() => {
     sinonSandbox = sinon.createSandbox();
 
-    sinonSandbox
-      .stub(NotificationService, 'sendSMS')
-      .returns(Promise.resolve());
+    sinonSandbox.stub(NotificationService, 'sendSMS').returns(
+      Promise.resolve({
+        sid: 'mock_sid',
+      } as MessageInstance)
+    );
   });
 
   afterEach(async () => {
