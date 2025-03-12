@@ -5,6 +5,7 @@ import cors from 'cors';
 import express, { Application } from 'express';
 import expressWinston from 'express-winston';
 
+// Module imports
 import { AccessTokenServer } from './modules/access-token';
 import { AccountServer } from './modules/account';
 import { ApplicationServer } from './modules/application';
@@ -62,8 +63,8 @@ export default class App {
   }
 
   public static getAPIMicroservices(): APIMicroserviceService[] {
-    // add the new server here to the list
     return [
+      // Module servers
       {
         serverInstance: new AccountServer(),
         rootFolderPath: path.join(__dirname, 'modules/account'),
