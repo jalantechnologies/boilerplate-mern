@@ -379,7 +379,7 @@ export default class NotificationService {
   }
 
   public static async sendEmail(params: SendEmailParams): Promise<void> {
-    return EmailService.sendEmail(params);
+    await EmailService.sendEmail(params);
   }
 
   public static async sendSmsNotificationToAccount(

@@ -1,6 +1,7 @@
 import fs from 'fs';
 
 import admin from 'firebase-admin';
+import { BatchResponse } from 'firebase-admin/lib/messaging/messaging-api';
 
 import { ConfigService } from '../config';
 
@@ -17,7 +18,7 @@ export default class PushService {
 
   public static async sendPushNotification(
     params: PushNotifcationParams
-  ): Promise<void> {
+  ): Promise<string> {
     NotificationUtil.validatePushNotificationParams(params);
     try {
       const { fcmToken, body, title } = params;
@@ -26,7 +27,7 @@ export default class PushService {
         token: fcmToken,
         notification: { title, body },
       };
-      await admin.messaging().send(message);
+      return await admin.messaging().send(message);
     } catch (err) {
       throw new ServiceError(err as Error);
     }
@@ -34,7 +35,7 @@ export default class PushService {
 
   public static async sendBatchPushNotifications(
     params: BatchPushNotificationsParams
-  ): Promise<void> {
+  ): Promise<BatchResponse> {
     const { fcmTokens, title, body } = params;
     if (fcmTokens.length === 0) {
       throw new Error('No FCM tokens provided.');
@@ -45,7 +46,7 @@ export default class PushService {
       notification: { title, body },
     };
     try {
-      await admin.messaging().sendMulticast(message);
+      return await admin.messaging().sendMulticast(message);
     } catch (err) {
       throw new ServiceError(err as Error);
     }
