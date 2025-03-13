@@ -9,10 +9,10 @@ import {
   PasswordInput,
   VerticalStackLayout,
 } from '../../../components';
+import constant from '../../../constants';
 import routes from '../../../constants/routes';
 import { AsyncError, LoginMethod } from '../../../types';
 import { ButtonKind, ButtonSize, ButtonType } from '../../../types/button';
-import { useLoginMethod } from '../useLoginMethod.hook';
 
 import LoginFormCheckbox from './login-form-checkbox';
 import useLoginForm from './login-form.hook';
@@ -24,20 +24,12 @@ interface LoginFormProps {
 
 const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
   const { formik, isLoginLoading } = useLoginForm({ onSuccess, onError });
-  const { loginProps } = useLoginMethod();
   const navigate = useNavigate();
   useEffect(() => {
-    if (
-      !loginProps.displayEmailLoginOnMobile &&
-      loginProps.currentLoginMethod === LoginMethod.PHONE
-    ) {
+    if (constant.CURRENT_LOGIN_METHOD === LoginMethod.PHONE) {
       navigate(routes.PHONE_LOGIN);
     }
-  }, [
-    loginProps.currentLoginMethod,
-    loginProps.displayEmailLoginOnMobile,
-    navigate,
-  ]);
+  });
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -100,26 +92,12 @@ const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
         >
           Log In
         </Button>
-        {((loginProps.currentLoginMethod === LoginMethod.EMAIL &&
-          loginProps.displayRegisterAccountWeb) ||
-          (loginProps.displayRegisterAccountMobile &&
-            loginProps.currentLoginMethod === LoginMethod.PHONE)) && (
-          <p className="self-center font-medium">
-            Don’t have any account?{' '}
-            <Link to={routes.SIGNUP} className="text-primary">
-              Sign Up
-            </Link>
-          </p>
-        )}
-        {(loginProps.displayPhoneLoginOnWeb ||
-          loginProps.currentLoginMethod === LoginMethod.PHONE) && (
-          <p className="self-center font-medium">
-            Login with{' '}
-            <Link className="text-primary" to={routes.PHONE_LOGIN}>
-              Phone
-            </Link>
-          </p>
-        )}
+        <p className="self-center font-medium">
+          Don’t have any account?{' '}
+          <Link to={routes.SIGNUP} className="text-primary">
+            Sign Up
+          </Link>
+        </p>
       </VerticalStackLayout>
     </form>
   );
