@@ -2,7 +2,7 @@ import { Server } from 'http';
 import * as path from 'path';
 
 import cors from 'cors';
-import express, { Application } from 'express';
+import express, { Application, Request, Response } from 'express';
 import expressWinston from 'express-winston';
 
 import { AccessTokenServer } from './modules/access-token';
@@ -23,6 +23,12 @@ interface APIMicroserviceService {
   serverInstance: ApplicationServer;
 }
 
+interface ClientLog {
+  errorMessage: string;
+  errorName: string;
+  errorInfo: string;
+}
+
 const isDevEnv = process.env.NODE_ENV === 'development';
 
 export default class App {
@@ -32,6 +38,8 @@ export default class App {
 
   public static async startServer(): Promise<Server> {
     this.app = express();
+
+    this.app.use(express.json());
     this.app.use(App.getRequestLogger());
 
     const restAPIServer = this.createRESTApiServer();
@@ -100,6 +108,15 @@ export default class App {
         })
       );
     }
+
+    app.post(
+      '/client_logs',
+      (errorData: Request<unknown, unknown, ClientLog>, response: Response) => {
+        const { errorMessage, errorName, errorInfo } = errorData.body;
+        Logger.error(errorMessage, [errorName, errorInfo]);
+        response.status(200).send({ message: 'Logs Sent' });
+      }
+    );
 
     this.getAPIMicroservices().forEach((server) => {
       app.use('/', server.serverInstance.server);
