@@ -19,6 +19,10 @@ export const OTPPage: React.FC = () => {
     delayInMilliseconds: sendOTPDelayInMilliseconds,
   });
 
+  const onError = (error: AsyncError) => {
+    toast.error(error.message);
+  };
+
   const navigate = useNavigate();
 
   const onVerifyOTPSuccess = () => {
@@ -30,10 +34,6 @@ export const OTPPage: React.FC = () => {
     toast.success(
       'OTP has been successfully re-sent. Please check your messages.'
     );
-  };
-
-  const onError = (error: AsyncError) => {
-    toast.error(error.message);
   };
 
   const handleBackButtonClick = () => {

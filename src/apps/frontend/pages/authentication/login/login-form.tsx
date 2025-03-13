@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 import {
   Button,
@@ -9,8 +9,9 @@ import {
   PasswordInput,
   VerticalStackLayout,
 } from '../../../components';
+import constant from '../../../constants';
 import routes from '../../../constants/routes';
-import { AsyncError } from '../../../types';
+import { AsyncError, LoginMethod } from '../../../types';
 import { ButtonKind, ButtonSize, ButtonType } from '../../../types/button';
 
 import LoginFormCheckbox from './login-form-checkbox';
@@ -23,6 +24,12 @@ interface LoginFormProps {
 
 const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
   const { formik, isLoginLoading } = useLoginForm({ onSuccess, onError });
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (constant.CURRENT_LOGIN_METHOD === LoginMethod.PHONE) {
+      navigate(routes.PHONE_LOGIN);
+    }
+  });
 
   return (
     <form onSubmit={formik.handleSubmit}>

@@ -1,7 +1,6 @@
 import {
   Account,
   AccountNotFoundError,
-  AccountWithPhoneNumberExistsError,
   AccountWithUserNameExistsError,
   InvalidCredentialsError,
   Nullable,
@@ -54,18 +53,6 @@ export default class AccountReader {
 
   public static async getAccountByPhoneNumber(
     phoneNumber: PhoneNumber
-  ): Promise<Account> {
-    const account = await this.getAccountByPhoneNumberOptional(phoneNumber);
-
-    if (!account) {
-      throw new AccountNotFoundError(phoneNumber.toString());
-    }
-
-    return account;
-  }
-
-  public static async getAccountByPhoneNumberOptional(
-    phoneNumber: PhoneNumber
   ): Promise<Nullable<Account>> {
     const accountDb = await AccountRepository.findOne({
       'phoneNumber.countryCode': phoneNumber.countryCode,
@@ -90,22 +77,6 @@ export default class AccountReader {
 
     if (accountDb) {
       throw new AccountWithUserNameExistsError(username);
-    }
-
-    return false;
-  }
-
-  public static async checkPhoneNumberNotExists(
-    phoneNumber: PhoneNumber
-  ): Promise<boolean> {
-    const accountDb = await AccountRepository.findOne({
-      'phoneNumber.countryCode': phoneNumber.countryCode,
-      'phoneNumber.phoneNumber': phoneNumber.phoneNumber,
-      active: true,
-    });
-
-    if (accountDb) {
-      throw new AccountWithPhoneNumberExistsError(phoneNumber.toString());
     }
 
     return false;
