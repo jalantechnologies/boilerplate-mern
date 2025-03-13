@@ -1,16 +1,18 @@
-import mail, { MailDataRequired } from '@sendgrid/mail';
+import mail, { MailDataRequired, ClientResponse } from '@sendgrid/mail';
 import { MailService } from '@sendgrid/mail/src/mail';
 import _ from 'lodash';
 
 import { ConfigService } from '../config';
 
 import NotificationUtil from './internal/notification-util';
-import { SendEmailParams, ServiceError } from './types';
+import { SendEmailParams } from './types';
 
 export default class EmailService {
   private static emailClient: MailService;
 
-  public static async sendEmail(params: SendEmailParams): Promise<void> {
+  public static async sendEmail(
+    params: SendEmailParams
+  ): Promise<[ClientResponse, Record<string, unknown>]> {
     const { recipient, sender, templateId, templateData } = params;
 
     NotificationUtil.validateEmail(params);
@@ -30,19 +32,17 @@ export default class EmailService {
       _.merge(msg.dynamicTemplateData, templateData);
     }
 
-    try {
-      const client = this.getEmailClient();
-      await client.send(msg);
-    } catch (err) {
-      throw new ServiceError(err as Error);
-    }
+    const client = this.getEmailClient();
+    return client.send(msg);
   }
 
   public static async sendBatchEmail(params: {
     emails: SendEmailParams[];
-  }): Promise<void> {
+  }): Promise<[ClientResponse, Record<string, unknown>]> {
     const { emails } = params;
-    if (emails.length === 0) return;
+    if (emails.length === 0) {
+      throw new Error('sendBatchEmail: SendEmailParams array is empty');
+    }
 
     NotificationUtil.validateBatchEmails(emails);
 
@@ -61,12 +61,8 @@ export default class EmailService {
       templateId: emails[0].templateId,
     };
 
-    try {
-      const client = this.getEmailClient();
-      await client.sendMultiple(messages);
-    } catch (err) {
-      throw new ServiceError(err as Error);
-    }
+    const client = this.getEmailClient();
+    return client.sendMultiple(messages);
   }
 
   private static getEmailClient(): MailService {
