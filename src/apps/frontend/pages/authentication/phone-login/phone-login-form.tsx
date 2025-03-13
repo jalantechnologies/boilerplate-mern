@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import {
   Button,
@@ -9,9 +9,9 @@ import {
   Select,
   VerticalStackLayout,
 } from '../../../components';
+import constant from '../../../constants';
 import COUNTRY_SELECT_OPTIONS from '../../../constants/countries';
 import routes from '../../../constants/routes';
-import { useAuthContext } from '../../../contexts';
 import { AsyncError, LoginMethod } from '../../../types';
 import { ButtonKind, ButtonSize, ButtonType } from '../../../types/button';
 
@@ -26,25 +26,17 @@ const PhoneLoginForm: React.FC<PhoneLoginFormProps> = ({
   onError,
   onSendOTPSuccess,
 }) => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (constant.CURRENT_LOGIN_METHOD === LoginMethod.EMAIL) {
+      navigate(routes.LOGIN);
+    }
+  });
+
   const { formik, isSendOTPLoading } = usePhoneLoginForm({
     onSendOTPSuccess,
     onError,
   });
-  const { loginProps } = useAuthContext();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (
-      !loginProps.displayPhoneLoginOnWeb &&
-      loginProps.currentLoginMethod === LoginMethod.EMAIL
-    ) {
-      navigate(routes.LOGIN);
-    }
-  }, [
-    loginProps.currentLoginMethod,
-    loginProps.displayPhoneLoginOnWeb,
-    navigate,
-  ]);
 
   const setFormikFieldValue = (fieldName: string, data: string) => {
     formik
@@ -73,73 +65,49 @@ const PhoneLoginForm: React.FC<PhoneLoginFormProps> = ({
   };
 
   return (
-    <>
-      <form onSubmit={formik.handleSubmit}>
-        <VerticalStackLayout gap={5}>
-          <Flex gap={4}>
+    <form onSubmit={formik.handleSubmit}>
+      <VerticalStackLayout gap={5}>
+        <Flex gap={4}>
+          <FormControl
+            label={'Phone'}
+            error={formik.touched.countryCode && formik.errors.countryCode}
+          >
+            <Select
+              handleChange={handleChangeSelect}
+              isLoading={isSendOTPLoading}
+              options={COUNTRY_SELECT_OPTIONS}
+              value={`${formik.values.countryCode}, ${formik.values.country}`}
+            />
+          </FormControl>
+          <div className="w-full">
             <FormControl
-              label={'Phone'}
-              error={formik.touched.countryCode && formik.errors.countryCode}
+              label={''}
+              error={formik.touched.phoneNumber && formik.errors.phoneNumber}
             >
-              <Select
-                handleChange={handleChangeSelect}
-                isLoading={isSendOTPLoading}
-                options={COUNTRY_SELECT_OPTIONS}
-                value={`${formik.values.countryCode}, ${formik.values.country}`}
+              <Input
+                data-testid="phoneNumber"
+                disabled={isSendOTPLoading}
+                error={formik.touched.phoneNumber && formik.errors.phoneNumber}
+                name="phoneNumber"
+                onChange={handleChangePhone}
+                onBlur={formik.handleBlur}
+                placeholder="Enter your phone number"
+                type="number"
+                value={formik.values.phoneNumber}
               />
             </FormControl>
-            <div className="w-full">
-              <FormControl
-                label={''}
-                error={formik.touched.phoneNumber && formik.errors.phoneNumber}
-              >
-                <Input
-                  data-testid="phoneNumber"
-                  disabled={isSendOTPLoading}
-                  error={
-                    formik.touched.phoneNumber && formik.errors.phoneNumber
-                  }
-                  name="phoneNumber"
-                  onChange={handleChangePhone}
-                  onBlur={formik.handleBlur}
-                  placeholder="Enter your phone number"
-                  type="number"
-                  value={formik.values.phoneNumber}
-                />
-              </FormControl>
-            </div>
-          </Flex>
-          <Button
-            isLoading={isSendOTPLoading}
-            kind={ButtonKind.PRIMARY}
-            size={ButtonSize.LARGE}
-            type={ButtonType.SUBMIT}
-          >
-            Get OTP
-          </Button>
-          {(loginProps.displayEmailLoginOnMobile ||
-            loginProps.currentLoginMethod === LoginMethod.EMAIL) && (
-            <p className="self-center font-medium">
-              Login with{' '}
-              <Link className="text-primary" to={routes.LOGIN}>
-                Email
-              </Link>
-            </p>
-          )}
-          {((loginProps.currentLoginMethod === LoginMethod.EMAIL &&
-            loginProps.displayRegisterAccountWeb) ||
-            (loginProps.displayRegisterAccountMobile &&
-              loginProps.currentLoginMethod === LoginMethod.PHONE)) && (
-            <p className="self-center font-medium">
-              Don’t have any account?{' '}
-              <Link to={routes.SIGNUP} className="text-primary">
-                Sign Up
-              </Link>
-            </p>
-          )}
-        </VerticalStackLayout>
-      </form>
-    </>
+          </div>
+        </Flex>
+        <Button
+          isLoading={isSendOTPLoading}
+          kind={ButtonKind.PRIMARY}
+          size={ButtonSize.LARGE}
+          type={ButtonType.SUBMIT}
+        >
+          Get OTP
+        </Button>
+      </VerticalStackLayout>
+    </form>
   );
 };
 

@@ -19,16 +19,6 @@ export enum LoginMethod {
   EMAIL = 'EMAIL',
 }
 
-export type LoginProps = {
-  currentLoginMethod?: LoginMethod;
-  defaultMobileLogin: LoginMethod;
-  defaultWebLogin: LoginMethod;
-  displayEmailLoginOnMobile: boolean;
-  displayPhoneLoginOnWeb: boolean;
-  displayRegisterAccountMobile: boolean;
-  displayRegisterAccountWeb: boolean;
-};
-
 export class PhoneNumber {
   countryCode: string;
   phoneNumber: string;

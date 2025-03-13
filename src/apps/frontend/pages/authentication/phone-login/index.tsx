@@ -5,7 +5,6 @@ import { H2, VerticalStackLayout } from '../../../components';
 import { AsyncError } from '../../../types';
 import AuthenticationFormLayout from '../authentication-form-layout';
 import AuthenticationPageLayout from '../authentication-page-layout';
-import { useLoginMethod } from '../useLoginMethod.hook';
 
 import PhoneLoginForm from './phone-login-form';
 
@@ -19,8 +18,6 @@ export const PhoneLogin: React.FC = () => {
   const onError = (error: AsyncError) => {
     toast.error(error.message);
   };
-
-  useLoginMethod();
 
   return (
     <AuthenticationPageLayout>

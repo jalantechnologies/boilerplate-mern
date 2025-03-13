@@ -1,15 +1,7 @@
 import React, { createContext, PropsWithChildren, useContext } from 'react';
 
-import constant from '../constants';
 import { AuthService } from '../services';
-import {
-  AccessToken,
-  ApiResponse,
-  AsyncError,
-  LoginMethod,
-  LoginProps,
-  PhoneNumber,
-} from '../types';
+import { AccessToken, ApiResponse, AsyncError, PhoneNumber } from '../types';
 import {
   getAccessTokenFromStorage,
   removeAccessTokenFromStorage,
@@ -26,12 +18,10 @@ type AuthContextType = {
   isVerifyOTPLoading: boolean;
   login: (username: string, password: string) => Promise<AccessToken>;
   loginError: AsyncError;
-  loginProps: LoginProps;
   loginResult: AccessToken;
   logout: () => void;
   sendOTP: (phoneNumber: PhoneNumber) => Promise<void>;
   sendOTPError: AsyncError;
-  setLoginProps: React.Dispatch<React.SetStateAction<LoginProps>>;
   signup: (
     firstName: string,
     lastName: string,
@@ -90,20 +80,7 @@ const verifyOTPFn = async (
   return result;
 };
 
-const initialLoginProps = {
-  defaultMobileLogin: LoginMethod.PHONE,
-  defaultWebLogin: LoginMethod.EMAIL,
-  displayEmailLoginOnMobile: constant.DISPLAY_EMAIL_LOGIN_ON_MOBILE,
-  displayPhoneLoginOnWeb: constant.DISPLAY_PHONE_LOGIN_ON_WEB,
-  displayRegisterAccountWeb: constant.DISPLAY_REGISTER_ACCOUNT_WEB,
-  displayRegisterAccountMobile: constant.DISPLAY_REGISTER_ACCOUNT_MOBILE,
-  currentLoginMethod: constant.DEFAULT_LOGIN_METHOD as LoginMethod,
-};
-
 export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  const [loginProps, setLoginProps] =
-    React.useState<LoginProps>(initialLoginProps);
-
   const {
     isLoading: isLoginLoading,
     error: loginError,
@@ -141,11 +118,9 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
         login,
         loginError,
         loginResult,
-        loginProps,
         logout: logoutFn,
         sendOTP,
         sendOTPError,
-        setLoginProps,
         signup,
         signupError,
         verifyOTP,
