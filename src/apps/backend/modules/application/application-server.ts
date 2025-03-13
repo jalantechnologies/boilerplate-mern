@@ -4,7 +4,7 @@ import express, { Application, NextFunction, Request, Response } from 'express';
 import { Logger } from '../logger';
 
 import { ApplicationError } from './application-error';
-import { HttpStatusCodes } from './common/http';
+import { HttpStatusCodes } from './types';
 
 export enum ApplicationServerErrorCodes {
   UNHANDLED_ERROR = 'SERVER_ERR_01',

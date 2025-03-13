@@ -1,5 +1,4 @@
-import { ApplicationError } from '../application';
-import { HttpStatusCodes } from '../application/common/http';
+import { ApplicationError, HttpStatusCodes } from '../application';
 
 export type Nullable<T> = T | null;
 

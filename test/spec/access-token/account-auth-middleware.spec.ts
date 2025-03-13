@@ -1,3 +1,4 @@
+import faker from '@faker-js/faker';
 import { assert } from 'chai';
 import { Request } from 'express';
 import sinon from 'sinon';
@@ -56,7 +57,7 @@ describe('accessAuthMiddleware', () => {
         accessAuthMiddleware(
           {
             params: {
-              accountId: `000000000000000000000000`,
+              accountId: faker.database.mongodbObjectId(),
             },
             headers: {
               authorization: `Bearer ${accessToken.token}`,
