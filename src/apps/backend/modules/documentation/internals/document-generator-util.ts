@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-import { HttpRoute } from '../../list-routes';
+import { HttpRoute } from '../list-routes';
 import {
   ErrorReadingFile,
   GetRoutesWithControllerAndSerializerDetailsResponse,

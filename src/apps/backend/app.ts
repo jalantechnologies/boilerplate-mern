@@ -13,7 +13,7 @@ import {
   DocumentationServer,
   DocumentationService,
 } from './modules/documentation';
-import { expressListRoutes } from './modules/list-routes';
+import { expressListRoutes } from './modules/documentation/list-routes';
 import { Logger, CustomLoggerTransport } from './modules/logger';
 import { PasswordResetTokenServer } from './modules/password-reset-token';
 import { TaskServer } from './modules/task';

@@ -1,7 +1,6 @@
 import _ from 'lodash';
 
 import { ConfigService } from '../../config';
-import { isDefaultPhoneNumber } from '../../util/phone-number-util';
 import { OTP_LENGTH } from '../constants';
 import { Otp } from '../types';
 
@@ -28,10 +27,17 @@ export default class OtpUtil {
   public static getOtp(phoneNumber: string): string {
     if (
       ConfigService.hasValue('otp.defaultOTP') &&
-      isDefaultPhoneNumber(phoneNumber)
+      OtpUtil.isDefaultPhoneNumber(phoneNumber)
     ) {
       return ConfigService.getValue<string>('otp.defaultOTP');
     }
     return OtpUtil.generateOtp(OTP_LENGTH);
+  }
+
+  public static isDefaultPhoneNumber(phoneNumber: string): boolean {
+    return (
+      ConfigService.hasValue('otp.defaultPhoneNumber') &&
+      ConfigService.getValue<string>('otp.defaultPhoneNumber') === phoneNumber
+    );
   }
 }
