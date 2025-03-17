@@ -71,7 +71,7 @@ export default class AccountWriter {
     );
 
     if (!dbAccount) {
-      throw new AccountNotFoundError(`Account with id ${accountId} not found`);
+      throw new AccountNotFoundError(accountId);
     }
 
     return AccountUtil.convertAccountDBToAccount(dbAccount);
@@ -92,7 +92,7 @@ export default class AccountWriter {
     );
 
     if (!dbAccount) {
-      throw new AccountNotFoundError(`Account with id ${accountId} not found`);
+      throw new AccountNotFoundError(accountId);
     }
 
     return AccountUtil.convertAccountDBToAccount(dbAccount);

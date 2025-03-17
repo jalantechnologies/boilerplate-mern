@@ -114,8 +114,10 @@ export class AccountWithPhoneNumberNotFoundError extends ApplicationError {
 export class AccountNotFoundError extends ApplicationError {
   code: AccountErrorCode;
 
-  constructor(username: string) {
-    super(`${username} not found with provided parameters.`);
+  constructor(accountId: string) {
+    super(
+      `System is unable to find an account with id: ${accountId}. Please check it and specify a valid ID to continue.`
+    );
     this.code = AccountErrorCode.NOT_FOUND;
     this.httpStatusCode = HttpStatusCodes.NOT_FOUND;
   }

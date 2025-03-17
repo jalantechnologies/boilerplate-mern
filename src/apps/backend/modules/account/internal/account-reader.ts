@@ -3,6 +3,7 @@ import {
   Account,
   AccountNotFoundError,
   AccountWithPhoneNumberExistsError,
+  AccountWithPhoneNumberNotFoundError,
   AccountWithUserNameExistsError,
   InvalidCredentialsError,
   PhoneNumber,
@@ -57,7 +58,7 @@ export default class AccountReader {
     const account = await this.getAccountByPhoneNumberOptional(phoneNumber);
 
     if (!account) {
-      throw new AccountNotFoundError(phoneNumber.toString());
+      throw new AccountWithPhoneNumberNotFoundError(phoneNumber.toString());
     }
 
     return account;
