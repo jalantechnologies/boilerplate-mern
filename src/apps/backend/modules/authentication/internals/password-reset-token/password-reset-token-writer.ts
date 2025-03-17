@@ -34,9 +34,7 @@ export default class PasswordResetTokenWriter {
     );
 
     if (!updatedToken) {
-      throw new PasswordResetTokenNotFoundError(
-        `Password reset token with id ${passwordResetTokenId} not found`
-      );
+      throw new PasswordResetTokenNotFoundError(passwordResetTokenId);
     }
 
     return PasswordResetTokenUtil.convertPasswordResetTokenDBToPasswordResetToken(
