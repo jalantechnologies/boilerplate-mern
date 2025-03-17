@@ -5,7 +5,10 @@ import {
   CreateAccountParams,
   AccountService,
 } from '../../src/apps/backend/modules/account';
-import { AuthenticationService, AccessToken } from '../../src/apps/backend/modules/authentication';
+import {
+  AuthenticationService,
+  AccessToken,
+} from '../../src/apps/backend/modules/authentication';
 
 export const createAccount = async (params?: {
   accountParams?: Partial<CreateAccountParams>;

@@ -1,4 +1,9 @@
-import { applicationController, HttpStatusCodes, Request, Response } from '../../application';
+import {
+  applicationController,
+  HttpStatusCodes,
+  Request,
+  Response,
+} from '../../application';
 import DocumentationService from '../documentation-service';
 
 import { serializeDocumentationAsJSON } from './documentation-serializer';

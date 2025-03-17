@@ -1,4 +1,9 @@
-import { applicationController, HttpStatusCodes, Request, Response } from '../../application';
+import {
+  applicationController,
+  HttpStatusCodes,
+  Request,
+  Response,
+} from '../../application';
 import AccountService from '../account-service';
 import {
   Account,
