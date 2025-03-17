@@ -26,15 +26,14 @@ const PhoneLoginForm: React.FC<PhoneLoginFormProps> = ({
   onError,
   onSendOTPSuccess,
 }) => {
-  const currentLoginMethod = getConfigValue(
-    'currentLoginMethod'
-  ) as LoginMethod;
+  const currentLoginMethod = getConfigValue('currentLoginMethod');
   const navigate = useNavigate();
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
     if (currentLoginMethod === LoginMethod.EMAIL) {
       navigate(routes.LOGIN);
     }
-  });
+  }, [currentLoginMethod, navigate]);
 
   const { formik, isSendOTPLoading } = usePhoneLoginForm({
     onSendOTPSuccess,

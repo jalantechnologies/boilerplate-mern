@@ -24,15 +24,14 @@ interface LoginFormProps {
 
 const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
   const { formik, isLoginLoading } = useLoginForm({ onSuccess, onError });
-  const currentLoginMethod = getConfigValue(
-    'currentLoginMethod'
-  ) as LoginMethod;
+  const currentLoginMethod = getConfigValue('currentLoginMethod');
   const navigate = useNavigate();
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
     if (currentLoginMethod === LoginMethod.PHONE) {
       navigate(routes.PHONE_LOGIN);
     }
-  });
+  }, [currentLoginMethod, navigate]);
 
   return (
     <form onSubmit={formik.handleSubmit}>
