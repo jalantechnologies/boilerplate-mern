@@ -39,7 +39,7 @@ describe('Login', () => {
 
           cy.contains(
             'div',
-            `${credentials.username} not found with provided parameters.`
+            `System is unable to find an account with id: ${credentials.username}`
           ).should('be.visible');
         });
       }
