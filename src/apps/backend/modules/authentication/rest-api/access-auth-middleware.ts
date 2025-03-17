@@ -6,7 +6,7 @@ import {
   Response,
   NextFunc,
 } from '../../application';
-import AccessTokenService from '../access-token-service';
+import AccessTokenService from '../internal/access-token/access-token-service';
 import {
   AuthorizationHeaderNotFound,
   InvalidAuthorizationHeader,

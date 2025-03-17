@@ -3,16 +3,16 @@ import { assert } from 'chai';
 import { Request } from 'express';
 import sinon from 'sinon';
 
+import { Account } from '../../../src/apps/backend/modules/account';
 import {
   AccessToken,
   AccessTokenExpiredError,
-  AccessTokenService,
+  AuthenticationService,
   AuthorizationHeaderNotFound,
   InvalidAuthorizationHeader,
   UnAuthorizedAccessError,
   accessAuthMiddleware,
-} from '../../../src/apps/backend/modules/access-token';
-import { Account } from '../../../src/apps/backend/modules/account';
+} from '../../../src/apps/backend/modules/authentication';
 import ConfigService from '../../../src/apps/backend/modules/config/config-service';
 import { createAccount } from '../../helpers/account';
 
@@ -81,7 +81,7 @@ describe('accessAuthMiddleware', () => {
       .returns('-1h');
 
     const expiredToken =
-      await AccessTokenService.createAccessTokenByUsernameAndPassword(
+      await AuthenticationService.createAccessTokenByUsernameAndPassword(
         password,
         account.username
       );

@@ -1,5 +1,5 @@
-import { accessAuthMiddleware } from '../../access-token/rest-api/access-auth-middleware';
 import { ApplicationRouter } from '../../application';
+import { accessAuthMiddleware } from '../../authentication';
 
 import { AccountController } from './account-controller';
 

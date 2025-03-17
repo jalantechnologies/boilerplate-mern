@@ -1,17 +1,16 @@
 import jsonwebtoken from 'jsonwebtoken';
 
-import AccountService from '../account/account-service';
-import { Account, PhoneNumber } from '../account/types';
-import { ConfigService } from '../config';
-import { OtpIncorrectError, OtpService, OtpStatus } from '../otp';
-
+import AccountService from '../../../account/account-service';
+import { Account, PhoneNumber } from '../../../account/types';
+import { ConfigService } from '../../../config';
+import { OtpIncorrectError, OtpService, OtpStatus } from '../../../otp';
 import {
   AccessToken,
   AccessTokenExpiredError,
   AccessTokenInvalidError,
   AccessTokenPayload,
   VerifyAccessTokenParams,
-} from './types';
+} from '../../types';
 
 export default class AccessTokenService {
   public static async createAccessTokenByUsernameAndPassword(

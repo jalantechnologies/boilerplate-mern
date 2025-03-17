@@ -5,9 +5,9 @@ import cors from 'cors';
 import express, { Application } from 'express';
 import expressWinston from 'express-winston';
 
-import { AccessTokenServer } from './modules/access-token';
 import { AccountServer } from './modules/account';
 import { ApplicationServer } from './modules/application';
+import { AuthenticationServer } from './modules/authentication';
 import { ConfigService } from './modules/config';
 import {
   DocumentationServer,
@@ -69,8 +69,8 @@ export default class App {
         rootFolderPath: path.join(__dirname, 'modules/account'),
       },
       {
-        serverInstance: new AccessTokenServer(),
-        rootFolderPath: path.join(__dirname, 'modules/access-token'),
+        serverInstance: new AuthenticationServer(),
+        rootFolderPath: path.join(__dirname, 'modules/authentication'),
       },
       {
         serverInstance: new DocumentationServer(),

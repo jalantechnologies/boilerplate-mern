@@ -1,5 +1,5 @@
-import { accessAuthMiddleware } from '../../access-token';
 import { ApplicationRouter } from '../../application';
+import { accessAuthMiddleware } from '../../authentication';
 
 import { TaskController } from './task-controller';
 
