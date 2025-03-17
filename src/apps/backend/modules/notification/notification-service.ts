@@ -1,3 +1,4 @@
+import { BatchResponse } from 'firebase-admin/lib/messaging/messaging-api';
 import { MessageInstance } from 'twilio/lib/rest/api/v2010/account/message';
 
 import { AccountService } from '../account';
@@ -599,7 +600,11 @@ export default class NotificationService {
 
   public static async sendPushNotificationToAccount(
     params: SendPushNotificationToAccountParams
-  ): Promise<{ unsuccessful: string[] }> {
+  ): Promise<{
+    accountsWithNotificationPreferencesDisabled: string[];
+    response: BatchResponse | null;
+    unsuccessfulTokens: string[];
+  }> {
     const { accountId, title, body, notificationType } = params;
     return NotificationService.sendPushNotificationToGroup({
       accountIds: [accountId],
@@ -611,7 +616,11 @@ export default class NotificationService {
 
   public static async sendPushNotificationToGroup(
     params: SendPushNotificationToGroupParams
-  ): Promise<{ unsuccessful: string[] }> {
+  ): Promise<{
+    accountsWithNotificationPreferencesDisabled: string[];
+    response: BatchResponse | null;
+    unsuccessfulTokens: string[];
+  }> {
     const { accountIds, title, body } = params;
     let { notificationType } = params;
     notificationType = notificationType.toLowerCase();
@@ -622,9 +631,11 @@ export default class NotificationService {
     ) {
       throw new NotificationTypePreferencesInvalidError();
     }
-    const unsuccessful: string[] = [];
+    const accountsWithNotificationPreferencesDisabled: string[] = [];
     const pushBatches: { body: string; fcmTokens: string[]; title: string }[] =
       [];
+    let unsuccessfulTokens: string[] = [];
+    let batchResponse: BatchResponse | null = null;
 
     await Promise.all(
       accountIds.map(async (accountId) => {
@@ -633,6 +644,7 @@ export default class NotificationService {
             await NotificationReader.getAccountNotificationPreferences(
               accountId
             );
+
           if (
             !notificationPreference ||
             !notificationPreference.notificationChannelPreferences.push ||
@@ -642,9 +654,10 @@ export default class NotificationService {
             !notificationPreference.fcmTokens ||
             notificationPreference.fcmTokens.length === 0
           ) {
-            unsuccessful.push(accountId);
+            accountsWithNotificationPreferencesDisabled.push(accountId);
             return;
           }
+
           notificationPreference.fcmTokens.forEach((token) => {
             if (
               !pushBatches.length ||
@@ -655,7 +668,7 @@ export default class NotificationService {
             pushBatches[pushBatches.length - 1].fcmTokens.push(token);
           });
         } catch (error) {
-          unsuccessful.push(accountId);
+          accountsWithNotificationPreferencesDisabled.push(accountId);
         }
       })
     );
@@ -663,7 +676,12 @@ export default class NotificationService {
     await Promise.all(
       pushBatches.map(async (batch, i) => {
         try {
-          await PushService.sendBatchPushNotifications(batch);
+          const { response, unsuccessfulTokens: failedTokens } =
+            await PushService.sendBatchPushNotifications(batch);
+
+          if (response) batchResponse = response;
+          unsuccessfulTokens = [...unsuccessfulTokens, ...failedTokens];
+
           Logger.info(
             `Successfully sent batch push notifications at batch index: ${i}:`
           );
@@ -676,15 +694,28 @@ export default class NotificationService {
       })
     );
 
+    Logger.info(`Batch push notifications completed.`);
     Logger.info(
-      `Batch push notifications completed. Unsuccessful accounts: ${unsuccessful.length}`
+      `Notifications that ended unsuccessfully (invalid FCM tokens): ${unsuccessfulTokens.length}`
     );
-    return { unsuccessful };
+    Logger.info(
+      `Accounts with disabled notification preferences: ${accountsWithNotificationPreferencesDisabled.length}`
+    );
+
+    return {
+      response: batchResponse,
+      unsuccessfulTokens,
+      accountsWithNotificationPreferencesDisabled,
+    };
   }
 
   public static async sendPushNotificationToAll(
     params: SendPushNotificationToAllParams
-  ): Promise<{ unsuccessful: string[] }> {
+  ): Promise<{
+    accountsWithNotificationPreferencesDisabled: string[];
+    response: BatchResponse | null;
+    unsuccessfulTokens: string[];
+  }> {
     const { title, body } = params;
     let { notificationType } = params;
     notificationType = notificationType.toLowerCase();
@@ -727,7 +758,11 @@ export default class NotificationService {
     params: SendBroadcastNotificationParams
   ): Promise<{
     email: { unsuccessful: string[] };
-    push: { unsuccessful: string[] };
+    push: {
+      accountsWithNotificationPreferencesDisabled: string[];
+      response: BatchResponse | null;
+      unsuccessfulTokens: string[];
+    };
     sms: { unsuccessful: string[] };
   }> {
     const { title, body, notificationType } = params;

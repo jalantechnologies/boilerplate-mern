@@ -8,7 +8,7 @@ import PushService from '../../../src/apps/backend/modules/notification/push-ser
 describe('sendPushNotification', () => {
   let firebaseSendStub: sinon.SinonStub;
   beforeEach(() => {
-    firebaseSendStub = sinon.stub().resolves('message-id');
+    firebaseSendStub = sinon.stub().resolves({ messageId: 'message-id' });
 
     const mockApp = {
       messaging: () => ({
@@ -100,13 +100,15 @@ describe('sendPushNotification', () => {
 describe('sendBatchPushNotifications', () => {
   let firebaseSendMulticastStub: sinon.SinonStub;
   beforeEach(() => {
-    firebaseSendMulticastStub = sinon
-      .stub()
-      .resolves({ successCount: 1, failureCount: 0 });
+    firebaseSendMulticastStub = sinon.stub().resolves({
+      successCount: 1,
+      failureCount: 0,
+      responses: [{ success: true }, { success: true }],
+    });
 
     const mockApp = {
       messaging: () => ({
-        sendMulticast: firebaseSendMulticastStub,
+        sendEachForMulticast: firebaseSendMulticastStub,
       }),
     } as unknown as admin.app.App;
 

@@ -43,7 +43,7 @@
     "eslint-config-prettier": "^9.1.0",
     "express": "^4.17.2",
     "express-winston": "^4.2.0",
-    "firebase-admin": "^11.0.0",
+    "firebase-admin": "^13.2.0",
     "formik": "^2.4.5",
     "github-markdown-css": "^5.7.0",
     "google-libphonenumber": "^3.2.27",

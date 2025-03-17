@@ -874,7 +874,7 @@ describe('Notification Module', () => {
         await NotificationService.sendPushNotificationToGroup(params);
 
       expect(sendPushStub.calledOnce).to.be.true;
-      expect(result.unsuccessful).to.be.an('array').that.is.empty;
+      expect(result.unsuccessfulTokens).to.be.an('array').that.is.empty;
     });
     it('should return 400 if notification type is invalid', async () => {
       const params = {
@@ -906,7 +906,9 @@ describe('Notification Module', () => {
       const result =
         await NotificationService.sendPushNotificationToGroup(params);
 
-      expect(result.unsuccessful).to.include(account.id);
+      expect(result.accountsWithNotificationPreferencesDisabled).to.include(
+        account.id
+      );
       expect(sendPushStub.called).to.be.false;
     });
     it('should add accountId to unsuccessful array if push notifications are disabled for the account', async () => {
@@ -945,7 +947,9 @@ describe('Notification Module', () => {
       const result =
         await NotificationService.sendPushNotificationToGroup(params);
 
-      expect(result.unsuccessful).to.include(account.id);
+      expect(result.accountsWithNotificationPreferencesDisabled).to.include(
+        account.id
+      );
       expect(sendPushStub.called).to.be.false;
     });
     it('should add accountId to unsuccessful array if the account has no valid FCM tokens', async () => {
@@ -984,7 +988,9 @@ describe('Notification Module', () => {
       const result =
         await NotificationService.sendPushNotificationToGroup(params);
 
-      expect(result.unsuccessful).to.include(account.id);
+      expect(result.accountsWithNotificationPreferencesDisabled).to.include(
+        account.id
+      );
       expect(sendPushStub.called).to.be.false;
     });
   });
@@ -1018,7 +1024,15 @@ describe('Notification Module', () => {
 
       const sendPushGroupStub = sinonSandbox
         .stub(NotificationService, 'sendPushNotificationToGroup')
-        .resolves({ unsuccessful: [] });
+        .resolves({
+          response: {
+            successCount: 1,
+            failureCount: 0,
+            responses: [{ success: true }, { success: true }],
+          },
+          unsuccessfulTokens: [],
+          accountsWithNotificationPreferencesDisabled: [],
+        });
 
       await NotificationService.sendPushNotificationToAll(params);
 

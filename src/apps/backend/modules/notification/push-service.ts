@@ -27,7 +27,8 @@ export default class PushService {
         token: fcmToken,
         notification: { title, body },
       };
-      return await admin.messaging().send(message);
+      const firebaseApp = this.getFirebaseApp();
+      return await admin.messaging(firebaseApp).send(message);
     } catch (err) {
       throw new ServiceError(err as Error);
     }
@@ -35,18 +36,31 @@ export default class PushService {
 
   public static async sendBatchPushNotifications(
     params: BatchPushNotificationsParams
-  ): Promise<BatchResponse> {
+  ): Promise<{ response: BatchResponse; unsuccessfulTokens: string[] }> {
     const { fcmTokens, title, body } = params;
     if (fcmTokens.length === 0) {
       throw new Error('No FCM tokens provided.');
     }
-    this.getFirebaseApp();
-    const message = {
+
+    const firebaseApp = this.getFirebaseApp();
+    const messaging = admin.messaging(firebaseApp);
+
+    const message: admin.messaging.MulticastMessage = {
       tokens: fcmTokens,
       notification: { title, body },
     };
+
     try {
-      return await admin.messaging().sendMulticast(message);
+      const response = await messaging.sendEachForMulticast(message);
+      const unsuccessfulTokens: string[] = [];
+
+      response.responses.forEach((res, index) => {
+        if (!res.success) {
+          unsuccessfulTokens.push(fcmTokens[index]);
+        }
+      });
+
+      return { response, unsuccessfulTokens };
     } catch (err) {
       throw new ServiceError(err as Error);
     }
