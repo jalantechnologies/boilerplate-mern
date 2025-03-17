@@ -1,10 +1,7 @@
-import { LoginMethod } from '../types';
-
 const constant = {
   DESCRIPTION_MIN_LENGTH: 10,
   DESCRIPTION_VALIDATION_ERROR:
     'Description should be at least 10 characters long',
-  CURRENT_LOGIN_METHOD: LoginMethod.EMAIL,
   DOCUMENTATION_DISABLED_ERROR:
     'Documentation is not available or disabled for the current environment, please reach out to the team.',
   DOCUMENTATION_LOADING_ERROR:

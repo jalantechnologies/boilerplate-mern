@@ -16,3 +16,6 @@ passwordResetToken:
 
 server:
   port: '8080'
+
+public:
+  currentLoginMethod: 'EMAIL' #or 'PHONE'

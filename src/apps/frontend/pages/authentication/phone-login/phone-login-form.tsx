@@ -9,9 +9,9 @@ import {
   Select,
   VerticalStackLayout,
 } from '../../../components';
-import constant from '../../../constants';
 import COUNTRY_SELECT_OPTIONS from '../../../constants/countries';
 import routes from '../../../constants/routes';
+import { getConfigValue } from '../../../helpers/config';
 import { AsyncError, LoginMethod } from '../../../types';
 import { ButtonKind, ButtonSize, ButtonType } from '../../../types/button';
 
@@ -26,9 +26,12 @@ const PhoneLoginForm: React.FC<PhoneLoginFormProps> = ({
   onError,
   onSendOTPSuccess,
 }) => {
+  const currentLoginMethod = getConfigValue(
+    'currentLoginMethod'
+  ) as LoginMethod;
   const navigate = useNavigate();
   useEffect(() => {
-    if (constant.CURRENT_LOGIN_METHOD === LoginMethod.EMAIL) {
+    if (currentLoginMethod === LoginMethod.EMAIL) {
       navigate(routes.LOGIN);
     }
   });
