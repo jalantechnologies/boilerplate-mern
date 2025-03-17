@@ -7,7 +7,7 @@ export type HttpRouteWithRootFolderPath = {
 };
 
 export type HttpRouteWithControllerAndSerializerDetails = {
-  controllerMethod: Nullable<string>;
+  controllerMethod: string;
   endpoint: string;
   method: string;
   serializerMethod: Nullable<string>;

@@ -75,9 +75,9 @@ export default class DocumentGeneratorUtil {
   }
 
   private static getSerializerMethodCode(
-    controllerMethodCode: Nullable<string>,
+    controllerMethodCode: string,
     restApiFolderPath: string
-  ): Nullable<string> {
+  ): string {
     const serializeMethodName =
       this.extractSerializeMethodName(controllerMethodCode);
 
@@ -135,7 +135,7 @@ export default class DocumentGeneratorUtil {
   }
 
   private static extractSerializeMethodName(
-    controllerMethodCode: Nullable<string>
+    controllerMethodCode: string
   ): Nullable<string> {
     if (!controllerMethodCode) return null;
 
