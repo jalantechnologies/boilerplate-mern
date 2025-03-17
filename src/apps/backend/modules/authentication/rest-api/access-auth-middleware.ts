@@ -6,7 +6,7 @@ import {
   Response,
   NextFunc,
 } from '../../application';
-import AccessTokenService from '../internal/access-token/access-token-service';
+import AuthenticationService from '../authentication-service';
 import {
   AuthorizationHeaderNotFound,
   InvalidAuthorizationHeader,
@@ -25,7 +25,7 @@ export const accessAuthMiddleware = applicationController(
       throw new InvalidAuthorizationHeader();
     }
 
-    const authPayload = AccessTokenService.verifyAccessToken({
+    const authPayload = AuthenticationService.verifyAccessToken({
       token: authToken,
     });
 
