@@ -2,7 +2,7 @@ import React from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
-import { Flex, H2, VerticalStackLayout } from '../../../components';
+import { H2, VerticalStackLayout } from '../../../components';
 import routes from '../../../constants/routes';
 import { AsyncError } from '../../../types';
 import AuthenticationFormLayout from '../authentication-form-layout';
@@ -27,9 +27,7 @@ export const Signup: React.FC = () => {
     <AuthenticationPageLayout>
       <AuthenticationFormLayout>
         <VerticalStackLayout gap={8}>
-          <Flex gap={4} justifyContent="between">
-            <H2>Sign Up</H2>
-          </Flex>
+          <H2>Sign Up</H2>
           <SignupForm onSuccess={onSuccess} onError={onError} />
         </VerticalStackLayout>
       </AuthenticationFormLayout>

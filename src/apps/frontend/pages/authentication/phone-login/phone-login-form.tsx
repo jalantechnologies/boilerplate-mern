@@ -67,49 +67,53 @@ const PhoneLoginForm: React.FC<PhoneLoginFormProps> = ({
   };
 
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <VerticalStackLayout gap={5}>
-        <Flex gap={4}>
-          <FormControl
-            label={'Phone'}
-            error={formik.touched.countryCode && formik.errors.countryCode}
-          >
-            <Select
-              handleChange={handleChangeSelect}
-              isLoading={isSendOTPLoading}
-              options={COUNTRY_SELECT_OPTIONS}
-              value={`${formik.values.countryCode}, ${formik.values.country}`}
-            />
-          </FormControl>
-          <div className="w-full">
+    <>
+      <form onSubmit={formik.handleSubmit}>
+        <VerticalStackLayout gap={5}>
+          <Flex gap={4}>
             <FormControl
-              label={''}
-              error={formik.touched.phoneNumber && formik.errors.phoneNumber}
+              label={'Phone'}
+              error={formik.touched.countryCode && formik.errors.countryCode}
             >
-              <Input
-                data-testid="phoneNumber"
-                disabled={isSendOTPLoading}
-                error={formik.touched.phoneNumber && formik.errors.phoneNumber}
-                name="phoneNumber"
-                onChange={handleChangePhone}
-                onBlur={formik.handleBlur}
-                placeholder="Enter your phone number"
-                type="number"
-                value={formik.values.phoneNumber}
+              <Select
+                handleChange={handleChangeSelect}
+                isLoading={isSendOTPLoading}
+                options={COUNTRY_SELECT_OPTIONS}
+                value={`${formik.values.countryCode}, ${formik.values.country}`}
               />
             </FormControl>
-          </div>
-        </Flex>
-        <Button
-          isLoading={isSendOTPLoading}
-          kind={ButtonKind.PRIMARY}
-          size={ButtonSize.LARGE}
-          type={ButtonType.SUBMIT}
-        >
-          Get OTP
-        </Button>
-      </VerticalStackLayout>
-    </form>
+            <div className="w-full">
+              <FormControl
+                label={''}
+                error={formik.touched.phoneNumber && formik.errors.phoneNumber}
+              >
+                <Input
+                  data-testid="phoneNumber"
+                  disabled={isSendOTPLoading}
+                  error={
+                    formik.touched.phoneNumber && formik.errors.phoneNumber
+                  }
+                  name="phoneNumber"
+                  onChange={handleChangePhone}
+                  onBlur={formik.handleBlur}
+                  placeholder="Enter your phone number"
+                  type="number"
+                  value={formik.values.phoneNumber}
+                />
+              </FormControl>
+            </div>
+          </Flex>
+          <Button
+            isLoading={isSendOTPLoading}
+            kind={ButtonKind.PRIMARY}
+            size={ButtonSize.LARGE}
+            type={ButtonType.SUBMIT}
+          >
+            Get OTP
+          </Button>
+        </VerticalStackLayout>
+      </form>
+    </>
   );
 };
 
