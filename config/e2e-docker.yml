@@ -1,2 +1,5 @@
 mongoDb:
   uri: 'mongodb://db:27017/boilerplate-mern-e2e'
+
+public:
+  currentLoginMethod: 'EMAIL'
