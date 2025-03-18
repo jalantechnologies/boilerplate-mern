@@ -5,8 +5,8 @@ import sinon from 'sinon';
 import { PhoneNumber } from '../../../src/apps/backend/modules/account';
 import AccountWriter from '../../../src/apps/backend/modules/account/internal/account-writer';
 import AccountRepository from '../../../src/apps/backend/modules/account/internal/store/account-repository';
+import { AuthenticationService } from '../../../src/apps/backend/modules/authentication';
 import { SMSService } from '../../../src/apps/backend/modules/communication';
-import { OTPService } from '../../../src/apps/backend/modules/otp';
 import { app } from '../../helpers/app';
 
 describe('AccessToken API', () => {
@@ -58,7 +58,7 @@ describe('AccessToken API', () => {
         new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber)
       );
 
-      const otp = await OTPService.createOTP(
+      const otp = await AuthenticationService.createOTP(
         new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber)
       );
 
@@ -84,7 +84,7 @@ describe('AccessToken API', () => {
         new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber)
       );
 
-      await OTPService.createOTP(
+      await AuthenticationService.createOTP(
         new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber)
       );
 
@@ -113,11 +113,11 @@ describe('AccessToken API', () => {
         new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber)
       );
 
-      const otp = await OTPService.createOTP(
+      const otp = await AuthenticationService.createOTP(
         new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber)
       );
 
-      await OTPService.verifyOTP(
+      await AuthenticationService.verifyOTP(
         otp.otpCode,
         new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber)
       );

@@ -1,15 +1,17 @@
 import jsonwebtoken from 'jsonwebtoken';
 
 import { AccountService, Account, PhoneNumber } from '../account';
+import { SMSService } from '../communication';
 import { ConfigService } from '../config';
-import { OTPIncorrectError, OTPService, OTPStatus } from '../otp';
 
+import OTPUtil from './internals/otp/otp-util';
+import OTPWriter from './internals/otp/otp-writer';
 import {
   AccessToken,
   AccessTokenExpiredError,
   AccessTokenInvalidError,
   AccessTokenPayload,
-  VerifyAccessTokenParams,
+  VerifyAccessTokenParams, OTPIncorrectError, OTPStatus, OTP
 } from './types';
 
 export default class AuthenticationService {
@@ -31,7 +33,7 @@ export default class AuthenticationService {
   ): Promise<AccessToken> {
     const account = await AccountService.getAccountByPhoneNumber(phoneNumber);
 
-    const otp = await OTPService.verifyOTP(otpCode, phoneNumber);
+    const otp = await AuthenticationService.verifyOTP(otpCode, phoneNumber);
 
     if (otp.status !== OTPStatus.SUCCESS) {
       throw new OTPIncorrectError();
@@ -69,6 +71,26 @@ export default class AuthenticationService {
     return {
       accountId: verifiedToken.accountId as string,
     };
+  }
+
+  public static async createOTP(phoneNumber: PhoneNumber): Promise<OTP> {
+    const otp = await OTPWriter.expirePreviousOTPAndCreateNewOTP(phoneNumber);
+
+    if (!OTPUtil.isDefaultPhoneNumber(phoneNumber.phoneNumber)) {
+      await SMSService.sendSMS({
+        messageBody: `${otp.otpCode} is your one time password to login.`,
+        recipientPhone: phoneNumber,
+      });
+    }
+
+    return otp;
+  }
+
+  public static async verifyOTP(
+    otpCode: string,
+    phoneNumber: PhoneNumber
+  ): Promise<OTP> {
+    return OTPWriter.verifyOTP(phoneNumber, otpCode);
   }
 
   private static generateAccessToken(account: Account): AccessToken {

@@ -1,4 +1,4 @@
-import { OTPService } from '../otp';
+import { AuthenticationService } from '../authentication';
 import { PasswordResetTokenService } from '../password-reset-token';
 
 import AccountReader from './internal/account-reader';
@@ -37,7 +37,7 @@ export default class AccountService {
       account = await AccountWriter.createAccountByPhoneNumber(phoneNumber);
     }
 
-    await OTPService.createOTP(phoneNumber);
+    await AuthenticationService.createOTP(phoneNumber);
 
     return account;
   }

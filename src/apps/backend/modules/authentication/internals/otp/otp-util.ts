@@ -1,8 +1,8 @@
 import _ from 'lodash';
 
-import { ConfigService } from '../../config';
-import { OTP_LENGTH } from '../constants';
-import { OTP } from '../types';
+import { ConfigService } from '../../../config';
+import { OTP_LENGTH } from '../../constants';
+import { OTP } from '../../types';
 
 import { OTPDB } from './store/otp-db';
 

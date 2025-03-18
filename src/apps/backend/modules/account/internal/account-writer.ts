@@ -1,10 +1,10 @@
 import { PhoneNumberUtil } from 'google-libphonenumber';
 
+import { OTPRequestError } from '../../authentication/types';
 import {
   PhoneUtilInstance,
   PhoneUtilInterface,
 } from '../../communication/types';
-import { OTPRequestError } from '../../otp/types';
 import { Account, PhoneNumber } from '../types';
 
 import AccountReader from './account-reader';

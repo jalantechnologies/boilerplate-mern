@@ -1,5 +1,5 @@
-import { PhoneNumber } from '../../account/types';
-import { OTP, OTPExpiredError, OTPIncorrectError, OTPStatus } from '../types';
+import { PhoneNumber } from '../../../account/types';
+import { OTP, OTPExpiredError, OTPIncorrectError, OTPStatus } from '../../types';
 
 import OTPUtil from './otp-util';
 import OTPRepository from './store/otp-repository';
