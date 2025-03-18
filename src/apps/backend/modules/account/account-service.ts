@@ -1,3 +1,4 @@
+import { NotificationService } from '../notification';
 import { OtpService } from '../otp';
 import { PasswordResetTokenService } from '../password-reset-token';
 
@@ -19,12 +20,24 @@ export default class AccountService {
     password: string,
     username: string
   ): Promise<Account> {
-    return AccountWriter.createAccountByUsernameAndPassword(
+    const account = await AccountWriter.createAccountByUsernameAndPassword(
       firstName,
       lastName,
       password,
       username
     );
+
+    const channelPreferences = {
+      ...NotificationService.getAllNotificationChannels(),
+      sms: false,
+    };
+    const typePreferences = NotificationService.getAllNotificationTypes();
+    await NotificationService.createNotificationPreference({
+      accountId: account.id,
+      notificationChannelPreferences: channelPreferences,
+      notificationTypePreferences: typePreferences,
+    });
+    return account;
   }
 
   public static async getOrCreateAccountByPhoneNumber(
@@ -35,6 +48,17 @@ export default class AccountService {
 
     if (!account) {
       account = await AccountWriter.createAccountByPhoneNumber(phoneNumber);
+
+      const channelPreferences = {
+        ...NotificationService.getAllNotificationChannels(),
+        email: false,
+      };
+      const typePreferences = NotificationService.getAllNotificationTypes();
+      await NotificationService.createNotificationPreference({
+        accountId: account.id,
+        notificationChannelPreferences: channelPreferences,
+        notificationTypePreferences: typePreferences,
+      });
     }
 
     await OtpService.createOtp(phoneNumber);
