@@ -10,13 +10,13 @@ import {
 } from '../../../src/apps/backend/modules/account';
 import AccountUtil from '../../../src/apps/backend/modules/account/internal/account-util';
 import AccountRepository from '../../../src/apps/backend/modules/account/internal/store/account-repository';
-import { EmailService } from '../../../src/apps/backend/modules/communication';
 import {
   PasswordResetTokenNotFoundError,
-  PasswordResetTokenService,
-} from '../../../src/apps/backend/modules/password-reset-token';
-import PasswordResetTokenUtil from '../../../src/apps/backend/modules/password-reset-token/internal/password-reset-token-util';
-import PasswordResetTokenRepository from '../../../src/apps/backend/modules/password-reset-token/internal/store/password-reset-token-repository';
+  AuthenticationService,
+} from '../../../src/apps/backend/modules/authentication';
+import PasswordResetTokenUtil from '../../../src/apps/backend/modules/authentication/internals/password-reset-token/password-reset-token-util';
+import PasswordResetTokenRepository from '../../../src/apps/backend/modules/authentication/internals/password-reset-token/store/password-reset-token-repository';
+import { EmailService } from '../../../src/apps/backend/modules/communication';
 import { createAccount } from '../../helpers/account';
 import { app } from '../../helpers/app';
 
@@ -110,7 +110,7 @@ describe('Account Password Reset', () => {
         .stub(PasswordResetTokenUtil, 'generatePasswordResetToken')
         .returns(resetToken);
 
-      await PasswordResetTokenService.createPasswordResetToken({
+      await AuthenticationService.createPasswordResetToken({
         username: account.username,
       });
 
@@ -145,7 +145,7 @@ describe('Account Password Reset', () => {
 
       // Check if password reset token is marked as used.
       const updatedPasswordResetToken =
-        await PasswordResetTokenService.getPasswordResetTokenByAccountId(
+        await AuthenticationService.getPasswordResetTokenByAccountId(
           account.id
         );
 
@@ -192,7 +192,7 @@ describe('Account Password Reset', () => {
         })
       ).to.not.exist;
 
-      await PasswordResetTokenService.createPasswordResetToken({
+      await AuthenticationService.createPasswordResetToken({
         username: account.username,
       });
 
@@ -240,12 +240,12 @@ describe('Account Password Reset', () => {
         .returns(resetToken);
 
       const passwordResetToken =
-        await PasswordResetTokenService.createPasswordResetToken({
+        await AuthenticationService.createPasswordResetToken({
           username: account.username,
         });
 
       // Setting Token as used
-      await PasswordResetTokenService.setPasswordResetTokenAsUsedById(
+      await AuthenticationService.setPasswordResetTokenAsUsedById(
         passwordResetToken.id
       );
 
@@ -277,7 +277,7 @@ describe('Account Password Reset', () => {
     it('should throw error if the password reset token does not match with the token passed in the payload', async () => {
       sinonSandbox.stub(EmailService, 'sendEmail').returns(Promise.resolve());
       const resetToken = faker.random.alphaNumeric();
-      await PasswordResetTokenService.createPasswordResetToken({
+      await AuthenticationService.createPasswordResetToken({
         username: account.username,
       });
 
@@ -315,7 +315,7 @@ describe('Account Password Reset', () => {
         .returns(resetToken);
 
       const passwordResetToken =
-        await PasswordResetTokenService.createPasswordResetToken({
+        await AuthenticationService.createPasswordResetToken({
           username: account.username,
         });
 

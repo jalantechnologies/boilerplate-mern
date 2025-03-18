@@ -3,8 +3,8 @@ import crypto from 'crypto';
 import * as bcrypt from 'bcrypt';
 import moment, { Moment } from 'moment';
 
-import { ConfigService } from '../../config';
-import { PasswordResetToken } from '../types';
+import { ConfigService } from '../../../config';
+import { PasswordResetToken } from '../../types';
 
 import { PasswordResetTokenDB } from './store/password-reset-token-db';
 

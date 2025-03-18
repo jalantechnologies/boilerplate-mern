@@ -15,7 +15,6 @@ import {
 } from './modules/documentation';
 import { expressListRoutes } from './modules/documentation/list-routes';
 import { Logger, CustomLoggerTransport } from './modules/logger';
-import { PasswordResetTokenServer } from './modules/password-reset-token';
 import { TaskServer } from './modules/task';
 
 interface APIMicroserviceService {
@@ -75,10 +74,6 @@ export default class App {
       {
         serverInstance: new DocumentationServer(),
         rootFolderPath: path.join(__dirname, 'modules/documentation'),
-      },
-      {
-        serverInstance: new PasswordResetTokenServer(),
-        rootFolderPath: path.join(__dirname, 'modules/password-reset-token'),
       },
       {
         serverInstance: new TaskServer(),

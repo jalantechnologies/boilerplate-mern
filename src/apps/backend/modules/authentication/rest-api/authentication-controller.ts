@@ -1,14 +1,15 @@
-import { PhoneNumber } from '../../account/types';
-import { applicationController, Request, Response } from '../../application';
+import { PhoneNumber } from '../../account';
+import { applicationController, Request, Response, HttpStatusCodes } from '../../application';
 import AuthenticationService from '../authentication-service';
 import {
   AccessToken,
   CreateAccessTokenParams,
   EmailBasedAuthAccessTokenRequestParams,
   OTPBasedAuthAccessTokenRequestParams,
+  CreatePasswordResetTokenParams,
 } from '../types';
 
-import { serializeAccessTokenAsJSON } from './authentication-serializer';
+import { serializeAccessTokenAsJSON, serializePasswordResetTokenAsJSON } from './authentication-serializer';
 
 export class AuthenticationController {
   createAccessToken = applicationController(
@@ -36,6 +37,20 @@ export class AuthenticationController {
       const accessTokenJSON = serializeAccessTokenAsJSON(accessToken);
 
       res.send(accessTokenJSON);
+    }
+  );
+
+  createPasswordResetToken = applicationController(
+    async (req: Request<CreatePasswordResetTokenParams>, res: Response) => {
+      const passwordResetToken =
+        await AuthenticationService.createPasswordResetToken({
+          username: req.body.username,
+        });
+
+      const passwordResetTokenJSON =
+        serializePasswordResetTokenAsJSON(passwordResetToken);
+
+      res.status(HttpStatusCodes.CREATED).send(passwordResetTokenJSON);
     }
   );
 }

@@ -1,4 +1,4 @@
-import { ApplicationRepository } from '../../../application';
+import { ApplicationRepository } from '../../../../application';
 
 import {
   PasswordResetTokenDB,

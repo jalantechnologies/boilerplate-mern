@@ -1,6 +1,6 @@
 import { PhoneNumberUtil } from 'google-libphonenumber';
 
-import { OTPRequestError } from '../../authentication/types';
+import { OTPRequestError } from '../../authentication';
 import {
   PhoneUtilInstance,
   PhoneUtilInterface,

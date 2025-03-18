@@ -1,5 +1,4 @@
 import { AuthenticationService } from '../authentication';
-import { PasswordResetTokenService } from '../password-reset-token';
 
 import AccountReader from './internal/account-reader';
 import AccountWriter from './internal/account-writer';
@@ -72,7 +71,7 @@ export default class AccountService {
     await AccountReader.getAccountById(accountId);
 
     const passwordResetToken =
-      await PasswordResetTokenService.verifyPasswordResetToken(
+      await AuthenticationService.verifyPasswordResetToken(
         accountId,
         token
       );
@@ -82,7 +81,7 @@ export default class AccountService {
       newPassword
     );
 
-    await PasswordResetTokenService.setPasswordResetTokenAsUsedById(
+    await AuthenticationService.setPasswordResetTokenAsUsedById(
       passwordResetToken.id
     );
 

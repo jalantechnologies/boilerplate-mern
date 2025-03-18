@@ -1,4 +1,4 @@
-import { PasswordResetToken, PasswordResetTokenNotFoundError } from '../types';
+import { PasswordResetToken, PasswordResetTokenNotFoundError } from '../../types';
 
 import PasswordResetTokenUtil from './password-reset-token-util';
 import PasswordResetTokenRepository from './store/password-reset-token-repository';

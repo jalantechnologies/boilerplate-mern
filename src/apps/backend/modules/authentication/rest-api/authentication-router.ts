@@ -8,5 +8,6 @@ export default class AuthenticationRouter extends ApplicationRouter {
     const ctrl = new AuthenticationController();
 
     router.post('/access-tokens', ctrl.createAccessToken);
+    router.post('/password-reset-tokens', ctrl.createPasswordResetToken);
   }
 }
