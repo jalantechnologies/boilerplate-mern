@@ -4,7 +4,7 @@ import { OTPRequestError } from '../../authentication';
 import {
   PhoneUtilInstance,
   PhoneUtilInterface,
-} from '../../communication/types';
+} from '../../communication';
 import { Account, PhoneNumber } from '../types';
 
 import AccountReader from './account-reader';
