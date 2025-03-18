@@ -11,3 +11,6 @@ openai:
   apiKey: 'OPENAI_API_KEY'
 
 webAppHost: 'http://localhost:8080'
+
+public:
+  currentLoginMethod: 'EMAIL'
