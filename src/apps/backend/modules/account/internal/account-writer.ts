@@ -57,20 +57,6 @@ export default class AccountWriter {
     return AccountUtil.convertAccountDBToAccount(accountDb);
   }
 
-  public static async createAccountByPhoneNumberAndName(
-    phoneNumber: PhoneNumber,
-    firstName?: string,
-    lastName?: string
-  ): Promise<Account> {
-    const accountDb = await AccountRepository.create({
-      firstName,
-      lastName,
-      phoneNumber,
-      active: true,
-    });
-    return AccountUtil.convertAccountDBToAccount(accountDb);
-  }
-
   public static async updatePasswordByAccountId(
     accountId: string,
     newPassword: string

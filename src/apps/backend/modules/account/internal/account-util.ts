@@ -1,7 +1,6 @@
 import { Account } from 'backend/modules/account';
 import { AccountDB } from 'backend/modules/account/internal/store/account-db';
 import * as bcrypt from 'bcrypt';
-import { PhoneNumberUtil } from 'google-libphonenumber';
 
 export default class AccountUtil {
   public static convertAccountDBToAccount(accountDb: AccountDB): Account {
@@ -24,18 +23,5 @@ export default class AccountUtil {
     hashedPassword: string
   ): Promise<boolean> {
     return bcrypt.compare(password, hashedPassword);
-  }
-
-  public static validatePhoneNumber(phoneNumber: PhoneNumber): void {
-    const phoneUtil = <PhoneUtilInterface>(
-      (<PhoneUtilInstance>PhoneNumberUtil).getInstance()
-    );
-    const isValidPhoneNumber = phoneUtil.isValidNumber(
-      phoneUtil.parse(phoneNumber.toString())
-    );
-
-    if (!isValidPhoneNumber) {
-      throw new OtpRequestError('Please provide a valid phone number.');
-    }
   }
 }
