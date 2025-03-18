@@ -1,3 +1,5 @@
+import { BatchResponse } from 'firebase-admin/lib/messaging/messaging-api';
+
 import { ApplicationError } from '../application';
 import { HttpStatusCodes } from '../http';
 
@@ -211,6 +213,20 @@ export type RegisterFcmTokenParams = {
 
 export type DeleteFcmTokenParams = {
   accountId: string;
+};
+
+export type EmailNotificationResponse = {
+  unsuccessful: string[];
+};
+
+export type PushNotificationResponse = {
+  accountsWithNotificationPreferencesDisabled: string[];
+  response: BatchResponse | null;
+  unsuccessfulTokens: string[];
+};
+
+export type SMSNotificationResponse = {
+  unsuccessful: string[];
 };
 
 export enum NotificationErrorCode {

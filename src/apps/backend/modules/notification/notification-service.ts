@@ -16,6 +16,7 @@ import {
   AccountsWithParticularNotificationPreferencesNotFoundError,
   BadRequestError,
   CreateNotificationPrefrenceParams,
+  EmailNotificationResponse,
   GetUserNotificationPreferencesParams,
   GetAccountsWithParticularNotificationChannelPreferenceParams,
   GetAccountsWithParticularNotificationTypePreferenceParams,
@@ -28,6 +29,7 @@ import {
   NotificationPermissionDeniedError,
   NotificationTypePreferencesInvalidError,
   NotificationChannelPreferencesInvalidError,
+  PushNotificationResponse,
   SendEmailNotificationToAccountParams,
   SendEmailNotificationToGroupParams,
   SendEmailNotificationToAllParams,
@@ -40,6 +42,7 @@ import {
   SendBroadcastNotificationParams,
   SendEmailParams,
   SendSMSParams,
+  SMSNotificationResponse,
   UpdateNotificationChannelPrefrenceParams,
   UpdateNotificationTypePrefrenceParams,
   RegisterFcmTokenParams,
@@ -249,7 +252,7 @@ export default class NotificationService {
 
   public static async sendEmailNotificationToGroup(
     params: SendEmailNotificationToGroupParams
-  ): Promise<{ unsuccessful: string[] }> {
+  ): Promise<EmailNotificationResponse> {
     const { accountIds, content } = params;
     let { notificationType } = params;
     notificationType = notificationType.toLowerCase();
@@ -342,7 +345,7 @@ export default class NotificationService {
 
   public static async sendEmailNotificationToAll(
     params: SendEmailNotificationToAllParams
-  ): Promise<{ unsuccessful: string[] }> {
+  ): Promise<EmailNotificationResponse> {
     const { content } = params;
     let { notificationType } = params;
     notificationType = notificationType.toLowerCase();
@@ -431,7 +434,7 @@ export default class NotificationService {
 
   public static async sendSmsNotificationToGroup(
     params: SendSmsNotificationToGroupParams
-  ): Promise<{ unsuccessful: string[] }> {
+  ): Promise<SMSNotificationResponse> {
     const { accountIds, content } = params;
     let { notificationType } = params;
     notificationType = notificationType.toLowerCase();
@@ -517,7 +520,7 @@ export default class NotificationService {
 
   public static async sendSmsNotificationToAll(
     params: SendSmsNotificationToAllParams
-  ): Promise<{ unsuccessful: string[] }> {
+  ): Promise<SMSNotificationResponse> {
     const { content } = params;
     let { notificationType } = params;
     notificationType = notificationType.toLowerCase();
@@ -600,11 +603,7 @@ export default class NotificationService {
 
   public static async sendPushNotificationToAccount(
     params: SendPushNotificationToAccountParams
-  ): Promise<{
-    accountsWithNotificationPreferencesDisabled: string[];
-    response: BatchResponse | null;
-    unsuccessfulTokens: string[];
-  }> {
+  ): Promise<PushNotificationResponse> {
     const { accountId, title, body, notificationType } = params;
     return NotificationService.sendPushNotificationToGroup({
       accountIds: [accountId],
@@ -616,11 +615,7 @@ export default class NotificationService {
 
   public static async sendPushNotificationToGroup(
     params: SendPushNotificationToGroupParams
-  ): Promise<{
-    accountsWithNotificationPreferencesDisabled: string[];
-    response: BatchResponse | null;
-    unsuccessfulTokens: string[];
-  }> {
+  ): Promise<PushNotificationResponse> {
     const { accountIds, title, body } = params;
     let { notificationType } = params;
     notificationType = notificationType.toLowerCase();
@@ -711,11 +706,7 @@ export default class NotificationService {
 
   public static async sendPushNotificationToAll(
     params: SendPushNotificationToAllParams
-  ): Promise<{
-    accountsWithNotificationPreferencesDisabled: string[];
-    response: BatchResponse | null;
-    unsuccessfulTokens: string[];
-  }> {
+  ): Promise<PushNotificationResponse> {
     const { title, body } = params;
     let { notificationType } = params;
     notificationType = notificationType.toLowerCase();
