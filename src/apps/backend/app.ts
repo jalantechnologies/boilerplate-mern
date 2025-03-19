@@ -1,3 +1,4 @@
+import 'module-alias/register';
 import { Server } from 'http';
 import * as path from 'path';
 
