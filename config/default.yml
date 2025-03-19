@@ -18,4 +18,4 @@ server:
   port: '8080'
 
 public:
-  authenticationMechanism: 'EMAIL' #or 'PHONE'
+  authenticationMechanism: 'PHONE' #or 'EMAIL'
