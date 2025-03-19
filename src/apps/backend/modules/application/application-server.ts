@@ -1,7 +1,6 @@
 import bodyParser from 'body-parser';
 import express, { Application, NextFunction, Request, Response } from 'express';
-
-import { Logger } from '../logger';
+import { Logger } from 'src/apps/backend/modules/logger';
 
 import { ApplicationError } from './application-error';
 import { HttpStatusCodes } from './types';
