@@ -71,10 +71,7 @@ export default class AccountService {
     await AccountReader.getAccountById(accountId);
 
     const passwordResetToken =
-      await AuthenticationService.verifyPasswordResetToken(
-        accountId,
-        token
-      );
+      await AuthenticationService.verifyPasswordResetToken(accountId, token);
 
     const updatedAccount = await AccountWriter.updatePasswordByAccountId(
       accountId,

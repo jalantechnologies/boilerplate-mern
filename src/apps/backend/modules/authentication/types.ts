@@ -147,15 +147,10 @@ export class OTPRequestError extends ApplicationError {
 
 export class PasswordResetToken {
   id: string;
-
   account: string;
-
   expiresAt: Date;
-
   isExpired: boolean;
-
   token: string;
-
   isUsed: boolean;
 }
 

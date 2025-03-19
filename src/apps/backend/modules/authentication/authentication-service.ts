@@ -1,6 +1,11 @@
 import jsonwebtoken from 'jsonwebtoken';
 
-import { AccountService, Account, PhoneNumber, AccountBadRequestError } from '../account';
+import {
+  AccountService,
+  Account,
+  PhoneNumber,
+  AccountBadRequestError,
+} from '../account';
 import { SMSService, EmailService, SendEmailParams } from '../communication';
 import { ConfigService } from '../config';
 
@@ -144,9 +149,7 @@ export default class AuthenticationService {
     token: string
   ): Promise<PasswordResetToken> {
     const passwordResetToken =
-      await AuthenticationService.getPasswordResetTokenByAccountId(
-        accountId
-      );
+      await AuthenticationService.getPasswordResetTokenByAccountId(accountId);
 
     if (passwordResetToken.isExpired) {
       throw new AccountBadRequestError(
