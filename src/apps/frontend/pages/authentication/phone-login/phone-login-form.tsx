@@ -27,11 +27,12 @@ const PhoneLoginForm: React.FC<PhoneLoginFormProps> = ({
   onError,
   onSendOTPSuccess,
 }) => {
-  const currentLoginMethod =
-    Config.getConfigValue<string>('currentLoginMethod');
+  const currentLoginMethod = Config.getConfigValue<string>(
+    'authenticationMechanism'
+  );
   const navigate = useNavigate();
   useEffect(() => {
-    if (currentLoginMethod === constant.EMAIL_BASED_LOGIN) {
+    if (currentLoginMethod === constant.EMAIL_BASED_AUTHENTICATION) {
       navigate(routes.LOGIN);
     }
   }, [currentLoginMethod, navigate]);

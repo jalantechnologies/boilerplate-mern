@@ -13,4 +13,4 @@ openai:
 webAppHost: 'http://localhost:8080'
 
 public:
-  currentLoginMethod: 'EMAIL'
+  authenticationMechanism: 'EMAIL'

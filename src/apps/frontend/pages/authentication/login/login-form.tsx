@@ -25,11 +25,12 @@ interface LoginFormProps {
 
 const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
   const { formik, isLoginLoading } = useLoginForm({ onSuccess, onError });
-  const currentLoginMethod =
-    Config.getConfigValue<string>('currentLoginMethod');
+  const currentLoginMethod = Config.getConfigValue<string>(
+    'authenticationMechanism'
+  );
   const navigate = useNavigate();
   useEffect(() => {
-    if (currentLoginMethod === constant.PHONE_NUMBER_BASED_LOGIN) {
+    if (currentLoginMethod === constant.PHONE_NUMBER_BASED_AUTHENTICATION) {
       navigate(routes.PHONE_LOGIN);
     }
   }, [currentLoginMethod, navigate]);
