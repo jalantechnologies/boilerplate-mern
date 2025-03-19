@@ -9,9 +9,10 @@ import {
   PasswordInput,
   VerticalStackLayout,
 } from '../../../components';
+import constant from '../../../constants';
 import routes from '../../../constants/routes';
-import { getConfigValue } from '../../../helpers/config';
-import { AsyncError, LoginMethod } from '../../../types';
+import { Config } from '../../../helpers';
+import { AsyncError } from '../../../types';
 import { ButtonKind, ButtonSize, ButtonType } from '../../../types/button';
 
 import LoginFormCheckbox from './login-form-checkbox';
@@ -24,11 +25,11 @@ interface LoginFormProps {
 
 const LoginForm: React.FC<LoginFormProps> = ({ onError, onSuccess }) => {
   const { formik, isLoginLoading } = useLoginForm({ onSuccess, onError });
-  const currentLoginMethod = getConfigValue('currentLoginMethod');
+  const currentLoginMethod =
+    Config.getConfigValue<string>('currentLoginMethod');
   const navigate = useNavigate();
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
-    if (currentLoginMethod === LoginMethod.PHONE) {
+    if (currentLoginMethod === constant.PHONE_NUMBER_BASED_LOGIN) {
       navigate(routes.PHONE_LOGIN);
     }
   }, [currentLoginMethod, navigate]);

@@ -14,11 +14,6 @@ export enum KeyboardKeys {
   BACKSPACE = 'Backspace',
 }
 
-export enum LoginMethod {
-  PHONE = 'PHONE',
-  EMAIL = 'EMAIL',
-}
-
 export class PhoneNumber {
   countryCode: string;
   phoneNumber: string;

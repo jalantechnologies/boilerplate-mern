@@ -9,10 +9,11 @@ import {
   Select,
   VerticalStackLayout,
 } from '../../../components';
+import constant from '../../../constants';
 import COUNTRY_SELECT_OPTIONS from '../../../constants/countries';
 import routes from '../../../constants/routes';
-import { getConfigValue } from '../../../helpers/config';
-import { AsyncError, LoginMethod } from '../../../types';
+import { Config } from '../../../helpers';
+import { AsyncError } from '../../../types';
 import { ButtonKind, ButtonSize, ButtonType } from '../../../types/button';
 
 import usePhoneLoginForm from './phone-login-form.hook';
@@ -26,11 +27,11 @@ const PhoneLoginForm: React.FC<PhoneLoginFormProps> = ({
   onError,
   onSendOTPSuccess,
 }) => {
-  const currentLoginMethod = getConfigValue('currentLoginMethod');
+  const currentLoginMethod =
+    Config.getConfigValue<string>('currentLoginMethod');
   const navigate = useNavigate();
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
-    if (currentLoginMethod === LoginMethod.EMAIL) {
+    if (currentLoginMethod === constant.EMAIL_BASED_LOGIN) {
       navigate(routes.LOGIN);
     }
   }, [currentLoginMethod, navigate]);
