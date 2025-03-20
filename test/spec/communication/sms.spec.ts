@@ -1,8 +1,7 @@
 import { expect } from 'chai';
+import SMSService from 'modules/communication/sms-service';
+import { ConfigService } from 'modules/config';
 import sinon from 'sinon';
-
-import SMSService from '../../../src/apps/backend/modules/communication/sms-service';
-import { ConfigService } from '../../../src/apps/backend/modules/config';
 
 describe('SMSService', () => {
   let twilioCreateMessage: sinon.SinonStub;

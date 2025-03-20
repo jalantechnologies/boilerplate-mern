@@ -1,13 +1,10 @@
 import chai, { expect } from 'chai';
+import { ConfigService } from 'modules/config';
+import { DocumentationService, ErrorReadingFile } from 'modules/documentation';
+import DocumentGeneratorUtil from 'modules/documentation/internals/document-generator-util';
+import { OpenAIService } from 'modules/openai';
 import sinon from 'sinon';
 
-import { ConfigService } from '../../../src/apps/backend/modules/config';
-import {
-  DocumentationService,
-  ErrorReadingFile,
-} from '../../../src/apps/backend/modules/documentation';
-import DocumentGeneratorUtil from '../../../src/apps/backend/modules/documentation/internals/document-generator-util';
-import { OpenAIService } from '../../../src/apps/backend/modules/openai';
 import { app } from '../../helpers/app';
 
 describe('GET /api/get-documentation', () => {

@@ -4,10 +4,8 @@ import {
   Request,
   Response,
 } from 'modules/application';
-
-import DocumentationService from '../documentation-service';
-
-import { serializeDocumentationAsJSON } from './documentation-serializer';
+import { DocumentationService } from 'modules/documentation';
+import { serializeDocumentationAsJSON } from 'modules/documentation/rest-api/documentation-serializer';
 
 export class DocumentationController {
   getDocumentation = applicationController(

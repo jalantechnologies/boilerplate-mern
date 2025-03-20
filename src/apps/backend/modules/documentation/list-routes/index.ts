@@ -1,2 +1,2 @@
-export { default as expressListRoutes } from './express-list-routes';
-export * from './types';
+export { default as expressListRoutes } from 'modules/documentation/list-routes/express-list-routes';
+export * from 'modules/documentation/list-routes/types';

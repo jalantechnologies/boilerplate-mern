@@ -1,17 +1,16 @@
 import _ from 'lodash';
-
 import {
   applicationController,
   Request,
   Response,
   NextFunc,
-} from '../../application';
-import AuthenticationService from '../authentication-service';
+} from 'modules/application';
 import {
   AuthorizationHeaderNotFound,
+  AuthenticationService,
   InvalidAuthorizationHeader,
   UnAuthorizedAccessError,
-} from '../types';
+} from 'modules/authentication';
 
 export const accessAuthMiddleware = applicationController(
   (req: Request, _res: Response, next: NextFunc) => {

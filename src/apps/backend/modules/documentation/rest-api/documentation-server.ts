@@ -1,6 +1,5 @@
-import { ApplicationServer } from '../../application';
-
-import DocumentationRouter from './documentation-router';
+import { ApplicationServer } from 'modules/application';
+import DocumentationRouter from 'modules/documentation/rest-api/documentation-router';
 
 export default class DocumentationServer extends ApplicationServer {
   configure(): void {

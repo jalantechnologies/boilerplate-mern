@@ -1,2 +1,2 @@
-export { default as OpenAIService } from './openai-service';
-export * from './types';
+export { default as OpenAIService } from 'modules/openai/openai-service';
+export * from 'modules/openai/types';

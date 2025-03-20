@@ -1,15 +1,22 @@
-import { PhoneNumber } from '../../account';
-import { applicationController, Request, Response, HttpStatusCodes } from '../../application';
-import AuthenticationService from '../authentication-service';
+import { PhoneNumber } from 'modules/account';
+import {
+  applicationController,
+  Request,
+  Response,
+  HttpStatusCodes,
+} from 'modules/application';
 import {
   AccessToken,
+  AuthenticationService,
   CreateAccessTokenParams,
   EmailBasedAuthAccessTokenRequestParams,
   OTPBasedAuthAccessTokenRequestParams,
   CreatePasswordResetTokenParams,
-} from '../types';
-
-import { serializeAccessTokenAsJSON, serializePasswordResetTokenAsJSON } from './authentication-serializer';
+} from 'modules/authentication';
+import {
+  serializeAccessTokenAsJSON,
+  serializePasswordResetTokenAsJSON,
+} from 'modules/authentication/rest-api/authentication-serializer';
 
 export class AuthenticationController {
   createAccessToken = applicationController(

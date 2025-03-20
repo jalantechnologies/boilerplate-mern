@@ -1,6 +1,9 @@
-import { SendEmailParams, ValidationError, ValidationFailure } from '../types';
-
-import { emailRegex } from './constants';
+import {
+  SendEmailParams,
+  ValidationError,
+  ValidationFailure,
+} from 'modules/communication';
+import { emailRegex } from 'modules/communication/internals/constants';
 
 export default class EmailParams {
   public static validate(params: SendEmailParams): void {

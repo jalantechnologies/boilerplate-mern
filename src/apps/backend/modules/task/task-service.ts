@@ -1,5 +1,3 @@
-import TaskReader from './internal/task-reader';
-import TaskWriter from './internal/task-writer';
 import {
   CreateTaskParams,
   DeleteTaskParams,
@@ -7,7 +5,9 @@ import {
   GetTaskParams,
   Task,
   UpdateTaskParams,
-} from './types';
+} from 'modules/task';
+import TaskReader from 'modules/task/internal/task-reader';
+import TaskWriter from 'modules/task/internal/task-writer';
 
 export default class TaskService {
   public static async createTask(params: CreateTaskParams): Promise<Task> {

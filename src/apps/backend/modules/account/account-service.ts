@@ -1,7 +1,3 @@
-import { AuthenticationService } from '../authentication';
-
-import AccountReader from './internal/account-reader';
-import AccountWriter from './internal/account-writer';
 import {
   Account,
   ResetPasswordParams,
@@ -9,7 +5,10 @@ import {
   PhoneNumber,
   UpdateAccountDetailsParams,
   DeleteAccountParams,
-} from './types';
+} from 'modules/account';
+import AccountReader from 'modules/account/internal/account-reader';
+import AccountWriter from 'modules/account/internal/account-writer';
+import { AuthenticationService } from 'modules/authentication';
 
 export default class AccountService {
   public static async createAccountByUsernameAndPassword(

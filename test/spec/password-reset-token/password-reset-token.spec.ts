@@ -1,22 +1,22 @@
 import faker from '@faker-js/faker';
 import chai, { expect } from 'chai';
-import sinon from 'sinon';
-
 import {
   Account,
   AccountBadRequestError,
   AccountNotFoundError,
   ResetPasswordParams,
-} from '../../../src/apps/backend/modules/account';
-import AccountUtil from '../../../src/apps/backend/modules/account/internal/account-util';
-import AccountRepository from '../../../src/apps/backend/modules/account/internal/store/account-repository';
+} from 'modules/account';
+import AccountUtil from 'modules/account/internal/account-util';
+import AccountRepository from 'modules/account/internal/store/account-repository';
 import {
   PasswordResetTokenNotFoundError,
   AuthenticationService,
-} from '../../../src/apps/backend/modules/authentication';
-import PasswordResetTokenUtil from '../../../src/apps/backend/modules/authentication/internals/password-reset-token/password-reset-token-util';
-import PasswordResetTokenRepository from '../../../src/apps/backend/modules/authentication/internals/password-reset-token/store/password-reset-token-repository';
-import { EmailService } from '../../../src/apps/backend/modules/communication';
+} from 'modules/authentication';
+import PasswordResetTokenUtil from 'modules/authentication/internals/password-reset-token/password-reset-token-util';
+import PasswordResetTokenRepository from 'modules/authentication/internals/password-reset-token/store/password-reset-token-repository';
+import { EmailService } from 'modules/communication';
+import sinon from 'sinon';
+
 import { createAccount } from '../../helpers/account';
 import { app } from '../../helpers/app';
 

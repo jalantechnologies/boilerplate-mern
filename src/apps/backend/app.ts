@@ -5,18 +5,17 @@ import * as path from 'path';
 import cors from 'cors';
 import express, { Application } from 'express';
 import expressWinston from 'express-winston';
-
-import { AccountServer } from './modules/account';
-import { ApplicationServer } from './modules/application';
-import { AuthenticationServer } from './modules/authentication';
-import { ConfigService } from './modules/config';
+import { AccountServer } from 'modules/account';
+import { ApplicationServer } from 'modules/application';
+import { AuthenticationServer } from 'modules/authentication';
+import { ConfigService } from 'modules/config';
 import {
   DocumentationServer,
   DocumentationService,
-} from './modules/documentation';
-import { expressListRoutes } from './modules/documentation/list-routes';
-import { Logger, CustomLoggerTransport } from './modules/logger';
-import { TaskServer } from './modules/task';
+} from 'modules/documentation';
+import { expressListRoutes } from 'modules/documentation/list-routes';
+import { Logger, CustomLoggerTransport } from 'modules/logger';
+import { TaskServer } from 'modules/task';
 
 interface APIMicroserviceService {
   rootFolderPath: string;

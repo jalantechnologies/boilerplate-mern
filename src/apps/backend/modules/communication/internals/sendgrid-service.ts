@@ -1,11 +1,9 @@
 import mail, { MailDataRequired } from '@sendgrid/mail';
 import { MailService } from '@sendgrid/mail/src/mail';
 import _ from 'lodash';
-
-import { ConfigService } from '../../config';
-import { SendEmailParams, ServiceError } from '../types';
-
-import EmailParams from './sendgrid-email-params';
+import { SendEmailParams, ServiceError } from 'modules/communication';
+import EmailParams from 'modules/communication/internals/sendgrid-email-params';
+import { ConfigService } from 'modules/config';
 
 export default class SendGridService {
   private static client: MailService;

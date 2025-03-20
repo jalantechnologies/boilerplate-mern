@@ -1,9 +1,8 @@
 import bodyParser from 'body-parser';
 import express, { Application, NextFunction, Request, Response } from 'express';
+import { HttpStatusCodes } from 'modules/application';
+import { ApplicationError } from 'modules/application/application-error';
 import { Logger } from 'modules/logger';
-
-import { ApplicationError } from './application-error';
-import { HttpStatusCodes } from './types';
 
 export enum ApplicationServerErrorCodes {
   UNHANDLED_ERROR = 'SERVER_ERR_01',

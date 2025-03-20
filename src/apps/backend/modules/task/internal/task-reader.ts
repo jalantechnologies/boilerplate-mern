@@ -4,10 +4,9 @@ import {
   Task,
   TaskNotFoundError,
   PaginationParams,
-} from '../types';
-
-import TaskRepository from './store/task-repository';
-import TaskUtil from './task-util';
+} from 'modules/task';
+import TaskRepository from 'modules/task/internal/store/task-repository';
+import TaskUtil from 'modules/task/internal/task-util';
 
 export default class TaskReader {
   public static async getTaskForAccount(params: GetTaskParams): Promise<Task> {

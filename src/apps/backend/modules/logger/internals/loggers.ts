@@ -1,9 +1,8 @@
 import { ConfigService } from 'modules/config';
 import { UnknownTransportError } from 'modules/logger';
-
-import ConsoleLogger from './console-logger';
-import DatadogLogger from './datadog-logger';
-import Logger, { LoggerTransport } from './types';
+import ConsoleLogger from 'modules/logger/internals/console-logger';
+import DatadogLogger from 'modules/logger/internals/datadog-logger';
+import Logger, { LoggerTransport } from 'modules/logger/internals/types';
 
 export default class Loggers {
   private static loggers = this.getLoggers();

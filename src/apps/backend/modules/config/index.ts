@@ -1,2 +1,2 @@
-export { default as ConfigService } from './config-service';
-export * from './types';
+export { default as ConfigService } from 'modules/config/config-service';
+export * from 'modules/config/types';

@@ -1,4 +1,4 @@
-import { ApplicationError, HttpStatusCodes } from '../application';
+import { ApplicationError, HttpStatusCodes } from 'modules/application';
 
 export type Nullable<T> = T | null;
 

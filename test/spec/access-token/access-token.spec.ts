@@ -1,12 +1,12 @@
 import faker from '@faker-js/faker';
 import chai, { expect } from 'chai';
+import { PhoneNumber } from 'modules/account';
+import AccountWriter from 'modules/account/internal/account-writer';
+import AccountRepository from 'modules/account/internal/store/account-repository';
+import { AuthenticationService } from 'modules/authentication';
+import { SMSService } from 'modules/communication';
 import sinon from 'sinon';
 
-import { PhoneNumber } from '../../../src/apps/backend/modules/account';
-import AccountWriter from '../../../src/apps/backend/modules/account/internal/account-writer';
-import AccountRepository from '../../../src/apps/backend/modules/account/internal/store/account-repository';
-import { AuthenticationService } from '../../../src/apps/backend/modules/authentication';
-import { SMSService } from '../../../src/apps/backend/modules/communication';
 import { app } from '../../helpers/app';
 
 describe('AccessToken API', () => {

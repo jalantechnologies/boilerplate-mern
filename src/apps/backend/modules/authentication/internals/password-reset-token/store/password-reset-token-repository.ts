@@ -1,9 +1,8 @@
-import { ApplicationRepository } from '../../../../application';
-
+import { ApplicationRepository } from 'modules/application';
 import {
   PasswordResetTokenDB,
   passwordResetTokenDbSchema,
-} from './password-reset-token-db';
+} from 'modules/authentication/internals/password-reset-token/store/password-reset-token-db';
 
 const PasswordResetTokenRepository =
   ApplicationRepository<PasswordResetTokenDB>(

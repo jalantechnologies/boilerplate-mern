@@ -1,4 +1,4 @@
-import { ApplicationError, HttpStatusCodes } from '../application';
+import { ApplicationError, HttpStatusCodes } from 'modules/application';
 
 export interface LooseObject {
   [key: string]: unknown;

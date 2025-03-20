@@ -1,6 +1,5 @@
+import { OTPStatus } from 'modules/authentication/types';
 import { Schema, Types } from 'mongoose';
-
-import { OTPStatus } from '../../../types';
 
 interface PhoneNumber {
   countryCode: string;

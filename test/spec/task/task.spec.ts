@@ -1,10 +1,10 @@
 import faker from '@faker-js/faker';
 import chai, { expect } from 'chai';
+import { Account } from 'modules/account';
+import { AccessToken } from 'modules/authentication';
+import TaskRepository from 'modules/task/internal/store/task-repository';
+import TaskService from 'modules/task/task-service';
 
-import { Account } from '../../../src/apps/backend/modules/account';
-import { AccessToken } from '../../../src/apps/backend/modules/authentication';
-import TaskRepository from '../../../src/apps/backend/modules/task/internal/store/task-repository';
-import TaskService from '../../../src/apps/backend/modules/task/task-service';
 import { createAccount } from '../../helpers/account';
 import { app } from '../../helpers/app';
 

@@ -1,3 +1,3 @@
-export { default as EmailService } from './email-service';
-export { default as SMSService } from './sms-service';
-export * from './types';
+export { default as EmailService } from 'modules/communication/email-service';
+export { default as SMSService } from 'modules/communication/sms-service';
+export * from 'modules/communication/types';

@@ -1,3 +1,3 @@
-export { default as DocumentationService } from './documentation-service';
-export { default as DocumentationServer } from './rest-api/documentation-server';
-export * from './types';
+export { default as DocumentationService } from 'modules/documentation/documentation-service';
+export { default as DocumentationServer } from 'modules/documentation/rest-api/documentation-server';
+export * from 'modules/documentation/types';

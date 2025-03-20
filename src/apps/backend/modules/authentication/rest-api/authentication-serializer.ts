@@ -1,4 +1,4 @@
-import { AccessToken, PasswordResetToken } from '../types';
+import { AccessToken, PasswordResetToken } from 'modules/authentication';
 
 export const serializeAccessTokenAsJSON = (
   accessToken: AccessToken

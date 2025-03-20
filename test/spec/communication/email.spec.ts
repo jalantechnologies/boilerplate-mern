@@ -1,9 +1,8 @@
 import mail from '@sendgrid/mail';
 import { expect } from 'chai';
+import EmailService from 'modules/communication/email-service';
+import { ConfigService } from 'modules/config';
 import sinon from 'sinon';
-
-import EmailService from '../../../src/apps/backend/modules/communication/email-service';
-import { ConfigService } from '../../../src/apps/backend/modules/config';
 
 describe('EmailService', () => {
   let sendgridSend: sinon.SinonStub;

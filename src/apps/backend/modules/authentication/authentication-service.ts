@@ -1,19 +1,10 @@
 import jsonwebtoken from 'jsonwebtoken';
-
 import {
   AccountService,
   Account,
   PhoneNumber,
   AccountBadRequestError,
-} from '../account';
-import { SMSService, EmailService, SendEmailParams } from '../communication';
-import { ConfigService } from '../config';
-
-import OTPUtil from './internals/otp/otp-util';
-import OTPWriter from './internals/otp/otp-writer';
-import PasswordResetTokenReader from './internals/password-reset-token/password-reset-token-reader';
-import PasswordResetTokenUtil from './internals/password-reset-token/password-reset-token-util';
-import PasswordResetTokenWriter from './internals/password-reset-token/password-reset-token-writer';
+} from 'modules/account';
 import {
   AccessToken,
   AccessTokenExpiredError,
@@ -26,7 +17,18 @@ import {
   CreatePasswordResetTokenParams,
   PasswordResetToken,
   PasswordResetTokenEmailNotEnabledForTheEnvironmentError,
-} from './types';
+} from 'modules/authentication';
+import OTPUtil from 'modules/authentication/internals/otp/otp-util';
+import OTPWriter from 'modules/authentication/internals/otp/otp-writer';
+import PasswordResetTokenReader from 'modules/authentication/internals/password-reset-token/password-reset-token-reader';
+import PasswordResetTokenUtil from 'modules/authentication/internals/password-reset-token/password-reset-token-util';
+import PasswordResetTokenWriter from 'modules/authentication/internals/password-reset-token/password-reset-token-writer';
+import {
+  SMSService,
+  EmailService,
+  SendEmailParams,
+} from 'modules/communication';
+import { ConfigService } from 'modules/config';
 
 export default class AuthenticationService {
   public static async createAccessTokenByUsernameAndPassword(

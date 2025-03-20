@@ -1,13 +1,12 @@
 import fs from 'fs';
 import path from 'path';
 
-import { HttpRoute } from 'modules/documentation/list-routes';
-
 import {
   ErrorReadingFile,
   GetRoutesWithControllerAndSerializerDetailsResponse,
   HttpRouteWithControllerAndSerializerDetails,
-} from '../types';
+} from 'modules/documentation';
+import { HttpRoute } from 'modules/documentation/list-routes';
 
 export default class DocumentGeneratorUtil {
   public static controllerFileSuffix = '-controller.js';

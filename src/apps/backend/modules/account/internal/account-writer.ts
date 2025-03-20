@@ -1,12 +1,10 @@
 import { PhoneNumberUtil } from 'google-libphonenumber';
+import { Account, PhoneNumber } from 'modules/account';
+import AccountRepository from 'modules/account/internal//store/account-repository';
+import AccountReader from 'modules/account/internal/account-reader';
+import AccountUtil from 'modules/account/internal/account-util';
+import { OTPRequestError } from 'modules/authentication';
 import { PhoneUtilInstance, PhoneUtilInterface } from 'modules/communication';
-
-import { OTPRequestError } from '../../authentication';
-import { Account, PhoneNumber } from '../types';
-
-import AccountReader from './account-reader';
-import AccountUtil from './account-util';
-import AccountRepository from './store/account-repository';
 
 export default class AccountWriter {
   public static async createAccountByUsernameAndPassword(

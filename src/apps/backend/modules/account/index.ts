@@ -1,3 +1,3 @@
-export { default as AccountServer } from './rest-api/account-server';
-export { default as AccountService } from './account-service';
-export * from './types';
+export { default as AccountServer } from 'modules/account/rest-api/account-server';
+export { default as AccountService } from 'modules/account/account-service';
+export * from 'modules/account/types';
