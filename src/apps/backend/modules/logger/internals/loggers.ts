@@ -1,5 +1,5 @@
-import { ConfigService } from '../../config';
-import { UnknownTransportError } from '../types';
+import { ConfigService } from 'modules/config';
+import { UnknownTransportError } from 'modules/logger';
 
 import ConsoleLogger from './console-logger';
 import DatadogLogger from './datadog-logger';

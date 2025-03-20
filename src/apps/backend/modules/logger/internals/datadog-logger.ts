@@ -1,6 +1,5 @@
+import { ConfigService } from 'modules/config';
 import * as winston from 'winston';
-
-import { ConfigService } from '../../config';
 
 import WinstonLogger from './winston-logger';
 

@@ -3,7 +3,8 @@ import {
   HttpStatusCodes,
   Request,
   Response,
-} from '../../application';
+} from 'modules/application';
+
 import DocumentationService from '../documentation-service';
 
 import { serializeDocumentationAsJSON } from './documentation-serializer';

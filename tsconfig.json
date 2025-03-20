@@ -19,9 +19,9 @@
     "experimentalDecorators": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "baseUrl": "./src/apps",
+    "baseUrl": ".",
     "paths": {
-      "modules/*": ["backend/modules/*"]
+      "modules/*": ["src/apps/backend/modules/*"]
     }
   }
 }

@@ -1,4 +1,4 @@
-import { ApplicationRouter } from '../../application';
+import { ApplicationRouter } from 'modules/application';
 
 import { DocumentationController } from './documentation-controller';
 

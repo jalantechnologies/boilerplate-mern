@@ -1,4 +1,4 @@
-import { ApplicationError, HttpStatusCodes } from '../application';
+import { ApplicationError, HttpStatusCodes } from 'modules/application';
 
 export enum OpenAIErrorCode {
   ERROR_GETTING_CHAT_COMPLETION_RESPONSE = 'OPENAI_ERR_01',
