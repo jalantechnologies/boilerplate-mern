@@ -24,7 +24,9 @@
     "serve:assets": "cpx \"src/assets/**/*.*\" dist/assets --watch",
     "serve:backend": "tsc-watch -p src/apps/backend/tsconfig.json --outDir dist --onsuccess \"node dist/bin/server.js\" --noClear",
     "serve:frontend": "webpack serve --output-path dist/public --config src/apps/frontend/webpack.dev.js --hot --progress",
-    "cy:open": "cypress open"
+    "cy:open": "cypress open",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "author": "jalantechnologies",
   "license": "MIT",
@@ -74,7 +76,16 @@
   },
   "devDependencies": {
     "@babel/core": "^7.17.5",
+    "@chromatic-com/storybook": "^3.2.6",
     "@faker-js/faker": "^6.3.1",
+    "@storybook/addon-essentials": "^8.6.7",
+    "@storybook/addon-interactions": "^8.6.7",
+    "@storybook/addon-onboarding": "^8.6.7",
+    "@storybook/addon-webpack5-compiler-swc": "^3.0.0",
+    "@storybook/blocks": "^8.6.7",
+    "@storybook/react": "^8.6.7",
+    "@storybook/react-webpack5": "^8.6.7",
+    "@storybook/test": "^8.6.7",
     "@types/bcrypt": "^5.0.0",
     "@types/body-parser": "^1.19.2",
     "@types/chai": "^4.3.6",
@@ -99,13 +110,14 @@
     "cross-env": "^7.0.3",
     "css-loader": "^6.7.1",
     "cypress": "^14.1.0",
-    "eslint": "^7.32.0",
-    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint": "^8.57.1",
+    "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^17.1.0",
     "eslint-plugin-cypress": "^2.13.3",
     "eslint-plugin-eslint-comments": "^3.2.0",
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-storybook": "^0.11.6",
     "eslint-plugin-tailwindcss": "^3.14.2",
     "forever": "^4.0.3",
     "html-webpack-plugin": "^5.5.0",
@@ -118,6 +130,7 @@
     "remark-lint": "^9.1.0",
     "remark-preset-lint-recommended": "^6.1.1",
     "sinon": "^13.0.1",
+    "storybook": "^8.6.7",
     "style-loader": "^3.3.1",
     "ts-loader": "^9.4.1",
     "ts-node": "^10.9.1",
@@ -128,5 +141,11 @@
     "webpack-cli": "^4.10.0",
     "webpack-dev-server": "^4.11.1",
     "webpack-merge": "^5.8.0"
+  },
+  "eslintConfig": {
+    "extends": [
+      "plugin:storybook/recommended",
+      "plugin:storybook/recommended"
+    ]
   }
 }

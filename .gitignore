@@ -77,3 +77,5 @@ terraform/*.tfvars
 
 # cypress artifacts
 cypress/screenshots/
+
+*storybook.log
