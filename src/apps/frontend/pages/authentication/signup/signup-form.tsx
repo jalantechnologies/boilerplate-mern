@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 import {
   Button,
@@ -9,7 +9,9 @@ import {
   PasswordInput,
   VerticalStackLayout,
 } from '../../../components';
+import constant from '../../../constants';
 import routes from '../../../constants/routes';
+import { Config } from '../../../helpers';
 import { AsyncError } from '../../../types';
 import { ButtonKind, ButtonSize, ButtonType } from '../../../types/button';
 
@@ -22,6 +24,15 @@ interface SignupFormProps {
 
 const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
   const { formik, isSignupLoading } = useSignupForm({ onSuccess, onError });
+  const currentLoginMethod = Config.getConfigValue<string>(
+    'authenticationMechanism'
+  );
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (currentLoginMethod === constant.PHONE_NUMBER_BASED_AUTHENTICATION) {
+      navigate(routes.PHONE_LOGIN);
+    }
+  }, [currentLoginMethod, navigate]);
 
   return (
     <form onSubmit={formik.handleSubmit}>
