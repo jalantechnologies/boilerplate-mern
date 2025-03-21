@@ -16,7 +16,7 @@ jobs:
       analyze_base: main
       app_name: boilerplate-mern
       app_env: preview
-      app_hostname: '{1}.preview.platform.jalantechnologies.com'
+      app_hostname: 'pr-${{ github.event.number }}-${{ github.run_id }}.preview.platform.jalantechnologies.com'
       branch: ${{ github.event.pull_request.head.ref }}
       build_args: |
         NODE_CONFIG_ENV=preview
