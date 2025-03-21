@@ -4,7 +4,7 @@ import {
   PhoneUtilInstance,
   PhoneUtilInterface,
 } from '../../communication/types';
-import { OtpRequestError } from '../../otp/types';
+import { OTPRequestError } from '../../otp/types';
 import { Account, PhoneNumber } from '../types';
 
 import AccountReader from './account-reader';
@@ -45,7 +45,7 @@ export default class AccountWriter {
     );
 
     if (!isValidPhoneNumber) {
-      throw new OtpRequestError('Please provide a valid phone number.');
+      throw new OTPRequestError('Please provide a valid phone number.');
     }
     // check if account already exists with the given phone number
     // this will throw an error if it does

@@ -2,13 +2,13 @@ import _ from 'lodash';
 
 import { ConfigService } from '../../config';
 import { OTP_LENGTH } from '../constants';
-import { Otp } from '../types';
+import { OTP } from '../types';
 
-import { OtpDB } from './store/otp-db';
+import { OTPDB } from './store/otp-db';
 
-export default class OtpUtil {
-  public static convertOtpDBToOtp(otpDb: OtpDB): Otp {
-    const otp = new Otp();
+export default class OTPUtil {
+  public static convertOTPDBToOTP(otpDb: OTPDB): OTP {
+    const otp = new OTP();
     otp.id = otpDb._id.toString();
     otp.phoneNumber = otpDb.phoneNumber;
     otp.otpCode = otpDb.otpCode;
@@ -16,7 +16,7 @@ export default class OtpUtil {
     return otp;
   }
 
-  public static generateOtp(length: number): string {
+  public static generateOTP(length: number): string {
     let otp = '';
     for (let i = 0; i < length; i += 1) {
       otp += _.random(0, 9);
@@ -24,14 +24,14 @@ export default class OtpUtil {
     return otp;
   }
 
-  public static getOtp(phoneNumber: string): string {
+  public static getOTP(phoneNumber: string): string {
     if (
       ConfigService.hasValue('otp.defaultOTP') &&
-      OtpUtil.isDefaultPhoneNumber(phoneNumber)
+      OTPUtil.isDefaultPhoneNumber(phoneNumber)
     ) {
       return ConfigService.getValue<string>('otp.defaultOTP');
     }
-    return OtpUtil.generateOtp(OTP_LENGTH);
+    return OTPUtil.generateOTP(OTP_LENGTH);
   }
 
   public static isDefaultPhoneNumber(phoneNumber: string): boolean {

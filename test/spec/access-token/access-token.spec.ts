@@ -6,7 +6,7 @@ import { PhoneNumber } from '../../../src/apps/backend/modules/account';
 import AccountWriter from '../../../src/apps/backend/modules/account/internal/account-writer';
 import AccountRepository from '../../../src/apps/backend/modules/account/internal/store/account-repository';
 import { SMSService } from '../../../src/apps/backend/modules/communication';
-import { OtpService } from '../../../src/apps/backend/modules/otp';
+import { OTPService } from '../../../src/apps/backend/modules/otp';
 import { app } from '../../helpers/app';
 
 describe('AccessToken API', () => {
@@ -58,7 +58,7 @@ describe('AccessToken API', () => {
         new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber)
       );
 
-      const otp = await OtpService.createOtp(
+      const otp = await OTPService.createOTP(
         new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber)
       );
 
@@ -84,7 +84,7 @@ describe('AccessToken API', () => {
         new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber)
       );
 
-      await OtpService.createOtp(
+      await OTPService.createOTP(
         new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber)
       );
 
@@ -113,11 +113,11 @@ describe('AccessToken API', () => {
         new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber)
       );
 
-      const otp = await OtpService.createOtp(
+      const otp = await OTPService.createOTP(
         new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber)
       );
 
-      await OtpService.verifyOTP(
+      await OTPService.verifyOTP(
         otp.otpCode,
         new PhoneNumber(phoneNumber.countryCode, phoneNumber.phoneNumber)
       );

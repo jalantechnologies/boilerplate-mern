@@ -1,42 +1,42 @@
 import { PhoneNumber } from '../../account/types';
-import { Otp, OtpExpiredError, OtpIncorrectError, OtpStatus } from '../types';
+import { OTP, OTPExpiredError, OTPIncorrectError, OTPStatus } from '../types';
 
-import OtpUtil from './otp-util';
-import OtpRepository from './store/otp-repository';
+import OTPUtil from './otp-util';
+import OTPRepository from './store/otp-repository';
 
-export default class OtpWriter {
-  public static async expirePreviousOtpAndCreateNewOtp(
+export default class OTPWriter {
+  public static async expirePreviousOTPAndCreateNewOTP(
     phoneNumber: PhoneNumber
-  ): Promise<Otp> {
-    const previousOtpDb = await OtpRepository.findOne({
+  ): Promise<OTP> {
+    const previousOTPDb = await OTPRepository.findOne({
       'phoneNumber.countryCode': phoneNumber.countryCode,
       'phoneNumber.phoneNumber': phoneNumber.phoneNumber,
       active: true,
     });
 
-    if (previousOtpDb) {
-      previousOtpDb.status = OtpStatus.EXPIRED;
-      previousOtpDb.active = false;
-      await previousOtpDb.save();
+    if (previousOTPDb) {
+      previousOTPDb.status = OTPStatus.EXPIRED;
+      previousOTPDb.active = false;
+      await previousOTPDb.save();
     }
 
-    const otp = OtpUtil.getOtp(phoneNumber.phoneNumber);
+    const otp = OTPUtil.getOTP(phoneNumber.phoneNumber);
 
-    const otpDb = await OtpRepository.create({
+    const otpDb = await OTPRepository.create({
       active: true,
       otpCode: otp,
       phoneNumber,
-      status: OtpStatus.PENDING,
+      status: OTPStatus.PENDING,
     });
 
-    return OtpUtil.convertOtpDBToOtp(otpDb);
+    return OTPUtil.convertOTPDBToOTP(otpDb);
   }
 
   public static async verifyOTP(
     phoneNumber: PhoneNumber,
     otpCode: string
-  ): Promise<Otp> {
-    const otpDb = await OtpRepository.findOne({
+  ): Promise<OTP> {
+    const otpDb = await OTPRepository.findOne({
       'phoneNumber.countryCode': phoneNumber.countryCode,
       'phoneNumber.phoneNumber': phoneNumber.phoneNumber,
       otpCode,
@@ -45,17 +45,17 @@ export default class OtpWriter {
     });
 
     if (!otpDb) {
-      throw new OtpIncorrectError();
+      throw new OTPIncorrectError();
     }
 
     if (otpDb.active === false) {
-      throw new OtpExpiredError();
+      throw new OTPExpiredError();
     }
 
-    otpDb.status = OtpStatus.SUCCESS;
+    otpDb.status = OTPStatus.SUCCESS;
     otpDb.active = false;
     await otpDb.save();
 
-    return OtpUtil.convertOtpDBToOtp(otpDb);
+    return OTPUtil.convertOTPDBToOTP(otpDb);
   }
 }

@@ -1,21 +1,21 @@
 import { Schema, Types } from 'mongoose';
 
-import { OtpStatus } from '../../types';
+import { OTPStatus } from '../../types';
 
 interface PhoneNumber {
   countryCode: string;
   phoneNumber: string;
 }
 
-export interface OtpDB {
+export interface OTPDB {
   _id: Types.ObjectId;
   active: boolean;
   otpCode: string;
   phoneNumber: PhoneNumber;
-  status: OtpStatus;
+  status: OTPStatus;
 }
 
-export const OtpDbSchema = new Schema<OtpDB>(
+export const OTPDbSchema = new Schema<OTPDB>(
   {
     active: {
       required: true,
@@ -34,7 +34,7 @@ export const OtpDbSchema = new Schema<OtpDB>(
       },
     },
     status: {
-      enum: Object.values(OtpStatus),
+      enum: Object.values(OTPStatus),
       required: true,
       type: String,
     },
@@ -47,4 +47,4 @@ export const OtpDbSchema = new Schema<OtpDB>(
   }
 );
 
-OtpDbSchema.index({ phoneNumber: 1, active: 1 });
+OTPDbSchema.index({ phoneNumber: 1, active: 1 });

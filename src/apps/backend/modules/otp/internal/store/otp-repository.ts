@@ -1,7 +1,7 @@
 import { ApplicationRepository } from '../../../application';
 
-import { OtpDB, OtpDbSchema } from './otp-db';
+import { OTPDB, OTPDbSchema } from './otp-db';
 
-const OtpRepository = ApplicationRepository<OtpDB>('otps', OtpDbSchema);
+const OTPRepository = ApplicationRepository<OTPDB>('otps', OTPDbSchema);
 
-export default OtpRepository;
+export default OTPRepository;

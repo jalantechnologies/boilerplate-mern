@@ -1,20 +1,20 @@
 import { PhoneNumber } from '../account/types';
 import { ApplicationError, HttpStatusCodes } from '../application';
 
-export enum OtpStatus {
+export enum OTPStatus {
   EXPIRED = 'EXPIRED',
   PENDING = 'PENDING',
   SUCCESS = 'SUCCESS',
 }
 
-export class Otp {
+export class OTP {
   id: string;
   otpCode: string;
   phoneNumber: PhoneNumber;
-  status: OtpStatus;
+  status: OTPStatus;
 }
 
-export enum OtpErrorCode {
+export enum OTPErrorCode {
   INCORRECT_OTP = 'OTP_ERR_01',
   OTP_EXPIRED = 'OTP_ERR_02',
   REQUEST_FAILED = 'OTP_ERR_03',
@@ -29,32 +29,32 @@ export type VerifyOTPParams = {
   phoneNumber: PhoneNumber;
 };
 
-export class OtpIncorrectError extends ApplicationError {
-  code: OtpErrorCode;
+export class OTPIncorrectError extends ApplicationError {
+  code: OTPErrorCode;
 
   constructor() {
     super('Please provide the correct OTP to login.');
-    this.code = OtpErrorCode.INCORRECT_OTP;
+    this.code = OTPErrorCode.INCORRECT_OTP;
     this.httpStatusCode = HttpStatusCodes.BAD_REQUEST;
   }
 }
 
-export class OtpExpiredError extends ApplicationError {
-  code: OtpErrorCode;
+export class OTPExpiredError extends ApplicationError {
+  code: OTPErrorCode;
 
   constructor() {
     super('OTP has expired. Please request a new OTP.');
-    this.code = OtpErrorCode.OTP_EXPIRED;
+    this.code = OTPErrorCode.OTP_EXPIRED;
     this.httpStatusCode = HttpStatusCodes.BAD_REQUEST;
   }
 }
 
-export class OtpRequestError extends ApplicationError {
-  code: OtpErrorCode;
+export class OTPRequestError extends ApplicationError {
+  code: OTPErrorCode;
 
   constructor(message: string) {
     super(message);
-    this.code = OtpErrorCode.REQUEST_FAILED;
+    this.code = OTPErrorCode.REQUEST_FAILED;
     this.httpStatusCode = HttpStatusCodes.BAD_REQUEST;
   }
 }

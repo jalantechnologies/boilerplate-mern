@@ -2,7 +2,7 @@ import jsonwebtoken from 'jsonwebtoken';
 
 import { AccountService, Account, PhoneNumber } from '../account';
 import { ConfigService } from '../config';
-import { OtpIncorrectError, OtpService, OtpStatus } from '../otp';
+import { OTPIncorrectError, OTPService, OTPStatus } from '../otp';
 
 import {
   AccessToken,
@@ -31,10 +31,10 @@ export default class AuthenticationService {
   ): Promise<AccessToken> {
     const account = await AccountService.getAccountByPhoneNumber(phoneNumber);
 
-    const otp = await OtpService.verifyOTP(otpCode, phoneNumber);
+    const otp = await OTPService.verifyOTP(otpCode, phoneNumber);
 
-    if (otp.status !== OtpStatus.SUCCESS) {
-      throw new OtpIncorrectError();
+    if (otp.status !== OTPStatus.SUCCESS) {
+      throw new OTPIncorrectError();
     }
 
     return AuthenticationService.generateAccessToken(account);

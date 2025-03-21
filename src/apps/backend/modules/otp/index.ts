@@ -1,2 +1,2 @@
-export { default as OtpService } from './otp-service';
+export { default as OTPService } from './otp-service';
 export * from './types';
