@@ -1,8 +1,11 @@
+import { ConfigService } from 'backend/modules/config';
+import {
+  DocumentationService,
+  ErrorReadingFile,
+} from 'backend/modules/documentation';
+import DocumentGeneratorUtil from 'backend/modules/documentation/internals/document-generator-util';
+import { OpenAIService } from 'backend/modules/openai';
 import chai, { expect } from 'chai';
-import { ConfigService } from 'modules/config';
-import { DocumentationService, ErrorReadingFile } from 'modules/documentation';
-import DocumentGeneratorUtil from 'modules/documentation/internals/document-generator-util';
-import { OpenAIService } from 'modules/openai';
 import sinon from 'sinon';
 
 import { app } from '../../helpers/app';

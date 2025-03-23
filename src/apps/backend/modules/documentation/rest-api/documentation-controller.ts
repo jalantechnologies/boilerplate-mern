@@ -3,9 +3,9 @@ import {
   HttpStatusCodes,
   Request,
   Response,
-} from 'modules/application';
-import { DocumentationService } from 'modules/documentation';
-import { serializeDocumentationAsJSON } from 'modules/documentation/rest-api/documentation-serializer';
+} from 'backend/modules/application';
+import { DocumentationService } from 'backend/modules/documentation';
+import { serializeDocumentationAsJSON } from 'backend/modules/documentation/rest-api/documentation-serializer';
 
 export class DocumentationController {
   getDocumentation = applicationController(

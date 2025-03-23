@@ -1,7 +1,7 @@
+import { OTP_LENGTH, OTP } from 'backend/modules/authentication';
+import { OTPDB } from 'backend/modules/authentication/internals/otp/store/otp-db';
+import { ConfigService } from 'backend/modules/config';
 import _ from 'lodash';
-import { OTP_LENGTH, OTP } from 'modules/authentication';
-import { OTPDB } from 'modules/authentication/internals/otp/store/otp-db';
-import { ConfigService } from 'modules/config';
 
 export default class OTPUtil {
   public static convertOTPDBToOTP(otpDb: OTPDB): OTP {

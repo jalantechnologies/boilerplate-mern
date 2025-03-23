@@ -5,10 +5,10 @@ import {
   PhoneNumber,
   UpdateAccountDetailsParams,
   DeleteAccountParams,
-} from 'modules/account';
-import AccountReader from 'modules/account/internal/account-reader';
-import AccountWriter from 'modules/account/internal/account-writer';
-import { AuthenticationService } from 'modules/authentication';
+} from 'backend/modules/account';
+import AccountReader from 'backend/modules/account/internal/account-reader';
+import AccountWriter from 'backend/modules/account/internal/account-writer';
+import { AuthenticationService } from 'backend/modules/authentication';
 
 export default class AccountService {
   public static async createAccountByUsernameAndPassword(

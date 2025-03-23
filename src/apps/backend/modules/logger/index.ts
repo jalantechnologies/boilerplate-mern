@@ -1,3 +1,3 @@
-export { default as CustomLoggerTransport } from 'modules/logger/internals/winston-transport';
-export { default as Logger } from 'modules/logger/logger';
-export * from 'modules/logger/types';
+export { default as CustomLoggerTransport } from 'backend/modules/logger/internals/winston-transport';
+export { default as Logger } from 'backend/modules/logger/logger';
+export * from 'backend/modules/logger/types';

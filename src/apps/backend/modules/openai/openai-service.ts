@@ -1,4 +1,4 @@
-import OpenAIAdapter from 'modules/openai/rest-api/openai-adapter';
+import OpenAIAdapter from 'backend/modules/openai/rest-api/openai-adapter';
 
 export default class OpenAIService {
   public static async getChatCompletionResponse(

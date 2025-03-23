@@ -1,7 +1,5 @@
 import faker from '@faker-js/faker';
-import { assert } from 'chai';
-import { Request } from 'express';
-import { Account } from 'modules/account';
+import { Account } from 'backend/modules/account';
 import {
   AccessToken,
   AccessTokenExpiredError,
@@ -10,8 +8,10 @@ import {
   InvalidAuthorizationHeader,
   UnAuthorizedAccessError,
   accessAuthMiddleware,
-} from 'modules/authentication';
-import ConfigService from 'modules/config/config-service';
+} from 'backend/modules/authentication';
+import ConfigService from 'backend/modules/config/config-service';
+import { assert } from 'chai';
+import { Request } from 'express';
 import sinon from 'sinon';
 
 import { createAccount } from '../../helpers/account';

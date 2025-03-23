@@ -1,3 +1,3 @@
-export { default as TaskServer } from 'modules/task/rest-api/task-server';
-export { default as TaskService } from 'modules/task/task-service';
-export * from 'modules/task/types';
+export { default as TaskServer } from 'backend/modules/task/rest-api/task-server';
+export { default as TaskService } from 'backend/modules/task/task-service';
+export * from 'backend/modules/task/types';

@@ -1,7 +1,7 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
-import { ConfigService } from 'modules/config';
-import { Logger } from 'modules/logger';
-import { ErrorGettingChatCompletionResponse } from 'modules/openai';
+import { ConfigService } from 'backend/modules/config';
+import { Logger } from 'backend/modules/logger';
+import { ErrorGettingChatCompletionResponse } from 'backend/modules/openai';
 
 export default class OpenAIAdapter {
   private static apiUrl = 'https://api.openai.com/v1/chat/completions';

@@ -1,10 +1,10 @@
 import faker from '@faker-js/faker';
+import { PhoneNumber } from 'backend/modules/account';
+import AccountWriter from 'backend/modules/account/internal/account-writer';
+import AccountRepository from 'backend/modules/account/internal/store/account-repository';
+import { AuthenticationService } from 'backend/modules/authentication';
+import { SMSService } from 'backend/modules/communication';
 import chai, { expect } from 'chai';
-import { PhoneNumber } from 'modules/account';
-import AccountWriter from 'modules/account/internal/account-writer';
-import AccountRepository from 'modules/account/internal/store/account-repository';
-import { AuthenticationService } from 'modules/authentication';
-import { SMSService } from 'modules/communication';
 import sinon from 'sinon';
 
 import { app } from '../../helpers/app';

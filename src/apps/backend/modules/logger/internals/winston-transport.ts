@@ -1,4 +1,4 @@
-import { Logger } from 'modules/logger';
+import { Logger } from 'backend/modules/logger';
 import WinstonTransport from 'winston-transport';
 
 type TransportLogLevel = 'info' | 'warn' | 'error';

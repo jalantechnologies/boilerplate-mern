@@ -1,6 +1,6 @@
+import { Account } from 'backend/modules/account';
+import { AccountDB } from 'backend/modules/account/internal/store/account-db';
 import * as bcrypt from 'bcrypt';
-import { Account } from 'modules/account';
-import { AccountDB } from 'modules/account/internal/store/account-db';
 
 export default class AccountUtil {
   public static convertAccountDBToAccount(accountDb: AccountDB): Account {

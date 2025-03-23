@@ -1,5 +1,5 @@
-import { PhoneNumber } from 'modules/account';
-import { ApplicationError, HttpStatusCodes } from 'modules/application';
+import { PhoneNumber } from 'backend/modules/account';
+import { ApplicationError, HttpStatusCodes } from 'backend/modules/application';
 
 export class AccessToken {
   token: string;

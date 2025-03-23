@@ -1,20 +1,20 @@
 import faker from '@faker-js/faker';
-import chai, { expect } from 'chai';
 import {
   Account,
   AccountBadRequestError,
   AccountNotFoundError,
   ResetPasswordParams,
-} from 'modules/account';
-import AccountUtil from 'modules/account/internal/account-util';
-import AccountRepository from 'modules/account/internal/store/account-repository';
+} from 'backend/modules/account';
+import AccountUtil from 'backend/modules/account/internal/account-util';
+import AccountRepository from 'backend/modules/account/internal/store/account-repository';
 import {
   PasswordResetTokenNotFoundError,
   AuthenticationService,
-} from 'modules/authentication';
-import PasswordResetTokenUtil from 'modules/authentication/internals/password-reset-token/password-reset-token-util';
-import PasswordResetTokenRepository from 'modules/authentication/internals/password-reset-token/store/password-reset-token-repository';
-import { EmailService } from 'modules/communication';
+} from 'backend/modules/authentication';
+import PasswordResetTokenUtil from 'backend/modules/authentication/internals/password-reset-token/password-reset-token-util';
+import PasswordResetTokenRepository from 'backend/modules/authentication/internals/password-reset-token/store/password-reset-token-repository';
+import { EmailService } from 'backend/modules/communication';
+import chai, { expect } from 'chai';
 import sinon from 'sinon';
 
 import { createAccount } from '../../helpers/account';

@@ -1,7 +1,7 @@
 import mail from '@sendgrid/mail';
+import EmailService from 'backend/modules/communication/email-service';
+import { ConfigService } from 'backend/modules/config';
 import { expect } from 'chai';
-import EmailService from 'modules/communication/email-service';
-import { ConfigService } from 'modules/config';
 import sinon from 'sinon';
 
 describe('EmailService', () => {

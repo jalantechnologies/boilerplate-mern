@@ -1,4 +1,4 @@
-import Logger from 'modules/logger/internals/types';
+import Logger from 'backend/modules/logger/internals/types';
 import * as winston from 'winston';
 
 export default class WinstonLogger implements Logger {

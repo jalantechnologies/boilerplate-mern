@@ -1,12 +1,12 @@
 import faker from '@faker-js/faker';
-import chai, { expect } from 'chai';
 import {
   AccountNotFoundError,
   AccountWithUserNameExistsError,
   PhoneNumber,
-} from 'modules/account';
-import AccountWriter from 'modules/account/internal/account-writer';
-import { SMSService } from 'modules/communication';
+} from 'backend/modules/account';
+import AccountWriter from 'backend/modules/account/internal/account-writer';
+import { SMSService } from 'backend/modules/communication';
+import chai, { expect } from 'chai';
 import sinon from 'sinon';
 
 import { app } from '../../helpers/app';

@@ -1,6 +1,6 @@
+import SMSService from 'backend/modules/communication/sms-service';
+import { ConfigService } from 'backend/modules/config';
 import { expect } from 'chai';
-import SMSService from 'modules/communication/sms-service';
-import { ConfigService } from 'modules/config';
 import sinon from 'sinon';
 
 describe('SMSService', () => {

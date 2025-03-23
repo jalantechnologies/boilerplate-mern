@@ -1,4 +1,4 @@
-import { OTPStatus } from 'modules/authentication/types';
+import { OTPStatus } from 'backend/modules/authentication/types';
 import { Schema, Types } from 'mongoose';
 
 interface PhoneNumber {

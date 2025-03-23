@@ -2,8 +2,8 @@ import {
   SendEmailParams,
   ValidationError,
   ValidationFailure,
-} from 'modules/communication';
-import { emailRegex } from 'modules/communication/internals/constants';
+} from 'backend/modules/communication';
+import { emailRegex } from 'backend/modules/communication/internals/constants';
 
 export default class EmailParams {
   public static validate(params: SendEmailParams): void {

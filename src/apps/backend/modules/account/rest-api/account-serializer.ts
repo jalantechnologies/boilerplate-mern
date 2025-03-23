@@ -1,4 +1,4 @@
-import { Account } from 'modules/account';
+import { Account } from 'backend/modules/account';
 
 export const serializeAccountAsJSON = (account: Account): unknown => ({
   id: account.id,

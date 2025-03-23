@@ -1,5 +1,5 @@
-import { ApplicationRouter } from 'modules/application';
-import { AuthenticationController } from 'modules/authentication/rest-api/authentication-controller';
+import { ApplicationRouter } from 'backend/modules/application';
+import { AuthenticationController } from 'backend/modules/authentication/rest-api/authentication-controller';
 
 export default class AuthenticationRouter extends ApplicationRouter {
   configure(): void {

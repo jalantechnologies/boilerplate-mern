@@ -1,8 +1,10 @@
-import { ConfigService } from 'modules/config';
-import { UnknownTransportError } from 'modules/logger';
-import ConsoleLogger from 'modules/logger/internals/console-logger';
-import DatadogLogger from 'modules/logger/internals/datadog-logger';
-import Logger, { LoggerTransport } from 'modules/logger/internals/types';
+import { ConfigService } from 'backend/modules/config';
+import { UnknownTransportError } from 'backend/modules/logger';
+import ConsoleLogger from 'backend/modules/logger/internals/console-logger';
+import DatadogLogger from 'backend/modules/logger/internals/datadog-logger';
+import Logger, {
+  LoggerTransport,
+} from 'backend/modules/logger/internals/types';
 
 export default class Loggers {
   private static loggers = this.getLoggers();

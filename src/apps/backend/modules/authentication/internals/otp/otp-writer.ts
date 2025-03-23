@@ -1,12 +1,12 @@
-import { PhoneNumber } from 'modules/account';
+import { PhoneNumber } from 'backend/modules/account';
 import {
   OTP,
   OTPExpiredError,
   OTPIncorrectError,
   OTPStatus,
-} from 'modules/authentication';
-import OTPRepository from 'modules/authentication/internals/otp//store/otp-repository';
-import OTPUtil from 'modules/authentication/internals/otp/otp-util';
+} from 'backend/modules/authentication';
+import OTPRepository from 'backend/modules/authentication/internals/otp//store/otp-repository';
+import OTPUtil from 'backend/modules/authentication/internals/otp/otp-util';
 
 export default class OTPWriter {
   public static async expirePreviousOTPAndCreateNewOTP(

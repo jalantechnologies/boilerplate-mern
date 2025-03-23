@@ -1,4 +1,4 @@
-import { MarkdownDocumentation } from 'modules/documentation';
+import { MarkdownDocumentation } from 'backend/modules/documentation';
 
 export const serializeDocumentationAsJSON = (
   documentation: MarkdownDocumentation

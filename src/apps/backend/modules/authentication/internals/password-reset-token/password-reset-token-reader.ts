@@ -1,9 +1,9 @@
 import {
   PasswordResetToken,
   PasswordResetTokenNotFoundError,
-} from 'modules/authentication';
-import PasswordResetTokenUtil from 'modules/authentication/internals/password-reset-token/password-reset-token-util';
-import PasswordResetTokenRepository from 'modules/authentication/internals/password-reset-token/store/password-reset-token-repository';
+} from 'backend/modules/authentication';
+import PasswordResetTokenUtil from 'backend/modules/authentication/internals/password-reset-token/password-reset-token-util';
+import PasswordResetTokenRepository from 'backend/modules/authentication/internals/password-reset-token/store/password-reset-token-repository';
 
 export default class PasswordResetTokenReader {
   public static async getPasswordResetTokenByAccountId(

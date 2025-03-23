@@ -1,7 +1,7 @@
-import { SendSMSParams } from 'modules/communication';
-import TwilioService from 'modules/communication/internals/twilio-service';
-import { ConfigService } from 'modules/config';
-import { Logger } from 'modules/logger';
+import { SendSMSParams } from 'backend/modules/communication';
+import TwilioService from 'backend/modules/communication/internals/twilio-service';
+import { ConfigService } from 'backend/modules/config';
+import { Logger } from 'backend/modules/logger';
 
 export default class SMSService {
   public static async sendSMS(params: SendSMSParams): Promise<void> {

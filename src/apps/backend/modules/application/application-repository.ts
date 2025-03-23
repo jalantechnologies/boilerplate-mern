@@ -1,5 +1,5 @@
-import { ConfigService } from 'modules/config';
-import { Logger } from 'modules/logger';
+import { ConfigService } from 'backend/modules/config';
+import { Logger } from 'backend/modules/logger';
 import mongoose from 'mongoose';
 
 const getDatabaseConnection = (): mongoose.Connection => {

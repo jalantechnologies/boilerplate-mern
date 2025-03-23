@@ -1,5 +1,5 @@
-import { ApplicationError, HttpStatusCodes } from 'modules/application';
-import { HttpRoute } from 'modules/documentation/list-routes';
+import { ApplicationError, HttpStatusCodes } from 'backend/modules/application';
+import { HttpRoute } from 'backend/modules/documentation/list-routes';
 
 export type HttpRouteWithRootFolderPath = {
   rootFolderPath: string;

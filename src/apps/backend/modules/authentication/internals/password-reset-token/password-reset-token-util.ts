@@ -1,9 +1,9 @@
 import crypto from 'crypto';
 
+import { PasswordResetToken } from 'backend/modules/authentication';
+import { PasswordResetTokenDB } from 'backend/modules/authentication/internals/password-reset-token/store/password-reset-token-db';
+import { ConfigService } from 'backend/modules/config';
 import * as bcrypt from 'bcrypt';
-import { PasswordResetToken } from 'modules/authentication';
-import { PasswordResetTokenDB } from 'modules/authentication/internals/password-reset-token/store/password-reset-token-db';
-import { ConfigService } from 'modules/config';
 import moment, { Moment } from 'moment';
 
 export default class PasswordResetTokenUtil {

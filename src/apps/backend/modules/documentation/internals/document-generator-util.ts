@@ -5,8 +5,8 @@ import {
   ErrorReadingFile,
   GetRoutesWithControllerAndSerializerDetailsResponse,
   HttpRouteWithControllerAndSerializerDetails,
-} from 'modules/documentation';
-import { HttpRoute } from 'modules/documentation/list-routes';
+} from 'backend/modules/documentation';
+import { HttpRoute } from 'backend/modules/documentation/list-routes';
 
 export default class DocumentGeneratorUtil {
   public static controllerFileSuffix = '-controller.js';

@@ -1,10 +1,10 @@
-import { PhoneNumber } from 'modules/account';
+import { PhoneNumber } from 'backend/modules/account';
 import {
   applicationController,
   Request,
   Response,
   HttpStatusCodes,
-} from 'modules/application';
+} from 'backend/modules/application';
 import {
   AccessToken,
   AuthenticationService,
@@ -12,11 +12,11 @@ import {
   EmailBasedAuthAccessTokenRequestParams,
   OTPBasedAuthAccessTokenRequestParams,
   CreatePasswordResetTokenParams,
-} from 'modules/authentication';
+} from 'backend/modules/authentication';
 import {
   serializeAccessTokenAsJSON,
   serializePasswordResetTokenAsJSON,
-} from 'modules/authentication/rest-api/authentication-serializer';
+} from 'backend/modules/authentication/rest-api/authentication-serializer';
 
 export class AuthenticationController {
   createAccessToken = applicationController(

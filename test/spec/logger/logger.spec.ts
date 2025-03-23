@@ -1,4 +1,4 @@
-import Logger from 'modules/logger/logger';
+import Logger from 'backend/modules/logger/logger';
 import sinon from 'sinon';
 
 describe('Logger', () => {

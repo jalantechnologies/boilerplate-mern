@@ -1,5 +1,5 @@
-import { ConfigService } from 'modules/config';
-import WinstonLogger from 'modules/logger/internals/winston-logger';
+import { ConfigService } from 'backend/modules/config';
+import WinstonLogger from 'backend/modules/logger/internals/winston-logger';
 import * as winston from 'winston';
 
 export default class DatadogLogger extends WinstonLogger {

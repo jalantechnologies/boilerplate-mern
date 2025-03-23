@@ -3,7 +3,7 @@ import {
   HttpStatusCodes,
   Request,
   Response,
-} from 'modules/application';
+} from 'backend/modules/application';
 import {
   Task,
   TaskService,
@@ -12,7 +12,7 @@ import {
   DeleteTaskParams,
   GetTaskParams,
   UpdateTaskParams,
-} from 'modules/task';
+} from 'backend/modules/task';
 
 import { serializeTaskAsJSON } from './task-serializer';
 

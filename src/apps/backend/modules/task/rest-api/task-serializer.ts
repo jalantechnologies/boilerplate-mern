@@ -1,4 +1,4 @@
-import { Task } from 'modules/task';
+import { Task } from 'backend/modules/task';
 
 export const serializeTaskAsJSON = (task: Task): unknown => ({
   id: task.id,

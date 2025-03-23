@@ -2,20 +2,20 @@ import 'module-alias/register';
 import { Server } from 'http';
 import * as path from 'path';
 
-import cors from 'cors';
-import express, { Application } from 'express';
-import expressWinston from 'express-winston';
-import { AccountServer } from 'modules/account';
-import { ApplicationServer } from 'modules/application';
-import { AuthenticationServer } from 'modules/authentication';
-import { ConfigService } from 'modules/config';
+import { AccountServer } from 'backend/modules/account';
+import { ApplicationServer } from 'backend/modules/application';
+import { AuthenticationServer } from 'backend/modules/authentication';
+import { ConfigService } from 'backend/modules/config';
 import {
   DocumentationServer,
   DocumentationService,
-} from 'modules/documentation';
-import { expressListRoutes } from 'modules/documentation/list-routes';
-import { Logger, CustomLoggerTransport } from 'modules/logger';
-import { TaskServer } from 'modules/task';
+} from 'backend/modules/documentation';
+import { expressListRoutes } from 'backend/modules/documentation/list-routes';
+import { Logger, CustomLoggerTransport } from 'backend/modules/logger';
+import { TaskServer } from 'backend/modules/task';
+import cors from 'cors';
+import express, { Application } from 'express';
+import expressWinston from 'express-winston';
 
 interface APIMicroserviceService {
   rootFolderPath: string;

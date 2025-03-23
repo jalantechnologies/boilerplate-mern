@@ -10,13 +10,13 @@ import {
   ResetPasswordParams,
   UpdateAccountDetailsParams,
   UpdateAccountParams,
-} from 'modules/account';
+} from 'backend/modules/account';
 import {
   applicationController,
   HttpStatusCodes,
   Request,
   Response,
-} from 'modules/application';
+} from 'backend/modules/application';
 
 import { serializeAccountAsJSON } from './account-serializer';
 
