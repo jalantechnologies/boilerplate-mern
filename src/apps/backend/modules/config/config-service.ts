@@ -1,7 +1,6 @@
+import { ConfigMissingError } from 'backend/modules/config';
 import config from 'config';
 import _ from 'lodash';
-
-import { ConfigMissingError } from './types';
 
 export default class ConfigService {
   static getValue<T = unknown>(key: string): T {

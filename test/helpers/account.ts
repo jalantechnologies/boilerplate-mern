@@ -1,14 +1,13 @@
 import faker from '@faker-js/faker';
-
 import {
   Account,
   CreateAccountParams,
   AccountService,
-} from '../../src/apps/backend/modules/account';
+} from 'backend/modules/account';
 import {
   AuthenticationService,
   AccessToken,
-} from '../../src/apps/backend/modules/authentication';
+} from 'backend/modules/authentication';
 
 export const createAccount = async (params?: {
   accountParams?: Partial<CreateAccountParams>;

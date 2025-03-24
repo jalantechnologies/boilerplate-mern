@@ -1,8 +1,7 @@
 import { faker } from '@faker-js/faker';
-
-import { CreateAccountParamsByUsernameAndPassword } from '../../src/apps/backend/modules/account';
-import AccountService from '../../src/apps/backend/modules/account/account-service';
-import AccountRepository from '../../src/apps/backend/modules/account/internal/store/account-repository';
+import { CreateAccountParamsByUsernameAndPassword } from 'backend/modules/account';
+import AccountService from 'backend/modules/account/account-service';
+import AccountRepository from 'backend/modules/account/internal/store/account-repository';
 
 export default class AccountsFixture {
   public static async clear(): Promise<void> {

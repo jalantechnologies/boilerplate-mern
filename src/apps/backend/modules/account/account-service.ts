@@ -1,8 +1,3 @@
-import { OTPService } from '../otp';
-import { PasswordResetTokenService } from '../password-reset-token';
-
-import AccountReader from './internal/account-reader';
-import AccountWriter from './internal/account-writer';
 import {
   Account,
   ResetPasswordParams,
@@ -10,7 +5,10 @@ import {
   PhoneNumber,
   UpdateAccountDetailsParams,
   DeleteAccountParams,
-} from './types';
+} from 'backend/modules/account';
+import AccountReader from 'backend/modules/account/internal/account-reader';
+import AccountWriter from 'backend/modules/account/internal/account-writer';
+import { AuthenticationService } from 'backend/modules/authentication';
 
 export default class AccountService {
   public static async createAccountByUsernameAndPassword(
@@ -37,7 +35,7 @@ export default class AccountService {
       account = await AccountWriter.createAccountByPhoneNumber(phoneNumber);
     }
 
-    await OTPService.createOTP(phoneNumber);
+    await AuthenticationService.createOTP(phoneNumber);
 
     return account;
   }
@@ -72,17 +70,14 @@ export default class AccountService {
     await AccountReader.getAccountById(accountId);
 
     const passwordResetToken =
-      await PasswordResetTokenService.verifyPasswordResetToken(
-        accountId,
-        token
-      );
+      await AuthenticationService.verifyPasswordResetToken(accountId, token);
 
     const updatedAccount = await AccountWriter.updatePasswordByAccountId(
       accountId,
       newPassword
     );
 
-    await PasswordResetTokenService.setPasswordResetTokenAsUsedById(
+    await AuthenticationService.setPasswordResetTokenAsUsedById(
       passwordResetToken.id
     );
 

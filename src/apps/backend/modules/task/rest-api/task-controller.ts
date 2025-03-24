@@ -3,16 +3,16 @@ import {
   HttpStatusCodes,
   Request,
   Response,
-} from '../../application';
-import TaskService from '../task-service';
+} from 'backend/modules/application';
 import {
   Task,
+  TaskService,
   CreateTaskParams,
   GetAllTaskParams,
   DeleteTaskParams,
   GetTaskParams,
   UpdateTaskParams,
-} from '../types';
+} from 'backend/modules/task';
 
 import { serializeTaskAsJSON } from './task-serializer';
 

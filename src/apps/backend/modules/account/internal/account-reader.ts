@@ -6,10 +6,9 @@ import {
   InvalidCredentialsError,
   Nullable,
   PhoneNumber,
-} from '../types';
-
-import AccountUtil from './account-util';
-import AccountRepository from './store/account-repository';
+} from 'backend/modules/account';
+import AccountUtil from 'backend/modules/account/internal/account-util';
+import AccountRepository from 'backend/modules/account/internal/store/account-repository';
 
 export default class AccountReader {
   public static async getAccountByUsername(username: string): Promise<Account> {

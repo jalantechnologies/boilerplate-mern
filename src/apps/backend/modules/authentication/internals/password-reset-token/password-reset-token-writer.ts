@@ -1,7 +1,6 @@
-import { PasswordResetToken } from '../types';
-
-import PasswordResetTokenUtil from './password-reset-token-util';
-import PasswordResetTokenRepository from './store/password-reset-token-repository';
+import { PasswordResetToken } from 'backend/modules/authentication';
+import PasswordResetTokenUtil from 'backend/modules/authentication/internals/password-reset-token/password-reset-token-util';
+import PasswordResetTokenRepository from 'backend/modules/authentication/internals/password-reset-token/store/password-reset-token-repository';
 
 export default class PasswordResetTokenWriter {
   public static async createPasswordResetToken(

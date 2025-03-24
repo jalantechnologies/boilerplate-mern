@@ -1,6 +1,5 @@
-import { ApplicationServer } from '../../application';
-
-import AuthenticationRouter from './authentication-router';
+import { ApplicationServer } from 'backend/modules/application';
+import AuthenticationRouter from 'backend/modules/authentication/rest-api/authentication-router';
 
 export default class AuthenticationServer extends ApplicationServer {
   configure(): void {

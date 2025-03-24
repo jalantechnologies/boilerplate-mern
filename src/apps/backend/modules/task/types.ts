@@ -1,4 +1,4 @@
-import { ApplicationError, HttpStatusCodes } from '../application';
+import { ApplicationError, HttpStatusCodes } from 'backend/modules/application';
 
 export class Task {
   id: string;

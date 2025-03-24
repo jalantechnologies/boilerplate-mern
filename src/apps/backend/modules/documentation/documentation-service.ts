@@ -1,13 +1,15 @@
 import fs from 'fs';
 import * as path from 'path';
 
-import { ConfigService } from '../config';
-import { Logger } from '../logger';
-import { OpenAIService } from '../openai';
-
-import { DOCUMENTATION_GENERATION_PROMPT } from './internals/constants';
-import DocumentGeneratorUtil from './internals/document-generator-util';
-import { HttpRouteWithRootFolderPath, MarkdownDocumentation } from './types';
+import { ConfigService } from 'backend/modules/config';
+import {
+  HttpRouteWithRootFolderPath,
+  MarkdownDocumentation,
+} from 'backend/modules/documentation';
+import { DOCUMENTATION_GENERATION_PROMPT } from 'backend/modules/documentation/internals/constants';
+import DocumentGeneratorUtil from 'backend/modules/documentation/internals/document-generator-util';
+import { Logger } from 'backend/modules/logger';
+import { OpenAIService } from 'backend/modules/openai';
 
 export default class DocumentationService {
   public static expressRoutesList: HttpRouteWithRootFolderPath[] = [];

@@ -1,7 +1,6 @@
-import { ApplicationRouter } from '../../application';
-import { accessAuthMiddleware } from '../../authentication';
-
-import { AccountController } from './account-controller';
+import { AccountController } from 'backend/modules/account/rest-api/account-controller';
+import { ApplicationRouter } from 'backend/modules/application';
+import { accessAuthMiddleware } from 'backend/modules/authentication';
 
 export default class AccountRouter extends ApplicationRouter {
   configure(): void {

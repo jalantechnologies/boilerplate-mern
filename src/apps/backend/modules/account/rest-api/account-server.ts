@@ -1,6 +1,5 @@
-import { ApplicationServer } from '../../application';
-
-import AccountRouter from './account-router';
+import AccountRouter from 'backend/modules/account/rest-api/account-router';
+import { ApplicationServer } from 'backend/modules/application';
 
 export default class AccountServer extends ApplicationServer {
   configure(): void {

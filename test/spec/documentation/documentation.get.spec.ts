@@ -1,13 +1,13 @@
-import chai, { expect } from 'chai';
-import sinon from 'sinon';
-
-import { ConfigService } from '../../../src/apps/backend/modules/config';
+import { ConfigService } from 'backend/modules/config';
 import {
   DocumentationService,
   ErrorReadingFile,
-} from '../../../src/apps/backend/modules/documentation';
-import DocumentGeneratorUtil from '../../../src/apps/backend/modules/documentation/internals/document-generator-util';
-import { OpenAIService } from '../../../src/apps/backend/modules/openai';
+} from 'backend/modules/documentation';
+import DocumentGeneratorUtil from 'backend/modules/documentation/internals/document-generator-util';
+import { OpenAIService } from 'backend/modules/openai';
+import chai, { expect } from 'chai';
+import sinon from 'sinon';
+
 import { app } from '../../helpers/app';
 
 describe('GET /api/get-documentation', () => {

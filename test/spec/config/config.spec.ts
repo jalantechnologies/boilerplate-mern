@@ -1,6 +1,5 @@
+import { ConfigService } from 'backend/modules/config';
 import { assert } from 'chai';
-
-import { ConfigService } from '../../../src/apps/backend/modules/config';
 
 describe('ConfigService', () => {
   describe('getValue', () => {

@@ -1,7 +1,6 @@
+import { ConfigService } from 'backend/modules/config';
+import { Logger } from 'backend/modules/logger';
 import mongoose from 'mongoose';
-
-import { ConfigService } from '../config';
-import { Logger } from '../logger';
 
 const getDatabaseConnection = (): mongoose.Connection => {
   const mongoConnCaching: boolean = ConfigService.getValue(

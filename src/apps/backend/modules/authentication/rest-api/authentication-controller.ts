@@ -1,14 +1,22 @@
-import { PhoneNumber } from '../../account/types';
-import { applicationController, Request, Response } from '../../application';
-import AuthenticationService from '../authentication-service';
+import { PhoneNumber } from 'backend/modules/account';
+import {
+  applicationController,
+  Request,
+  Response,
+  HttpStatusCodes,
+} from 'backend/modules/application';
 import {
   AccessToken,
+  AuthenticationService,
   CreateAccessTokenParams,
   EmailBasedAuthAccessTokenRequestParams,
   OTPBasedAuthAccessTokenRequestParams,
-} from '../types';
-
-import { serializeAccessTokenAsJSON } from './authentication-serializer';
+  CreatePasswordResetTokenParams,
+} from 'backend/modules/authentication';
+import {
+  serializeAccessTokenAsJSON,
+  serializePasswordResetTokenAsJSON,
+} from 'backend/modules/authentication/rest-api/authentication-serializer';
 
 export class AuthenticationController {
   createAccessToken = applicationController(
@@ -36,6 +44,20 @@ export class AuthenticationController {
       const accessTokenJSON = serializeAccessTokenAsJSON(accessToken);
 
       res.send(accessTokenJSON);
+    }
+  );
+
+  createPasswordResetToken = applicationController(
+    async (req: Request<CreatePasswordResetTokenParams>, res: Response) => {
+      const passwordResetToken =
+        await AuthenticationService.createPasswordResetToken({
+          username: req.body.username,
+        });
+
+      const passwordResetTokenJSON =
+        serializePasswordResetTokenAsJSON(passwordResetToken);
+
+      res.status(HttpStatusCodes.CREATED).send(passwordResetTokenJSON);
     }
   );
 }

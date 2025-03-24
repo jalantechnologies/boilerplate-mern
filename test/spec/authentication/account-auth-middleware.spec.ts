@@ -1,9 +1,5 @@
 import faker from '@faker-js/faker';
-import { assert } from 'chai';
-import { Request } from 'express';
-import sinon from 'sinon';
-
-import { Account } from '../../../src/apps/backend/modules/account';
+import { Account } from 'backend/modules/account';
 import {
   AccessToken,
   AccessTokenExpiredError,
@@ -12,8 +8,12 @@ import {
   InvalidAuthorizationHeader,
   UnAuthorizedAccessError,
   accessAuthMiddleware,
-} from '../../../src/apps/backend/modules/authentication';
-import ConfigService from '../../../src/apps/backend/modules/config/config-service';
+} from 'backend/modules/authentication';
+import ConfigService from 'backend/modules/config/config-service';
+import { assert } from 'chai';
+import { Request } from 'express';
+import sinon from 'sinon';
+
 import { createAccount } from '../../helpers/account';
 
 describe('accessAuthMiddleware', () => {
@@ -49,6 +49,7 @@ describe('accessAuthMiddleware', () => {
     );
 
     sinon.assert.calledOnce(controller);
+    assert.isTrue(controller.calledOnce);
   });
 
   it('should throw error if provided accountId different', () => {

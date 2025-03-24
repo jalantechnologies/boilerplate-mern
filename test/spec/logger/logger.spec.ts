@@ -1,6 +1,5 @@
+import Logger from 'backend/modules/logger/logger';
 import sinon from 'sinon';
-
-import Logger from '../../../src/apps/backend/modules/logger/logger';
 
 describe('Logger', () => {
   it('should be able to register console as a logger', () => {

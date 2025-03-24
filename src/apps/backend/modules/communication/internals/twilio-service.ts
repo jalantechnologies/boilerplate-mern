@@ -1,9 +1,7 @@
+import { SendSMSParams, ServiceError } from 'backend/modules/communication';
+import SMSParams from 'backend/modules/communication/internals/twilio-params';
+import { ConfigService } from 'backend/modules/config';
 import { Twilio } from 'twilio';
-
-import { ConfigService } from '../../config';
-import { SendSMSParams, ServiceError } from '../types';
-
-import SMSParams from './twilio-params';
 
 export default class TwilioService {
   private static client: Twilio;
