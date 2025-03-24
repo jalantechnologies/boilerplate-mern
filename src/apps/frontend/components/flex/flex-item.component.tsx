@@ -29,7 +29,6 @@ interface FlexItemProps {
     | 10
     | 11
     | 12;
-  className?: string;
 }
 
 const alignSelfClasses = {
@@ -84,15 +83,13 @@ const FlexItem: React.FC<PropsWithChildren<FlexItemProps>> = ({
   flex,
   justifySelf,
   order,
-  className,
 }) => (
   <div
     className={clsx(
       alignSelf && alignSelfClasses[alignSelf],
       flex && flexClasses[flex],
       justifySelf && justifySelfClasses[justifySelf],
-      order && orderClasses[order],
-      className
+      order && orderClasses[order]
     )}
   >
     {children}

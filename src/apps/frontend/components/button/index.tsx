@@ -14,7 +14,6 @@ interface ButtonProps {
   size?: ButtonSize;
   startEnhancer?: React.ReactElement | string;
   type?: ButtonType;
-  className?: string;
 }
 
 const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
@@ -27,7 +26,6 @@ const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
   size = ButtonSize.DEFAULT,
   startEnhancer,
   type = ButtonType.BUTTON,
-  className,
 }) => {
   const baseStyles =
     'flex items-center gap-2 rounded-md transition w-full font-medium';
@@ -69,12 +67,7 @@ const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
 
   return (
     <button
-      className={clsx(
-        baseStyles,
-        kindStyles[kind],
-        sizeStyles[size],
-        className
-      )}
+      className={clsx(baseStyles, kindStyles[kind], sizeStyles[size])}
       disabled={disabled || isLoading}
       type={type}
       onClick={onClick}
