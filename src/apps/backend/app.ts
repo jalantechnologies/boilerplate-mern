@@ -9,8 +9,8 @@ import { ConfigService } from 'backend/modules/config';
 import {
   DocumentationServer,
   DocumentationService,
+  expressListRoutes,
 } from 'backend/modules/documentation';
-import { expressListRoutes } from 'backend/modules/documentation/list-routes';
 import { Logger, CustomLoggerTransport } from 'backend/modules/logger';
 import { TaskServer } from 'backend/modules/task';
 import cors from 'cors';

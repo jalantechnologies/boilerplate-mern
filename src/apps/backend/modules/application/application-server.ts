@@ -1,5 +1,4 @@
-import { HttpStatusCodes } from 'backend/modules/application';
-import { ApplicationError } from 'backend/modules/application/application-error';
+import { HttpStatusCodes, ApplicationError } from 'backend/modules/application';
 import { Logger } from 'backend/modules/logger';
 import bodyParser from 'body-parser';
 import express, { Application, NextFunction, Request, Response } from 'express';
