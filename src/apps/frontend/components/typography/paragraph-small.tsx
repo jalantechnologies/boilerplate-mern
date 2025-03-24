@@ -1,11 +1,7 @@
-import React, { PropsWithChildren, ReactNode } from 'react';
+import React, { PropsWithChildren } from 'react';
 
-interface ParagraphSmallProps {
-  children: ReactNode;
-}
-
-const ParagraphSmall: React.FC<PropsWithChildren<ParagraphSmallProps>> = ({
-  children,
-}) => <p className="text-base font-medium">{children}</p>;
+const ParagraphSmall: React.FC<PropsWithChildren> = ({ children }) => (
+  <p className="text-base font-medium">{children}</p>
+);
 
 export default ParagraphSmall;

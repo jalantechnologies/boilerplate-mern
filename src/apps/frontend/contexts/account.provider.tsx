@@ -1,9 +1,4 @@
-import React, {
-  createContext,
-  PropsWithChildren,
-  ReactNode,
-  useContext,
-} from 'react';
+import React, { createContext, PropsWithChildren, useContext } from 'react';
 
 import { AccountService } from '../services';
 import { Account, ApiResponse, AsyncError } from '../types';
@@ -34,13 +29,7 @@ const getAccountDetailsFn = async (): Promise<ApiResponse<Account>> =>
 const deleteAccountFn = async (): Promise<ApiResponse<void>> =>
   accountService.deleteAccount();
 
-interface AccountProviderProps {
-  children: ReactNode;
-}
-
-export const AccountProvider: React.FC<
-  PropsWithChildren<AccountProviderProps>
-> = ({ children }) => {
+export const AccountProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const {
     isLoading: isAccountLoading,
     error: accountError,

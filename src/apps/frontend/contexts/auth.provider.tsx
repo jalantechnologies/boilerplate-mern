@@ -1,9 +1,4 @@
-import React, {
-  createContext,
-  PropsWithChildren,
-  useContext,
-  ReactNode,
-} from 'react';
+import React, { createContext, PropsWithChildren, useContext } from 'react';
 
 import { AuthService } from '../services';
 import { AccessToken, ApiResponse, AsyncError, PhoneNumber } from '../types';
@@ -91,13 +86,7 @@ const verifyOTPFn = async (
   return result;
 };
 
-interface AuthProviderProps {
-  children: ReactNode;
-}
-
-export const AuthProvider: React.FC<PropsWithChildren<AuthProviderProps>> = ({
-  children,
-}) => {
+export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const {
     isLoading: isLoginLoading,
     error: loginError,

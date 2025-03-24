@@ -1,9 +1,4 @@
-import React, {
-  createContext,
-  PropsWithChildren,
-  ReactNode,
-  useContext,
-} from 'react';
+import React, { createContext, PropsWithChildren, useContext } from 'react';
 
 import { DocumentationService } from '../services';
 import { ApiResponse, AsyncError } from '../types';
@@ -31,13 +26,9 @@ const getDocumentationFn = async (): Promise<
   ApiResponse<Nullable<MarkdownDocumentation>>
 > => documentationService.getDocumentation();
 
-interface DocumentationProviderProps {
-  children: ReactNode;
-}
-
-export const DocumentationProvider: React.FC<
-  PropsWithChildren<DocumentationProviderProps>
-> = ({ children }) => {
+export const DocumentationProvider: React.FC<PropsWithChildren> = ({
+  children,
+}) => {
   const {
     asyncCallback: getDocumentation,
     error: documentationError,

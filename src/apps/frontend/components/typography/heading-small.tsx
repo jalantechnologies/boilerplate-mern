@@ -1,11 +1,7 @@
-import React, { PropsWithChildren, ReactNode } from 'react';
+import React, { PropsWithChildren } from 'react';
 
-interface HeadingSmallProps {
-  children: ReactNode;
-}
-
-const HeadingSmall: React.FC<PropsWithChildren<HeadingSmallProps>> = ({
-  children,
-}) => <h3 className="text-xl font-semibold text-black">{children}</h3>;
+const HeadingSmall: React.FC<PropsWithChildren> = ({ children }) => (
+  <h3 className="text-xl font-semibold text-black">{children}</h3>
+);
 
 export default HeadingSmall;

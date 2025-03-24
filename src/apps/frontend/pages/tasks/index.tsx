@@ -18,7 +18,7 @@ const Tasks: React.FC = () => {
 
   useEffect(() => {
     getTasks().catch((error) => onError(error as AsyncError));
-  }, [getTasks]);
+  }, []);
 
   const handleDeleteTask = (taskId: string) => {
     deleteTask(taskId)

@@ -1,10 +1,6 @@
-import React, { PropsWithChildren, ReactNode } from 'react';
+import React, { PropsWithChildren } from 'react';
 
-interface H2Props {
-  children: ReactNode;
-}
-
-const H2: React.FC<PropsWithChildren<H2Props>> = ({ children }) => (
+const H2: React.FC<PropsWithChildren> = ({ children }) => (
   <h2 className="text-2xl font-bold text-black sm:text-title-xl2">
     {children}
   </h2>
