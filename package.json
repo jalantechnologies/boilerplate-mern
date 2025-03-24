@@ -24,11 +24,13 @@
     "serve:assets": "cpx \"src/assets/**/*.*\" dist/assets --watch",
     "serve:backend": "tsc-watch -p src/apps/backend/tsconfig.json --outDir dist --onsuccess \"node dist/bin/server.js\" --noClear",
     "serve:frontend": "webpack serve --output-path dist/public --config src/apps/frontend/webpack.dev.js --hot --progress",
-    "cy:open": "cypress open"
+    "cy:open": "cypress open",
+    "run:lift-ai-poc-script": "ts-node src/apps/backend/modules/lift-ai-poc"
   },
   "author": "jalantechnologies",
   "license": "MIT",
   "dependencies": {
+    "@google-cloud/bigquery": "^7.9.3",
     "@sendgrid/mail": "^7.6.1",
     "autoprefixer": "^10.4.13",
     "axios": "^1.0.0",
