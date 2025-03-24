@@ -49,6 +49,7 @@ describe('accessAuthMiddleware', () => {
     );
 
     sinon.assert.calledOnce(controller);
+    assert.isTrue(controller.calledOnce);
   });
 
   it('should throw error if provided accountId different', () => {
