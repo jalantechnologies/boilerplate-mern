@@ -1,9 +1,11 @@
-import { OTP_LENGTH, OTP } from 'backend/modules/authentication';
+import { OTP } from 'backend/modules/authentication';
 import { OTPDB } from 'backend/modules/authentication/internals/otp/store/otp-db';
 import { ConfigService } from 'backend/modules/config';
 import _ from 'lodash';
 
 export default class OTPUtil {
+  private static OTP_LENGTH = 4;
+
   public static convertOTPDBToOTP(otpDb: OTPDB): OTP {
     const otp = new OTP();
     otp.id = otpDb._id.toString();
@@ -28,7 +30,7 @@ export default class OTPUtil {
     ) {
       return ConfigService.getValue<string>('otp.defaultOTP');
     }
-    return OTPUtil.generateOTP(OTP_LENGTH);
+    return OTPUtil.generateOTP(OTPUtil.OTP_LENGTH);
   }
 
   public static isDefaultPhoneNumber(phoneNumber: string): boolean {
