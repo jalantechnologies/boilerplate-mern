@@ -49,7 +49,7 @@ const usePhoneLoginForm = ({
         .getNationalNumber()
         .toString();
       const encodedCountryCode = encodeURIComponent(values.countryCode);
-      const otpPageUrl = `${routes.OTP}&country_code=${encodedCountryCode}&phone_number=${formattedPhoneNumber}`;
+      const otpPageUrl = `${routes.VERIFY_OTP}?&country_code=${encodedCountryCode}&phone_number=${formattedPhoneNumber}`;
 
       sendOTP(
         new PhoneNumber({

@@ -4,7 +4,7 @@ import About from './about/about.page';
 import AppLayout from './app-layout/app-layout';
 import ForgotPassword from './authentication/forgot-password';
 import Login from './authentication/login';
-import OTPPage from './authentication/otp';
+import OTPVerificationPage from './authentication/otp';
 import PhoneLogin from './authentication/phone-login';
 import ResetPassword from './authentication/reset-password';
 import Signup from './authentication/signup';
@@ -21,7 +21,7 @@ export {
   Header,
   Login,
   NotFound,
-  OTPPage,
+  OTPVerificationPage,
   PhoneLogin,
   ResetPassword,
   ProfileSettings,
