@@ -43,9 +43,7 @@ const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
     ),
     [ButtonKind.TERTIARY]: clsx(
       'flex justify-center bg-transparent text-lg text-primary active:bg-transparent',
-      disabled || isLoading
-        ? 'cursor-not-allowed text-slate-500'
-        : 'cursor-pointer'
+      disabled || isLoading ? 'cursor-not-allowed text-body' : 'cursor-pointer'
     ),
     [ButtonKind.DANGER]: clsx(
       'flex justify-center border bg-danger text-white active:bg-danger/80',

@@ -18,7 +18,7 @@ const FormControl: React.FC<PropsWithChildren<FormControlProps>> = ({
     </label>
     <div className="relative">{children}</div>
     {error && (
-      <div className="flex items-center text-xs font-medium tracking-wide text-red-500">
+      <div className="flex items-center text-xs font-medium tracking-wide text-danger">
         {error}
       </div>
     )}

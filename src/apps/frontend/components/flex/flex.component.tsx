@@ -37,7 +37,6 @@ interface FlexProps {
     | 80
     | 96;
   justifyContent?: 'start' | 'end' | 'center' | 'between' | 'around' | 'evenly';
-  className?: string;
 }
 
 const alignItemsClasses = {
@@ -108,7 +107,6 @@ const Flex: React.FC<PropsWithChildren<FlexProps>> = ({
   flexWrap,
   gap,
   justifyContent,
-  className,
 }) => (
   <div
     className={clsx(
@@ -117,8 +115,7 @@ const Flex: React.FC<PropsWithChildren<FlexProps>> = ({
       justifyContent && justifyContentClasses[justifyContent],
       alignItems && alignItemsClasses[alignItems],
       flexWrap && flexWrapClasses[flexWrap],
-      gap !== undefined && gapClasses[gap],
-      className
+      gap !== undefined && gapClasses[gap]
     )}
   >
     {children}

@@ -37,7 +37,14 @@ module.exports = {
         danger: '#D34053',
       },
       fontSize: {
+        'title-xxl': ['44px', '55px'],
+        'title-xl': ['36px', '45px'],
         'title-xl2': ['33px', '45px'],
+        'title-lg': ['28px', '35px'],
+        'title-md': ['24px', '30px'],
+        'title-md2': ['26px', '30px'],
+        'title-sm': ['20px', '26px'],
+        'title-xsm': ['18px', '24px'],
       },
       spacing: {
         4.5: '1.125rem',
@@ -50,8 +57,11 @@ module.exports = {
         52: '13rem',
         52.5: '13.125rem',
         60: '15rem',
+        72.5: '18.125rem',
+        180: '45rem',
       },
       zIndex: {
+        ...defaultTheme.zIndex,
         99999: '99999',
         9999: '9999',
         999: '999',
@@ -60,6 +70,8 @@ module.exports = {
         65: '.65',
       },
       boxShadow: {
+        default: '0px 8px 13px -3px rgba(0, 0, 0, 0.07)',
+        2: '0px 1px 4px rgba(0, 0, 0, 0.12)',
         7: '-5px 0 0 #313D4A, 5px 0 0 #313D4A',
         8: '1px 0 0 #313D4A, -1px 0 0 #313D4A, 0 1px 0 #313D4A, 0 -1px 0 #313D4A, 0 3px 13px rgb(0 0 0 / 8%)',
       },

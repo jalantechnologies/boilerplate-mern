@@ -30,8 +30,8 @@ const Input: React.FC<InputProps> = ({
   <div
     className={clsx(
       'w-full rounded-lg border bg-white p-4 outline-none focus:border-primary focus-visible:shadow-none',
-      error ? 'border-red-500' : 'border-stroke',
-      disabled ? 'cursor-not-allowed text-slate-500' : ''
+      error ? 'border-danger' : 'border-stroke',
+      disabled ? 'cursor-not-allowed text-body' : ''
     )}
   >
     <HorizontalStackLayout gap={2}>
@@ -47,7 +47,7 @@ const Input: React.FC<InputProps> = ({
           'w-full flex-1 appearance-none outline-none',
           textAlign === 'center' ? 'text-center' : '',
           textAlign === 'right' ? 'text-right' : 'text-left',
-          disabled ? 'cursor-not-allowed text-slate-500' : ''
+          disabled ? 'cursor-not-allowed text-body' : ''
         )}
         data-testid={testId}
         type={type || 'text'}
