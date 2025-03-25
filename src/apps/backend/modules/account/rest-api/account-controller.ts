@@ -11,14 +11,13 @@ import {
   UpdateAccountDetailsParams,
   UpdateAccountParams,
 } from 'backend/modules/account';
+import { serializeAccountAsJSON } from 'backend/modules/account/rest-api/account-serializer';
 import {
   applicationController,
   HttpStatusCodes,
   Request,
   Response,
 } from 'backend/modules/application';
-
-import { serializeAccountAsJSON } from './account-serializer';
 
 export class AccountController {
   createAccount = applicationController(

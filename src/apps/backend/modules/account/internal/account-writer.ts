@@ -1,7 +1,7 @@
 import { Account, PhoneNumber } from 'backend/modules/account';
-import AccountRepository from 'backend/modules/account/internal//store/account-repository';
 import AccountReader from 'backend/modules/account/internal/account-reader';
 import AccountUtil from 'backend/modules/account/internal/account-util';
+import AccountRepository from 'backend/modules/account/internal/store/account-repository';
 import { OTPRequestError } from 'backend/modules/authentication';
 import {
   PhoneUtilInstance,

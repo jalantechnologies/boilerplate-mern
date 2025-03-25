@@ -5,9 +5,9 @@ import {
   TaskNotFoundError,
   UpdateTaskParams,
 } from 'backend/modules/task';
-import TaskReader from 'backend/modules/task/internal//task-reader';
-import TaskUtil from 'backend/modules/task/internal//task-util';
 import TaskRepository from 'backend/modules/task/internal/store/task-repository';
+import TaskReader from 'backend/modules/task/internal/task-reader';
+import TaskUtil from 'backend/modules/task/internal/task-util';
 
 export default class TaskWriter {
   public static async createTask(params: CreateTaskParams): Promise<Task> {

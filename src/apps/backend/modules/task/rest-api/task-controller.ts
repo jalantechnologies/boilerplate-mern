@@ -13,8 +13,7 @@ import {
   GetTaskParams,
   UpdateTaskParams,
 } from 'backend/modules/task';
-
-import { serializeTaskAsJSON } from './task-serializer';
+import { serializeTaskAsJSON } from 'backend/modules/task/rest-api/task-serializer';
 
 export class TaskController {
   createTask = applicationController(

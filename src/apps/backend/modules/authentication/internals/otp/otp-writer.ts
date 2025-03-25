@@ -5,8 +5,8 @@ import {
   OTPIncorrectError,
   OTPStatus,
 } from 'backend/modules/authentication';
-import OTPRepository from 'backend/modules/authentication/internals/otp//store/otp-repository';
 import OTPUtil from 'backend/modules/authentication/internals/otp/otp-util';
+import OTPRepository from 'backend/modules/authentication/internals/otp/store/otp-repository';
 
 export default class OTPWriter {
   public static async expirePreviousOTPAndCreateNewOTP(
