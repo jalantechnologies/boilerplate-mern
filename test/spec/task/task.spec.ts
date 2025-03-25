@@ -1,10 +1,10 @@
+import faker from '@faker-js/faker';
+import { Account } from 'backend/modules/account';
+import { AccessToken } from 'backend/modules/authentication';
+import TaskRepository from 'backend/modules/task/internal/store/task-repository';
+import TaskService from 'backend/modules/task/task-service';
 import chai, { expect } from 'chai';
 
-import { AccessToken } from '../../../src/apps/backend/modules/access-token';
-import { Account } from '../../../src/apps/backend/modules/account';
-import { ObjectIdUtils } from '../../../src/apps/backend/modules/database';
-import TaskRepository from '../../../src/apps/backend/modules/task/internal/store/task-repository';
-import TaskService from '../../../src/apps/backend/modules/task/task-service';
 import { createAccount } from '../../helpers/account';
 import { app } from '../../helpers/app';
 
@@ -144,9 +144,10 @@ describe('Task API', () => {
     });
 
     it('should return error if requested task does not exists', async () => {
+      const taskId = faker.database.mongodbObjectId();
       const res = await chai
         .request(app)
-        .get(`/api/tasks/${ObjectIdUtils.createNew()}`)
+        .get(`/api/tasks/${taskId}`)
         .set('content-type', 'application/json')
         .set('Authorization', `Bearer ${accessToken.token}`)
         .send();

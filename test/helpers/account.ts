@@ -1,12 +1,13 @@
 import faker from '@faker-js/faker';
-
-import { AccessToken } from '../../src/apps/backend/modules/access-token';
-import AccessTokenService from '../../src/apps/backend/modules/access-token/access-token-service';
 import {
   Account,
   CreateAccountParams,
   AccountService,
-} from '../../src/apps/backend/modules/account';
+} from 'backend/modules/account';
+import {
+  AuthenticationService,
+  AccessToken,
+} from 'backend/modules/authentication';
 
 export const createAccount = async (params?: {
   accountParams?: Partial<CreateAccountParams>;
@@ -35,7 +36,7 @@ export const createAccount = async (params?: {
   );
 
   const accessToken =
-    await AccessTokenService.createAccessTokenByUsernameAndPassword(
+    await AuthenticationService.createAccessTokenByUsernameAndPassword(
       accountCreateParams.password,
       accountCreateParams.username
     );

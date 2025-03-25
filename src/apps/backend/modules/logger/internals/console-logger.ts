@@ -1,5 +1,5 @@
 /* eslint-disable no-console,class-methods-use-this */
-import Logger from './types';
+import { Logger } from 'backend/modules/logger';
 
 export default class ConsoleLogger implements Logger {
   public info(message: string, ...args: unknown[]): void {

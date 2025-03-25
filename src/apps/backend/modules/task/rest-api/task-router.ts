@@ -1,7 +1,6 @@
-import { accessAuthMiddleware } from '../../access-token';
-import { ApplicationRouter } from '../../application';
-
-import { TaskController } from './task-controller';
+import { ApplicationRouter } from 'backend/modules/application';
+import { accessAuthMiddleware } from 'backend/modules/authentication';
+import { TaskController } from 'backend/modules/task/rest-api/task-controller';
 
 export default class TaskRouter extends ApplicationRouter {
   configure(): void {

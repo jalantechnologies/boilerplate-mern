@@ -1,6 +1,8 @@
-import { ApplicationRepository } from '../../../application';
-
-import { AccountDB, AccountDbSchema } from './account-db';
+import {
+  AccountDB,
+  AccountDbSchema,
+} from 'backend/modules/account/internal/store/account-db';
+import { ApplicationRepository } from 'backend/modules/application';
 
 const AccountRepository = ApplicationRepository<AccountDB>(
   'accounts',

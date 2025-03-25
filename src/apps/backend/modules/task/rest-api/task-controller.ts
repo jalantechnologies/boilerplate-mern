@@ -1,16 +1,19 @@
-import { applicationController, Request, Response } from '../../application';
-import { HttpStatusCodes } from '../../http';
-import TaskService from '../task-service';
+import {
+  applicationController,
+  HttpStatusCodes,
+  Request,
+  Response,
+} from 'backend/modules/application';
 import {
   Task,
+  TaskService,
   CreateTaskParams,
   GetAllTaskParams,
   DeleteTaskParams,
   GetTaskParams,
   UpdateTaskParams,
-} from '../types';
-
-import { serializeTaskAsJSON } from './task-serializer';
+} from 'backend/modules/task';
+import { serializeTaskAsJSON } from 'backend/modules/task/rest-api/task-serializer';
 
 export class TaskController {
   createTask = applicationController(

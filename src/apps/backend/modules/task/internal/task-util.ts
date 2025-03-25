@@ -1,6 +1,5 @@
-import { Task } from '../types';
-
-import { TaskDB } from './store/task-db';
+import { Task } from 'backend/modules/task';
+import { TaskDB } from 'backend/modules/task/internal/store/task-db';
 
 export default class TaskUtil {
   public static convertTaskDBToTask(taskDb: TaskDB): Task {

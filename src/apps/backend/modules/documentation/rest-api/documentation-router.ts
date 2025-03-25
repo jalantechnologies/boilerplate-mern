@@ -1,6 +1,5 @@
-import { ApplicationRouter } from '../../application';
-
-import { DocumentationController } from './documentation-controller';
+import { ApplicationRouter } from 'backend/modules/application';
+import { DocumentationController } from 'backend/modules/documentation/rest-api/documentation-controller';
 
 export default class DocumentationRouter extends ApplicationRouter {
   configure(): void {

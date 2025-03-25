@@ -1,22 +1,21 @@
+import 'module-alias/register';
 import { Server } from 'http';
 import * as path from 'path';
 
-import cors from 'cors';
-import express, { Application } from 'express';
-import expressWinston from 'express-winston';
-
-import { AccessTokenServer } from './modules/access-token';
-import { AccountServer } from './modules/account';
-import { ApplicationServer } from './modules/application';
-import { ConfigService } from './modules/config';
+import { AccountServer } from 'backend/modules/account';
+import { ApplicationServer } from 'backend/modules/application';
+import { AuthenticationServer } from 'backend/modules/authentication';
+import { ConfigService } from 'backend/modules/config';
 import {
   DocumentationServer,
   DocumentationService,
-} from './modules/documentation';
-import { expressListRoutes } from './modules/list-routes';
-import { Logger, CustomLoggerTransport } from './modules/logger';
-import { PasswordResetTokenServer } from './modules/password-reset-token';
-import { TaskServer } from './modules/task';
+  expressListRoutes,
+} from 'backend/modules/documentation';
+import { Logger, CustomLoggerTransport } from 'backend/modules/logger';
+import { TaskServer } from 'backend/modules/task';
+import cors from 'cors';
+import express, { Application } from 'express';
+import expressWinston from 'express-winston';
 
 interface APIMicroserviceService {
   rootFolderPath: string;
@@ -69,16 +68,12 @@ export default class App {
         rootFolderPath: path.join(__dirname, 'modules/account'),
       },
       {
-        serverInstance: new AccessTokenServer(),
-        rootFolderPath: path.join(__dirname, 'modules/access-token'),
+        serverInstance: new AuthenticationServer(),
+        rootFolderPath: path.join(__dirname, 'modules/authentication'),
       },
       {
         serverInstance: new DocumentationServer(),
         rootFolderPath: path.join(__dirname, 'modules/documentation'),
-      },
-      {
-        serverInstance: new PasswordResetTokenServer(),
-        rootFolderPath: path.join(__dirname, 'modules/password-reset-token'),
       },
       {
         serverInstance: new TaskServer(),

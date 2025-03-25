@@ -1,6 +1,5 @@
+import Logger from 'backend/modules/logger/internals/types';
 import * as winston from 'winston';
-
-import Logger from './types';
 
 export default class WinstonLogger implements Logger {
   private logger: winston.Logger;

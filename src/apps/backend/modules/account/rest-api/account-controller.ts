@@ -1,8 +1,6 @@
-import { applicationController, Request, Response } from '../../application';
-import { HttpStatusCodes } from '../../http';
-import AccountService from '../account-service';
 import {
   Account,
+  AccountService,
   CreateAccountParams,
   CreateAccountParamsByPhoneNumber,
   CreateAccountParamsByUsernameAndPassword,
@@ -12,9 +10,14 @@ import {
   ResetPasswordParams,
   UpdateAccountDetailsParams,
   UpdateAccountParams,
-} from '../types';
-
-import { serializeAccountAsJSON } from './account-serializer';
+} from 'backend/modules/account';
+import { serializeAccountAsJSON } from 'backend/modules/account/rest-api/account-serializer';
+import {
+  applicationController,
+  HttpStatusCodes,
+  Request,
+  Response,
+} from 'backend/modules/application';
 
 export class AccountController {
   createAccount = applicationController(

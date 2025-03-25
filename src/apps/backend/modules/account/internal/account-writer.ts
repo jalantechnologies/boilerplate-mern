@@ -1,15 +1,13 @@
-import { PhoneNumberUtil } from 'google-libphonenumber';
-
+import { Account, PhoneNumber } from 'backend/modules/account';
+import AccountReader from 'backend/modules/account/internal/account-reader';
+import AccountUtil from 'backend/modules/account/internal/account-util';
+import AccountRepository from 'backend/modules/account/internal/store/account-repository';
+import { OTPRequestError } from 'backend/modules/authentication';
 import {
   PhoneUtilInstance,
   PhoneUtilInterface,
-} from '../../communication/types';
-import { OtpRequestError } from '../../otp/types';
-import { Account, PhoneNumber } from '../types';
-
-import AccountReader from './account-reader';
-import AccountUtil from './account-util';
-import AccountRepository from './store/account-repository';
+} from 'backend/modules/communication';
+import { PhoneNumberUtil } from 'google-libphonenumber';
 
 export default class AccountWriter {
   public static async createAccountByUsernameAndPassword(
@@ -45,7 +43,7 @@ export default class AccountWriter {
     );
 
     if (!isValidPhoneNumber) {
-      throw new OtpRequestError('Please provide a valid phone number.');
+      throw new OTPRequestError('Please provide a valid phone number.');
     }
     // check if account already exists with the given phone number
     // this will throw an error if it does

@@ -1,8 +1,11 @@
-import { applicationController, Request, Response } from '../../application';
-import { HttpStatusCodes } from '../../http';
-import DocumentationService from '../documentation-service';
-
-import { serializeDocumentationAsJSON } from './documentation-serializer';
+import {
+  applicationController,
+  HttpStatusCodes,
+  Request,
+  Response,
+} from 'backend/modules/application';
+import { DocumentationService } from 'backend/modules/documentation';
+import { serializeDocumentationAsJSON } from 'backend/modules/documentation/rest-api/documentation-serializer';
 
 export class DocumentationController {
   getDocumentation = applicationController(

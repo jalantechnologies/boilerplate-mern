@@ -1,10 +1,7 @@
+import { HttpStatusCodes, ApplicationError } from 'backend/modules/application';
+import { Logger } from 'backend/modules/logger';
 import bodyParser from 'body-parser';
 import express, { Application, NextFunction, Request, Response } from 'express';
-
-import { HttpStatusCodes } from '../http';
-import { Logger } from '../logger';
-
-import { ApplicationError } from './application-error';
 
 export enum ApplicationServerErrorCodes {
   UNHANDLED_ERROR = 'SERVER_ERR_01',

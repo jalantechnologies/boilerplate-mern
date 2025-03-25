@@ -1,6 +1,5 @@
-import { ApplicationServer } from '../../application';
-
-import TaskRouter from './task-router';
+import { ApplicationServer } from 'backend/modules/application';
+import TaskRouter from 'backend/modules/task/rest-api/task-router';
 
 export default class TaskServer extends ApplicationServer {
   configure(): void {

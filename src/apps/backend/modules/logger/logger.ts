@@ -1,4 +1,4 @@
-import Loggers from './internals/loggers';
+import Loggers from 'backend/modules/logger/internals/loggers';
 
 export default class Logger {
   public static info(message: string, ...args: unknown[]): void {
