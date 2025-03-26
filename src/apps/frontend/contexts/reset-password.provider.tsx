@@ -3,7 +3,7 @@ import React, { createContext, PropsWithChildren, useContext } from 'react';
 import { ResetPasswordParams } from '../pages/authentication/reset-password/reset-password-form.hook';
 import { ResetPasswordService } from '../services';
 import { ApiResponse, AsyncError } from '../types';
-import { Nullable } from '../types/common';
+import { Nullable } from '../types/common-types';
 
 import useAsync from './async.hook';
 

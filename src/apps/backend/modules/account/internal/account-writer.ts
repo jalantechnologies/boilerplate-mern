@@ -1,4 +1,4 @@
-import { Account, PhoneNumber } from 'backend/modules/account';
+import { Account, PhoneNumber, AccountNotFoundError} from 'backend/modules/account';
 import AccountReader from 'backend/modules/account/internal/account-reader';
 import AccountUtil from 'backend/modules/account/internal/account-util';
 import AccountRepository from 'backend/modules/account/internal/store/account-repository';

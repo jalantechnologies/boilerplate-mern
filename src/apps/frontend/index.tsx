@@ -5,6 +5,6 @@ import './satoshi.css';
 import './style.css';
 import App from './app.component';
 
-const container = document.getElementById('app');
+const container = document.getElementById('app') as HTMLElement;
 
-ReactDOM.createRoot(container as ReactDOM.Container).render(<App />);
+ReactDOM.createRoot(container).render(<App />);

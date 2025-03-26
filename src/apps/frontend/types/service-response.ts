@@ -1,5 +1,5 @@
 import { AsyncError, AsyncResult } from './async-operation';
-import { JsonObject } from './common';
+import { JsonObject } from './common-types';
 
 export class ApiError implements AsyncError {
   code: string;

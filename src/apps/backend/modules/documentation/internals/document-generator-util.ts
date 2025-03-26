@@ -7,6 +7,7 @@ import {
   HttpRouteWithControllerAndSerializerDetails,
   HttpRoute,
 } from 'backend/modules/documentation';
+import { Nullable } from 'backend/types';
 
 export default class DocumentGeneratorUtil {
   public static controllerFileSuffix = '-controller.js';

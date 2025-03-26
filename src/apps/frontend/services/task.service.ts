@@ -1,5 +1,5 @@
 import { ApiError, ApiResponse } from '../types';
-import { JsonObject, Nullable } from '../types/common';
+import { JsonObject, Nullable } from '../types/common-types';
 import { Task } from '../types/task';
 import { getAccessTokenFromStorage } from '../utils/storage-util';
 
@@ -17,7 +17,7 @@ export default class TaskService extends APIService {
         { title, description },
         {
           headers: {
-            Authorization: `Bearer ${userAccessToken?.token}`,
+            Authorization: `Bearer ${userAccessToken!.token}`,
           },
         }
       );
@@ -32,7 +32,7 @@ export default class TaskService extends APIService {
       const userAccessToken = getAccessTokenFromStorage();
       const response = await this.apiClient.get('/tasks', {
         headers: {
-          Authorization: `Bearer ${userAccessToken?.token}`,
+          Authorization: `Bearer ${userAccessToken!.token}`,
         },
       });
       const tasks: Task[] = (response.data as JsonObject[]).map(
@@ -55,7 +55,7 @@ export default class TaskService extends APIService {
         taskData,
         {
           headers: {
-            Authorization: `Bearer ${userAccessToken?.token}`,
+            Authorization: `Bearer ${userAccessToken!.token}`,
           },
         }
       );
@@ -70,7 +70,7 @@ export default class TaskService extends APIService {
       const userAccessToken = getAccessTokenFromStorage();
       await this.apiClient.delete(`/tasks/${taskId}`, {
         headers: {
-          Authorization: `Bearer ${userAccessToken?.token}`,
+          Authorization: `Bearer ${userAccessToken!.token}`,
         },
       });
       return new ApiResponse(undefined, undefined);

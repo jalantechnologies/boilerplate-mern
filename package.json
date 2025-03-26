@@ -27,7 +27,8 @@
     "cy:open": "cypress open"
   },
   "_moduleAliases": {
-    "backend/modules": "dist/modules"
+    "backend/modules": "dist/modules",
+    "backend/types.ts": "dist/types"
   },
   "author": "jalantechnologies",
   "license": "MIT",

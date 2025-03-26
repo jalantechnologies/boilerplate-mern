@@ -1,5 +1,6 @@
 import { ApplicationError, HttpStatusCodes } from 'backend/modules/application';
 import { HttpRoute } from 'backend/modules/documentation';
+import { Nullable } from 'backend/types';
 
 export type HttpRouteWithRootFolderPath = {
   rootFolderPath: string;

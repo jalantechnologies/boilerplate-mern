@@ -1,10 +1,8 @@
 import { AccessToken } from '../types';
-import { Nullable } from '../types/common';
-
-const ACCESS_TOKEN_KEY = 'access-token';
+import { Nullable } from '../types/common-types';
 
 export const getAccessTokenFromStorage = (): Nullable<AccessToken> => {
-  const token = localStorage.getItem(ACCESS_TOKEN_KEY);
+  const token = localStorage.getItem('access-token');
   if (token) {
     return JSON.parse(token) as AccessToken;
   }
@@ -12,9 +10,9 @@ export const getAccessTokenFromStorage = (): Nullable<AccessToken> => {
 };
 
 export const setAccessTokenToStorage = (token: AccessToken): void => {
-  localStorage.setItem(ACCESS_TOKEN_KEY, JSON.stringify(token));
+  localStorage.setItem('access-token', JSON.stringify(token));
 };
 
 export const removeAccessTokenFromStorage = (): void => {
-  localStorage.removeItem(ACCESS_TOKEN_KEY);
+  localStorage.removeItem('access-token');
 };

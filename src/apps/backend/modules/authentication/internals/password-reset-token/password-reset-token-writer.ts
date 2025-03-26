@@ -1,4 +1,4 @@
-import { PasswordResetToken } from 'backend/modules/authentication';
+import { PasswordResetToken, PasswordResetTokenNotFoundError } from 'backend/modules/authentication';
 import PasswordResetTokenUtil from 'backend/modules/authentication/internals/password-reset-token/password-reset-token-util';
 import PasswordResetTokenRepository from 'backend/modules/authentication/internals/password-reset-token/store/password-reset-token-repository';
 

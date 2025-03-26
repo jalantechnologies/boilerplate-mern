@@ -1,4 +1,4 @@
-import { JsonObject } from './common';
+import { JsonObject } from './common-types';
 
 export enum TaskOperationType {
   ADD = 'add',

@@ -1,4 +1,3 @@
-import { Nullable } from '../../../types';
 import {
   Account,
   AccountNotFoundError,
@@ -10,6 +9,7 @@ import {
 } from 'backend/modules/account';
 import AccountUtil from 'backend/modules/account/internal/account-util';
 import AccountRepository from 'backend/modules/account/internal/store/account-repository';
+import { Nullable } from 'backend/types';
 
 export default class AccountReader {
   public static async getAccountByUsername(username: string): Promise<Account> {

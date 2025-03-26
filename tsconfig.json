@@ -21,7 +21,8 @@
     "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
-      "backend/modules/*": ["src/apps/backend/modules/*"]
+      "backend/modules/*": ["src/apps/backend/modules/*"],
+      "backend/*": ["src/apps/backend/*"]
     }
   }
 }

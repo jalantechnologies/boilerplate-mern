@@ -2,7 +2,7 @@ import React, { createContext, PropsWithChildren, useContext } from 'react';
 
 import { AuthService } from '../services';
 import { AccessToken, ApiResponse, AsyncError, PhoneNumber } from '../types';
-import { Nullable } from '../types/common';
+import { Nullable } from '../types/common-types';
 import {
   getAccessTokenFromStorage,
   removeAccessTokenFromStorage,

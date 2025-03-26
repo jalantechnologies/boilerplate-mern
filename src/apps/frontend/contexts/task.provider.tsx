@@ -7,7 +7,7 @@ import React, {
 
 import TaskService from '../services/task.service';
 import { ApiResponse, AsyncError } from '../types';
-import { Nullable } from '../types/common';
+import { Nullable } from '../types/common-types';
 import { Task } from '../types/task';
 
 import useAsync from './async.hook';

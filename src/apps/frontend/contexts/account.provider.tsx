@@ -2,7 +2,7 @@ import React, { createContext, PropsWithChildren, useContext } from 'react';
 
 import { AccountService } from '../services';
 import { Account, ApiResponse, AsyncError } from '../types';
-import { Nullable } from '../types/common';
+import { Nullable } from '../types/common-types';
 
 import useAsync from './async.hook';
 

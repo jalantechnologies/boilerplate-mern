@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import * as React from 'react';
 
-import { Nullable } from '../../types/common';
+import { Nullable } from '../../types/common-types';
 import HorizontalStackLayout from '../layouts/horizontal-stack-layout';
 
 import styles from './input.styles';
@@ -14,7 +14,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   index?: number;
   startEnhancer?: React.ReactElement | string;
   testId?: string;
-  textAlign?: 'left' | 'center' | 'right';
+  textAlign?: keyof typeof styles.textAlign;
   type?: string;
 }
 

@@ -22,7 +22,7 @@ import {
 export class AccountController {
   createAccount = applicationController(
     async (req: Request<CreateAccountParams>, res: Response) => {
-      let account: Nullable<Account>;
+      let account: Account;
       const { firstName, lastName, password, username } =
         req.body as CreateAccountParamsByUsernameAndPassword;
       const { phoneNumber } = req.body as CreateAccountParamsByPhoneNumber;

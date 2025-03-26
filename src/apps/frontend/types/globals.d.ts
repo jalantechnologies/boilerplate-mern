@@ -9,6 +9,9 @@ declare global {
   interface Window {
     __insp: Array<Array<string | number>>;
     __inspld: number;
-    Config: { inspectLetKey: string | number };
+    Config: {
+      env: string;
+      inspectLetKey: string;
+    };
   }
 }

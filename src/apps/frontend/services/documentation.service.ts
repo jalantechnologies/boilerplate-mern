@@ -1,5 +1,5 @@
 import { ApiError, ApiResponse } from '../types';
-import { JsonObject, Nullable } from '../types/common';
+import { JsonObject, Nullable } from '../types/common-types';
 import { MarkdownDocumentation } from '../types/documentation';
 
 import APIService from './api.service';

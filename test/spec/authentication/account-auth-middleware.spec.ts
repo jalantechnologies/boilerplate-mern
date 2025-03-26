@@ -11,7 +11,7 @@ import {
 } from 'backend/modules/authentication';
 import ConfigService from 'backend/modules/config/config-service';
 import { assert } from 'chai';
-import { Request } from 'express';
+import { Request, Response } from 'express';
 import sinon from 'sinon';
 
 import { createAccount } from '../../helpers/account';

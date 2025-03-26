@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 
 import { UseAsyncResponse, AsyncResult, AsyncError } from '../types';
 import { AsyncOperationError } from '../types/async-operation';
-import { Nullable } from '../types/common';
+import { Nullable } from '../types/common-types';
 
 const useAsync = <T>(
   asyncFn: (...args: unknown[]) => Promise<AsyncResult<T>>

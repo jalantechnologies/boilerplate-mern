@@ -6,7 +6,7 @@ import 'github-markdown-css/github-markdown.css';
 import './custom-markdown-styles.scss';
 
 import constant from '../../constants';
-import { JsonObject } from '../../types/common';
+import { JsonObject } from '../../types/common-types';
 import { MarkdownDocumentation } from '../../types/documentation';
 
 const Documentation: React.FC = () => {

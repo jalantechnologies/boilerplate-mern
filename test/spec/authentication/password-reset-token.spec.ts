@@ -136,14 +136,11 @@ describe('Account Password Reset', () => {
       // Check if account password reset successfully
       const updatedAccount = await AccountRepository.findById(account.id);
 
-      if (!updatedAccount) {
-        throw new Error('Account not found');
-      }
-
+      expect(updatedAccount).to.exist;
       expect(
         await AccountUtil.comparePassword(
           newPassword,
-          updatedAccount.hashedPassword
+          updatedAccount!.hashedPassword
         )
       ).to.eq(true);
 

@@ -18,14 +18,11 @@ import { serializeTaskAsJSON } from 'backend/modules/task/rest-api/task-serializ
 export class TaskController {
   createTask = applicationController(
     async (req: Request<CreateTaskParams>, res: Response) => {
-      const { accountId } = req;
-      const { description, title } = req.body;
-      const params: CreateTaskParams = {
-        accountId: accountId as string,
-        description,
-        title,
-      };
-      const task: Task = await TaskService.createTask(params);
+      const task: Task = await TaskService.createTask({
+        accountId: req.accountId!,
+        description: req.body.description,
+        title: req.body.title,
+      });
       const taskJSON = serializeTaskAsJSON(task);
 
       res.status(HttpStatusCodes.CREATED).send(taskJSON);
@@ -34,13 +31,10 @@ export class TaskController {
 
   deleteTask = applicationController(
     async (req: Request<DeleteTaskParams>, res: Response) => {
-      const { accountId } = req;
-      const { id } = req.params;
-      const params: DeleteTaskParams = {
-        accountId: accountId as string,
-        taskId: id,
-      };
-      await TaskService.deleteTask(params);
+      await TaskService.deleteTask({
+        accountId: req.accountId!,
+        taskId: req.params.id,
+      });
 
       res.status(HttpStatusCodes.NO_CONTENT).send();
     }
@@ -48,13 +42,10 @@ export class TaskController {
 
   getTask = applicationController(
     async (req: Request<GetTaskParams>, res: Response) => {
-      const { accountId } = req;
-      const { id } = req.params;
-      const params: GetTaskParams = {
-        accountId: accountId as string,
-        taskId: id,
-      };
-      const task = await TaskService.getTaskForAccount(params);
+      const task = await TaskService.getTaskForAccount({
+        accountId: req.accountId!,
+        taskId: req.params.id,
+      });
       const taskJSON = serializeTaskAsJSON(task);
 
       res.status(HttpStatusCodes.OK).send(taskJSON);
@@ -64,9 +55,8 @@ export class TaskController {
   getTasks = applicationController(async (req: Request, res: Response) => {
     const page = req.query.page ? +req.query.page : 1; // Default to page 1 if not provided
     const size = req.query.size ? +req.query.size : 10; // Default to size 10 if not provided
-    const { accountId } = req;
     const params: GetAllTaskParams = {
-      accountId: accountId as string,
+      accountId: req.accountId!,
       page,
       size,
     };
@@ -79,16 +69,12 @@ export class TaskController {
 
   updateTask = applicationController(
     async (req: Request<UpdateTaskParams>, res: Response) => {
-      const { accountId } = req;
-      const { id } = req.params;
-      const { description, title } = req.body;
-      const params: UpdateTaskParams = {
-        accountId: accountId as string,
-        description,
-        taskId: id,
-        title,
-      };
-      const updatedTask: Task = await TaskService.updateTask(params);
+      const updatedTask: Task = await TaskService.updateTask({
+        accountId: req.accountId!,
+        taskId: req.params.id,
+        description: req.body.description,
+        title: req.body.title,
+      });
       const taskJSON = serializeTaskAsJSON(updatedTask);
 
       res.status(HttpStatusCodes.OK).send(taskJSON);

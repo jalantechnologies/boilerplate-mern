@@ -1,5 +1,5 @@
 import { PhoneNumber } from './auth';
-import { JsonObject, Nullable } from './common';
+import { JsonObject, Nullable } from './common-types';
 
 export class Account {
   id: string;
