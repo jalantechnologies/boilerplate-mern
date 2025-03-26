@@ -80,5 +80,56 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addComponents }) {
+      addComponents({
+        '.input-wrapper': {
+          width: '100%',
+          borderRadius: '0.5rem',
+          borderWidth: '1px',
+          backgroundColor: '#FFFFFF',
+          padding: '1rem',
+          outline: 'none',
+        },
+        '.input-wrapper:focus': {
+          borderColor: '#3C50E0',
+        },
+        '.input-wrapper:focus-visible': {
+          boxShadow: 'none',
+        },
+        '.input-error': {
+          borderColor: '#D34053',
+        },
+        '.input-normal': {
+          borderColor: '#E2E8F0',
+        },
+        '.input-disabled': {
+          cursor: 'not-allowed',
+          color: '#64748B',
+        },
+        '.input-element': {
+          width: '100%',
+          flex: '1 1 0%',
+          appearance: 'none',
+          outline: 'none',
+        },
+        '.control-enhancer': {
+          display: 'flex',
+          height: '100%',
+          minWidth: '1.5rem',
+          alignItems: 'center',
+          justifyContent: 'center',
+        },
+        '.btn-base': {
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.5rem',
+          borderRadius: '0.375rem',
+          transitionProperty: 'all',
+          width: '100%',
+          fontWeight: '500',
+        },
+      });
+    },
+  ],
 };
