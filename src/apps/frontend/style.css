@@ -9,6 +9,35 @@
     @apply bg-whiten font-satoshi text-base font-normal text-body;
   }
 }
+@layer components {
+  .input-wrapper {
+    @apply w-full rounded-lg border bg-white p-4 outline-none focus:border-primary focus-visible:shadow-none;
+  }
+
+  .input-error {
+    @apply border-danger;
+  }
+
+  .input-normal {
+    @apply border-stroke;
+  }
+
+  .input-disabled {
+    @apply cursor-not-allowed text-body;
+  }
+
+  .input-element {
+    @apply w-full flex-1 appearance-none outline-none;
+  }
+
+  .control-enhancer {
+    @apply flex h-full min-w-6 items-center justify-center;
+  }
+  .btn-base {
+    @apply flex items-center gap-2 rounded-md transition w-full font-medium;
+  }
+}
+
 
 @layer utilities {
   /* Chrome, Safari and Opera */

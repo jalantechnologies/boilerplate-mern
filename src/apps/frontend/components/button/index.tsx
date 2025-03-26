@@ -27,8 +27,7 @@ const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
   startEnhancer,
   type = ButtonType.BUTTON,
 }) => {
-  const baseStyles =
-    'flex items-center gap-2 rounded-md transition w-full font-medium';
+  const baseStyles = 'btn-base';
 
   const kindStyles = {
     [ButtonKind.PRIMARY]: clsx(
@@ -72,16 +71,10 @@ const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
     >
       <HorizontalStackLayout gap={2}>
         {startEnhancer && (
-          <span className="flex h-full min-w-6 items-center justify-center">
-            {startEnhancer}
-          </span>
+          <span className="control-enhancer">{startEnhancer}</span>
         )}
         {content}
-        {endEnhancer && (
-          <span className="flex h-full min-w-6 items-center justify-center">
-            {endEnhancer}
-          </span>
-        )}
+        {endEnhancer && <span className="control-enhancer">{endEnhancer}</span>}
       </HorizontalStackLayout>
     </button>
   );
