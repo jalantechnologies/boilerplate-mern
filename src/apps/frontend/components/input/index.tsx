@@ -3,6 +3,8 @@ import * as React from 'react';
 
 import HorizontalStackLayout from '../layouts/horizontal-stack-layout';
 
+import styles from './input.styles';
+
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   disabled?: boolean;
   endEnhancer?: React.ReactElement | string;
@@ -28,31 +30,35 @@ const Input: React.FC<InputProps> = ({
   ...props
 }) => (
   <div
-    className={clsx(
-      'input-wrapper',
-      error ? 'input-error' : 'input-normal',
-      disabled && 'input-disabled'
-    )}
+    className={clsx([
+      styles.inputContainer,
+      error ? styles.border.errorState : styles.border.normalState,
+      disabled ? styles.disabled : '',
+    ])}
   >
     <HorizontalStackLayout gap={2}>
       {startEnhancer && (
-        <span className="control-enhancer">{startEnhancer}</span>
+        <span className="flex h-full min-w-6 items-center justify-center">
+          {startEnhancer}
+        </span>
       )}
       <input
         {...props}
         autoComplete="off"
-        className={clsx(
-          'input-element',
-          textAlign === 'center' && 'text-center',
-          textAlign === 'right' && 'text-right',
-          textAlign === 'left' && 'text-left',
-          disabled && 'input-disabled'
-        )}
+        className={clsx([
+          styles.input,
+          disabled ? styles.disabled : '',
+          textAlign ? styles.textAlign[textAlign] : '',
+        ])}
         data-testid={testId}
         type={type || 'text'}
         ref={handleInputRef ? (ref) => handleInputRef(ref) : null}
       />
-      {endEnhancer && <span className="control-enhancer">{endEnhancer}</span>}
+      {endEnhancer && (
+        <span className="flex h-full min-w-6 items-center justify-center">
+          {endEnhancer}
+        </span>
+      )}
     </HorizontalStackLayout>
   </div>
 );

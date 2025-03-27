@@ -1,21 +1,27 @@
+import clsx from 'clsx';
 import React, { PropsWithChildren, useState } from 'react';
 
 import { ButtonKind } from '../../types/button';
 import Button from '../button';
 
+import styles from './menu-item.styles';
+
 const MenuItem: React.FC<PropsWithChildren> = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <div className="relative flex">
+    <div className={styles.menuItemWrapper}>
       <Button onClick={() => setIsOpen(!isOpen)} kind={ButtonKind.TERTIARY}>
         <img src="assets/svg/ellipsis-icon.svg" alt="Ellipsis Icon" />
       </Button>
       <div
         onFocus={() => setIsOpen(true)}
         onBlur={() => setIsOpen(false)}
-        className={`absolute right-0 top-full z-40 w-40 space-y-1 rounded-sm border border-stroke bg-white p-1.5 shadow-default ${
-          isOpen ? 'block' : 'hidden'
-        }`}
+        className={clsx(
+          styles.menuItemDropdown,
+          isOpen
+            ? styles.menuItemDropdownVisible
+            : styles.menuItemDropdownHidden
+        )}
       >
         {children}
       </div>

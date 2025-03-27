@@ -22,7 +22,9 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
 }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-  const togglePasswordVisibility = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const togglePasswordVisibility = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     e.preventDefault();
     setIsPasswordVisible((prevState) => !prevState);
   };

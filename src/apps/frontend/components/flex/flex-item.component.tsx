@@ -1,17 +1,25 @@
 import clsx from 'clsx';
 import React, { PropsWithChildren } from 'react';
 
+import styles from './flex-item.styles';
+
 interface FlexItemProps {
-  alignSelf?: 'auto' | 'start' | 'end' | 'center' | 'baseline' | 'stretch';
-  flex?:
-    | '1'
+  alignSelf?:
     | 'auto'
-    | 'initial'
-    | 'none'
+    | 'flexStart'
+    | 'flexEnd'
+    | 'center'
+    | 'baseline'
+    | 'stretch';
+  flex?:
+    | 'flex1'
+    | 'flexAuto'
+    | 'flexInitial'
+    | 'flexNone'
+    | 'grow0'
     | 'grow'
-    | 'grow-0'
-    | 'shrink'
-    | 'shrink-0';
+    | 'shrink0'
+    | 'shrink';
   justifySelf?: 'auto' | 'start' | 'end' | 'center' | 'stretch';
   order?:
     | 'first'
@@ -31,52 +39,6 @@ interface FlexItemProps {
     | 12;
 }
 
-const alignSelfClasses = {
-  auto: 'self-auto',
-  start: 'self-start',
-  end: 'self-end',
-  center: 'self-center',
-  baseline: 'self-baseline',
-  stretch: 'self-stretch',
-};
-
-const flexClasses = {
-  '1': 'flex-1',
-  auto: 'flex-auto',
-  initial: 'flex-initial',
-  none: 'flex-none',
-  grow: 'grow',
-  'grow-0': 'grow-0',
-  shrink: 'shrink',
-  'shrink-0': 'shrink-0',
-};
-
-const justifySelfClasses = {
-  auto: 'justify-self-auto',
-  start: 'justify-self-start',
-  end: 'justify-self-end',
-  center: 'justify-self-center',
-  stretch: 'justify-self-stretch',
-};
-
-const orderClasses = {
-  first: 'order-first',
-  last: 'order-last',
-  none: 'order-none',
-  1: 'order-1',
-  2: 'order-2',
-  3: 'order-3',
-  4: 'order-4',
-  5: 'order-5',
-  6: 'order-6',
-  7: 'order-7',
-  8: 'order-8',
-  9: 'order-9',
-  10: 'order-10',
-  11: 'order-11',
-  12: 'order-12',
-};
-
 const FlexItem: React.FC<PropsWithChildren<FlexItemProps>> = ({
   alignSelf,
   children,
@@ -85,12 +47,12 @@ const FlexItem: React.FC<PropsWithChildren<FlexItemProps>> = ({
   order,
 }) => (
   <div
-    className={clsx(
-      alignSelf && alignSelfClasses[alignSelf],
-      flex && flexClasses[flex],
-      justifySelf && justifySelfClasses[justifySelf],
-      order && orderClasses[order]
-    )}
+    className={clsx([
+      styles.alignSelf[alignSelf],
+      styles.flex[flex],
+      styles.justifySelf[justifySelf],
+      styles.order[order],
+    ])}
   >
     {children}
   </div>
