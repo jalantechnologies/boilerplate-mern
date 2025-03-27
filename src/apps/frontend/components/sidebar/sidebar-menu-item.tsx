@@ -56,7 +56,7 @@ const SidebarMenuItem: React.FC<SidebarMenuItemProps> = ({
       </NavLink>
       {subItems && open && (
         <div className="max-h-40 overflow-hidden duration-300 ease-in-out">
-          <ul className="mb-5.5 mt-4 flex flex-col gap-2.5 pl-6">
+          <ul className="mb-[1.375rem] mt-4 flex flex-col gap-2.5 pl-6">
             {subItems.map((subItem) => (
               <li key={subItem.path}>
                 <NavLink

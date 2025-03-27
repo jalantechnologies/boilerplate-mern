@@ -36,13 +36,13 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
         <Button onClick={togglePasswordVisibility} kind={ButtonKind.SECONDARY}>
           {isPasswordVisible ? (
             <img
-              className="size-6.5 opacity-65"
+              className="size-6 opacity-65"
               src="/assets/img/icon/eye-closed.svg"
               alt="hide password icon"
             />
           ) : (
             <img
-              className="size-6.5 opacity-65"
+              className="size-6 opacity-65"
               src="/assets/img/icon/eye-open.svg"
               alt="show password icon"
             />

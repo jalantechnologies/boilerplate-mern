@@ -1,5 +1,7 @@
 import React from 'react';
 
+import styles from './select.styles';
+
 type OPTION = {
   label: string;
   value: string | number;
@@ -21,20 +23,7 @@ const Select: React.FC<SelectProps> = ({
   value,
 }) => (
   <select
-    className="
-      items-center
-      justify-center
-      rounded-lg
-      border
-      border-stroke
-      bg-transparent
-      px-2
-      py-4
-      text-lg
-      outline-none
-      focus:border-primary
-      focus-visible:shadow-none
-    "
+    className={styles.selectDropdown}
     disabled={isLoading}
     multiple={multiple}
     onChange={handleChange}

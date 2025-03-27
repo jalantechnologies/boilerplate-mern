@@ -47,15 +47,11 @@ const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
     >
       <HorizontalStackLayout gap={2}>
         {startEnhancer && (
-          <span className="flex h-full min-w-6 items-center justify-center">
-            {startEnhancer}
-          </span>
+          <span className={styles.buttonEnhancer}>{startEnhancer}</span>
         )}
         {content}
         {endEnhancer && (
-          <span className="flex h-full min-w-6 items-center justify-center">
-            {endEnhancer}
-          </span>
+          <span className={styles.buttonEnhancer}>{endEnhancer}</span>
         )}
       </HorizontalStackLayout>
     </button>

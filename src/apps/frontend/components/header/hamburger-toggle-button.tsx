@@ -17,7 +17,7 @@ const HamburgerToggleButton: React.FC<HamburgerToggleButtonProps> = ({
     }}
     className="block rounded-sm border border-stroke bg-white p-1.5 shadow-sm dark:border-strokedark dark:bg-boxdark lg:hidden"
   >
-    <span className="relative block size-5.5 cursor-pointer">
+    <span className="relative block size-6 cursor-pointer">
       <span className="absolute right-0 block size-full">
         <span
           className={`relative left-0 top-0 my-1 block h-0.5 w-0 rounded-sm bg-black delay-[0] duration-200 ease-in-out dark:bg-white ${
