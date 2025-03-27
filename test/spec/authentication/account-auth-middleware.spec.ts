@@ -11,7 +11,7 @@ import {
 } from 'backend/modules/authentication';
 import ConfigService from 'backend/modules/config/config-service';
 import { assert } from 'chai';
-import { Request } from 'express';
+import { Request, Response } from 'express';
 import sinon from 'sinon';
 
 import { createAccount } from '../../helpers/account';
@@ -44,7 +44,7 @@ describe('accessAuthMiddleware', () => {
           authorization: `Bearer ${accessToken.token}`,
         },
       } as unknown as Request,
-      undefined,
+      {} as unknown as Response,
       controller
     );
 
@@ -64,7 +64,7 @@ describe('accessAuthMiddleware', () => {
               authorization: `Bearer ${accessToken.token}`,
             },
           } as unknown as Request,
-          undefined,
+          {} as unknown as Response,
           controller
         ),
       new UnAuthorizedAccessError().message
@@ -98,7 +98,7 @@ describe('accessAuthMiddleware', () => {
               authorization: `Bearer ${expiredToken.token}`,
             },
           } as unknown as Request,
-          undefined,
+          {} as unknown as Response,
           controller
         ),
       new AccessTokenExpiredError().message
@@ -117,7 +117,7 @@ describe('accessAuthMiddleware', () => {
             params: { accountId },
             headers: {},
           } as unknown as Request,
-          undefined,
+          {} as unknown as Response,
           controller
         ),
       new AuthorizationHeaderNotFound().message
@@ -138,7 +138,7 @@ describe('accessAuthMiddleware', () => {
               authorization: 'invalidAuthHeader',
             },
           } as unknown as Request,
-          undefined,
+          {} as unknown as Response,
           controller
         ),
       new InvalidAuthorizationHeader().message

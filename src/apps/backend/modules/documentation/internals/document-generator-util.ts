@@ -7,6 +7,7 @@ import {
   HttpRouteWithControllerAndSerializerDetails,
   HttpRoute,
 } from 'backend/modules/documentation';
+import { Nullable } from 'backend/types';
 
 export default class DocumentGeneratorUtil {
   public static controllerFileSuffix = '-controller.js';
@@ -31,7 +32,7 @@ export default class DocumentGeneratorUtil {
             restApiFolderPath,
             route
           );
-          let serializerMethod: string;
+          let serializerMethod: Nullable<string> = null;
           if (!excludeSerializerMethodsForRouteMethods.includes(route.method)) {
             serializerMethod = this.getSerializerMethodCode(
               controllerMethod,
@@ -136,7 +137,9 @@ export default class DocumentGeneratorUtil {
 
   private static extractSerializeMethodName(
     controllerMethodCode: string
-  ): string | null {
+  ): Nullable<string> {
+    if (!controllerMethodCode) return null;
+
     const serializeMethodRegex = /serialize\w+AsJSON/g;
     const match = serializeMethodRegex.exec(controllerMethodCode);
     return match ? match[0] : null;
@@ -172,7 +175,6 @@ export default class DocumentGeneratorUtil {
   ): string {
     try {
       const fileName = this.findFileWithSuffix(fileSuffix, folderPath);
-      if (!fileName) return null;
 
       const fileContent = this.readFileContent(fileName, folderPath);
       const methodCode = this.extractMethodFromContent(

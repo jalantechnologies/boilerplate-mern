@@ -2,25 +2,26 @@ import React, { createContext, PropsWithChildren, useContext } from 'react';
 
 import { AccountService } from '../services';
 import { Account, ApiResponse, AsyncError } from '../types';
+import { Nullable } from '../types/common-types';
 
 import useAsync from './async.hook';
 
 type AccountContextType = {
   accountDetails: Account;
-  accountError: AsyncError;
-  deleteAccount: () => Promise<void>;
-  deleteAccountError: AsyncError;
-  getAccountDetails: () => Promise<Account>;
+  accountError: Nullable<AsyncError>;
+  deleteAccount: () => Promise<Nullable<void>>;
+  deleteAccountError: Nullable<AsyncError>;
+  getAccountDetails: () => Promise<Nullable<Account>>;
   isAccountLoading: boolean;
   isDeleteAccountLoading: boolean;
 };
 
-const AccountContext = createContext<AccountContextType | null>(null);
+const AccountContext = createContext<Nullable<AccountContextType>>(null);
 
 const accountService = new AccountService();
 
 export const useAccountContext = (): AccountContextType =>
-  useContext(AccountContext);
+  useContext(AccountContext) as AccountContextType;
 
 const getAccountDetailsFn = async (): Promise<ApiResponse<Account>> =>
   accountService.getAccountDetails();

@@ -46,13 +46,12 @@ const expressListRoutes = (
   stacks.forEach((stack) => {
     if (stack.route) {
       stack.route.stack.forEach((route) => {
-        const method = route.method ? route.method.toUpperCase() : null;
-        if (method) {
+        if (route.method) {
           paths.push({
             baseAPIRoutePath,
-            method,
+            method: route.method.toUpperCase(),
             rootRouterPath: stack.routerPath,
-            routerPath: stack.route.path,
+            routerPath: stack.route!.path,
           });
         }
       });

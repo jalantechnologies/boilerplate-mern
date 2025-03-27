@@ -19,8 +19,8 @@ interface TaskModalProps {
   btnText: string;
   formik: FormikProps<Task>;
   isModalOpen: boolean;
-  onError?: (error: AsyncError) => void;
-  onSuccess?: () => void;
+  onError: (error: AsyncError) => void;
+  onSuccess: () => void;
   setIsModalOpen: (open: boolean) => void;
 }
 
@@ -62,13 +62,13 @@ const TaskModal: React.FC<TaskModalProps> = ({
       <form onSubmit={formik.handleSubmit}>
         <VerticalStackLayout gap={5}>
           <FormControl
-            error={formik.touched.title && formik.errors.title}
+            error={formik.touched.title ? formik.errors.title : undefined}
             label={'Task title'}
           >
             <Input
               data-testid="title"
               disabled={isAddTaskLoading}
-              error={formik.touched.title && formik.errors.title}
+              error={formik.touched.title ? formik.errors.title : undefined}
               name="title"
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
@@ -78,13 +78,19 @@ const TaskModal: React.FC<TaskModalProps> = ({
             />
           </FormControl>
           <FormControl
-            error={formik.touched.description && formik.errors.description}
+            error={
+              formik.touched.description ? formik.errors.description : undefined
+            }
             label={'Task description'}
           >
             <TextArea
               cols={30}
               disabled={false}
-              error={formik.touched.description && formik.errors.description}
+              error={
+                formik.touched.description
+                  ? formik.errors.description
+                  : undefined
+              }
               name={'description'}
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
@@ -101,10 +107,9 @@ const TaskModal: React.FC<TaskModalProps> = ({
             }
             size={ButtonSize.DEFAULT}
             startEnhancer={
-              !isAddTaskLoading &&
-              !isUpdateTaskLoading && (
+              !isAddTaskLoading && !isUpdateTaskLoading ? (
                 <img src="assets/svg/plus-icon.svg" alt="Plus Icon" />
-              )
+              ) : undefined
             }
           >
             {btnText}

@@ -80,7 +80,7 @@ export default class AuthenticationService {
       throw new AccessTokenInvalidError();
     }
 
-    if (verifiedToken.exp * 1000 < Date.now()) {
+    if (verifiedToken.exp! * 1000 < Date.now()) {
       throw new AccessTokenExpiredError();
     }
 
@@ -194,7 +194,7 @@ export default class AuthenticationService {
 
     const jwtTokenDecoded = jsonwebtoken.decode(jwtToken);
 
-    if (typeof jwtTokenDecoded === 'string') {
+    if (!jwtTokenDecoded || typeof jwtTokenDecoded === 'string' || !jwtTokenDecoded.exp) {
       throw new AccessTokenInvalidError();
     }
 

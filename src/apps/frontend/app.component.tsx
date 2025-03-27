@@ -9,9 +9,9 @@ import InspectLet from './vendor/inspectlet';
 
 export default function App(): React.ReactElement {
   useEffect(() => {
-    const inspectletKey = Config.getConfigValue('inspectletKey');
+    const inspectLetKey = Config.getConfigValue('inspectLetKey');
 
-    if (inspectletKey) {
+    if (inspectLetKey) {
       InspectLet();
     }
   }, []);

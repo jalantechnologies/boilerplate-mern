@@ -43,17 +43,19 @@ const useResetPasswordForm = ({
         .required(constant.PASSWORD_MATCH_VALIDATION_ERROR),
     }),
     onSubmit: (values) => {
-      resetPassword({
-        accountId,
-        newPassword: values.password,
-        token,
-      })
-        .then(() => {
-          onSuccess();
+      if (accountId && token) {
+        resetPassword({
+          accountId,
+          newPassword: values.password,
+          token,
         })
-        .catch((err) => {
-          onError(err as AsyncError);
-        });
+          .then(() => {
+            onSuccess();
+          })
+          .catch((err) => {
+            onError(err as AsyncError);
+          });
+      }
     },
   });
 

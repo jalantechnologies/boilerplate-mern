@@ -32,11 +32,12 @@ const Tasks: React.FC = () => {
     <div className="mx-auto max-w-5xl">
       <VerticalStackLayout gap={7}>
         <HeadingMedium>TaskList</HeadingMedium>
-        <TaskHeader />
+        <TaskHeader onError={onError} />
         <TaskSection
           tasks={tasksList}
           isGetTasksLoading={isGetTasksLoading}
           handleDeleteTask={handleDeleteTask}
+          onError={onError}
         />
       </VerticalStackLayout>
     </div>

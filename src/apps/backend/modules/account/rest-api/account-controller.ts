@@ -40,7 +40,7 @@ export class AccountController {
         );
       }
 
-      const accountJSON = serializeAccountAsJSON(account);
+      const accountJSON = serializeAccountAsJSON(account!);
 
       res.status(HttpStatusCodes.CREATED).send(accountJSON);
     }

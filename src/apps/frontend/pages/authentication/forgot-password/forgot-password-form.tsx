@@ -34,13 +34,15 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
       <form onSubmit={formik.handleSubmit}>
         <VerticalStackLayout gap={5}>
           <FormControl
-            error={formik.touched.username && formik.errors.username}
+            error={formik.touched.username ? formik.errors.username : undefined}
             label={'Email'}
           >
             <Input
               data-testid="username"
               disabled={isSendForgotPasswordEmailLoading}
-              error={formik.touched.username && formik.errors.username}
+              error={
+                formik.touched.username ? formik.errors.username : undefined
+              }
               endEnhancer={
                 <img
                   alt="email icon"

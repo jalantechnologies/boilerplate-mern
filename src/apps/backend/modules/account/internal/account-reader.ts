@@ -2,13 +2,14 @@ import {
   Account,
   AccountNotFoundError,
   AccountWithPhoneNumberExistsError,
+  AccountWithPhoneNumberNotFoundError,
   AccountWithUserNameExistsError,
   InvalidCredentialsError,
-  Nullable,
   PhoneNumber,
 } from 'backend/modules/account';
 import AccountUtil from 'backend/modules/account/internal/account-util';
 import AccountRepository from 'backend/modules/account/internal/store/account-repository';
+import { Nullable } from 'backend/types';
 
 export default class AccountReader {
   public static async getAccountByUsername(username: string): Promise<Account> {
@@ -57,7 +58,7 @@ export default class AccountReader {
     const account = await this.getAccountByPhoneNumberOptional(phoneNumber);
 
     if (!account) {
-      throw new AccountNotFoundError(phoneNumber.toString());
+      throw new AccountWithPhoneNumberNotFoundError(phoneNumber.toString());
     }
 
     return account;

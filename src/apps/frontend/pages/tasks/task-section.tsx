@@ -20,7 +20,7 @@ import useTaskForm from './tasks-form.hook';
 interface TaskSectionProps {
   handleDeleteTask: (taskId: string) => void;
   isGetTasksLoading: boolean;
-  onError?: (error: AsyncError) => void;
+  onError: (error: AsyncError) => void;
   tasks: Task[];
 }
 
@@ -108,6 +108,8 @@ const TaskSection: React.FC<TaskSectionProps> = ({
         isModalOpen={updateTaskModal}
         setIsModalOpen={setUpdateTaskModal}
         btnText={'Update Task'}
+        onError={onError}
+        onSuccess={onSuccess}
       />
     </VerticalStackLayout>
   );

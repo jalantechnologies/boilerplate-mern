@@ -9,7 +9,7 @@ import TaskModal from './task-modal';
 import useTaskForm from './tasks-form.hook';
 
 interface TaskHeaderProps {
-  onError?: (error: AsyncError) => void;
+  onError: (error: AsyncError) => void;
 }
 
 const TaskHeader: React.FC<TaskHeaderProps> = ({ onError }) => {
@@ -47,6 +47,8 @@ const TaskHeader: React.FC<TaskHeaderProps> = ({ onError }) => {
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
           btnText={'Add Task'}
+          onError={onError}
+          onSuccess={onSuccess}
         />
       </div>
     </div>

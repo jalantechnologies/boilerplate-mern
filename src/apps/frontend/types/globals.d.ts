@@ -3,12 +3,15 @@ export {};
 declare global {
   const Config: {
     env: string;
-    inspectletKey: string;
+    inspectLetKey: string;
   };
 
   interface Window {
     __insp: Array<Array<string | number>>;
     __inspld: number;
-    Config;
+    Config: {
+      env: string;
+      inspectLetKey: string;
+    };
   }
 }

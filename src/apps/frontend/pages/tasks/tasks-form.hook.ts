@@ -7,8 +7,8 @@ import { AsyncError } from '../../types';
 import { Task } from '../../types/task';
 
 interface TaskFormProps {
-  onError?: (error: AsyncError) => void;
-  onSuccess?: () => void;
+  onError: (error: AsyncError) => void;
+  onSuccess: () => void;
 }
 const useTaskForm = ({ onError, onSuccess }: TaskFormProps) => {
   const {
@@ -62,7 +62,7 @@ const useTaskForm = ({ onError, onSuccess }: TaskFormProps) => {
             }
             return taskData;
           });
-          setTasksList(newUpdatedTasks);
+          setTasksList(newUpdatedTasks as Task[]);
           onSuccess();
           updateTaskFormik.resetForm();
         })
@@ -90,7 +90,7 @@ const useTaskForm = ({ onError, onSuccess }: TaskFormProps) => {
     onSubmit: (values) => {
       addTask(values.title, values.description)
         .then((newTask) => {
-          setTasksList([...tasksList, newTask]);
+          setTasksList([...tasksList, newTask as Task]);
           onSuccess();
           addTaskFormik.resetForm();
         })

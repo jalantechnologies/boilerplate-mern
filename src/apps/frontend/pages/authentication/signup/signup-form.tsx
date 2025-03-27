@@ -30,10 +30,14 @@ const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
           <div className="w-full">
             <FormControl
               label={'First name'}
-              error={formik.touched.firstName && formik.errors.firstName}
+              error={
+                formik.touched.firstName ? formik.errors.firstName : undefined
+              }
             >
               <Input
-                error={formik.touched.firstName && formik.errors.firstName}
+                error={
+                  formik.touched.firstName ? formik.errors.firstName : undefined
+                }
                 data-testid="firstName"
                 disabled={isSignupLoading}
                 name="firstName"
@@ -47,10 +51,14 @@ const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
           <div className="w-full">
             <FormControl
               label={'Last name'}
-              error={formik.touched.lastName && formik.errors.lastName}
+              error={
+                formik.touched.lastName ? formik.errors.lastName : undefined
+              }
             >
               <Input
-                error={formik.touched.lastName && formik.errors.lastName}
+                error={
+                  formik.touched.lastName ? formik.errors.lastName : undefined
+                }
                 data-testid="lastName"
                 disabled={isSignupLoading}
                 name="lastName"
@@ -64,7 +72,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
         </Flex>
         <FormControl
           label={'Email'}
-          error={formik.touched.username && formik.errors.username}
+          error={formik.touched.username ? formik.errors.username : undefined}
         >
           <Input
             data-testid="username"
@@ -76,7 +84,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
                 src="/assets/img/icon/email.svg"
               />
             }
-            error={formik.touched.username && formik.errors.username}
+            error={formik.touched.username ? formik.errors.username : undefined}
             name="username"
             onBlur={formik.handleBlur}
             onChange={formik.handleChange}
@@ -86,10 +94,10 @@ const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
         </FormControl>
         <FormControl
           label={'Password'}
-          error={formik.touched.password && formik.errors.password}
+          error={formik.touched.password ? formik.errors.password : undefined}
         >
           <PasswordInput
-            error={formik.touched.password && formik.errors.password}
+            error={formik.touched.password ? formik.errors.password : undefined}
             name={'password'}
             onBlur={formik.handleBlur}
             onChange={formik.handleChange}
@@ -99,11 +107,17 @@ const SignupForm: React.FC<SignupFormProps> = ({ onError, onSuccess }) => {
         </FormControl>
         <FormControl
           label={'Re-type Password'}
-          error={formik.touched.retypePassword && formik.errors.retypePassword}
+          error={
+            formik.touched.retypePassword
+              ? formik.errors.retypePassword
+              : undefined
+          }
         >
           <PasswordInput
             error={
-              formik.touched.retypePassword && formik.errors.retypePassword
+              formik.touched.retypePassword
+                ? formik.errors.retypePassword
+                : undefined
             }
             name={'retypePassword'}
             onBlur={formik.handleBlur}

@@ -1,8 +1,10 @@
+import { Nullable } from '../types/common';
+
 export const setupScenario = <T = unknown>(
   name: string,
   params?: unknown
-): T => {
-  let result: T;
+): Nullable<T> => {
+  let result: Nullable<T> = null;
 
   beforeEach((done) => {
     cy.task('scenario:setup', { name, params }).then((response: T) => {

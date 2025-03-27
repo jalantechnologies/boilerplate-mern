@@ -40,21 +40,20 @@ const usePhoneLoginForm = ({
       const isValidPhoneNumber =
         PhoneNumberUtil.getInstance().isValidNumber(parsedPhoneNumber);
 
-      if (!isValidPhoneNumber) {
+      const formattedPhoneNumber = parsedPhoneNumber.getNationalNumber();
+
+      if (!isValidPhoneNumber || !formattedPhoneNumber) {
         onError({ message: constant.PHONE_VALIDATION_ERROR } as AsyncError);
         return;
       }
 
-      const formattedPhoneNumber = parsedPhoneNumber
-        .getNationalNumber()
-        .toString();
       const encodedCountryCode = encodeURIComponent(values.countryCode);
       const otpPageUrl = `${routes.VERIFY_OTP}?&country_code=${encodedCountryCode}&phone_number=${formattedPhoneNumber}`;
 
       sendOTP(
         new PhoneNumber({
           countryCode: values.countryCode,
-          phoneNumber: formattedPhoneNumber,
+          phoneNumber: formattedPhoneNumber.toString(),
         })
       )
         .then(() => {

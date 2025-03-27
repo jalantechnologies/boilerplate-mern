@@ -1,11 +1,13 @@
 import { ApiError, ApiResponse } from '../types';
-import { JsonObject } from '../types/common-types';
+import { JsonObject, Nullable } from '../types/common-types';
 import { MarkdownDocumentation } from '../types/documentation';
 
 import APIService from './api.service';
 
 export default class DocumentationService extends APIService {
-  getDocumentation = async (): Promise<ApiResponse<MarkdownDocumentation>> => {
+  getDocumentation = async (): Promise<
+    ApiResponse<Nullable<MarkdownDocumentation>>
+  > => {
     try {
       const response = await this.apiClient.get('/get-documentation');
 
@@ -14,10 +16,7 @@ export default class DocumentationService extends APIService {
         undefined
       );
     } catch (e) {
-      return new ApiResponse(
-        undefined,
-        new ApiError(e.response.data as JsonObject)
-      );
+      return new ApiResponse(null, new ApiError(e.response.data as JsonObject));
     }
   };
 }

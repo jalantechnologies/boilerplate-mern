@@ -5,7 +5,6 @@ import './satoshi.css';
 import './style.css';
 import App from './app.component';
 
-const container = document.getElementById('app');
+const container = document.getElementById('app') as HTMLElement;
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 ReactDOM.createRoot(container).render(<App />);
