@@ -1,11 +1,9 @@
 import clsx from 'clsx';
+import styles from 'frontend/components/button/button.styles';
+import HorizontalStackLayout from 'frontend/components/layouts/horizontal-stack-layout';
+import Spinner from 'frontend/components/spinner/spinner';
+import { ButtonKind, ButtonSize, ButtonType } from 'frontend/types/button';
 import React, { PropsWithChildren } from 'react';
-
-import { ButtonKind, ButtonSize, ButtonType } from '../../types/button';
-import HorizontalStackLayout from '../layouts/horizontal-stack-layout';
-import Spinner from '../spinner/spinner';
-
-import styles from './button.styles';
 
 interface ButtonProps {
   disabled?: boolean;
