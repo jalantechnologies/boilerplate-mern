@@ -19,12 +19,12 @@ const Sidebar: React.FC<SidebarProps> = ({
   return (
     <aside
       ref={sidebar}
-      className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${
+      className={`absolute left-0 top-0 z-[9999] flex h-screen w-[18.125rem] flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${
         isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
       }`}
     >
       {/* <!-- SIDEBAR HEADER --> */}
-      <div className="flex items-center justify-end gap-2 px-6 py-5.5 lg:py-6.5">
+      <div className="flex items-center justify-end gap-2 px-6 py-[1.375rem] lg:py-[1.625rem]">
         <button
           ref={trigger}
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}

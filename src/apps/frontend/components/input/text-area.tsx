@@ -36,7 +36,7 @@ const TextArea: React.FC<TextAreaProps> = ({
     rows={rows}
     value={value}
     placeholder={placeholder}
-    className={`w-full rounded-sm border border-stroke bg-white px-4.5 py-3 text-black focus:border-primary focus-visible:outline-none ${
+    className={`w-full rounded-sm border border-stroke bg-white px-4 py-3 text-black focus:border-primary focus-visible:outline-none ${
       error ? 'border-red-500' : 'border-stroke'
     }`}
     onChange={onChange}
