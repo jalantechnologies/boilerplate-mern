@@ -1,32 +1,26 @@
-import { fetchSellerPerformanceReportData } from './fetch-seller-performance-report-data';
+// import { fetchSellerPerformanceReportData } from './fetch-seller-performance-report-data';
 import { generateAiResponse } from './generate-ai-response';
 
-const rulePrompt = `You are an intelligent assistant responsible for evaluating account health and performance metrics. Based on the rules provided below, evaluate the given dataset and make sure to remember onto which rule does the task needs to be created and return a JSON response strictly in the specified format. No extra text should be included in the output.
+const rulePrompt = `You are an intelligent assistant responsible for evaluating account health and performance metrics. Based on the rules provided below, evaluate the given values inside the macros ({{}}) and make sure to remember onto which rule does the task needs to be created and return a JSON response strictly in the specified format.
 
 ---
 
 ## Rules for Evaluation:
 
 1. **Account Health Status**:
-   - Description: Measures overall account performance.
-   - Condition: If there is a negative term like warned or critical in {{ account_health_rating_ahr_status }} of given dataset, it should be considered as unhealthy and a task should be created in teamworks, else no need to create a task for this.
-   - Additional Step: When unhealthy, also validate all the other metrics below and apply their individual rules.
+   - Condition: If {{ WARNED }} is a WARNED or CRITICAL, it should be considered as unhealthy and a task should be created in teamworks.
 
 2. **Pre-Fulfillment Cancellation Rate**:
-   - Description: Rate of orders canceled before fulfillment.
-   - Condition: If the metric {{ pre_fulfillment_cancellation_rate_rate }} is greater than the metric {{ pre_fulfillment_cancellation_rate_target_value }} in the given dataset, a task should be created in teamworks, else no need to create a task for this.
+   - Condition: If {{ 0.025001 }} is greater than {{ 0.025 }}, a task should be created in teamworks, else no need to create a task for this.
 
 3. **Order Defect Rate**:
-   - Description: Rate of orders with defects like negative feedback, A-to-Z claims, or chargebacks.
-   - Condition: If the metric {{ order_defect_rate_afn_rate }} is greater than the metric {{ order_defect_rate_afn_target_value }} in the given dataset, a task should be created in teamworks, else no need to create a task for this.
+   - Condition: If {{ 0.011 }} is greater than {{ 0.01 }}, a task should be created in teamworks, else no need to create a task for this.
 
 4. **Valid Tracking Rate**:
-   - Description: Measures if shipments have valid tracking info.
-   - Condition: If the metric {{ valid_tracking_rate_rate }} is less than the metric {{ valid_tracking_rate_target_value }} in the given dataset, a task should be created in teamworks, else no need to create a task for this.
+   - Condition: If {{ 0.90004 }} is less than {{ 0.95 }}, a task should be created in teamworks, else no need to create a task for this.
 
 5. **Late Shipment Rate**:
-   - Description: Tracks shipments sent after expected time.
-   - Condition: If the metric {{ late_shipment_rate_rate }} is greater than the metric {{ late_shipment_rate_target_value }} in the given dataset, a task should be created in teamworks, else no need to create a task for this.
+   - Condition: If {{ 0.04001 }} is greater than {{ 0.04 }}, a task should be created in teamworks, else no need to create a task for this.
 
 ---
 `;
@@ -34,7 +28,7 @@ const rulePrompt = `You are an intelligent assistant responsible for evaluating 
 const expectedOutputPrompt = `
 ## Expected Output Format:
 
-You must only return a JSON object strictly in the following json structure:
+You must only return a JSON object strictly in the following json structure along with short explanation:
 
 {
   "tasksToBeCreatedFor": { # true means the task should be created, so please analyse the respective metric and create a task if it violates the condition
@@ -48,29 +42,35 @@ You must only return a JSON object strictly in the following json structure:
 
 const run = async () => {
   // Details of the report with all good metrics, 0 tasks to be created
-//   const accountId = 1678140;
-//   const reportDate = '2025-01-01';
+  // const accountId = 1234; // replace 1234 with the actual account id
+  // const reportDate = '2025-01-01';
 
   // Details of the report with critical ahr status and good for rest, 1 task need to be created
-//   const accountId = 2472320;
-//   const reportDate = '2025-03-18';
+  // const accountId = 1234; // replace 1234 with the actual account id
+  // const reportDate = '2025-03-18';
 
   // Details of the report with critical ahr status and good for rest, 1 task need to be created
-  const accountId = 1739090;
-  const reportDate = '2024-01-03';
+  // const accountId = 1234; // replace 1234 with the actual account id
+  // const reportDate = '2024-01-03';
 
-  const sellerPerformanceReportData = await fetchSellerPerformanceReportData(
-    accountId,
-    reportDate
-  );
-  console.log('Fetched rows:', sellerPerformanceReportData);
+  // const sellerPerformanceReportData = await fetchSellerPerformanceReportData(
+  //   accountId,
+  //   reportDate
+  // );
+  // console.log('Fetched rows:', sellerPerformanceReportData);
 
-  const datasetPrompt = `Here is the respective dataset that needs to be evaluated upon: ${JSON.stringify(sellerPerformanceReportData)}.`
+  // const datasetPrompt = `Here is the respective dataset that needs to be evaluated upon: ${JSON.stringify(sellerPerformanceReportData)}.`
 
-  const prompt = `${rulePrompt} ${datasetPrompt} ${expectedOutputPrompt}`;
+  const prompt = `${rulePrompt} ${expectedOutputPrompt}`;
+
+  const startTime = performance.now();
 
   const response = await generateAiResponse(prompt);
   console.log('Generated AI response:', response);
+
+  const endTime = performance.now();
+  const duration = endTime - startTime;
+  console.log('🚀 ~ run ~ duration in seconds:', duration / 1000);
 };
 
 run().catch(console.error);
