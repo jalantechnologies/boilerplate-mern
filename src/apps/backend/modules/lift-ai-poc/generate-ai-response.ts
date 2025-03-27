@@ -1,19 +1,23 @@
-import axios, { AxiosInstance } from 'axios';
+import axios from 'axios';
 import { ConfigService } from '../config';
 
-export const generateAiResponse = async (prompt: string): Promise<string> => {
-  const apiUrl = 'https://ai.avenue7media.com/api/chat/completions';
-  const token = ConfigService.getValue<string>('liftAi.apiToken');
-  const apiClient: AxiosInstance = axios.create({
-    baseURL: apiUrl,
+const chatCompletionApiUrl = 'https://ai.avenue7media.com/api/chat/completions';
+const llmModalsUrl = 'https://ai.avenue7media.com/api/models';
+const token = ConfigService.getValue<string>('liftAi.apiToken');
+
+const getApiClient = (isChatCompletion: boolean) => {
+  return axios.create({
+    baseURL: isChatCompletion ? chatCompletionApiUrl : llmModalsUrl,
     headers: {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     },
   });
+};
 
+export const generateAiResponse = async (prompt: string): Promise<string> => {
   try {
-    const response = await apiClient.post('', {
+    const response = await getApiClient(true).post('', {
       model: 'llama3.1:8b',
       messages: [
         {
@@ -29,3 +33,13 @@ export const generateAiResponse = async (prompt: string): Promise<string> => {
     throw error;
   }
 };
+
+export const getAvailableModels = async (): Promise<string[]> => {
+  try {
+    const response = await getApiClient(false).get('');
+    return response.data.data.map((modelDetails) => modelDetails.name);
+  } catch (error) {
+    console.error('Error fetching available models:', error);
+    throw error;
+  }
+}

@@ -40,7 +40,7 @@ You must only return a JSON object strictly in the following json structure alon
   }
 }`;
 
-const run = async () => {
+const runChatCompletion = async () => {
   // Details of the report with all good metrics, 0 tasks to be created
   // const accountId = 1234; // replace 1234 with the actual account id
   // const reportDate = '2025-01-01';
@@ -73,4 +73,9 @@ const run = async () => {
   console.log('🚀 ~ run ~ duration in seconds:', duration / 1000);
 };
 
-run().catch(console.error);
+runChatCompletion().catch(console.error);
+
+// Uncomment the following code and run "npm run run:lift-ai-poc-script" to get the list of available models
+// getAvailableModels()
+//   .then((res) => { console.log(res); })
+//   .catch(console.error);
