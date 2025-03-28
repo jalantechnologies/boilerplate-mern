@@ -1,17 +1,16 @@
-import Header from '../components/header';
-
-import About from './about/about.page';
-import AppLayout from './app-layout/app-layout';
-import ForgotPassword from './authentication/forgot-password';
-import Login from './authentication/login';
-import OTPVerificationPage from './authentication/otp';
-import PhoneLogin from './authentication/phone-login';
-import ResetPassword from './authentication/reset-password';
-import Signup from './authentication/signup';
-import Dashboard from './dashboard';
-import NotFound from './not-found/not-found.page';
-import ProfileSettings from './profile/settings';
-import Tasks from './tasks';
+import Header from 'frontend/components/header';
+import About from 'frontend/pages/about/about.page';
+import AppLayout from 'frontend/pages/app-layout/app-layout';
+import ForgotPassword from 'frontend/pages/authentication/forgot-password';
+import Login from 'frontend/pages/authentication/login';
+import OTPVerificationPage from 'frontend/pages/authentication/otp';
+import PhoneLogin from 'frontend/pages/authentication/phone-login';
+import ResetPassword from 'frontend/pages/authentication/reset-password';
+import Signup from 'frontend/pages/authentication/signup';
+import Dashboard from 'frontend/pages/dashboard';
+import NotFound from 'frontend/pages/not-found/not-found.page';
+import ProfileSettings from 'frontend/pages/profile/settings';
+import Tasks from 'frontend/pages/tasks';
 
 export {
   About,

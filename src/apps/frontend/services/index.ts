@@ -1,8 +1,8 @@
-import AccountService from './account.service';
-import APIService from './api.service';
-import AuthService from './auth.service';
-import DocumentationService from './documentation.service';
-import ResetPasswordService from './reset-password.service';
+import AccountService from 'frontend/services/account.service';
+import APIService from 'frontend/services/api.service';
+import AuthService from 'frontend/services/auth.service';
+import DocumentationService from 'frontend/services/documentation.service';
+import ResetPasswordService from 'frontend/services/reset-password.service';
 
 export {
   AccountService,

@@ -1,10 +1,13 @@
-import { AccountProvider, useAccountContext } from './account.provider';
-import { AuthProvider, useAuthContext } from './auth.provider';
+import {
+  AccountProvider,
+  useAccountContext,
+} from 'frontend/contexts/account.provider';
+import { AuthProvider, useAuthContext } from 'frontend/contexts/auth.provider';
 import {
   ResetPasswordProvider,
   useResetPasswordContext,
-} from './reset-password.provider';
-import { TaskProvider, useTaskContext } from './task.provider';
+} from 'frontend/contexts/reset-password.provider';
+import { TaskProvider, useTaskContext } from 'frontend/contexts/task.provider';
 
 export {
   AuthProvider,

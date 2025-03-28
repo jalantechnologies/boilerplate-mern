@@ -1,13 +1,12 @@
-import React from 'react';
-
 import {
   Button,
   HeadingLarge,
   ParagraphSmall,
   VerticalStackLayout,
-} from '../../../components';
-import Modal from '../../../components/modal';
-import { ButtonKind, ButtonSize } from '../../../types/button';
+} from 'frontend/components';
+import Modal from 'frontend/components/modal';
+import { ButtonKind, ButtonSize } from 'frontend/types/button';
+import React from 'react';
 
 interface AccountDeletionModalProps {
   handleDeleteAccount: () => void;

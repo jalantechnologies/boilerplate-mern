@@ -1,9 +1,8 @@
+import FlexItem from 'frontend/components/flex/flex-item.component';
+import Flex from 'frontend/components/flex/flex.component';
+import constant from 'frontend/constants';
+import { AsyncError, KeyboardKeys } from 'frontend/types';
 import React, { useRef, useState, FocusEventHandler } from 'react';
-
-import constant from '../../constants';
-import { AsyncError, KeyboardKeys } from '../../types';
-import FlexItem from '../flex/flex-item.component';
-import Flex from '../flex/flex.component';
 
 import OTPInput from './otp-input';
 

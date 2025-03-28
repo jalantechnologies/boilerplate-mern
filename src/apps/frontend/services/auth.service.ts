@@ -1,6 +1,5 @@
-import { AccessToken, ApiResponse, PhoneNumber } from '../types';
-
-import APIService from './api.service';
+import APIService from 'frontend/services/api.service';
+import { AccessToken, ApiResponse, PhoneNumber } from 'frontend/types';
 
 export default class AuthService extends APIService {
   login = async (

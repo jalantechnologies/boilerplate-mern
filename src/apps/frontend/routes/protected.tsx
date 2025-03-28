@@ -1,10 +1,9 @@
+import routes from 'frontend/constants/routes';
+import { TaskProvider, useAccountContext } from 'frontend/contexts';
+import { Dashboard, NotFound, ProfileSettings, Tasks } from 'frontend/pages';
+import AppLayout from 'frontend/pages/app-layout/app-layout';
 import React, { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
-
-import routes from '../constants/routes';
-import { TaskProvider, useAccountContext } from '../contexts';
-import { Dashboard, NotFound, ProfileSettings, Tasks } from '../pages';
-import AppLayout from '../pages/app-layout/app-layout';
 
 const App = () => {
   const { getAccountDetails } = useAccountContext();

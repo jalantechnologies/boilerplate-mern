@@ -1,9 +1,7 @@
+import useAsync from 'frontend/contexts/async.hook';
+import { AccountService } from 'frontend/services';
+import { Account, ApiResponse, AsyncError } from 'frontend/types';
 import React, { createContext, PropsWithChildren, useContext } from 'react';
-
-import { AccountService } from '../services';
-import { Account, ApiResponse, AsyncError } from '../types';
-
-import useAsync from './async.hook';
 
 type AccountContextType = {
   accountDetails: Account;

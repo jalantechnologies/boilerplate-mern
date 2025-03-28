@@ -1,8 +1,7 @@
-import { ApiError, ApiResponse } from '../types';
-import { JsonObject } from '../types/common-types';
-import { MarkdownDocumentation } from '../types/documentation';
-
-import APIService from './api.service';
+import APIService from 'frontend/services/api.service';
+import { ApiError, ApiResponse } from 'frontend/types';
+import { JsonObject } from 'frontend/types/common-types';
+import { MarkdownDocumentation } from 'frontend/types/documentation';
 
 export default class DocumentationService extends APIService {
   getDocumentation = async (): Promise<ApiResponse<MarkdownDocumentation>> => {

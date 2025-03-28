@@ -1,10 +1,8 @@
+import useAsync from 'frontend/contexts/async.hook';
+import { DocumentationService } from 'frontend/services';
+import { ApiResponse, AsyncError } from 'frontend/types';
+import { MarkdownDocumentation } from 'frontend/types/documentation';
 import React, { createContext, PropsWithChildren, useContext } from 'react';
-
-import { DocumentationService } from '../services';
-import { ApiResponse, AsyncError } from '../types';
-import { MarkdownDocumentation } from '../types/documentation';
-
-import useAsync from './async.hook';
 
 type DocumentationContextType = {
   documentation: MarkdownDocumentation;

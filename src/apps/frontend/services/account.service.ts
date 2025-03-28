@@ -1,8 +1,7 @@
-import { ApiResponse } from '../types';
-import { Account } from '../types/account';
-import { getAccessTokenFromStorage } from '../utils/storage-util';
-
-import APIService from './api.service';
+import APIService from 'frontend/services/api.service';
+import { ApiResponse } from 'frontend/types';
+import { Account } from 'frontend/types/account';
+import { getAccessTokenFromStorage } from 'frontend/utils/storage-util';
 
 export default class AccountService extends APIService {
   getAccountDetails = async (): Promise<ApiResponse<Account>> => {

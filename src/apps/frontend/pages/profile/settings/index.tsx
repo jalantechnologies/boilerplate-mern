@@ -1,15 +1,13 @@
+import { HeadingLarge, VerticalStackLayout } from 'frontend/components';
+import routes from 'frontend/constants/routes';
+import { useAccountContext, useAuthContext } from 'frontend/contexts';
+import AccountActionsSection from 'frontend/pages/profile/settings/account-actions-section';
+import AccountDeletionModal from 'frontend/pages/profile/settings/account-deletion-modal';
+import PersonalInfoSection from 'frontend/pages/profile/settings/personal-info-section';
+import { AsyncError } from 'frontend/types';
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
-
-import { HeadingLarge, VerticalStackLayout } from '../../../components';
-import routes from '../../../constants/routes';
-import { useAccountContext, useAuthContext } from '../../../contexts';
-import { AsyncError } from '../../../types';
-
-import AccountActionsSection from './account-actions-section';
-import AccountDeletionModal from './account-deletion-modal';
-import PersonalInfoSection from './personal-info-section';
 
 const ProfileSettings = () => {
   const { accountDetails, deleteAccount, isDeleteAccountLoading } =

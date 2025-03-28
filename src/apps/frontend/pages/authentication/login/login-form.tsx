@@ -1,6 +1,3 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-
 import {
   Button,
   Flex,
@@ -8,13 +5,14 @@ import {
   Input,
   PasswordInput,
   VerticalStackLayout,
-} from '../../../components';
-import routes from '../../../constants/routes';
-import { AsyncError } from '../../../types';
-import { ButtonKind, ButtonSize, ButtonType } from '../../../types/button';
-
-import LoginFormCheckbox from './login-form-checkbox';
-import useLoginForm from './login-form.hook';
+} from 'frontend/components';
+import routes from 'frontend/constants/routes';
+import LoginFormCheckbox from 'frontend/pages/authentication/login/login-form-checkbox';
+import useLoginForm from 'frontend/pages/authentication/login/login-form.hook';
+import { AsyncError } from 'frontend/types';
+import { ButtonKind, ButtonSize, ButtonType } from 'frontend/types/button';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 interface LoginFormProps {
   onSuccess: () => void;

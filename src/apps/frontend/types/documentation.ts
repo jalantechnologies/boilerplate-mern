@@ -1,4 +1,4 @@
-import { JsonObject } from './common-types';
+import { JsonObject } from 'frontend/types/common-types';
 
 export class MarkdownDocumentation {
   markdownDocumentation: string;

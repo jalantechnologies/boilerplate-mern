@@ -1,8 +1,7 @@
+import { Button, LabelLarge } from 'frontend/components';
+import { Account } from 'frontend/types';
+import { ButtonKind, ButtonSize } from 'frontend/types/button';
 import React from 'react';
-
-import { Button, LabelLarge } from '../../../components';
-import { Account } from '../../../types';
-import { ButtonKind, ButtonSize } from '../../../types/button';
 
 interface AccountActionsSectionProps {
   accountDetails: Account;
