@@ -1,4 +1,7 @@
+import clsx from 'clsx';
 import React, { PropsWithChildren } from 'react';
+
+import styles from './layouts.styles';
 
 interface VerticalStackLayoutProps {
   gap?: number;
@@ -9,7 +12,9 @@ const VerticalStackLayout: React.FC<
 > = ({ children, gap = 0 }) => {
   const gapClass = gap ? `gap-${gap}` : '';
   return (
-    <div className={`${gapClass} flex flex-col justify-center`}>{children}</div>
+    <div className={clsx(styles.layouts.verticalStack, gapClass)}>
+      {children}
+    </div>
   );
 };
 

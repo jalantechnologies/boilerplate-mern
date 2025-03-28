@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { ButtonKind } from '../../types/button';
 import Button from '../button';
 
+import styles from './input.styles';
+
 import Input from '.';
 
 interface PasswordInputProps
@@ -36,13 +38,13 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
         <Button onClick={togglePasswordVisibility} kind={ButtonKind.SECONDARY}>
           {isPasswordVisible ? (
             <img
-              className="size-6 opacity-65"
+              className={styles.input.passwordInput.visibilityIcon}
               src="/assets/img/icon/eye-closed.svg"
               alt="hide password icon"
             />
           ) : (
             <img
-              className="size-6 opacity-65"
+              className={styles.input.passwordInput.visibilityIcon}
               src="/assets/img/icon/eye-open.svg"
               alt="show password icon"
             />

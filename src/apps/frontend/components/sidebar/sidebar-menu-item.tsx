@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 
+import styles from './sidebar.styles';
+
 type SidebarMenuItemProps = {
   iconPath: string;
   path: string;
@@ -24,13 +26,15 @@ const SidebarMenuItem: React.FC<SidebarMenuItemProps> = ({
     setOpen(!open);
   };
 
+  const isTopLevelActive =
+    pathname === path || pathname.includes(title.toLowerCase());
+
   return (
     <li>
       <NavLink
         to={subItems ? '#' : path}
-        className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-          (pathname === path || pathname.includes(title.toLowerCase())) &&
-          'bg-graydark dark:bg-meta-4'
+        className={`${styles.sidebar.menuItem.link} ${
+          isTopLevelActive ? styles.sidebar.menuItem.linkActive : ''
         }`}
         onClick={() => {
           if (subItems) {
@@ -55,15 +59,15 @@ const SidebarMenuItem: React.FC<SidebarMenuItemProps> = ({
         )}
       </NavLink>
       {subItems && open && (
-        <div className="max-h-40 overflow-hidden duration-300 ease-in-out">
-          <ul className="mb-[1.375rem] mt-4 flex flex-col gap-2.5 pl-6">
+        <div className={styles.sidebar.menuItem.subMenuWrapper}>
+          <ul className={styles.sidebar.menuItem.subMenuList}>
             {subItems.map((subItem) => (
               <li key={subItem.path}>
                 <NavLink
                   to={subItem.path}
                   className={({ isActive }) =>
-                    `group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                      isActive && '!text-white'
+                    `${styles.sidebar.menuItem.subMenuItem} ${
+                      isActive ? styles.sidebar.menuItem.subMenuItemActive : ''
                     }`
                   }
                   onClick={() => setIsSidebarOpen(false)}

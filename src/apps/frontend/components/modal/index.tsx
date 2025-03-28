@@ -13,11 +13,11 @@ const Modal: React.FC<PropsWithChildren<ModalProps>> = ({
 }) => (
   <div
     className={clsx(
-      styles.modalOverlay,
-      isModalOpen ? styles.modalOverlayVisible : styles.modalOverlayHidden
+      styles.modal.overlay,
+      isModalOpen ? styles.modal.overlayVisible : styles.modal.overlayHidden
     )}
   >
-    <div className={styles.modalContainer}>{children}</div>
+    <div className={styles.modal.container}>{children}</div>
   </div>
 );
 

@@ -15,9 +15,9 @@ const FormControl: React.FC<PropsWithChildren<FormControlProps>> = ({
   label,
 }) => (
   <VerticalStackLayout gap={3}>
-    <label className={styles.formControlLabel}>{label}</label>
-    <div className={styles.formControlInputWrapper}>{children}</div>
-    {error && <div className={styles.formControlErrorText}>{error}</div>}
+    <label className={styles.formControl.label}>{label}</label>
+    <div className={styles.formControl.inputWrapper}>{children}</div>
+    {error && <div className={styles.formControl.errorText}>{error}</div>}
   </VerticalStackLayout>
 );
 

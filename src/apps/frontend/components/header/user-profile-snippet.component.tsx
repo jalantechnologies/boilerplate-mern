@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { Account } from '../../types';
 
+import styles from './header.styles';
 import UserMenuDropdown from './user-menu-dropdown.component';
 
 import { UserMenuDropdownItem } from '.';
@@ -50,26 +51,28 @@ const UserProfileSnippet: React.FC<DropdownUserProps> = ({
   }, [dropdownOpen]);
 
   return (
-    <div className="relative">
+    <div className={styles.header.userProfileSnippet.wrapper}>
       <Link
         ref={trigger}
         onClick={() => setDropdownOpen(!dropdownOpen)}
-        className="flex items-center gap-4"
+        className={styles.header.userProfileSnippet.trigger}
         to="#"
       >
-        <span className="hidden text-right lg:block">
-          <span className="block text-sm font-medium text-black dark:text-white">
+        <span className={styles.header.userProfileSnippet.nameBlock}>
+          <span className={styles.header.userProfileSnippet.nameText}>
             {account.displayName()}
           </span>
-          <span className="block text-xs">User</span>
+          <span className={styles.header.userProfileSnippet.roleText}>
+            User
+          </span>
         </span>
 
-        <span className="size-12 rounded-full">
+        <span className={styles.header.userProfileSnippet.avatar}>
           <img src="/assets/img/user.png" alt="User" />
         </span>
 
         <img
-          className="hidden fill-current opacity-50 sm:block"
+          className={styles.header.userProfileSnippet.dropdownIcon}
           src="/assets/img/icon/drop-down-arrow.svg"
           alt="dropdown icon"
         />

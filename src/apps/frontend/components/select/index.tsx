@@ -23,7 +23,7 @@ const Select: React.FC<SelectProps> = ({
   value,
 }) => (
   <select
-    className={styles.selectDropdown}
+    className={styles.select.dropdown}
     disabled={isLoading}
     multiple={multiple}
     onChange={handleChange}

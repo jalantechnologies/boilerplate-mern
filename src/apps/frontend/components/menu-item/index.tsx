@@ -9,7 +9,7 @@ import styles from './menu-item.styles';
 const MenuItem: React.FC<PropsWithChildren> = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <div className={styles.menuItemWrapper}>
+    <div className={styles.menuItem.wrapper}>
       <Button onClick={() => setIsOpen(!isOpen)} kind={ButtonKind.TERTIARY}>
         <img src="assets/svg/ellipsis-icon.svg" alt="Ellipsis Icon" />
       </Button>
@@ -17,10 +17,10 @@ const MenuItem: React.FC<PropsWithChildren> = ({ children }) => {
         onFocus={() => setIsOpen(true)}
         onBlur={() => setIsOpen(false)}
         className={clsx(
-          styles.menuItemDropdown,
+          styles.menuItem.dropdown,
           isOpen
-            ? styles.menuItemDropdownVisible
-            : styles.menuItemDropdownHidden
+            ? styles.menuItem.dropdownVisible
+            : styles.menuItem.dropdownHidden
         )}
       >
         {children}

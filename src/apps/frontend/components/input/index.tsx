@@ -31,33 +31,29 @@ const Input: React.FC<InputProps> = ({
 }) => (
   <div
     className={clsx([
-      styles.inputContainer,
-      error ? styles.border.errorState : styles.border.normalState,
-      disabled ? styles.disabled : '',
+      styles.input.container,
+      error ? styles.input.border.error : styles.input.border.normal,
+      disabled && styles.input.disabled,
     ])}
   >
     <HorizontalStackLayout gap={2}>
       {startEnhancer && (
-        <span className="flex h-full min-w-6 items-center justify-center">
-          {startEnhancer}
-        </span>
+        <span className={styles.input.enhancerWrapper}>{startEnhancer}</span>
       )}
       <input
         {...props}
         autoComplete="off"
         className={clsx([
-          styles.input,
-          disabled ? styles.disabled : '',
-          textAlign ? styles.textAlign[textAlign] : '',
+          styles.input.field,
+          disabled && styles.input.disabled,
+          textAlign && styles.input.textAlign[textAlign],
         ])}
         data-testid={testId}
         type={type || 'text'}
         ref={handleInputRef ? (ref) => handleInputRef(ref) : null}
       />
       {endEnhancer && (
-        <span className="flex h-full min-w-6 items-center justify-center">
-          {endEnhancer}
-        </span>
+        <span className={styles.input.enhancerWrapper}>{endEnhancer}</span>
       )}
     </HorizontalStackLayout>
   </div>

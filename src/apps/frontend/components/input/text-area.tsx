@@ -1,8 +1,11 @@
+import clsx from 'clsx';
 import React, {
   ChangeEventHandler,
   FocusEventHandler,
   FormEventHandler,
 } from 'react';
+
+import styles from './input.styles';
 
 interface TextAreaProps {
   cols: number;
@@ -36,9 +39,12 @@ const TextArea: React.FC<TextAreaProps> = ({
     rows={rows}
     value={value}
     placeholder={placeholder}
-    className={`w-full rounded-sm border border-stroke bg-white px-4 py-3 text-black focus:border-primary focus-visible:outline-none ${
-      error ? 'border-red-500' : 'border-stroke'
-    }`}
+    className={clsx(
+      styles.input.textArea.base,
+      error
+        ? styles.input.textArea.errorBorder
+        : styles.input.textArea.normalBorder
+    )}
     onChange={onChange}
     data-testid={testId}
     disabled={disabled}

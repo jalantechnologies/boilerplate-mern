@@ -42,16 +42,16 @@ const Header: React.FC<HeaderProps> = ({ isSidebarOpen, setIsSidebarOpen }) => {
   ];
 
   return (
-    <header className={styles.headerWrapper}>
-      <div className={styles.headerContent}>
-        <div className={styles.headerSidebarWrapper}>
+    <header className={styles.header.wrapper}>
+      <div className={styles.header.content}>
+        <div className={styles.header.sidebarWrapper}>
           {/* Hamburger Button for sidebar */}
           <HamburgerToggleButton
             isActive={isSidebarOpen}
             onClick={handleSidebarToggle}
           />
         </div>
-        <div className={styles.headerUserProfileWrapper}>
+        <div className={styles.header.userProfileWrapper}>
           {/* User Area */}
           <UserProfileSnippet
             account={accountDetails}
