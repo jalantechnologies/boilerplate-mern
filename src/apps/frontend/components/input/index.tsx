@@ -1,9 +1,7 @@
 import clsx from 'clsx';
+import styles from 'frontend/components/input/input.styles';
+import HorizontalStackLayout from 'frontend/components/layouts/horizontal-stack-layout';
 import * as React from 'react';
-
-import HorizontalStackLayout from '../layouts/horizontal-stack-layout';
-
-import styles from './input.styles';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   disabled?: boolean;

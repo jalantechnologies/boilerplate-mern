@@ -1,7 +1,6 @@
+import { Header } from 'frontend/components';
+import Sidebar from 'frontend/components/sidebar';
 import React, { PropsWithChildren } from 'react';
-
-import { Header } from '../../components';
-import Sidebar from '../../components/sidebar';
 
 export const AppLayout: React.FC<PropsWithChildren> = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);

@@ -1,13 +1,12 @@
+import constant from 'frontend/constants';
+import { JsonObject } from 'frontend/types/common-types';
+import { MarkdownDocumentation } from 'frontend/types/documentation';
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import ReactMarkdown from 'react-markdown';
 import 'github-markdown-css/github-markdown.css';
 
-import './custom-markdown-styles.scss';
-
-import constant from '../../constants';
-import { JsonObject } from '../../types/common-types';
-import { MarkdownDocumentation } from '../../types/documentation';
+import 'frontend/pages/documentation/custom-markdown-styles.scss';
 
 const Documentation: React.FC = () => {
   const [markdownContent, setMarkdownContent] = useState<string>('');

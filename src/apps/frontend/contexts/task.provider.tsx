@@ -1,15 +1,13 @@
+import useAsync from 'frontend/contexts/async.hook';
+import TaskService from 'frontend/services/task.service';
+import { ApiResponse, AsyncError } from 'frontend/types';
+import { Task } from 'frontend/types/task';
 import React, {
   createContext,
   PropsWithChildren,
   useContext,
   useState,
 } from 'react';
-
-import TaskService from '../services/task.service';
-import { ApiResponse, AsyncError } from '../types';
-import { Task } from '../types/task';
-
-import useAsync from './async.hook';
 
 type TaskContextType = {
   addTask: (title: string, description: string) => Promise<Task>;

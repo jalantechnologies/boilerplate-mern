@@ -1,10 +1,8 @@
+import { ResetPasswordService } from 'frontend//services';
+import { ApiResponse, AsyncError } from 'frontend//types';
+import useAsync from 'frontend/contexts/async.hook';
+import { ResetPasswordParams } from 'frontend/pages/authentication/reset-password/reset-password-form.hook';
 import React, { createContext, PropsWithChildren, useContext } from 'react';
-
-import { ResetPasswordParams } from '../pages/authentication/reset-password/reset-password-form.hook';
-import { ResetPasswordService } from '../services';
-import { ApiResponse, AsyncError } from '../types';
-
-import useAsync from './async.hook';
 
 type ResetPasswordContextType = {
   isResetPasswordLoading: boolean;

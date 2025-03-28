@@ -1,16 +1,14 @@
+import { Button, H2, VerticalStackLayout } from 'frontend/components';
+import routes from 'frontend/constants/routes';
+import AuthenticationFormLayout from 'frontend/pages/authentication/authentication-form-layout';
+import AuthenticationPageLayout from 'frontend/pages/authentication/authentication-page-layout';
+import OTPForm from 'frontend/pages/authentication/otp/otp-form';
+import { AsyncError } from 'frontend/types';
+import { ButtonKind } from 'frontend/types/button';
+import useTimer from 'frontend/utils/use-timer.hook';
 import React from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
-
-import { Button, H2, VerticalStackLayout } from '../../../components';
-import routes from '../../../constants/routes';
-import { AsyncError } from '../../../types';
-import { ButtonKind } from '../../../types/button';
-import useTimer from '../../../utils/use-timer.hook';
-import AuthenticationFormLayout from '../authentication-form-layout';
-import AuthenticationPageLayout from '../authentication-page-layout';
-
-import OTPForm from './otp-form';
 
 export const OTPVerificationPage: React.FC = () => {
   const sendOTPDelayInMilliseconds = 60_000;

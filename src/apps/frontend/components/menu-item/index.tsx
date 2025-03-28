@@ -1,7 +1,6 @@
+import Button from 'frontend/components/button';
+import { ButtonKind } from 'frontend/types/button';
 import React, { PropsWithChildren, useState } from 'react';
-
-import { ButtonKind } from '../../types/button';
-import Button from '../button';
 
 const MenuItem: React.FC<PropsWithChildren> = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);

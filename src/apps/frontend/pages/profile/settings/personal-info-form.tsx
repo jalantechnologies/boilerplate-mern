@@ -1,7 +1,6 @@
+import { FormControl, Input } from 'frontend/components';
+import { Account } from 'frontend/types';
 import React from 'react';
-
-import { FormControl, Input } from '../../../components';
-import { Account } from '../../../types';
 
 interface PersonalInfoFormProps {
   accountDetails: Account;

@@ -1,9 +1,8 @@
-import { ApiError, ApiResponse } from '../types';
-import { JsonObject } from '../types/common-types';
-import { Task } from '../types/task';
-import { getAccessTokenFromStorage } from '../utils/storage-util';
-
-import APIService from './api.service';
+import APIService from 'frontend/services/api.service';
+import { ApiError, ApiResponse } from 'frontend/types';
+import { JsonObject } from 'frontend/types/common-types';
+import { Task } from 'frontend/types/task';
+import { getAccessTokenFromStorage } from 'frontend/utils/storage-util';
 
 export default class TaskService extends APIService {
   addTask = async (

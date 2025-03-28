@@ -1,6 +1,3 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-
 import {
   Button,
   Flex,
@@ -8,12 +5,13 @@ import {
   Input,
   PasswordInput,
   VerticalStackLayout,
-} from '../../../components';
-import routes from '../../../constants/routes';
-import { AsyncError } from '../../../types';
-import { ButtonKind, ButtonSize, ButtonType } from '../../../types/button';
-
-import useSignupForm from './signup-form.hook';
+} from 'frontend/components';
+import routes from 'frontend/constants/routes';
+import useSignupForm from 'frontend/pages/authentication/signup/signup-form.hook';
+import { AsyncError } from 'frontend/types';
+import { ButtonKind, ButtonSize, ButtonType } from 'frontend/types/button';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 interface SignupFormProps {
   onSuccess: () => void;

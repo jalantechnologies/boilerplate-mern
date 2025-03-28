@@ -1,9 +1,7 @@
+import { LabelLarge } from 'frontend/components';
+import PersonalInfoForm from 'frontend/pages/profile/settings/personal-info-form';
+import { Account } from 'frontend/types';
 import React from 'react';
-
-import { LabelLarge } from '../../../components';
-import { Account } from '../../../types';
-
-import PersonalInfoForm from './personal-info-form';
 
 interface PersonalInfoSectionProps {
   accountDetails: Account;
