@@ -39,10 +39,22 @@ module.exports = {
         'meta-4': '#313D4A',
         danger: '#D34053',
       },
-      zIndex: {
-        1: '1',
+      spacing: {
+        11: '2.75rem',
+        40: '10rem',
+        180: '45rem',
       },
-
+      zIndex: {
+        ...defaultTheme.zIndex,
+        99999: '99999',
+        999: '999',
+      },
+      boxShadow: {
+        default: '0px 8px 13px -3px rgba(0, 0, 0, 0.07)',
+      },
+      dropShadow: {
+        1: '0px 1px 0px #E2E8F0',
+      },
     },
   },
   plugins: [],
